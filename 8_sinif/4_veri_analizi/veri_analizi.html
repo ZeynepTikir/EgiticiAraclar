@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>8. Sınıf Veri Analizi - İnteraktif Öğrenme Laboratuvarı</title>
+  <style>
+    :root {
+      --primary: #0284c7;
+      --primary-hover: #0369a1;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #0f172a;
+      --accent-green: #16a34a;
+      --accent-red: #dc2626;
+      --accent-purple: #9333ea;
+      --accent-amber: #d97706;
+      --border: #e2e8f0;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      padding: 20px;
+      line-height: 1.5;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    header h1 {
+      font-size: 2rem;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+
+    header p {
+      color: #64748b;
+      font-size: 1rem;
+    }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 24px;
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 8px;
+    }
+
+    .tab-btn {
+      padding: 10px 20px;
+      border: none;
+      background: none;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #64748b;
+      cursor: pointer;
+      border-radius: 8px 8px 0 0;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn:hover {
+      color: var(--primary);
+      background-color: #e0f2fe;
+    }
+
+    .tab-btn.active {
+      color: var(--primary);
+      border-bottom: 3px solid var(--primary);
+      background-color: #f0f9ff;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    /* Cards */
+    .visual-card, .quiz-card, .panel {
+      background-color: var(--card);
+      border-radius: 12px;
+      padding: 24px;
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      margin-bottom: 24px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    @media (max-width: 768px) {
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Controls & Inputs */
+    .control-group {
+      margin-bottom: 16px;
+    }
+
+    .control-group label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 6px;
+      font-size: 0.9rem;
+    }
+
+    .control-group input[type="number"], .control-group input[type="text"] {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+
+    .control-group input[type="range"] {
+      width: 100%;
+      accent-color: var(--primary);
+    }
+
+    /* Chips & Badges */
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 12px;
+      border-radius: 16px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      background-color: #e2e8f0;
+      color: var(--text);
+    }
+
+    .pair-chips {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .preset-btn {
+      padding: 8px 16px;
+      border: 1px solid var(--primary);
+      background: #ffffff;
+      color: var(--primary);
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .preset-btn:hover {
+      background: var(--primary);
+      color: #ffffff;
+    }
+
+    /* Canvas / Chart Container */
+    .chart-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 280px;
+    }
+
+    canvas {
+      max-width: 100%;
+      height: auto;
+    }
+
+    /* Custom Bar Chart Visual */
+    .bar-chart-container {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 15px;
+    }
+
+    .bar-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .bar-label {
+      width: 100px;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .bar-track {
+      flex: 1;
+      background-color: #f1f5f9;
+      height: 24px;
+      border-radius: 6px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .bar-fill {
+      height: 100%;
+      background-color: var(--primary);
+      width: 0%;
+      transition: width 0.4s ease;
+    }
+
+    .bar-value {
+      width: 80px;
+      text-align: right;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    /* Quiz Specifics */
+    .quiz-card h3 {
+      margin-bottom: 12px;
+      font-size: 1.1rem;
+    }
+
+    .options-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .option-btn {
+      padding: 12px 16px;
+      border: 1px solid var(--border);
+      background-color: #ffffff;
+      border-radius: 8px;
+      text-align: left;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .option-btn:hover {
+      background-color: #f1f5f9;
+      border-color: #cbd5e1;
+    }
+
+    .feedback {
+      margin-top: 12px;
+      padding: 12px;
+      border-radius: 8px;
+      display: none;
+      font-size: 0.9rem;
+      line-height: 1.4;
+    }
+
+    .feedback.visible {
+      display: block;
+    }
+
+    .table-custom {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+    }
+
+    .table-custom th, .table-custom td {
+      border: 1px solid var(--border);
+      padding: 8px 12px;
+      text-align: center;
+      font-size: 0.9rem;
+    }
+
+    .table-custom th {
+      background-color: #f1f5f9;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>8. Sınıf Veri Analizi Laboratuvarı</h1>
+    <p>Daire ve Sütun Grafikleri Arasındaki Dönüşümleri Etkileşimli Keşfedin</p>
+  </header>
+
+  <!-- Tabs Nav -->
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab(0)">1. Dinamik Grafik Laboratuvarı</button>
+    <button class="tab-btn" onclick="switchTab(1)">2. Dönüşüm ve Orantı Rehberi</button>
+    <button class="tab-btn" onclick="switchTab(2)">3. 5 Soruluk LGS Testi</button>
+  </div>
+
+  <!-- TAB 1: Dynamic Simulation -->
+  <div id="tab-0" class="tab-content active">
+    <div class="grid-2">
+      <!-- Left Panel: Data Inputs -->
+      <div class="panel">
+        <h2 style="font-size: 1.2rem; margin-bottom: 16px; color: var(--primary);">Veri Giriş Paneli</h2>
+        <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 16px;">
+          Kategorilerin değerlerini değiştirerek daire grafiğindeki merkez açıların ($\theta$) ve sütun grafiğindeki yüksekliklerin nasıl değiştiğini anlık görün.
+        </p>
+
+        <div class="control-group">
+          <label style="color: var(--primary);">A Kategorisi (Futbol): <span id="valA-disp">40</span> Öğrenci</label>
+          <input type="range" id="inputA" min="5" max="100" value="40" oninput="updateLab()">
+        </div>
+        <div class="control-group">
+          <label style="color: var(--accent-green);">B Kategorisi (Basketbol): <span id="valB-disp">30</span> Öğrenci</label>
+          <input type="range" id="inputB" min="5" max="100" value="30" oninput="updateLab()">
+        </div>
+        <div class="control-group">
+          <label style="color: var(--accent-amber);">C Kategorisi (Voleybol): <span id="valC-disp">20</span> Öğrenci</label>
+          <input type="range" id="inputC" min="5" max="100" value="20" oninput="updateLab()">
+        </div>
+        <div class="control-group">
+          <label style="color: var(--accent-purple);">D Kategorisi (Yüzme): <span id="valD-disp">30</span> Öğrenci</label>
+          <input type="range" id="inputD" min="5" max="100" value="30" oninput="updateLab()">
+        </div>
+
+        <div style="margin-top: 20px;">
+          <strong>Örnek Senaryolar:</strong>
+          <div class="pair-chips" style="margin-top: 8px;">
+            <button class="preset-btn" onclick="setPreset(30, 30, 30, 30)">Eşit Dağılım</button>
+            <button class="preset-btn" onclick="setPreset(60, 30, 15, 15)">Katlı Oranlar</button>
+            <button class="preset-btn" onclick="setPreset(45, 15, 30, 30)">LGS Tipi Dağılım</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Panel: Visual Representations -->
+      <div class="visual-card">
+        <h2 style="font-size: 1.2rem; margin-bottom: 16px; text-align: center;">Daire Grafiği Görünümü</h2>
+        <div class="chart-box">
+          <canvas id="pieChart" width="240" height="240"></canvas>
+        </div>
+        <div class="pair-chips" id="angleChips" style="justify-content: center; margin-top: 12px;"></div>
+      </div>
+    </div>
+
+    <!-- Comparative Column Chart View -->
+    <div class="visual-card">
+      <h2 style="font-size: 1.2rem; margin-bottom: 12px;">Sütun Grafiği ve Açı Hesabı Özeti</h2>
+      <p style="font-size: 0.9rem; color: #64748b;">
+        Daire grafiğindeki toplam merkez açı <strong>360°</strong>'dir. Orantı: <code>Merkez Açı = (Kategori Değeri / Toplam Veri) × 360°</code>
+      </p>
+
+      <div class="bar-chart-container" id="barContainer"></div>
+
+      <table class="table-custom">
+        <thead>
+          <tr>
+            <th>Kategori</th>
+            <th>Miktar (Kişi/Adet)</th>
+            <th>Yüzde (%)</th>
+            <th>Merkez Açı (°)</th>
+          </tr>
+        </thead>
+        <tbody id="statsTableBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- TAB 2: Guide & Interactive Angle Calculator -->
+  <div id="tab-1" class="tab-content">
+    <div class="visual-card">
+      <h2 style="font-size: 1.3rem; color: var(--primary); margin-bottom: 12px;">Veri Analizi: Temel Dönüşüm Kuralları</h2>
+      <div class="grid-2">
+        <div>
+          <h3 style="font-size: 1.05rem; margin-bottom: 8px;">1. Daire Grafiğinden Sayıya Geçiş</h3>
+          <p style="font-size: 0.9rem; color: #475569;">
+            Daire grafiğinde her bir dilimin açısı, toplam veri miktarının $360^\circ$'ye oranlanmasıyla bulunur.
+          </p>
+          <div style="background: #f1f5f9; padding: 12px; border-left: 4px solid var(--primary); margin: 10px 0; font-size: 0.9rem;">
+            $$\text{Veri Miktarı} = \frac{\text{Merkez Açı}}{360^\circ} \times \text{Toplam Miktar}$$
+          </div>
+        </div>
+        <div>
+          <h3 style="font-size: 1.05rem; margin-bottom: 8px;">2. Pratik EBOB / Orantı Yöntemi (LGS Taktiği)</h3>
+          <p style="font-size: 0.9rem; color: #475569;">
+            Verilen merkez açıların (örneğin $90^\circ, 120^\circ, 150^\circ$) EBOB'u bulunur. Açılar bu EBOB değerine bölünerek katlar ($k$) cinsinden yazılır.
+          </p>
+          <div style="background: #f1f5f9; padding: 12px; border-left: 4px solid var(--accent-green); margin: 10px 0; font-size: 0.9rem;">
+            Örnek: $90^\circ, 120^\circ, 150^\circ$ için $\text{EBOB} = 30^\circ$<br>
+            Açılar sırasıyla $3k, 4k, 5k$ ile orantılıdır!
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dynamic Angle to Quantity Solver -->
+    <div class="panel">
+      <h2 style="font-size: 1.2rem; color: var(--primary); margin-bottom: 12px;">İnteraktif Açı - Miktar Hesaplayıcı</h2>
+      <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 16px;">
+        Bir grubun toplam verisini ve hesaplamak istediğiniz merkez açıyı girin, miktarını anında öğrenin:
+      </p>
+
+      <div class="grid-2">
+        <div>
+          <div class="control-group">
+            <label>Toplam Veri Miktarı (Örn: Öğrenci / Ürün Sayısı):</label>
+            <input type="number" id="calcTotal" value="720" oninput="calculateAngleToQty()">
+          </div>
+          <div class="control-group">
+            <label>Merkez Açı (°):</label>
+            <input type="number" id="calcAngle" value="60" min="1" max="360" oninput="calculateAngleToQty()">
+          </div>
+        </div>
+        <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; background: #f8fafc; border: 1px dashed var(--primary); border-radius: 8px; padding: 16px;">
+          <span style="font-size: 0.9rem; color: #64748b;">Hesaplanan Miktar:</span>
+          <span id="calcResult" style="font-size: 2.2rem; font-weight: 800; color: var(--primary);">120</span>
+          <span id="calcFormula" style="font-size: 0.8rem; color: #64748b; margin-top: 4px;">(60° / 360°) × 720 = 120</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 3: 5-Question Quiz -->
+  <div id="tab-2" class="tab-content">
+    <div style="margin-bottom: 16px;">
+      <h2 style="font-size: 1.3rem; color: var(--primary);">Veri Analizi LGS Mini Testi</h2>
+      <p style="font-size: 0.9rem; color: #64748b;">Soruları çözün ve şıkları işaretleyerek çözümlerini inceleyin.</p>
+    </div>
+
+    <!-- Question 1 -->
+    <div class="quiz-card" id="q1">
+      <h3>Soru 1: Bir sınıftaki öğrencilerin 12'si Kız, 24'ü Erkektir. Bu sınıftaki öğrenci dağılımı bir daire grafiği ile gösterildiğinde Kız öğrencileri gösteren dilimin merkez açısı kaç derecedir?</h3>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkQ(1, this, false)">A) 90°</button>
+        <button class="option-btn" onclick="checkQ(1, this, true)">B) 120°</button>
+        <button class="option-btn" onclick="checkQ(1, this, false)">C) 150°</button>
+        <button class="option-btn" onclick="checkQ(1, this, false)">D) 240°</button>
+      </div>
+      <div class="feedback" id="fb-1"></div>
+    </div>
+
+    <!-- Question 2 -->
+    <div class="quiz-card" id="q2">
+      <h3>Soru 2: Bir daire grafiğinde A, B ve C ürünlerinin dağılımı verilmiştir. A ürününün merkez açısı 100°, B ürününün merkez açısı 140°'dir. C ürününün miktarı 60 adet olduğuna göre, bu gruptaki toplam ürün sayısı kaçtır?</h3>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkQ(2, this, false)">A) 120</button>
+        <button class="option-btn" onclick="checkQ(2, this, false)">B) 150</button>
+        <button class="option-btn" onclick="checkQ(2, this, true)">C) 180</button>
+        <button class="option-btn" onclick="checkQ(2, this, false)">D) 240</button>
+      </div>
+      <div class="feedback" id="fb-2"></div>
+    </div>
+
+    <!-- Question 3 -->
+    <div class="quiz-card" id="q3">
+      <h3>Soru 3: Bir çiftlikte bulunan hayvan türlerinin dağılımı şöyledir: Koyun (40), Keçi (20), İnek (30), Tavuk (30). Çiftlikteki veriler daire grafiğine aktarıldığında Koyunlara ait merkez açı kaç derece olur?</h3>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkQ(3, this, true)">A) 120°</button>
+        <button class="option-btn" onclick="checkQ(3, this, false)">B) 100°</button>
+        <button class="option-btn" onclick="checkQ(3, this, false)">C) 90°</button>
+        <button class="option-btn" onclick="checkQ(3, this, false)">D) 60°</button>
+      </div>
+      <div class="feedback" id="fb-3"></div>
+    </div>
+
+    <!-- Question 4 -->
+    <div class="quiz-card" id="q4">
+      <h3>Soru 4: Bir daire grafiğinde Türkçe, Matematik ve Fen Bilimleri soru sayıları gösterilmiştir. Türkçe diliminin açısı 150°, Matematik diliminin açısı 120°'dir. Fen Bilimleri dersinden 30 soru olduğuna göre, Türkçe dersinden kaç soru vardır?</h3>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkQ(4, this, false)">A) 40</button>
+        <button class="option-btn" onclick="checkQ(4, this, true)">B) 50</button>
+        <button class="option-btn" onclick="checkQ(4, this, false)">C) 60</button>
+        <button class="option-btn" onclick="checkQ(4, this, false)">D) 75</button>
+      </div>
+      <div class="feedback" id="fb-4"></div>
+    </div>
+
+    <!-- Question 5 -->
+    <div class="quiz-card" id="q5">
+      <h3>Soru 5: Aşağıdaki merkez açılardan hangisi bir daire grafiğinde tüm verinin tam %25'ini temsil eder?</h3>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkQ(5, this, false)">A) 45°</button>
+        <button class="option-btn" onclick="checkQ(5, this, false)">B) 60°</button>
+        <button class="option-btn" onclick="checkQ(5, this, true)">C) 90°</button>
+        <button class="option-btn" onclick="checkQ(5, this, false)">D) 180°</button>
+      </div>
+      <div class="feedback" id="fb-5"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Tab Switching Functionality
+  function switchTab(index) {
+    const tabs = document.querySelectorAll('.tab-btn');
+    const contents = document.querySelectorAll('.tab-content');
+
+    tabs.forEach((tab, i) => {
+      if (i === index) {
+        tab.classList.add('active');
+        contents[i].classList.add('active');
+      } else {
+        tab.classList.remove('active');
+        contents[i].classList.remove('active');
+      }
+    });
+
+    if (index === 0) {
+      updateLab();
+    }
+  }
+
+  // Preset Controls
+  function setPreset(a, b, c, d) {
+    document.getElementById('inputA').value = a;
+    document.getElementById('inputB').value = b;
+    document.getElementById('inputC').value = c;
+    document.getElementById('inputD').value = d;
+    updateLab();
+  }
+
+  // LAB Interactive Simulation Engine
+  const colors = ['#0284c7', '#16a34a', '#d97706', '#9333ea'];
+  const labels = ['Futbol', 'Basketbol', 'Voleybol', 'Yüzme'];
+
+  function updateLab() {
+    const vA = parseInt(document.getElementById('inputA').value) || 0;
+    const vB = parseInt(document.getElementById('inputB').value) || 0;
+    const vC = parseInt(document.getElementById('inputC').value) || 0;
+    const vD = parseInt(document.getElementById('inputD').value) || 0;
+
+    document.getElementById('valA-disp').innerText = vA;
+    document.getElementById('valB-disp').innerText = vB;
+    document.getElementById('valC-disp').innerText = vC;
+    document.getElementById('valD-disp').innerText = vD;
+
+    const values = [vA, vB, vC, vD];
+    const total = values.reduce((acc, curr) => acc + curr, 0);
+
+    // Draw Pie Chart
+    const canvas = document.getElementById('pieChart');
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    let startAngle = -0.5 * Math.PI; // Start from top (12 o'clock)
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height / 2;
+    const radius = 95;
+
+    const angles = [];
+    const percentages = [];
+
+    values.forEach((val, idx) => {
+      const sliceAngle = total > 0 ? (val / total) * 2 * Math.PI : 0;
+      const degAngle = total > 0 ? Math.round((val / total) * 360) : 0;
+      const pct = total > 0 ? ((val / total) * 100).toFixed(1) : 0;
+
+      angles.push(degAngle);
+      percentages.push(pct);
+
+      // Draw Slice
+      if (sliceAngle > 0) {
+        ctx.beginPath();
+        ctx.moveTo(centerX, centerY);
+        ctx.arc(centerX, centerY, radius, startAngle, startAngle + sliceAngle);
+        ctx.closePath();
+        ctx.fillStyle = colors[idx];
+        ctx.fill();
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = '#ffffff';
+        ctx.stroke();
+      }
+
+      startAngle += sliceAngle;
+    });
+
+    // Update Chips
+    const chipsContainer = document.getElementById('angleChips');
+    chipsContainer.innerHTML = '';
+    labels.forEach((lbl, i) => {
+      chipsContainer.innerHTML += `
+        <span class="chip" style="border-left: 4px solid ${colors[i]};">
+          ${lbl}: ${angles[i]}° (${percentages[i]}%)
+        </span>
+      `;
+    });
+
+    // Update Bar Chart Visuals
+    const barContainer = document.getElementById('barContainer');
+    barContainer.innerHTML = '';
+    const maxVal = Math.max(...values, 1);
+
+    labels.forEach((lbl, i) => {
+      const barWidthPct = (values[i] / maxVal) * 100;
+      barContainer.innerHTML += `
+        <div class="bar-item">
+          <div class="bar-label">${lbl}</div>
+          <div class="bar-track">
+            <div class="bar-fill" style="width: ${barWidthPct}%; background-color: ${colors[i]};"></div>
+          </div>
+          <div class="bar-value">${values[i]} kişi</div>
+        </div>
+      `;
+    });
+
+    // Update Stats Table
+    const tbody = document.getElementById('statsTableBody');
+    tbody.innerHTML = '';
+    labels.forEach((lbl, i) => {
+      tbody.innerHTML += `
+        <tr>
+          <td style="font-weight: 600; color:${colors[i]}">${lbl}</td>
+          <td>${values[i]}</td>
+          <td>%${percentages[i]}</td>
+          <td><strong>${angles[i]}°</strong></td>
+        </tr>
+      `;
+    });
+  }
+
+  // Interactive Calculator Logic for Tab 2
+  function calculateAngleToQty() {
+    const total = parseFloat(document.getElementById('calcTotal').value) || 0;
+    const angle = parseFloat(document.getElementById('calcAngle').value) || 0;
+
+    const qty = (angle / 360) * total;
+    const formattedQty = Number.isInteger(qty) ? qty : qty.toFixed(2);
+
+    document.getElementById('calcResult').innerText = formattedQty;
+    document.getElementById('calcFormula').innerText = `(${angle}° / 360°) × ${total} = ${formattedQty}`;
+  }
+
+  // Quiz Logic & Explanations
+  const explanations = {
+    1: "<strong>Açıklama:</strong> Sınıftaki toplam öğrenci sayısı = 12 + 24 = 36 kişidir.<br>Orantı kuralım:<br>36 öğrenci $\\rightarrow$ 360° ise<br>12 kız öğrenci $\\rightarrow$ X°'dir.<br>X = (12 × 360) / 36 = <strong>120°</strong> bulunur.",
+    2: "<strong>Açıklama:</strong> A ve B ürünlerinin toplam açısı = 100° + 140° = 240°'dir.<br>C ürününe kalan açı = 360° - 240° = 120°'dir.<br>120°'lik açı 60 adet ürüne karşılık geliyorsa (yarı miktarı), 360°'lik toplam ürün sayısı = 360 / 2 = <strong>180 adet</strong> olur.",
+    3: "<strong>Açıklama:</strong> Çiftlikteki toplam hayvan sayısı = 40 + 20 + 30 + 30 = 120 adettir.<br>Daire grafiğindeki 360° toplam açıyı 120 hayvana bölersek: 360° / 120 = 3° (Her 1 hayvan 3° ile temsil edilir).<br>Koyun sayısı = 40 olduğuna göre merkez açı = 40 × 3° = <strong>120°</strong> bulunur.",
+    4: "<strong>Açıklama:</strong> Türkçe (150°) + Matematik (120°) = 270°.<br>Fen Bilimleri açısı = 360° - 270° = 90° olur.<br>90°'lik açı 30 soruya karşılık geliyorsa (3° başına 1 soru),<br>150°'lik Türkçe dersi için soru sayısı = 150 / 3 = <strong>50 soru</strong> bulunur.",
+    5: "<strong>Açıklama:</strong> Tam bir daire 360°'dir. Bir bütünün %25'i çeyrektir (1/4).<br>360° / 4 = <strong>90°</strong>'dir."
+  };
+
+  function checkQ(qId, btn, isCorrect) {
+    const parentCard = document.getElementById(`q${qId}`);
+    const buttons = parentCard.querySelectorAll('.option-btn');
+    const feedbackEl = document.getElementById(`fb-${qId}`);
+
+    // Reset styles for choices in this question
+    buttons.forEach(b => {
+      b.style.backgroundColor = '#ffffff';
+      b.style.borderColor = 'var(--border)';
+    });
+
+    if (isCorrect) {
+      btn.style.backgroundColor = '#dcfce7'; // Light green
+      btn.style.borderColor = 'var(--accent-green)';
+      feedbackEl.style.backgroundColor = '#f0fdf4';
+      feedbackEl.style.color = '#166534';
+      feedbackEl.style.border = '1px solid #bbf7d0';
+      feedbackEl.innerHTML = '✔ <strong>Tebrikler, Doğru Cevap!</strong><br>' + explanations[qId];
+    } else {
+      btn.style.backgroundColor = '#fee2e2'; // Light red
+      btn.style.borderColor = 'var(--accent-red)';
+      feedbackEl.style.backgroundColor = '#fef2f2';
+      feedbackEl.style.color = '#991b1b';
+      feedbackEl.style.border = '1px solid #fecaca';
+      feedbackEl.innerHTML = '✖ <strong>Yanlış Cevap.</strong> Tekrar deneyin veya çözümü inceleyin:<br>' + explanations[qId];
+    }
+
+    feedbackEl.classList.add('visible');
+  }
+
+  // Initialize Simulation on Load
+  window.onload = function() {
+    updateLab();
+  };
+</script>
+
+</body>
+</html>

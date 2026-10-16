@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kareköklü Sayılarda Toplama ve Çıkarma - Interaktif Laboratuvar</title>
+  <style>
+    :root {
+      --primary: #0284c7;
+      --primary-hover: #0369a1;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #0f172a;
+      --accent-green: #16a34a;
+      --accent-red: #dc2626;
+      --accent-purple: #9333ea;
+      --accent-amber: #d97706;
+      --border: #e2e8f0;
+      --card-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      padding: 20px;
+      line-height: 1.5;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    header h1 {
+      color: var(--primary);
+      font-size: 2rem;
+      margin-bottom: 8px;
+    }
+
+    header p {
+      color: #64748b;
+      font-size: 1rem;
+    }
+
+    /* Tabs Layout */
+    .tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 2px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 12px 16px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-bottom: none;
+      border-radius: 8px 8px 0 0;
+      font-weight: 600;
+      color: #64748b;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: center;
+    }
+
+    .tab-btn:hover {
+      background: #f1f5f9;
+      color: var(--primary);
+    }
+
+    .tab-btn.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    /* Cards & Panels */
+    .visual-card, .quiz-card {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: var(--card-shadow);
+      margin-bottom: 20px;
+      border: 1px solid var(--border);
+    }
+
+    .panel {
+      background: #f1f5f9;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 20px;
+      border: 1px solid #e2e8f0;
+    }
+
+    .panel-title {
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Form & Controls */
+    .control-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 15px;
+    }
+
+    .input-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      background: white;
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+
+    .input-wrapper label {
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: #475569;
+    }
+
+    input[type="number"], select {
+      width: 65px;
+      padding: 6px 8px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-size: 1rem;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    select {
+      width: auto;
+    }
+
+    /* Radical Expression Styling */
+    .sqrt-expr {
+      display: inline-flex;
+      align-items: center;
+      font-size: 1.3rem;
+      font-weight: bold;
+    }
+
+    .sqrt-symbol {
+      font-size: 1.4rem;
+      margin-right: -1px;
+    }
+
+    .radicand {
+      border-top: 2px solid currentColor;
+      padding-top: 1px;
+      padding-left: 2px;
+      padding-right: 2px;
+    }
+
+    /* Presets */
+    .preset-container {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 10px;
+    }
+
+    .preset-btn {
+      background: #e0f2fe;
+      color: var(--primary-hover);
+      border: 1px solid #bae6fd;
+      padding: 6px 12px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+
+    .preset-btn:hover {
+      background: var(--primary);
+      color: white;
+    }
+
+    /* Visualization Chips */
+    .chip-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin: 15px 0;
+      padding: 15px;
+      background: #fafafa;
+      border-radius: 8px;
+      border: 1px dashed #cbd5e1;
+    }
+
+    .pair-chips {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      background: white;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      border: 1px solid var(--border);
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-weight: bold;
+      font-size: 0.95rem;
+      color: white;
+    }
+
+    .chip-root { background-color: var(--primary); }
+    .chip-a { background-color: var(--accent-purple); }
+    .chip-b { background-color: var(--accent-amber); }
+    .chip-green { background-color: var(--accent-green); }
+    .chip-red { background-color: var(--accent-red); }
+
+    /* Step Breakdown Box */
+    .step-box {
+      background: white;
+      border-left: 4px solid var(--primary);
+      padding: 12px 16px;
+      margin: 10px 0;
+      border-radius: 0 8px 8px 0;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .step-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: #64748b;
+      margin-bottom: 4px;
+    }
+
+    /* Quiz Styling */
+    .quiz-card {
+      margin-bottom: 25px;
+    }
+
+    .question-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 15px;
+      color: var(--text);
+    }
+
+    .options-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .option-btn {
+      background: white;
+      border: 2px solid var(--border);
+      padding: 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      text-align: left;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .option-btn:hover:not([disabled]) {
+      border-color: var(--primary);
+      background: #f0f9ff;
+    }
+
+    .feedback {
+      display: none;
+      padding: 12px 16px;
+      border-radius: 8px;
+      margin-top: 10px;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .feedback.visible {
+      display: block;
+    }
+
+    .feedback.correct {
+      background: #dcfce7;
+      border: 1px solid #86efac;
+      color: #14532d;
+    }
+
+    .feedback.incorrect {
+      background: #fee2e2;
+      border: 1px solid #fca5a5;
+      color: #7f1d1d;
+    }
+
+    /* Comparison Table / Panel Specifics */
+    .compare-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+
+    @media (max-width: 640px) {
+      .compare-grid {
+        grid-template-columns: 1fr;
+      }
+      .control-group {
+        flex-direction: column;
+      }
+    }
+
+    .badge-error {
+      background: var(--accent-red);
+      color: white;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: bold;
+    }
+
+    .badge-success {
+      background: var(--accent-green);
+      color: white;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>Kareköklü Sayılarda Toplama ve Çıkarma</h1>
+    <p>8. Sınıf Matematik - İnteraktif Keşif ve Öğrenme Laboratuvarı</p>
+  </header>
+
+  <!-- SEKMELER (TABS) -->
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab(0)">1. İnteraktif Laboratuvar</button>
+    <button class="tab-btn" onclick="switchTab(1)">2. Kurallar ve Görsel Analiz</button>
+    <button class="tab-btn" onclick="switchTab(2)">3. 5 Soruluk Test</button>
+  </div>
+
+  <!-- SEKME 1: İNTERAKTİF LABORATUVAR -->
+  <div class="tab-content active" id="tab-0">
+    <div class="visual-card">
+      <h2 style="font-size: 1.3rem; margin-bottom: 15px; color: var(--primary);">Kareköklü İfadeleri Topla / Çıkar</h2>
+      
+      <div class="panel">
+        <div class="panel-title">İşlem Girdileri</div>
+        <div class="control-group">
+          <!-- Terim 1 -->
+          <div class="input-wrapper">
+            <input type="number" id="c1" value="1" min="-20" max="20" onchange="calculateMainLab()">
+            <span class="sqrt-expr"><span class="sqrt-symbol">&radic;</span><span class="radicand"><input type="number" id="r1" value="12" min="1" max="100" onchange="calculateMainLab()"></span></span>
+          </div>
+
+          <!-- Operatör -->
+          <select id="op1" onchange="calculateMainLab()">
+            <option value="+">+</option>
+            <option value="-">-</option>
+          </select>
+
+          <!-- Terim 2 -->
+          <div class="input-wrapper">
+            <input type="number" id="c2" value="1" min="-20" max="20" onchange="calculateMainLab()">
+            <span class="sqrt-expr"><span class="sqrt-symbol">&radic;</span><span class="radicand"><input type="number" id="r2" value="27" min="1" max="100" onchange="calculateMainLab()"></span></span>
+          </div>
+        </div>
+
+        <!-- Hazır Örnekler -->
+        <div class="preset-container">
+          <span style="font-size: 0.85rem; color: #64748b; align-self: center;">Hazır Örnekler:</span>
+          <button class="preset-btn" onclick="loadPreset(1, 12, '+', 1, 27)">√12 + √27</button>
+          <button class="preset-btn" onclick="loadPreset(3, 8, '-', 1, 18)">3√8 - √18</button>
+          <button class="preset-btn" onclick="loadPreset(2, 50, '+', 3, 18)">2√50 + 3√18</button>
+          <button class="preset-btn" onclick="loadPreset(1, 20, '+', 1, 45)">√20 + √45</button>
+          <button class="preset-btn" onclick="loadPreset(1, 12, '+', 1, 20)">√12 + √20 (Kökler Farklı)</button>
+        </div>
+      </div>
+
+      <!-- Adım Adım Çözüm Paneli -->
+      <div id="solution-output">
+        <!-- JS dinamik dolduracak -->
+      </div>
+    </div>
+  </div>
+
+  <!-- SEKME 2: KURALLAR VE GÖRSEL ANALİZ -->
+  <div class="tab-content" id="tab-1">
+    <div class="visual-card">
+      <h2 style="font-size: 1.3rem; margin-bottom: 15px; color: var(--primary);">Temel Kural ve En Çok Yapılan Hatalar</h2>
+      
+      <!-- Kavramsal Yanılgı Analizi -->
+      <div class="panel">
+        <div class="panel-title">
+          <span>⚠️ Sık Yapılan Yanılgı: √a + √b = √(a+b) midir?</span>
+        </div>
+        <p style="font-size: 0.95rem; margin-bottom: 12px;">
+          Kareköklü sayılarda kök içleri doğrudan <b>toplanamaz veya çıkarılamaz!</b> Aşağıdaki simülasyonda değerleri değiştirerek sonucu inceleyin:
+        </p>
+
+        <div class="control-group">
+          <div class="input-wrapper">
+            <label>a = </label>
+            <input type="number" id="misA" value="9" min="1" max="100" onchange="checkMisconception()">
+          </div>
+          <div class="input-wrapper">
+            <label>b = </label>
+            <input type="number" id="misB" value="16" min="1" max="100" onchange="checkMisconception()">
+          </div>
+        </div>
+
+        <div class="compare-grid" id="misconception-results">
+          <!-- JS Dinamik Üretecek -->
+        </div>
+      </div>
+
+      <!-- Kök Dışına Çıkarma Sihirbazı -->
+      <div class="panel" style="margin-top: 20px;">
+        <div class="panel-title">🔍 Karekök İçini a√b Şeklinde Yazma Analizörü</div>
+        <p style="font-size: 0.9rem; margin-bottom: 10px;">Toplama/çıkarma yapabilmek için kök içindeki sayıların <b>en büyük tam kare çarpanı</b> dışarı çıkarılır.</p>
+        <div class="control-group" style="justify-content: flex-start;">
+          <div class="input-wrapper">
+            <label>Sayı (N): </label>
+            <input type="number" id="simN" value="72" min="1" max="500" onchange="analyzeSimplification()">
+          </div>
+        </div>
+        <div id="sim-output" class="step-box" style="border-left-color: var(--accent-purple);">
+          <!-- JS dinamik dolduracak -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEKME 3: 5 SORULUK TEST -->
+  <div class="tab-content" id="tab-2">
+    <!-- Soru 1 -->
+    <div class="quiz-card" id="q-card-1">
+      <div class="question-title">Soru 1: &radic;12 + &radic;75 işleminin sonucu aşağıdakilerden hangisidir?</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkQ(1, this, false)">A) &radic;87</button>
+        <button class="option-btn" onclick="checkQ(1, this, true)">B) 7&radic;3</button>
+        <button class="option-btn" onclick="checkQ(1, this, false)">C) 6&radic;3</button>
+        <button class="option-btn" onclick="checkQ(1, this, false)">D) 8&radic;3</button>
+      </div>
+      <div class="feedback" id="feedback-1"></div>
+    </div>
+
+    <!-- Soru 2 -->
+    <div class="quiz-card" id="q-card-2">
+      <div class="question-title">Soru 2: 5&radic;2 - &radic;18 işleminin sonucu kaçtır?</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkQ(2, this, false)">A) 2&radic;16</button>
+        <button class="option-btn" onclick="checkQ(2, this, true)">B) 2&radic;2</button>
+        <button class="option-btn" onclick="checkQ(2, this, false)">C) 3&radic;2</button>
+        <button class="option-btn" onclick="checkQ(2, this, false)">D) 4&radic;2</button>
+      </div>
+      <div class="feedback" id="feedback-2"></div>
+    </div>
+
+    <!-- Soru 3 -->
+    <div class="quiz-card" id="q-card-3">
+      <div class="question-title">Soru 3: &radic;32 + &radic;50 - &radic;18 işleminin sonucu nedir?</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkQ(3, this, false)">A) 5&radic;2</button>
+        <button class="option-btn" onclick="checkQ(3, this, true)">B) 6&radic;2</button>
+        <button class="option-btn" onclick="checkQ(3, this, false)">C) 7&radic;2</button>
+        <button class="option-btn" onclick="checkQ(3, this, false)">D) &radic;64</button>
+      </div>
+      <div class="feedback" id="feedback-3"></div>
+    </div>
+
+    <!-- Soru 4 -->
+    <div class="quiz-card" id="q-card-4">
+      <div class="question-title">Soru 4: Aşağıdaki işlemlerden hangisinin sonucu tek bir kareköklü terim (a&radic;b) olarak **yazılamaz**?</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkQ(4, this, false)">A) &radic;8 + &radic;18</button>
+        <button class="option-btn" onclick="checkQ(4, this, true)">B) &radic;12 + &radic;20</button>
+        <button class="option-btn" onclick="checkQ(4, this, false)">C) &radic;27 - &radic;12</button>
+        <button class="option-btn" onclick="checkQ(4, this, false)">D) &radic;45 + &radic;80</button>
+      </div>
+      <div class="feedback" id="feedback-4"></div>
+    </div>
+
+    <!-- Soru 5 -->
+    <div class="quiz-card" id="q-card-5">
+      <div class="question-title">Soru 5: Bir kenar uzunluğu &radic;45 cm olan eşkenar üçgenin çevresi kaç cm'dir?</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkQ(5, this, false)">A) 3&radic;15</button>
+        <button class="option-btn" onclick="checkQ(5, this, false)">B) 6&radic;5</button>
+        <button class="option-btn" onclick="checkQ(5, this, true)">C) 9&radic;5</button>
+        <button class="option-btn" onclick="checkQ(5, this, false)">D) &radic;135</button>
+      </div>
+      <div class="feedback" id="feedback-5"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // TAB GEÇİŞ FONKSİYONU
+  function switchTab(tabIndex) {
+    const tabs = document.querySelectorAll('.tab-btn');
+    const contents = document.querySelectorAll('.tab-content');
+
+    tabs.forEach((tab, index) => {
+      if (index === tabIndex) {
+        tab.classList.add('active');
+        contents[index].classList.add('active');
+      } else {
+        tab.classList.remove('active');
+        contents[index].classList.remove('active');
+      }
+    });
+  }
+
+  // YARDIMCI MATEMATİK FONKSİYONLARI
+  // n sayısını a√b formatına dönüştürür
+  function simplifyRadical(n) {
+    if (n <= 0) return { coef: 0, rad: 0 };
+    let outer = 1;
+    let inner = n;
+
+    for (let i = Math.floor(Math.sqrt(n)); i >= 2; i--) {
+      if (n % (i * i) === 0) {
+        outer = i;
+        inner = n / (i * i);
+        break;
+      }
+    }
+    return { coef: outer, rad: inner };
+  }
+
+  // SEKME 1: ANA İNTERAKTİF LABORATUVAR HESAPLAMALARI
+  function calculateMainLab() {
+    const c1 = parseInt(document.getElementById('c1').value) || 0;
+    const r1 = parseInt(document.getElementById('r1').value) || 0;
+    const op = document.getElementById('op1').value;
+    const c2 = parseInt(document.getElementById('c2').value) || 0;
+    const r2 = parseInt(document.getElementById('r2').value) || 0;
+
+    const s1 = simplifyRadical(r1);
+    const s2 = simplifyRadical(r2);
+
+    const totalCoef1 = c1 * s1.coef;
+    const totalCoef2 = c2 * s2.coef;
+
+    const container = document.getElementById('solution-output');
+    
+    // HTML Oluşturma
+    let html = '';
+
+    // Adım 1: İlk hali
+    let term1Str = `${c1 === 1 ? '' : c1 === -1 ? '-' : c1}&radic;${r1}`;
+    let term2Str = `${c2 === 1 ? '' : c2 === -1 ? '-' : c2}&radic;${r2}`;
+    
+    html += `<div class="step-box">
+      <div class="step-title">1. Adım: Verilen İfade</div>
+      <div style="font-size: 1.2rem; font-weight: bold;">
+        ${term1Str} ${op} ${term2Str}
+      </div>
+    </div>`;
+
+    // Adım 2: a√b Formatına Dönüştürme
+    let simp1Str = `${c1 !== 1 ? c1 + ' · ' : ''}${s1.coef > 1 ? s1.coef : ''}&radic;${s1.rad}`;
+    if (s1.coef === 1 && c1 === 1) simp1Str = `&radic;${s1.rad}`;
+    
+    let simp2Str = `${c2 !== 1 ? c2 + ' · ' : ''}${s2.coef > 1 ? s2.coef : ''}&radic;${s2.rad}`;
+    if (s2.coef === 1 && c2 === 1) simp2Str = `&radic;${s2.rad}`;
+
+    let term1Simplified = `${totalCoef1}&radic;${s1.rad}`;
+    let term2Simplified = `${totalCoef2}&radic;${s2.rad}`;
+
+    html += `<div class="step-box" style="border-left-color: var(--accent-purple);">
+      <div class="step-title">2. Adım: Kök İçlerini En Yalın Haline Getirme (a&radic;b)</div>
+      <p style="margin-bottom: 5px;">
+        &radic;${r1} = ${s1.coef > 1 ? s1.coef + '&radic;' + s1.rad : '&radic;' + s1.rad} &nbsp;&nbsp;|&nbsp;&nbsp; 
+        &radic;${r2} = ${s2.coef > 1 ? s2.coef + '&radic;' + s2.rad : '&radic;' + s2.rad}
+      </p>
+      <div style="font-size: 1.1rem; font-weight: bold; color: var(--accent-purple);">
+        = ${term1Simplified} ${op} ${term2Simplified}
+      </div>
+    </div>`;
+
+    // Adım 3: Kök İçlerini Kontrol Etme ve Toplama/Çıkarma
+    if (s1.rad === s2.rad) {
+      let finalCoef = op === '+' ? (totalCoef1 + totalCoef2) : (totalCoef1 - totalCoef2);
+      let finalResultStr = '';
+      
+      if (s1.rad === 1) {
+        finalResultStr = `${finalCoef}`;
+      } else {
+        finalResultStr = `${finalCoef === 1 ? '' : finalCoef === -1 ? '-' : finalCoef}&radic;${s1.rad}`;
+      }
+
+      html += `<div class="step-box" style="border-left-color: var(--accent-green);">
+        <div class="step-title">3. Adım: Kök İçleri Eşit! Katsayıları İşleme Al</div>
+        <p>Kök içleri (<b>&radic;${s1.rad}</b>) aynı olduğu için katsayılar toplanır/çıkarılır:</p>
+        <div style="font-size: 1.1rem; margin: 6px 0;">
+          = (${totalCoef1} ${op} ${totalCoef2}) &radic;${s1.rad}
+        </div>
+        <div style="font-size: 1.4rem; font-weight: bold; color: var(--accent-green); margin-top: 8px;">
+          SONUÇ = ${finalResultStr}
+        </div>
+      </div>`;
+
+      // Görsel Nesne / Çip Temsili
+      html += `<div class="chip-container">
+        <div class="pair-chips">
+          <span class="chip chip-purple">${totalCoef1} tane</span>
+          <span class="chip chip-root">&radic;${s1.rad}</span>
+        </div>
+        <span style="font-size: 1.3rem; font-weight: bold; align-self: center;">${op}</span>
+        <div class="pair-chips">
+          <span class="chip chip-amber">${totalCoef2} tane</span>
+          <span class="chip chip-root">&radic;${s1.rad}</span>
+        </div>
+        <span style="font-size: 1.3rem; font-weight: bold; align-self: center;">=</span>
+        <div class="pair-chips" style="background: #f0fdf4; border-color: #86efac;">
+          <span class="chip chip-green">${finalCoef} tane</span>
+          <span class="chip chip-root">&radic;${s1.rad}</span>
+        </div>
+      </div>`;
+
+    } else {
+      // Kök içleri eşit değilse
+      html += `<div class="step-box" style="border-left-color: var(--accent-red);">
+        <div class="step-title">3. Adım: Kök İçleri Eşit Değil!</div>
+        <p style="color: var(--accent-red); font-weight: 600;">
+          &radic;${s1.rad} ile &radic;${s2.rad} kök içleri farklı olduğu için bu sayılar bu şekilde toplanamaz/çıkarılamaz.
+        </p>
+        <div style="font-size: 1.3rem; font-weight: bold; color: var(--text); margin-top: 8px;">
+          SONUÇ (En Sade Hali) = ${term1Simplified} ${op} ${term2Simplified}
+        </div>
+      </div>`;
+    }
+
+    container.innerHTML = html;
+  }
+
+  function loadPreset(c1, r1, op, c2, r2) {
+    document.getElementById('c1').value = c1;
+    document.getElementById('r1').value = r1;
+    document.getElementById('op1').value = op;
+    document.getElementById('c2').value = c2;
+    document.getElementById('r2').value = r2;
+    calculateMainLab();
+  }
+
+  // SEKME 2: GÖRSEL ANALİZ VE KAVRAMSAL YANILGI
+  function checkMisconception() {
+    const a = parseFloat(document.getElementById('misA').value) || 0;
+    const b = parseFloat(document.getElementById('misB').value) || 0;
+
+    const sqrtA = Math.sqrt(a);
+    const sqrtB = Math.sqrt(b);
+    const separateSum = sqrtA + sqrtB;
+
+    const sumAB = a + b;
+    const combinedSqrt = Math.sqrt(sumAB);
+
+    const isEqual = Math.abs(separateSum - combinedSqrt) < 0.0001;
+
+    const resDiv = document.getElementById('misconception-results');
+    resDiv.innerHTML = `
+      <div style="background: white; padding: 15px; border-radius: 8px; border: 1px solid var(--border);">
+        <div style="font-weight: bold; color: var(--accent-green); margin-bottom: 5px;">
+          DOĞRU YOL: &radic;a + &radic;b
+        </div>
+        <div>&radic;${a} + &radic;${b}</div>
+        <div style="font-size: 1.1rem; font-weight: bold; margin-top: 5px;">
+          = ${sqrtA.toFixed(2)} + ${sqrtB.toFixed(2)} = <span style="color: var(--accent-green);">${separateSum.toFixed(2)}</span>
+        </div>
+      </div>
+
+      <div style="background: white; padding: 15px; border-radius: 8px; border: 1px solid var(--border);">
+        <div style="font-weight: bold; color: var(--accent-red); margin-bottom: 5px;">
+          YANLIŞ YOL: &radic;(a + b)
+        </div>
+        <div>&radic;(${a} + ${b}) = &radic;${sumAB}</div>
+        <div style="font-size: 1.1rem; font-weight: bold; margin-top: 5px;">
+          = <span style="color: var(--accent-red);">${combinedSqrt.toFixed(2)}</span>
+        </div>
+      </div>
+
+      <div style="grid-column: 1 / -1; text-align: center; background: #fff; padding: 10px; border-radius: 8px;">
+        Sonuçlar Eşit mi? 
+        ${isEqual 
+          ? '<span class="badge-success">EŞİT (İstisnai Durum)</span>' 
+          : '<span class="badge-error">EŞİT DEĞİL! (' + separateSum.toFixed(2) + ' ≠ ' + combinedSqrt.toFixed(2) + ')</span>'}
+      </div>
+    `;
+  }
+
+  function analyzeSimplification() {
+    const n = parseInt(document.getElementById('simN').value) || 0;
+    const s = simplifyRadical(n);
+    const out = document.getElementById('sim-output');
+
+    if (n <= 0) {
+      out.innerHTML = 'Lütfen pozitif bir tam sayı girin.';
+      return;
+    }
+
+    if (s.coef === 1) {
+      out.innerHTML = `<b>&radic;${n}</b> sayısı tam kare çarpan içermez. En sade hali yine <b>&radic;${n}</b> olarak kalır.`;
+    } else if (s.rad === 1) {
+      out.innerHTML = `<b>&radic;${n}</b> bir tam kare sayıdır! <b>&radic;${n} = ${s.coef}</b> olarak dışarı çıkar.`;
+    } else {
+      const squarePart = s.coef * s.coef;
+      out.innerHTML = `
+        &radic;${n} sayısı çarpanlarına ayrılır: &radic;(${squarePart} · ${s.rad})<br>
+        Burada <b>${squarePart}</b> sayısı <b>${s.coef}²</b> olduğu için dışarı <b>${s.coef}</b> olarak çıkar.<br>
+        <div style="font-size: 1.2rem; font-weight: bold; color: var(--accent-purple); margin-top: 5px;">
+          &radic;${n} = ${s.coef}&radic;${s.rad}
+        </div>
+      `;
+    }
+  }
+
+  // SEKME 3: QUIZ LOGIC
+  const explanations = {
+    1: "<b>Çözüm:</b><br>&radic;12 = &radic;(4·3) = 2&radic;3<br>&radic;75 = &radic;(25·3) = 5&radic;3<br>2&radic;3 + 5&radic;3 = (2 + 5)&radic;3 = <b>7&radic;3</b> bulunur. Doğru Cevap B.",
+    2: "<b>Çözüm:</b><br>&radic;18 = &radic;(9·2) = 3&radic;2<br>5&radic;2 - 3&radic;2 = (5 - 3)&radic;2 = <b>2&radic;2</b> bulunur. Doğru Cevap B.",
+    3: "<b>Çözüm:</b><br>&radic;32 = 4&radic;2<br>&radic;50 = 5&radic;2<br>&radic;18 = 3&radic;2<br>4&radic;2 + 5&radic;2 - 3&radic;2 = (4 + 5 - 3)&radic;2 = <b>6&radic;2</b> bulunur. Doğru Cevap B.",
+    4: "<b>Çözüm:</b><br>B şıkkında &radic;12 = 2&radic;3 ve &radic;20 = 2&radic;5 olur. Kök içleri (&radic;3 ve &radic;5) farklı olduğu için bu iki terim tek bir kök altında toplanamaz. Doğru Cevap B.",
+    5: "<b>Çözüm:</b><br>&radic;45 = &radic;(9·5) = 3&radic;5 cm (bir kenar).<br>Eşkenar üçgenin 3 eşit kenarı vardır.<br>Çevre = 3 · (3&radic;5) = <b>9&radic;5</b> cm bulunur. Doğru Cevap C."
+  };
+
+  function checkQ(qId, btn, isCorrect) {
+    const card = document.getElementById(`q-card-${qId}`);
+    const buttons = card.querySelectorAll('.option-btn');
+    const feedback = document.getElementById(`feedback-${qId}`);
+
+    // Butonları devre dışı bırak
+    buttons.forEach(b => {
+      b.disabled = true;
+      b.style.cursor = 'default';
+    });
+
+    if (isCorrect) {
+      btn.style.background = '#dcfce7';
+      btn.style.borderColor = '#16a34a';
+      btn.style.color = '#14532d';
+      feedback.className = 'feedback visible correct';
+      feedback.innerHTML = '🎉 <b>Tebrikler, Doğru Cevap!</b><br>' + explanations[qId];
+    } else {
+      btn.style.background = '#fee2e2';
+      btn.style.borderColor = '#dc2626';
+      btn.style.color = '#7f1d1d';
+      feedback.className = 'feedback visible incorrect';
+      feedback.innerHTML = '❌ <b>Yanlış Cevap.</b><br>' + explanations[qId];
+    }
+  }
+
+  // Sayfa yüklendiğinde ilk hesaplamaları yap
+  window.onload = function() {
+    calculateMainLab();
+    checkMisconception();
+    analyzeSimplification();
+  };
+</script>
+
+</body>
+</html>

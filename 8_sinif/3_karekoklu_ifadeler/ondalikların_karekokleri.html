@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ondalık Kesirlerin Karekökleri İnteraktif Öğrenme Laboratuvarı</title>
+  <style>
+    :root {
+      --primary: #0284c7;
+      --primary-hover: #0369a1;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #0f172a;
+      --accent-green: #16a34a;
+      --accent-red: #dc2626;
+      --accent-purple: #9333ea;
+      --accent-amber: #d97706;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    header h1 {
+      font-size: 1.8rem;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+
+    header p {
+      color: #64748b;
+      font-size: 0.95rem;
+    }
+
+    /* Tabs UI */
+    .tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+      background: #e2e8f0;
+      padding: 6px;
+      border-radius: 12px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 12px 16px;
+      border: none;
+      background: transparent;
+      color: #64748b;
+      font-weight: 600;
+      font-size: 0.95rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: var(--card);
+      color: var(--primary);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    /* Cards Layout */
+    .visual-card, .quiz-card, .panel {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      margin-bottom: 20px;
+    }
+
+    .panel-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Control Panel UI */
+    .control-group {
+      margin-bottom: 20px;
+    }
+
+    .control-group label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #334155;
+    }
+
+    select, input[type="range"] {
+      width: 100%;
+      padding: 10px 14px;
+      border: 2px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    select:focus {
+      border-color: var(--primary);
+    }
+
+    /* Preset Buttons & Chips */
+    .pair-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .preset-btn {
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      padding: 8px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      color: #334155;
+      transition: all 0.2s;
+    }
+
+    .preset-btn:hover, .preset-btn.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      background: #e0f2fe;
+      color: var(--primary);
+    }
+
+    .chip-purple {
+      background: #f3e8ff;
+      color: var(--accent-purple);
+    }
+
+    .chip-green {
+      background: #dcfce7;
+      color: var(--accent-green);
+    }
+
+    /* Mathematical Formula Breakdown Display */
+    .math-flow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      padding: 24px;
+      background: #f8fafc;
+      border: 2px dashed #cbd5e1;
+      border-radius: 12px;
+      margin: 20px 0;
+      font-size: 1.4rem;
+      font-weight: bold;
+    }
+
+    .step-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: white;
+      padding: 12px 18px;
+      border-radius: 10px;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+    }
+
+    .step-label {
+      font-size: 0.75rem;
+      color: #64748b;
+      font-weight: normal;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .fraction {
+      display: inline-flex;
+      flex-direction: column;
+      vertical-align: middle;
+      text-align: center;
+      padding: 0 4px;
+    }
+
+    .fraction .numerator {
+      border-bottom: 2px solid var(--text);
+      padding-bottom: 2px;
+    }
+
+    .fraction .denominator {
+      padding-top: 2px;
+    }
+
+    .arrow {
+      color: var(--primary);
+      font-size: 1.5rem;
+    }
+
+    /* Square Visualizer for Tab 2 */
+    .square-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 20px 0;
+    }
+
+    .geo-square {
+      background: rgba(2, 132, 199, 0.15);
+      border: 3px solid var(--primary);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .geo-square-text {
+      font-weight: bold;
+      color: var(--primary-hover);
+      text-align: center;
+    }
+
+    .side-label {
+      position: absolute;
+      font-size: 0.9rem;
+      font-weight: bold;
+      color: var(--accent-purple);
+      background: white;
+      padding: 2px 6px;
+      border-radius: 4px;
+      border: 1px solid #d8b4fe;
+    }
+
+    .side-top { top: -14px; }
+    .side-left { left: -45px; }
+
+    /* Rules Grid */
+    .rules-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .rule-card {
+      background: #f1f5f9;
+      padding: 16px;
+      border-radius: 10px;
+      border-left: 4px solid var(--primary);
+    }
+
+    .rule-card h4 {
+      color: var(--primary-hover);
+      margin-bottom: 6px;
+    }
+
+    /* Quiz Styling */
+    .quiz-question {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 16px;
+      color: var(--text);
+    }
+
+    .options-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    @media (max-width: 600px) {
+      .options-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .option-btn {
+      background: #ffffff;
+      border: 2px solid #e2e8f0;
+      padding: 12px 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 600;
+      text-align: left;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .option-btn:hover:not([disabled]) {
+      border-color: var(--primary);
+      background: #f0f9ff;
+    }
+
+    .option-btn.correct {
+      background-color: #dcfce7 !important;
+      border-color: var(--accent-green) !important;
+      color: #14532d !important;
+    }
+
+    .option-btn.incorrect {
+      background-color: #fee2e2 !important;
+      border-color: var(--accent-red) !important;
+      color: #7f1d1d !important;
+    }
+
+    .feedback {
+      padding: 14px;
+      border-radius: 10px;
+      margin-top: 12px;
+      display: none;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .feedback.show {
+      display: block;
+    }
+
+    .feedback.correct-bg {
+      background-color: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      color: #166534;
+    }
+
+    .feedback.incorrect-bg {
+      background-color: #fef2f2;
+      border: 1px solid #fecaca;
+      color: #991b1b;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>Ondalık Kesirlerin Karekökleri</h1>
+    <p>8. Sınıf Matematik İnteraktif Öğrenme ve Keşif Laboratuvarı</p>
+  </header>
+
+  <!-- Sekmeli Yapı -->
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab(0)">1. Karekök Laboratuvarı</button>
+    <button class="tab-btn" onclick="switchTab(1)">2. Geometrik Alan Analizi</button>
+    <button class="tab-btn" onclick="switchTab(2)">3. Kazanım Testi (5 Soru)</button>
+  </div>
+
+  <!-- SEKME 1: İnteraktif Laboratuvar -->
+  <div id="tab-0" class="tab-content active">
+    <div class="panel">
+      <div class="panel-title">
+        <span>🔬 Interaktif Adım Adım Karekök Hesaplayıcı</span>
+      </div>
+      <p style="color: #64748b; margin-bottom: 16px;">
+        Bir ondalık kesrin karekökünü alırken öncelikle sayı <strong>rasyonel kesir (a/b)</strong> formatında yazılır, ardından pay ve paydanın ayrı ayrı karekökü alınır.
+      </p>
+
+      <div class="control-group">
+        <label for="decimal-select">Bir Ondalık Sayı Seçin veya Aşağıdaki Hazır Değerleri Kullanın:</label>
+        <select id="decimal-select" onchange="updateLab(this.value)">
+          <option value="0.01">0,01</option>
+          <option value="0.04">0,04</option>
+          <option value="0.09">0,09</option>
+          <option value="0.16">0,16</option>
+          <option value="0.25">0,25</option>
+          <option value="0.36">0,36</option>
+          <option value="0.49">0,49</option>
+          <option value="0.64">0,64</option>
+          <option value="0.81">0,81</option>
+          <option value="1.21" selected>1,21</option>
+          <option value="1.44">1,44</option>
+          <option value="1.69">1,69</option>
+          <option value="1.96">1,96</option>
+          <option value="2.25">2,25</option>
+          <option value="2.56">2,56</option>
+          <option value="0.0009">0,0009 (4 Basamaklı)</option>
+          <option value="0.0016">0,0016 (4 Basamaklı)</option>
+          <option value="0.0081">0,0081 (4 Basamaklı)</option>
+        </select>
+
+        <div class="pair-chips" id="preset-buttons">
+          <button class="preset-btn" onclick="selectPreset('0.04')">√0,04</button>
+          <button class="preset-btn" onclick="selectPreset('0.25')">√0,25</button>
+          <button class="preset-btn" onclick="selectPreset('1.21')">√1,21</button>
+          <button class="preset-btn" onclick="selectPreset('1.44')">√1,44</button>
+          <button class="preset-btn" onclick="selectPreset('2.25')">√2,25</button>
+          <button class="preset-btn" onclick="selectPreset('0.0009')">√0,0009</button>
+        </div>
+      </div>
+
+      <!-- Matematik Akış Görseli -->
+      <div class="math-flow">
+        <div class="step-box">
+          <span class="step-label">Orijinal İfade</span>
+          <span id="step1">√1,21</span>
+        </div>
+        
+        <span class="arrow">=</span>
+
+        <div class="step-box">
+          <span class="step-label">Kesre Dönüştür</span>
+          <span id="step2">
+            √<div class="fraction"><span class="numerator">121</span><span class="denominator">100</span></div>
+          </span>
+        </div>
+
+        <span class="arrow">=</span>
+
+        <div class="step-box">
+          <span class="step-label">Kökleri Ayır</span>
+          <span id="step3">
+            <div class="fraction"><span class="numerator">√121</span><span class="denominator">√100</span></div>
+          </span>
+        </div>
+
+        <span class="arrow">=</span>
+
+        <div class="step-box">
+          <span class="step-label">Kökten Çıkar</span>
+          <span id="step4">
+            <div class="fraction"><span class="numerator">11</span><span class="denominator">10</span></div>
+          </span>
+        </div>
+
+        <span class="arrow">=</span>
+
+        <div class="step-box" style="border-color: var(--accent-green); background: #f0fdf4;">
+          <span class="step-label" style="color: var(--accent-green);">Sonuç</span>
+          <span id="step5" style="color: var(--accent-green);">1,1</span>
+        </div>
+      </div>
+
+      <div class="visual-card" style="background: #f8fafc; border: 1px solid #e2e8f0; margin-bottom: 0;">
+        <h4 style="color: var(--primary); margin-bottom: 8px;">📌 Çözümün Adım Adım Açıklaması:</h4>
+        <ul id="explanation-list" style="padding-left: 20px; color: #334155; display: flex; flex-direction: column; gap: 6px;">
+          <!-- JS dynamic text -->
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEKME 2: Geometrik Analiz Paneli -->
+  <div id="tab-2" class="tab-content">
+    <div class="panel">
+      <div class="panel-title">
+        <span>📐 Geometrik Alan Modelleyicisi (Kare - Kenar İlişkisi)</span>
+      </div>
+      <p style="color: #64748b; margin-bottom: 16px;">
+        Bir karenin alanı verildğinde bir kenar uzunluğunu bulmak için <strong>alanın karekökü</strong> alınır: $Kenar = \sqrt{Alan}$
+      </p>
+
+      <div class="control-group">
+        <label for="area-range">Karenin Alanını Değiştirin (m²): <span id="area-val-text" class="chip chip-purple">0,64 m²</span></label>
+        <input type="range" id="area-range" min="1" max="9" step="1" value="4" oninput="updateGeoSquare(this.value)">
+      </div>
+
+      <div class="square-container">
+        <div id="geo-box" class="geo-square" style="width: 180px; height: 180px;">
+          <div class="side-label side-top" id="top-label">Kenar = 0,8 m</div>
+          <div class="side-label side-left" id="left-label">0,8 m</div>
+          <div class="geo-square-text">
+            Alan<br>
+            <span id="square-area-text" style="font-size: 1.3rem;">0,64 m²</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="rules-grid">
+        <div class="rule-card">
+          <h4>💡 Virgülden Sonraki Basamak Kuralı</h4>
+          <p style="font-size: 0.9rem; color: #475569;">
+            Bir ondalık sayının karekökünün rasyonel çıkabilmesi için, virgülden sonraki basamak sayısı <strong>çift sayıda</strong> (2, 4, 6...) olmalıdır. 
+            <br><em>Örn: √0,4 rasyonel değilken, √0,04 = 0,2'dir.</em>
+          </p>
+        </div>
+
+        <div class="rule-card" style="border-left-color: var(--accent-purple);">
+          <h4>⚡ Pratik Pratik İpucu</h4>
+          <p style="font-size: 0.9rem; color: #475569;">
+            Sayının virgülsüz halinin karekökünü alın. Bulduğunuz sonucun virgülden sonraki basamak sayısı, orijinal sayının virgülden sonraki basamak sayısının <strong>yarısı</strong> kadar olacaktır.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEKME 3: 5 Soruluk Kazanım Testi -->
+  <div id="tab-3" class="tab-content">
+    
+    <!-- SORU 1 -->
+    <div class="quiz-card">
+      <div class="quiz-question">Soru 1: √0,49 ifadesinin değeri aşağıdakilerden hangisidir?</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkQ('q1', this, false)">A) 0,07</button>
+        <button class="option-btn" onclick="checkQ('q1', this, true)">B) 0,7</button>
+        <button class="option-btn" onclick="checkQ('q1', this, false)">C) 7</button>
+        <button class="option-btn" onclick="checkQ('q1', this, false)">D) 0,007</button>
+      </div>
+      <div id="q1-feedback" class="feedback"></div>
+    </div>
+
+    <!-- SORU 2 -->
+    <div class="quiz-card">
+      <div class="quiz-question">Soru 2: Alanı 1,69 cm² olan bir karenin bir kenar uzunluğu kaç cm'dir?</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkQ('q2', this, false)">A) 1,1</button>
+        <button class="option-btn" onclick="checkQ('q2', this, false)">B) 1,2</button>
+        <button class="option-btn" onclick="checkQ('q2', this, true)">C) 1,3</button>
+        <button class="option-btn" onclick="checkQ('q2', this, false)">D) 0,13</button>
+      </div>
+      <div id="q2-feedback" class="feedback"></div>
+    </div>
+
+    <!-- SORU 3 -->
+    <div class="quiz-card">
+      <div class="quiz-question">Soru 3: √0,09 + √0,16 işleminin sonucu kaçtır?</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkQ('q3', this, false)">A) 0,25</button>
+        <button class="option-btn" onclick="checkQ('q3', this, false)">B) 0,5</button>
+        <button class="option-btn" onclick="checkQ('q3', this, true)">C) 0,7</button>
+        <button class="option-btn" onclick="checkQ('q3', this, false)">D) 0,9</button>
+      </div>
+      <div id="q3-feedback" class="feedback"></div>
+    </div>
+
+    <!-- SORU 4 -->
+    <div class="quiz-card">
+      <div class="quiz-question">Soru 4: √1,44 · √0,25 işleminin sonucu kaçtır?</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkQ('q4', this, true)">A) 0,6</button>
+        <button class="option-btn" onclick="checkQ('q4', this, false)">B) 0,36</button>
+        <button class="option-btn" onclick="checkQ('q4', this, false)">C) 1,2</button>
+        <button class="option-btn" onclick="checkQ('q4', this, false)">D) 0,06</button>
+      </div>
+      <div id="q4-feedback" class="feedback"></div>
+    </div>
+
+    <!-- SORU 5 -->
+    <div class="quiz-card">
+      <div class="quiz-question">Soru 5: Aşağıdaki kareköklü ifadelerden hangisinin sonucu bir rasyonel sayı DEĞİLDİR?</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkQ('q5', this, false)">A) √0,01</button>
+        <button class="option-btn" onclick="checkQ('q5', this, false)">B) √2,25</button>
+        <button class="option-btn" onclick="checkQ('q5', this, true)">C) √0,4</button>
+        <button class="option-btn" onclick="checkQ('q5', this, false)">D) √0,0004</button>
+      </div>
+      <div id="q5-feedback" class="feedback"></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  // Tab Switcher Function
+  function switchTab(index) {
+    const tabs = document.querySelectorAll('.tab-btn');
+    const contents = document.querySelectorAll('.tab-content');
+
+    tabs.forEach((tab, i) => {
+      if (i === index) {
+        tab.classList.add('active');
+        contents[i].classList.add('active');
+      } else {
+        tab.classList.remove('active');
+        contents[i].classList.remove('active');
+      }
+    });
+  }
+
+  // --- LAB LOGIC (TAB 1) ---
+  function selectPreset(val) {
+    document.getElementById('decimal-select').value = val;
+    updateLab(val);
+  }
+
+  function updateLab(valStr) {
+    const val = parseFloat(valStr);
+    
+    // Update active preset button style
+    const btns = document.querySelectorAll('.preset-btn');
+    btns.forEach(btn => {
+      if (btn.textContent.includes(valStr.replace('.', ','))) {
+        btn.classList.add('active');
+      } else {
+        btn.classList.remove('active');
+      }
+    });
+
+    let num, den;
+    if (valStr === "0.0009") { num = 9; den = 10000; }
+    else if (valStr === "0.0016") { num = 16; den = 10000; }
+    else if (valStr === "0.0081") { num = 81; den = 10000; }
+    else {
+      num = Math.round(val * 100);
+      den = 100;
+    }
+
+    const rootNum = Math.sqrt(num);
+    const rootDen = Math.sqrt(den);
+    const finalResult = (rootNum / rootDen).toString().replace('.', ',');
+
+    const valDisplay = valStr.replace('.', ',');
+
+    // Step Updates
+    document.getElementById('step1').innerText = `√${valDisplay}`;
+    
+    document.getElementById('step2').innerHTML = `
+      √<div class="fraction"><span class="numerator">${num}</span><span class="denominator">${den}</span></div>
+    `;
+
+    document.getElementById('step3').innerHTML = `
+      <div class="fraction"><span class="numerator">√${num}</span><span class="denominator">√${den}</span></div>
+    `;
+
+    document.getElementById('step4').innerHTML = `
+      <div class="fraction"><span class="numerator">${rootNum}</span><span class="denominator">${rootDen}</span></div>
+    `;
+
+    document.getElementById('step5').innerText = finalResult;
+
+    // Detailed explanation text
+    const list = document.getElementById('explanation-list');
+    list.innerHTML = `
+      <li><strong>1. Adım:</strong> ${valDisplay} ondalık kesrini kesir olarak <sup>${num}</sup>/<sub>${den}</sub> şeklinde yazdık.</li>
+      <li><strong>2. Adım:</strong> Karekökü hem paya hem paydaya uyguladık: <sup>√${num}</sup>/<sub>√${den}</sub>.</li>
+      <li><strong>3. Adım:</strong> Tam kare olan ${num} sayısı dışarı ${rootNum}, ${den} sayısı dışarı ${rootDen} olarak çıktı.</li>
+      <li><strong>4. Adım:</strong> Elde edilen <sup>${rootNum}</sup>/<sub>${rootDen}</sub> kesrini ondalık gösterime çevirerek <strong>${finalResult}</strong> sonucuna ulaştık.</li>
+    `;
+  }
+
+  // --- GEOMETRIC TAB LOGIC (TAB 2) ---
+  const geoPresetAreas = [0.01, 0.04, 0.09, 0.16, 0.25, 0.36, 0.49, 0.64, 0.81, 1.44, 2.25];
+  
+  function updateGeoSquare(index) {
+    // Map index 1-9 to selected pretty decimal areas
+    const areas = [0.04, 0.09, 0.16, 0.25, 0.36, 0.49, 0.64, 0.81, 1.44];
+    const area = areas[index - 1];
+    const side = Math.sqrt(area);
+
+    const areaStr = area.toString().replace('.', ',');
+    const sideStr = Number(side.toFixed(2)).toString().replace('.', ',');
+
+    document.getElementById('area-val-text').innerText = `${areaStr} m²`;
+    document.getElementById('square-area-text').innerText = `${areaStr} m²`;
+    document.getElementById('top-label').innerText = `Kenar = ${sideStr} m`;
+    document.getElementById('left-label').innerText = `${sideStr} m`;
+
+    // Dynamic sizing of visual square
+    const pxSize = 130 + (index * 12);
+    const box = document.getElementById('geo-box');
+    box.style.width = `${pxSize}px`;
+    box.style.height = `${pxSize}px`;
+  }
+
+  // --- QUIZ LOGIC (TAB 3) ---
+  const explanations = {
+    q1: "<strong>Açıklama:</strong> √0,49 = √(49/100) = √49 / √100 = 7/10 = 0,7'dir.",
+    q2: "<strong>Açıklama:</strong> Kare alanı = a² = 1,69 ise Kenar (a) = √1,69'dur.<br>√1,69 = √(169/100) = 13/10 = 1,3 cm olur.",
+    q3: "<strong>Açıklama:</strong><br>√0,09 = √(9/100) = 3/10 = 0,3<br>√0,16 = √(16/100) = 4/10 = 0,4<br>Toplam: 0,3 + 0,4 = 0,7'dir.",
+    q4: "<strong>Açıklama:</strong><br>√1,44 = 1,2<br>√0,25 = 0,5<br>Çarpım: 1,2 · 0,5 = 0,6 olur.",
+    q5: "<strong>Açıklama:</strong> √0,4 = √(4/10) = 2 / √10 olur. √10 tam kökten çıkamadığı için sonuç irrasyonel bir sayıdır (Rasyonel DEĞİLDİR). Diğer şıklar tam kare ondalık kesirlerdir."
+  };
+
+  function checkQ(qId, clickedBtn, isCorrect) {
+    const parentCard = clickedBtn.closest('.quiz-card');
+    const buttons = parentCard.querySelectorAll('.option-btn');
+    const feedbackEl = document.getElementById(`${qId}-feedback`);
+
+    // Disable all buttons in this question group
+    buttons.forEach(btn => btn.disabled = true);
+
+    if (isCorrect) {
+      clickedBtn.classList.add('correct');
+      feedbackEl.className = "feedback show correct-bg";
+      feedbackEl.innerHTML = "✨ <strong>Tebrikler, Doğru Cevap!</strong><br>" + explanations[qId];
+    } else {
+      clickedBtn.classList.add('incorrect');
+      feedbackEl.className = "feedback show incorrect-bg";
+      feedbackEl.innerHTML = "❌ <strong>Yanlış Cevap.</strong><br>" + explanations[qId];
+    }
+  }
+
+  // Initialize defaults
+  window.onload = function() {
+    updateLab('1.21');
+    updateGeoSquare(7);
+  };
+</script>
+
+</body>
+</html>
