@@ -4,6 +4,20 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Basit Olayların Olma Olasılığı - Interaktif Öğrenme Laboratuvarı</title>
+  
+  <!-- MathJax Yapılandırması: Satır içi $...$ ifadelerini formül olarak tanır -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['[', ']']]
+      }
+    };
+  </script>
+  <!-- MathJax Kütüphanesi -->
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
   <style>
     :root {
       --primary: #0284c7;
@@ -407,9 +421,9 @@
 
     <!-- Sekmeler -->
     <div class="tabs">
-      <button class="tab-btn active" onclick="switchTab('tab1')">1. Torba Deney Laboratuvarı</button>
-      <button class="tab-btn" onclick="switchTab('tab2')">2. Olasılık Çizgisi & Analiz</button>
-      <button class="tab-btn" onclick="switchTab('tab3')">3. 5 Soruluk Kazanım Testi</button>
+      <button class="tab-btn active" onclick="switchTab('tab1', this)">1. Torba Deney Laboratuvarı</button>
+      <button class="tab-btn" onclick="switchTab('tab2', this)">2. Olasılık Çizgisi & Analiz</button>
+      <button class="tab-btn" onclick="switchTab('tab3', this)">3. 5 Soruluk Kazanım Testi</button>
     </div>
 
     <!-- SEKME 1: INTERAKTİF LABORATUVAR -->
@@ -621,12 +635,19 @@
 
   <script>
     // Sekmeler Arası Geçiş
-    function switchTab(tabId) {
+    function switchTab(tabId, btn) {
       document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
       
       document.getElementById(tabId).classList.add('active');
-      event.currentTarget.classList.add('active');
+      if (btn) {
+        btn.classList.add('active');
+      }
+      
+      // MathJax sekme geçişlerinde görünmeyen sayfadaki formülleri işlesin
+      if (window.MathJax) {
+        MathJax.typesetPromise();
+      }
     }
 
     // --- SEKME 1 & SIMULATOR LOGIC ---
@@ -795,6 +816,10 @@
       const fb = parentContainer.querySelector('.feedback');
       fb.innerHTML = explanations[qId];
       fb.style.display = 'block';
+
+      if (window.MathJax) {
+        MathJax.typesetPromise();
+      }
     }
 
     // Başlangıç Yüklemesi
