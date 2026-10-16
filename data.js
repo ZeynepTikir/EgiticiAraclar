@@ -38,60 +38,60 @@ const egitimVerileri = {
       {
         uniteAdi: "1. Çarpanlar ve Katlar",
         araclar: [
-          { ad: "Çarpanlar + Asal Çarpanlar Etkinliği", dosya: "8_sinif/1_Carpanlar_ve_Katlar/çarpanlar_asal_çarpanlar_etkinliği.html" },
-          { ad: "Aralarında Asal Sayılar Etkinliği", dosya: "8_sinif/1_Carpanlar_ve_Katlar/aralarında_asal_sayılar_etkinliği.html" },
-          { ad: "EBOB EKOK Etkinliği", dosya: "8_sinif/1_Carpanlar_ve_Katlar/ebob_ekok_etkinliği.html" }
+          { ad: "Çarpanlar + Asal Çarpanlar Etkinliği", dosya: "8_sinif/1_carpanlar_katlar/carpanlar_asal_carpanlar.html" },
+          { ad: "Aralarında Asal Sayılar Etkinliği", dosya: "8_sinif/1_carpanlar_katlar/aralarinda_asal_sayilar.html" },
+          { ad: "EBOB EKOK Etkinliği", dosya: "8_sinif/1_carpanlar_katlar/ebob_ekok.html" }
         ]
       },
       {
         uniteAdi: "2. Üslü İfadeler",
         araclar: [
-          { ad: "Üslü İfadeler Etkinliği", dosya: "8_sinif/2_Uslu_Ifadeler/üslü_ifadeler_etkinliği.html" },
-          { ad: "Üslü İfadelerde Çarpma ve Bölme Etkinliği", dosya: "8_sinif/2_Uslu_Ifadeler/üslü_ifadelerde_çarpma_bölme_etkinliği.html" },
-          { ad: "Üslü İfadelerde Toplama ve Çıkarma Etkinliği", dosya: "8_sinif/2_Uslu_Ifadeler/üslü_ifadelerde_toplama_çıkarma_etkinliği.html" },
-          { ad: "Ondalık ve Rasyonel Sayıların Kuvvetleri Etkinliği", dosya: "8_sinif/2_Uslu_Ifadeler/ondalık_ve_rasyonel_sayıların_kuvvetleri_etkinliği.html" },
-          { ad: "Üslü İfadelerde Çözümleme Etkinliği", dosya: "8_sinif/2_Uslu_Ifadeler/üslü_ifadelerle_çözümleme_etkinliği.html" },
-          { ad: "Üslü İfadelerle Bilimsel Gösterim Etkinliği", dosya: "8_sinif/2_Uslu_Ifadeler/bilimsel_gösterim_etkinliği.html" }
+          { ad: "Üslü İfadeler Etkinliği", dosya: "8_sinif/2_uslu_ifadeler/uslu_ifadeler.html" },
+          { ad: "Üslü İfadelerde Çarpma ve Bölme Etkinliği", dosya: "8_sinif/2_uslu_ifadeler/uslu_ifadelerde_carpma_bolme.html" },
+          { ad: "Üslü İfadelerde Toplama ve Çıkarma Etkinliği", dosya: "8_sinif/2_uslu_ifadeler/uslu_ifadelerde_toplama_cikarma.html" },
+          { ad: "Ondalık ve Rasyonel Sayıların Kuvvetleri Etkinliği", dosya: "8_sinif/2_uslu_ifadeler/ondalik_ve_rasyonel_sayilarin_kuvvetleri.html" },
+          { ad: "Üslü İfadelerde Çözümleme Etkinliği", dosya: "8_sinif/2_uslu_ifadeler/cozumleme.html" },
+          { ad: "Üslü İfadelerle Bilimsel Gösterim Etkinliği", dosya: "8_sinif/2_uslu_ifadeler/bilimsel_gosterim.html" }
         ]
       },
       {
         uniteAdi: "3. Kareköklü Sayılar",
         araclar: [
-          { ad: "Tam Kare Sayılar ve Karekök Etkinliği", dosya: "8_sinif/3_Karekoklu_Sayilar/tam_kare_sayılar_ve_karekök_etkinliği.html" },
-          { ad: "Tam Kare Olmayan Sayıların Karekökleri Etkinliği", dosya: "8_sinif/3_Karekoklu_Sayilar/tam_kare_olmayan_sayıların_karekökleri_etkinliği.html" },
-          { ad: "Kök İçine Alma ve Sıralama Etkinliği", dosya: "8_sinif/3_Karekoklu_Sayilar/kareköklü_sayıları_kök_içine_alma_ve_sıralama_etkinliği.html" },
-          { ad: "Ondalık Kesirlerin Karekökleri Etkinliği", dosya: "8_sinif/3_Karekoklu_Sayilar/ondalık_kesirlerin_karekökleri_etkinliği.html" },
-          { ad: "Kareköklü İfadeleri Sıralama Etkinliği", dosya: "8_sinif/3_Karekoklu_Sayilar/kareköklü_sayılarda_sıralama_etkinliği.html" },
-          { ad: "Kareköklü ifadelerle Çarpma ve Bölme Etkinliği", dosya: "8_sinif/3_Karekoklu_Sayilar/kareköklü_sayılarda_çarpma_ve_bölme_etkinliği.html" },
-          { ad: "Kareköklü İfadelerle Toplama ve Çıkarma Etkinliği", dosya: "8_sinif/3_Karekoklu_Sayilar/kareköklü_sayılarda_toplama_ve_çıkarma_etkinliği.html" },
-          { ad: "Gerçek Sayılar Etkinliği", dosya: "8_sinif/3_Karekoklu_Sayilar/gerçek_sayılar_etkinliği.html" }
+          { ad: "Tam Kare Sayılar ve Karekök Etkinliği", dosya: "8_sinif/3_karekoklu_ifadeler/tam_kare_sayilar_ve_karekok.html" },
+          { ad: "Tam Kare Olmayan Sayıların Karekökleri Etkinliği", dosya: "8_sinif/3_karekoklu_ifadeler/tam_kare_olmayan_sayilarin_karekokleri.html" },
+          { ad: "Kök İçine Alma ve Sıralama Etkinliği", dosya: "8_sinif/3_karekoklu_ifadeler/karekokleri_kok_icine_alma_sıralama.html" },
+          { ad: "Ondalık Kesirlerin Karekökleri Etkinliği", dosya: "8_sinif/3_karekoklu_ifadeler/ondalikların_karekokleri.html" },
+          { ad: "Kareköklü İfadeleri Sıralama Etkinliği", dosya: "8_sinif/3_karekoklu_ifadeler/karekoklerde_siralama.html" },
+          { ad: "Kareköklü ifadelerle Çarpma ve Bölme Etkinliği", dosya: "8_sinif/3_karekoklu_ifadeler/karekoklerde_carpma_bolme.html" },
+          { ad: "Kareköklü İfadelerle Toplama ve Çıkarma Etkinliği", dosya: "8_sinif/3_karekoklu_ifadeler/karekoklerde_toplama_cikarma.html" },
+          { ad: "Gerçek Sayılar Etkinliği", dosya: "8_sinif/3_karekoklu_ifadeler/gercek_sayilar.html" }
         ]
       },
       {
         uniteAdi: "4. Veri Analizi",
         araclar: [
-          { ad: "Grafik Etkinliği", dosya: "8_sinif/4_Veri_Analizi/veri_analizi_etkinliği.html" }
+          { ad: "Grafik Etkinliği", dosya: "8_sinif/4_veri_analizi/veri_analizi.html" }
         ]
       },
       {
         uniteAdi: "5. Olasılık",
         araclar: [
-          { ad: "Basit Olayların Olasılığı Etkinliği", dosya: "8_sinif/5_Olasilik/olasılık_etkinliği.html" }
+          { ad: "Basit Olayların Olasılığı Etkinliği", dosya: "8_sinif/5_olasilik/olasilik.html" }
         ]
       },
       {
         uniteAdi: "6. Cebirsel İfadeler ve Özdeşlikler",
         araclar: [
-          { ad: "Cebirsel İfadeler Etkinliği", dosya: "8_sinif/6_Cebirsel_Ifadeler_ve_Ozdeslikler/cebirsel_ifadeler_etkinliği.html" },
-          { ad: "Cebirsel İfadeler ve Özdeşlikler Etkinliği", dosya: "8_sinif/6_Cebirsel_Ifadeler_ve_Ozdeslikler/cebirsel_ifadeler_ve_özdelikler_etkinliği.html" },
-          { ad: "Özdeşlikleri Çarpanlarına Ayırma Etkinliği", dosya: "8_sinif/6_Cebirsel_Ifadeler_ve_Ozdeslikler/cebirsel_ifadeleri_çarpanlara_ayırma_etkinliği.html" },
-          { ad: "Özdeşlikler Etkinliği", dosya: "8_sinif/6_Cebirsel_Ifadeler_ve_Ozdeslikler/özdeşlikler_etkinliği.html" }
+          { ad: "Cebirsel İfadeler Etkinliği", dosya: "8_sinif/6_cebirsel_ifadeler/cebirsel_ifadeler.html" },
+          { ad: "Cebirsel İfadeler ve Özdeşlikler Etkinliği", dosya: "8_sinif/6_cebirsel_ifadeler/cebirsel_ifadeler_ve_özdeslikler.html" },
+          { ad: "Özdeşlikleri Çarpanlarına Ayırma Etkinliği", dosya: "8_sinif/6_cebirsel_ifadeler/cebirsel_ifadeleri_carpanlara_ayirma.html" },
+          { ad: "Özdeşlikler Etkinliği", dosya: "8_sinif/6_cebirsel_ifadeler/özdeslikler_etkinliği.html" }
         ]
       },
       {
         uniteAdi: "7. Bir Bilinmeyenli Denklemler",
         araclar: [
-          { ad: "Rasyonel Denklemler Etkinliği", dosya: "8_sinif/7_Bir_Bilinmeyenli_Denklemler/rasyonel_denklemler.html" }
+          { ad: "Rasyonel Denklemler Etkinliği", dosya: "8_sinif/7_bir_bilinmeyenli_denklemler/rasyonel_denklemler.html" }
         ]
       }
     ]
