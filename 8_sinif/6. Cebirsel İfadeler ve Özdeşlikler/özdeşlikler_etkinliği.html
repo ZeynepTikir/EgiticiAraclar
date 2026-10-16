@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>8. Sınıf Cebirsel İfadeler ve Özdeşlikler Laboratuvarı</title>
+  <style>
+    :root {
+      --primary: #0284c7;
+      --primary-hover: #0369a1;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #0f172a;
+      --accent-green: #16a34a;
+      --accent-red: #dc2626;
+      --accent-purple: #9333ea;
+      --accent-amber: #d97706;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    header h1 {
+      color: var(--primary);
+      font-size: 2rem;
+      margin-bottom: 6px;
+    }
+
+    header p {
+      color: #64748b;
+      font-size: 1rem;
+    }
+
+    /* Sekmeler (Tabs) */
+    .tabs {
+      display: flex;
+      gap: 8px;
+      background: #e2e8f0;
+      padding: 6px;
+      border-radius: 12px;
+      margin-bottom: 24px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 12px 16px;
+      border: none;
+      background: transparent;
+      color: var(--text);
+      font-weight: 600;
+      font-size: 0.95rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: center;
+    }
+
+    .tab-btn:hover {
+      background: rgba(255, 255, 255, 0.5);
+    }
+
+    .tab-btn.active {
+      background: var(--card);
+      color: var(--primary);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    /* Kart Yapıları */
+    .visual-card, .quiz-card, .panel {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -2px rgba(0,0,0,0.05);
+      border: 1px solid #e2e8f0;
+      margin-bottom: 20px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    @media (max-width: 768px) {
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Kontroller ve Paneller */
+    .control-group {
+      margin-bottom: 16px;
+    }
+
+    .control-group label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--text);
+    }
+
+    .control-group input[type="range"] {
+      width: 100%;
+      accent-color: var(--primary);
+    }
+
+    .control-group select {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #cbd5e1;
+      font-size: 1rem;
+      background: #fff;
+    }
+
+    /* Çipler ve Etiketler */
+    .pair-chips {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .chip {
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      background: #f1f5f9;
+      color: var(--text);
+    }
+
+    .chip.primary { background: #e0f2fe; color: var(--primary); }
+    .chip.amber { background: #fef3c7; color: var(--accent-amber); }
+    .chip.purple { background: #f3e8ff; color: var(--accent-purple); }
+    .chip.green { background: #dcfce7; color: var(--accent-green); }
+
+    /* Alan Görselleştirme (SVG) */
+    .svg-container {
+      width: 100%;
+      height: 320px;
+      background: #f8fafc;
+      border-radius: 12px;
+      border: 1px dashed #cbd5e1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    /* Butonlar */
+    .preset-btn {
+      padding: 8px 14px;
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+
+    .preset-btn:hover {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    .option-btn {
+      width: 100%;
+      text-align: left;
+      padding: 14px 18px;
+      margin-bottom: 10px;
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .option-btn:hover {
+      border-color: var(--primary);
+      background: #f0f9ff;
+    }
+
+    /* Bildirim ve Açıklama Kutusu */
+    .feedback {
+      display: none;
+      padding: 14px;
+      border-radius: 10px;
+      margin-top: 12px;
+      font-size: 0.95rem;
+      line-height: 1.4;
+    }
+
+    .formula-box {
+      font-size: 1.25rem;
+      font-weight: 700;
+      text-align: center;
+      padding: 16px;
+      background: #f0f9ff;
+      border: 2px dashed var(--primary);
+      border-radius: 12px;
+      color: var(--primary);
+      margin: 16px 0;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>Cebirsel İfadeler ve Özdeşlikler</h1>
+    <p>8. Sınıf Matematik İnteraktif Öğrenme ve Keşif Laboratuvarı</p>
+  </header>
+
+  <!-- Sekmeler -->
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('tab1')">1. Görsel Modelleme Laboratuvarı</button>
+    <button class="tab-btn" onclick="switchTab('tab2')">2. Özdeşlik Rehberi & Analiz</button>
+    <button class="tab-btn" onclick="switchTab('tab3')">3. 5 Soruluk Test</button>
+  </div>
+
+  <!-- SEKME 1: İnteraktif Laboratuvar -->
+  <div id="tab1" class="tab-content active">
+    <div class="grid-2">
+      <div class="panel">
+        <h3 style="margin-bottom: 16px;">Model Parametreleri</h3>
+        
+        <div class="control-group">
+          <label for="identitySelect">Özdeşlik Türü Seçin:</label>
+          <select id="identitySelect" onchange="updateLab()">
+            <option value="square-sum">İki Terimin Toplamının Karesi: (a + b)²</option>
+            <option value="square-diff">İki Terimin Farkının Karesi: (a - b)²</option>
+            <option value="diff-squares">İki Kare Farkı: a² - b²</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label>a Değeri: <span id="valA_text" style="color:var(--primary); font-weight:bold;">5</span></label>
+          <input type="range" id="rangeA" min="2" max="8" value="5" oninput="updateLab()">
+        </div>
+
+        <div class="control-group">
+          <label>b Değeri: <span id="valB_text" style="color:var(--accent-amber); font-weight:bold;">3</span></label>
+          <input type="range" id="rangeB" min="1" max="5" value="3" oninput="updateLab()">
+        </div>
+
+        <div class="pair-chips">
+          <span class="chip primary" id="chip1">a² = 25</span>
+          <span class="chip amber" id="chip2">ab = 15</span>
+          <span class="chip purple" id="chip3">b² = 9</span>
+        </div>
+
+        <div id="labFormulaBox" class="formula-box">
+          (5 + 3)² = 5² + 2·(5·3) + 3² = 64
+        </div>
+      </div>
+
+      <div class="visual-card">
+        <h3 style="margin-bottom: 12px; text-align: center;">Geometrik Alan Modeli</h3>
+        <div class="svg-container" id="svgContainer">
+          <!-- SVG dinamik olarak üretilecek -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEKME 2: Özdeşlik Rehberi & Analiz -->
+  <div id="tab2" class="tab-content">
+    <div class="visual-card">
+      <h3>Temel Özdeşlik Kuralları</h3>
+      <p style="color:#64748b; margin-bottom: 16px;">Aşağıdaki hazır örneklere tıklayarak çarpanlara ayırma ve açılım adımlarını inceleyebilirsiniz.</p>
+      
+      <div style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
+        <button class="preset-btn" onclick="showPreset('(x + 4)²', 'x', '4', 'sum')">(x + 4)²</button>
+        <button class="preset-btn" onclick="showPreset('(2x - 3)²', '2x', '3', 'diff')">(2x - 3)²</button>
+        <button class="preset-btn" onclick="showPreset('x² - 16', 'x', '4', 'diff-sq')">x² - 16</button>
+        <button class="preset-btn" onclick="showPreset('9a² - 25b²', '3a', '5b', 'diff-sq')">9a² - 25b²</button>
+      </div>
+
+      <div class="panel" style="background:#f8fafc;">
+        <h4 id="presetTitle" style="color:var(--primary); margin-bottom: 10px;">(x + 4)² İfadesinin Analizi</h4>
+        <div id="presetContent" style="line-height: 1.8;">
+          <!-- JS dinamik dolduracak -->
+        </div>
+      </div>
+
+      <div style="margin-top:20px;">
+        <h4>Özdeşlik Özet Tablosu</h4>
+        <table style="width:100%; border-collapse: collapse; margin-top: 10px;">
+          <thead>
+            <tr style="background:#e2e8f0; text-align: left;">
+              <th style="padding:10px;">Özdeşlik Adı</th>
+              <th style="padding:10px;">Kural</th>
+              <th style="padding:10px;">Açıklama</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom: 1px solid #cbd5e1;">
+              <td style="padding:10px; font-weight:bold;">Toplamın Karesi</td>
+              <td style="padding:10px; color:var(--primary); font-weight:bold;">(a+b)² = a² + 2ab + b²</td>
+              <td style="padding:10px;">Birincinin karesi + I. ile II. çarpımının 2 katı + İkincinin karesi</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #cbd5e1;">
+              <td style="padding:10px; font-weight:bold;">Farkın Karesi</td>
+              <td style="padding:10px; color:var(--accent-red); font-weight:bold;">(a-b)² = a² - 2ab + b²</td>
+              <td style="padding:10px;">Birincinin karesi - I. ile II. çarpımının 2 katı + İkincinin karesi</td>
+            </tr>
+            <tr>
+              <td style="padding:10px; font-weight:bold;">İki Kare Farkı</td>
+              <td style="padding:10px; color:var(--accent-purple); font-weight:bold;">a² - b² = (a-b)(a+b)</td>
+              <td style="padding:10px;">Terimlerin farkı ile toplamının çarpımına eşittir.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEKME 3: 5 Soruluk Test -->
+  <div id="tab3" class="tab-content">
+    
+    <!-- Soru 1 -->
+    <div class="quiz-card">
+      <h4 style="margin-bottom: 12px;">Soru 1: (x + 5)² cebirsel ifadesinin açılımı aşağıdakilerden hangisidir?</h4>
+      <button class="option-btn" onclick="checkQ(1, this, false)">A) x² + 25</button>
+      <button class="option-btn" onclick="checkQ(1, this, true)">B) x² + 10x + 25</button>
+      <button class="option-btn" onclick="checkQ(1, this, false)">C) x² + 5x + 25</button>
+      <button class="option-btn" onclick="checkQ(1, this, false)">D) x² + 10x + 10</button>
+      <div id="feedback-1" class="feedback"></div>
+    </div>
+
+    <!-- Soru 2 -->
+    <div class="quiz-card">
+      <h4 style="margin-bottom: 12px;">Soru 2: a² - 36 ifadesinin çarpanlarına ayrılmış şekli hangisidir?</h4>
+      <button class="option-btn" onclick="checkQ(2, this, false)">A) (a - 6)²</button>
+      <button class="option-btn" onclick="checkQ(2, this, true)">B) (a - 6) · (a + 6)</button>
+      <button class="option-btn" onclick="checkQ(2, this, false)">C) (a - 18) · (a + 18)</button>
+      <button class="option-btn" onclick="checkQ(2, this, false)">D) (a + 6)²</button>
+      <div id="feedback-2" class="feedback"></div>
+    </div>
+
+    <!-- Soru 3 -->
+    <div class="quiz-card">
+      <h4 style="margin-bottom: 12px;">Soru 3: (3x - 2)² = 9x² + Ax + 4 eşitliği bir özdeşlik olduğuna göre "A" katsayısı kaçtır?</h4>
+      <button class="option-btn" onclick="checkQ(3, this, false)">A) -6</button>
+      <button class="option-btn" onclick="checkQ(3, this, true)">B) -12</button>
+      <button class="option-btn" onclick="checkQ(3, this, false)">C) 12</button>
+      <button class="option-btn" onclick="checkQ(3, this, false)">D) -3</button>
+      <div id="feedback-3" class="feedback"></div>
+    </div>
+
+    <!-- Soru 4 -->
+    <div class="quiz-card">
+      <h4 style="margin-bottom: 12px;">Soru 4: Alanı (x² - 8x + 16) cm² olan karesel bölgenin bir kenar uzunluğu kaç cm'dir?</h4>
+      <button class="option-btn" onclick="checkQ(4, this, true)">A) x - 4</button>
+      <button class="option-btn" onclick="checkQ(4, this, false)">B) x + 4</button>
+      <button class="option-btn" onclick="checkQ(4, this, false)">C) x - 8</button>
+      <button class="option-btn" onclick="checkQ(4, this, false)">D) x² - 4</button>
+      <div id="feedback-4" class="feedback"></div>
+    </div>
+
+    <!-- Soru 5 -->
+    <div class="quiz-card">
+      <h4 style="margin-bottom: 12px;">Soru 5: İki kare farkı özdeşliğinden yararlanarak 101² - 99² işleminin sonucunu bulunuz.</h4>
+      <button class="option-btn" onclick="checkQ(5, this, false)">A) 200</button>
+      <button class="option-btn" onclick="checkQ(5, this, false)">B) 300</button>
+      <button class="option-btn" onclick="checkQ(5, this, true)">C) 400</button>
+      <button class="option-btn" onclick="checkQ(5, this, false)">D) 404</button>
+      <div id="feedback-5" class="feedback"></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  // Sekme Geçiş Fonksiyonu
+  function switchTab(tabId) {
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+    event.currentTarget.classList.add('active');
+    document.getElementById(tabId).classList.add('active');
+  }
+
+  // Sekme 1: Laboratuvar Görselleştirme
+  function updateLab() {
+    const type = document.getElementById('identitySelect').value;
+    let a = parseInt(document.getElementById('rangeA').value);
+    let b = parseInt(document.getElementById('rangeB').value);
+
+    // Kural: b, a'dan büyük olamaz (özellikle fark durumunda)
+    if (b >= a) {
+      b = a - 1;
+      if(b < 1) b = 1;
+      document.getElementById('rangeB').value = b;
+    }
+
+    document.getElementById('valA_text').innerText = a;
+    document.getElementById('valB_text').innerText = b;
+
+    const chip1 = document.getElementById('chip1');
+    const chip2 = document.getElementById('chip2');
+    const chip3 = document.getElementById('chip3');
+    const formulaBox = document.getElementById('labFormulaBox');
+    const svgContainer = document.getElementById('svgContainer');
+
+    chip1.innerText = `a² = ${a*a}`;
+    chip2.innerText = `ab = ${a*b}`;
+    chip3.innerText = `b² = ${b*b}`;
+
+    const scale = 220 / (a + (type === 'square-sum' ? b : 0));
+    const sizeA = a * scale;
+    const sizeB = b * scale;
+
+    let svgHtml = '';
+
+    if (type === 'square-sum') {
+      const totalSide = a + b;
+      const totalArea = totalSide * totalSide;
+      formulaBox.innerText = `(${a} + ${b})² = ${a}² + 2·(${a}·${b}) + ${b}² = ${totalArea}`;
+
+      svgHtml = `
+        <svg width="260" height="260" viewBox="0 0 ${sizeA + sizeB + 20} ${sizeA + sizeB + 20}">
+          <g transform="translate(10, 10)">
+            <!-- a^2 -->
+            <rect x="0" y="0" width="${sizeA}" height="${sizeA}" fill="#0284c7" opacity="0.85"/>
+            <text x="${sizeA/2}" y="${sizeA/2}" fill="#fff" font-weight="bold" text-anchor="middle" dominant-baseline="middle">a² (${a*a})</text>
+            
+            <!-- ab (Sağ) -->
+            <rect x="${sizeA}" y="0" width="${sizeB}" height="${sizeA}" fill="#d97706" opacity="0.85"/>
+            <text x="${sizeA + sizeB/2}" y="${sizeA/2}" fill="#fff" font-weight="bold" font-size="12" text-anchor="middle" dominant-baseline="middle">ab (${a*b})</text>
+            
+            <!-- ab (Alt) -->
+            <rect x="0" y="${sizeA}" width="${sizeA}" height="${sizeB}" fill="#d97706" opacity="0.85"/>
+            <text x="${sizeA/2}" y="${sizeA + sizeB/2}" fill="#fff" font-weight="bold" font-size="12" text-anchor="middle" dominant-baseline="middle">ab (${a*b})</text>
+            
+            <!-- b^2 -->
+            <rect x="${sizeA}" y="${sizeA}" width="${sizeB}" height="${sizeB}" fill="#9333ea" opacity="0.85"/>
+            <text x="${sizeA + sizeB/2}" y="${sizeA + sizeB/2}" fill="#fff" font-weight="bold" font-size="10" text-anchor="middle" dominant-baseline="middle">b² (${b*b})</text>
+          </g>
+        </svg>
+      `;
+    } else if (type === 'square-diff') {
+      const diff = a - b;
+      formulaBox.innerText = `(${a} - ${b})² = ${a}² - 2·(${a}·${b}) + ${b}² = ${diff*diff}`;
+
+      svgHtml = `
+        <svg width="260" height="260" viewBox="0 0 ${sizeA + 20} ${sizeA + 20}">
+          <g transform="translate(10, 10)">
+            <!-- Ana kare a^2 -->
+            <rect x="0" y="0" width="${sizeA}" height="${sizeA}" fill="#cbd5e1"/>
+            
+            <!-- (a-b)^2 alanı -->
+            <rect x="0" y="0" width="${sizeA - sizeB}" height="${sizeA - sizeB}" fill="#16a34a" opacity="0.9"/>
+            <text x="${(sizeA - sizeB)/2}" y="${(sizeA - sizeB)/2}" fill="#fff" font-weight="bold" text-anchor="middle" dominant-baseline="middle">(a-b)² (${diff*diff})</text>
+            
+            <!-- Çıkarılan parçalar -->
+            <rect x="${sizeA - sizeB}" y="0" width="${sizeB}" height="${sizeA}" fill="#dc2626" opacity="0.5"/>
+            <rect x="0" y="${sizeA - sizeB}" width="${sizeA}" height="${sizeB}" fill="#dc2626" opacity="0.5"/>
+            
+            <!-- Kesişim b^2 tekrar eklenen -->
+            <rect x="${sizeA - sizeB}" y="${sizeA - sizeB}" width="${sizeB}" height="${sizeB}" fill="#9333ea" opacity="0.8"/>
+            <text x="${sizeA - sizeB/2}" y="${sizeA - sizeB/2}" fill="#fff" font-size="10" text-anchor="middle" dominant-baseline="middle">+b²</text>
+          </g>
+        </svg>
+      `;
+    } else {
+      // İki Kare Farkı
+      const res = (a - b) * (a + b);
+      formulaBox.innerText = `${a}² - ${b}² = (${a} - ${b})·(${a} + ${b}) = ${res}`;
+
+      svgHtml = `
+        <svg width="260" height="260" viewBox="0 0 ${sizeA + 20} ${sizeA + 20}">
+          <g transform="translate(10, 10)">
+            <!-- a^2 Karesi -->
+            <rect x="0" y="0" width="${sizeA}" height="${sizeA}" fill="#0284c7" opacity="0.85"/>
+            
+            <!-- b^2 Çıkarılan Bölge -->
+            <rect x="${sizeA - sizeB}" y="0" width="${sizeB}" height="${sizeB}" fill="#dc2626" opacity="0.75"/>
+            <text x="${sizeA - sizeB/2}" y="${sizeB/2}" fill="#fff" font-size="11" font-weight="bold" text-anchor="middle" dominant-baseline="middle">-b²</text>
+            
+            <!-- Kalan Bölge (a^2 - b^2) -->
+            <text x="${sizeA/3}" y="${sizeA/2}" fill="#fff" font-weight="bold" text-anchor="middle" dominant-baseline="middle">a² - b²</text>
+          </g>
+        </svg>
+      `;
+    }
+
+    svgContainer.innerHTML = svgHtml;
+  }
+
+  // Sekme 2: Presets Analiz Fonksiyonu
+  function showPreset(expr, t1, t2, type) {
+    const title = document.getElementById('presetTitle');
+    const content = document.getElementById('presetContent');
+
+    title.innerText = `${expr} Cebirsel İfadesinin Detaylı İncelemesi`;
+
+    if (type === 'sum') {
+      content.innerHTML = `
+        <p><strong>Özdeşlik Tipi:</strong> İki Terimin Toplamının Karesi [(a + b)² = a² + 2ab + b²]</p>
+        <p>• 1. Terim (a): <span style="color:var(--primary); font-weight:bold;">${t1}</span> → Karesi: <strong>${t1}²</strong></p>
+        <p>• 2. Terim (b): <span style="color:var(--accent-amber); font-weight:bold;">${t2}</span> → Karesi: <strong>${t2*t2}</strong></p>
+        <p>• Ortadaki Terim (2ab): 2 · ${t1} · ${t2} = <strong>${2*t2}${t1}</strong></p>
+        <p style="margin-top:8px; font-weight:bold; color:var(--accent-green);">Açılmış Hali: ${t1}² + ${2*t2}${t1} + ${t2*t2}</p>
+      `;
+    } else if (type === 'diff') {
+      content.innerHTML = `
+        <p><strong>Özdeşlik Tipi:</strong> İki Terimin Farkının Karesi [(a - b)² = a² - 2ab + b²]</p>
+        <p>• 1. Terim (a): <span style="color:var(--primary); font-weight:bold;">${t1}</span> → Karesi: <strong>4x²</strong></p>
+        <p>• 2. Terim (b): <span style="color:var(--accent-amber); font-weight:bold;">${t2}</span> → Karesi: <strong>${t2*t2}</strong></p>
+        <p>• Ortadaki Terim (-2ab): -2 · (${t1}) · ${t2} = <strong>-12x</strong></p>
+        <p style="margin-top:8px; font-weight:bold; color:var(--accent-red);">Açılmış Hali: 4x² - 12x + 9</p>
+      `;
+    } else if (type === 'diff-sq') {
+      content.innerHTML = `
+        <p><strong>Özdeşlik Tipi:</strong> İki Kare Farkı [a² - b² = (a - b)(a + b)]</p>
+        <p>• 1. Terimin Kökü (a): <strong>${t1}</strong></p>
+        <p>• 2. Terimin Kökü (b): <strong>${t2}</strong></p>
+        <p style="margin-top:8px; font-weight:bold; color:var(--accent-purple);">Çarpanlarına Ayrılmış Hali: (${t1} - ${t2}) · (${t1} + ${t2})</p>
+      `;
+    }
+  }
+
+  // Sekme 3: Quiz Mantığı
+  const explanations = {
+    1: "Doğru cevap B. (x + 5)² özdeşliğinde: Birincinin karesi (x²), I. ve II. terim çarpımının 2 katı (2·x·5 = 10x) ve ikincinin karesi (5² = 25) toplanır. Sonuç: x² + 10x + 25.",
+    2: "Doğru cevap B. İki kare farkı özdeşliğine göre a² - 36 = a² - 6² = (a - 6)·(a + 6) şeklinde çarpanlarına ayrılır.",
+    3: "Doğru cevap B. (3x - 2)² açılımı: (3x)² - 2·(3x)·2 + 2² = 9x² - 12x + 4 olur. x'li terimin katsayısı A = -12'dir.",
+    4: "Doğru cevap A. x² - 8x + 16 ifadesi (x - 4)² tam kare özdeşliğidir. Alanı (x-4)² olan karenin bir kenarı (x - 4) cm olur.",
+    5: "Doğru cevap C. 101² - 99² ifadesinde iki kare farkı uygulanırsa: (101 - 99) · (101 + 99) = 2 · 200 = 400 bulunur."
+  };
+
+  function checkQ(qId, btn, isCorrect) {
+    const card = btn.closest('.quiz-card');
+    const buttons = card.querySelectorAll('.option-btn');
+    const feedback = document.getElementById(`feedback-${qId}`);
+
+    buttons.forEach(b => {
+      b.disabled = true;
+      b.style.opacity = "0.7";
+    });
+
+    btn.style.opacity = "1";
+
+    if (isCorrect) {
+      btn.style.backgroundColor = "#dcfce7";
+      btn.style.borderColor = "#16a34a";
+      feedback.style.backgroundColor = "#dcfce7";
+      feedback.style.color = "#15803d";
+      feedback.innerHTML = `<strong>Tebrikler, Doğru!</strong><br>${explanations[qId]}`;
+    } else {
+      btn.style.backgroundColor = "#fee2e2";
+      btn.style.borderColor = "#dc2626";
+      feedback.style.backgroundColor = "#fee2e2";
+      feedback.style.color = "#b91c1c";
+      feedback.innerHTML = `<strong>Yanlış Cevap.</strong><br>${explanations[qId]}`;
+    }
+
+    feedback.style.display = "block";
+  }
+
+  // İlk açılış yüklemesi
+  window.onload = function() {
+    updateLab();
+    showPreset('(x + 4)²', 'x', '4', 'sum');
+  };
+</script>
+
+</body>
+</html>

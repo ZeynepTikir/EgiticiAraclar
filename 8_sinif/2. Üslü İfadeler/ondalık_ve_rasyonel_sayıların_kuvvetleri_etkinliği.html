@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ondalık Kesirler ve Rasyonel Sayıların Kuvvetleri - 8. Sınıf</title>
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #0f172a;
+      --accent-purple: #9333ea;
+      --accent-green: #16a34a;
+      --accent-red: #dc2626;
+      --accent-orange: #ea580c;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
+    body { background-color: var(--bg); color: var(--text); padding: 20px; display: flex; justify-content: center; }
+    .container { width: 100%; max-width: 950px; background: var(--card); border-radius: 16px; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1); padding: 24px; }
+
+    header { text-align: center; margin-bottom: 24px; }
+    header h1 { color: var(--primary); font-size: 1.8rem; margin-bottom: 6px; }
+    header p { color: #64748b; font-size: 0.95rem; }
+
+    .tabs { display: flex; gap: 8px; border-bottom: 2px solid #e2e8f0; margin-bottom: 24px; }
+    .tab-btn { padding: 12px 18px; border: none; background: none; font-weight: 600; color: #64748b; cursor: pointer; border-bottom: 3px solid transparent; transition: all 0.2s; }
+    .tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); }
+    .tab-btn:hover:not(.active) { color: var(--primary-hover); }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* Controls Panel */
+    .panel { background: #f1f5f9; padding: 20px; border-radius: 12px; margin-bottom: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; align-items: center; }
+    .control-group { display: flex; flex-direction: column; gap: 8px; }
+    .control-group label { font-weight: 600; font-size: 0.9rem; color: #334155; }
+    .control-group input[type=number], .control-group select { padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 1rem; font-weight: bold; }
+    .control-group input[type=range] { width: 100%; accent-color: var(--primary); }
+    .val-display { font-weight: bold; color: var(--primary); }
+
+    /* Visualizer Box */
+    .visual-box { background: #fafafa; border: 2px dashed #cbd5e1; border-radius: 12px; padding: 24px; text-align: center; min-height: 240px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; }
+    .math-expr { font-size: 2rem; font-weight: bold; color: var(--primary); }
+    .step-card { background: #fff; border: 1px solid #e2e8f0; padding: 12px 20px; border-radius: 8px; font-size: 1.1rem; color: #334155; width: 100%; max-width: 600px; }
+    .badge { background: #dbeafe; color: #1e40af; padding: 6px 14px; border-radius: 20px; font-weight: 600; font-size: 0.85rem; }
+
+    /* Quiz Cards */
+    .quiz-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; margin-bottom: 20px; }
+    .quiz-card h3 { font-size: 1rem; color: #1e293b; margin-bottom: 14px; }
+    .options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    @media (max-width: 500px) { .options { grid-template-columns: 1fr; } }
+    .option-btn { text-align: left; padding: 12px; border: 1px solid #cbd5e1; background: white; border-radius: 8px; cursor: pointer; font-size: 0.95rem; font-weight: 500; transition: 0.2s; }
+    .option-btn:hover { background: #f8fafc; border-color: var(--primary); }
+    .feedback { margin-top: 12px; font-weight: bold; font-size: 0.9rem; padding: 10px; border-radius: 6px; display: none; }
+    .feedback.correct { background: #dcfce7; color: var(--accent-green); display: block; }
+    .feedback.wrong { background: #fee2e2; color: var(--accent-red); display: block; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>Ondalık Kesir ve Rasyonel Sayıların Kuvvetleri</h1>
+    <p>8. Sınıf Matematik: Rasyonel Üsler, Negatif Kuvvetler ve Ondalık Dönüşümler</p>
+  </header>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('rasyonel')">Rasyonel Sayı Kuvveti</button>
+    <button class="tab-btn" onclick="switchTab('ondalik')">Ondalık Kesir Laboratuvarı</button>
+    <button class="tab-btn" onclick="switchTab('quiz')">5 Soruluk Test</button>
+  </div>
+
+  <!-- TAB 1: RASYONEL SAYI KUVVETİ -->
+  <div id="rasyonel" class="tab-content active">
+    <div class="panel">
+      <div class="control-group">
+        <label>Pay (a):</label>
+        <input type="number" id="r-pay" value="2" min="-5" max="5" onchange="updateRasyonel()">
+      </div>
+      <div class="control-group">
+        <label>Payda (b):</label>
+        <input type="number" id="r-payda" value="3" min="1" max="5" onchange="updateRasyonel()">
+      </div>
+      <div class="control-group">
+        <label>Üs (n): <span id="r-exp-val" class="val-display">-2</span></label>
+        <input type="range" id="r-exp" min="-3" max="3" value="-2" oninput="updateRasyonel()">
+      </div>
+    </div>
+
+    <div class="visual-box">
+      <div id="r-expr" class="math-expr">(2/3)⁻²</div>
+      <div id="r-badge" class="badge">Negatif Üs: Kesri Ters Çevir</div>
+      <div id="r-step1" class="step-card">Ters Çevrilmiş Kesir: (3/2)²</div>
+      <div id="r-step2" class="step-card">Ayrı Ayrı Üs Alma: 3² / 2² = 9 / 4</div>
+      <div id="r-result" class="math-expr" style="font-size: 1.8rem; color: var(--accent-purple);">9 / 4  (2.25)</div>
+    </div>
+  </div>
+
+  <!-- TAB 2: ONDALIK KESİR LABORATUVARI -->
+  <div id="ondalik" class="tab-content">
+    <div class="panel">
+      <div class="control-group">
+        <label>Ondalık Sayı Seçin:</label>
+        <select id="o-select" onchange="updateOndalik()">
+          <option value="0.2">0,2 (2/10)</option>
+          <option value="0.5">0,5 (5/10)</option>
+          <option value="-0.4">-0,4 (-4/10)</option>
+          <option value="1.2">1,2 (12/10)</option>
+          <option value="-0.5">-0,5 (-5/10)</option>
+        </select>
+      </div>
+      <div class="control-group">
+        <label>Üs (n): <span id="o-exp-val" class="val-display">-3</span></label>
+        <input type="range" id="o-exp" min="-3" max="3" value="-3" oninput="updateOndalik()">
+      </div>
+    </div>
+
+    <div class="visual-box">
+      <div id="o-expr" class="math-expr">(0,2)⁻³</div>
+      <div id="o-step1" class="step-card">1. Adım (Rasyonel Yap): (2/10)⁻³</div>
+      <div id="o-step2" class="step-card">2. Adım (Sadeleştir): (1/5)⁻³</div>
+      <div id="o-step3" class="step-card">3. Adım (Ters Çevir ve Kuvvet Al): (5/1)³ = 5³</div>
+      <div id="o-result" class="math-expr" style="font-size: 1.8rem; color: var(--accent-orange);">125</div>
+    </div>
+  </div>
+
+  <!-- TAB 3: 5 SORULUK TEST -->
+  <div id="quiz" class="tab-content">
+    <!-- Soru 1 -->
+    <div class="quiz-card">
+      <h3>1) (-2/3)⁻³ ifadesinin değeri kaçtır?</h3>
+      <div class="options">
+        <button class="option-btn" onclick="checkQ('q1', this, false)">A) 8/27</button>
+        <button class="option-btn" onclick="checkQ('q1', this, false)">B) -8/27</button>
+        <button class="option-btn" onclick="checkQ('q1', this, false)">C) 27/8</button>
+        <button class="option-btn" onclick="checkQ('q1', this, true)">D) -27/8</button>
+      </div>
+      <div id="q1-fb" class="feedback"></div>
+    </div>
+
+    <!-- Soru 2 -->
+    <div class="quiz-card">
+      <h3>2) (0,5)⁻² ifadesinin değeri kaçtır?</h3>
+      <div class="options">
+        <button class="option-btn" onclick="checkQ('q2', this, false)">A) 0,25</button>
+        <button class="option-btn" onclick="checkQ('q2', this, false)">B) 1/4</button>
+        <button class="option-btn" onclick="checkQ('q2', this, true)">C) 4</button>
+        <button class="option-btn" onclick="checkQ('q2', this, false)">D) -4</button>
+      </div>
+      <div id="q2-fb" class="feedback"></div>
+    </div>
+
+    <!-- Soru 3 -->
+    <div class="quiz-card">
+      <h3>3) (-0,2)⁴ ifadesinin rasyonel sayı olarak karşılığı hangisidir?</h3>
+      <div class="options">
+        <button class="option-btn" onclick="checkQ('q3', this, true)">A) 1 / 625</button>
+        <button class="option-btn" onclick="checkQ('q3', this, false)">B) -1 / 625</button>
+        <button class="option-btn" onclick="checkQ('q3', this, false)">C) 1 / 125</button>
+        <button class="option-btn" onclick="checkQ('q3', this, false)">D) -1 / 125</button>
+      </div>
+      <div id="q3-fb" class="feedback"></div>
+    </div>
+
+    <!-- Soru 4 -->
+    <div class="quiz-card">
+      <h3>4) (3/4)⁻¹ + (0,25)⁰ işleminin sonucu kaçtır?</h3>
+      <div class="options">
+        <button class="option-btn" onclick="checkQ('q4', this, false)">A) 4/3</button>
+        <button class="option-btn" onclick="checkQ('q4', this, true)">B) 7/3</button>
+        <button class="option-btn" onclick="checkQ('q4', this, false)">C) 1/3</button>
+        <button class="option-btn" onclick="checkQ('q4', this, false)">D) 2</button>
+      </div>
+      <div id="q4-fb" class="feedback"></div>
+    </div>
+
+    <!-- Soru 5 -->
+    <div class="quiz-card">
+      <h3>5) (-0,1)⁻³ ifadesinin değeri kaçtır?</h3>
+      <div class="options">
+        <button class="option-btn" onclick="checkQ('q5', this, false)">A) 1000</button>
+        <button class="option-btn" onclick="checkQ('q5', this, true)">B) -1000</button>
+        <button class="option-btn" onclick="checkQ('q5', this, false)">C) 0,001</button>
+        <button class="option-btn" onclick="checkQ('q5', this, false)">D) -0,001</button>
+      </div>
+      <div id="q5-fb" class="feedback"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function switchTab(tabId) {
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+    
+    event.target.classList.add('active');
+    document.getElementById(tabId).classList.add('active');
+  }
+
+  function gcd(a, b) {
+    return b == 0 ? Math.abs(a) : gcd(b, a % b);
+  }
+
+  // TAB 1: RASYONEL KUVVET JS
+  function updateRasyonel() {
+    let a = parseInt(document.getElementById('r-pay').value) || 1;
+    let b = parseInt(document.getElementById('r-payda').value) || 1;
+    let n = parseInt(document.getElementById('r-exp').value);
+
+    document.getElementById('r-exp-val').innerText = n;
+
+    if (b === 0) {
+      document.getElementById('r-expr').innerText = "Payda 0 Olamaz!";
+      document.getElementById('r-result').innerText = "Tanımsız";
+      return;
+    }
+
+    const baseStr = a < 0 ? `(${a}/${b})` : `(${a}/${b})`;
+    document.getElementById('r-expr').innerHTML = `${baseStr}<sup>${n}</sup>`;
+
+    if (n === 0) {
+      document.getElementById('r-badge').innerText = "Sıfırıncı Üs Kuralı";
+      document.getElementById('r-step1').innerText = "Sıfırdan farklı her rasyonel sayının 0. kuvveti 1'dir.";
+      document.getElementById('r-step2').innerText = `${baseStr}⁰ = 1`;
+      document.getElementById('r-result').innerText = "1";
+      return;
+    }
+
+    let finalPay, finalPayda;
+    if (n < 0) {
+      document.getElementById('r-badge').innerText = "Negatif Üs: Pay ile Payda Yer Değiştirir";
+      let posN = Math.abs(n);
+      document.getElementById('r-step1').innerText = `Ters çevrilmiş hali: (${b}/${a})<sup>${posN}</sup>`;
+      
+      finalPay = Math.pow(b, posN);
+      finalPayda = Math.pow(a, posN);
+      
+      document.getElementById('r-step2').innerText = `Ayrı ayrı kuvvet al: ${b}<sup>${posN}</sup> / ${a}<sup>${posN}</sup> = ${finalPay} / ${finalPayda}`;
+    } else {
+      document.getElementById('r-badge').innerText = "Pozitif Üs: Pay ve Paydanın Kuvveti Alınır";
+      finalPay = Math.pow(a, n);
+      finalPayda = Math.pow(b, n);
+      document.getElementById('r-step1').innerText = `Ayrı ayrı kuvvet al: ${a}<sup>${n}</sup> / ${b}<sup>${n}</sup>`;
+      document.getElementById('r-step2').innerText = `${finalPay} / ${finalPayda}`;
+    }
+
+    let resVal = finalPay / finalPayda;
+    document.getElementById('r-result').innerText = `${finalPay} / ${finalPayda}  (${resVal.toFixed(3)})`;
+  }
+
+  // TAB 2: ONDALIK LABORATUVAR JS
+  function updateOndalik() {
+    let dec = parseFloat(document.getElementById('o-select').value);
+    let n = parseInt(document.getElementById('o-exp').value);
+
+    document.getElementById('o-exp-val').innerText = n;
+
+    let decStr = dec.toString().replace('.', ',');
+    document.getElementById('o-expr').innerHTML = `(${decStr})<sup>${n}</sup>`;
+
+    // Conversion steps
+    let rawPay = Math.round(dec * 10);
+    let rawPayda = 10;
+    let div = gcd(rawPay, rawPayda);
+    let simPay = rawPay / div;
+    let simPayda = rawPayda / div;
+
+    document.getElementById('o-step1').innerText = `1. Rasyonel Yazım: (${rawPay}/${rawPayda})<sup>${n}</sup>`;
+    document.getElementById('o-step2').innerText = `2. En Sade Hal: (${simPay}/${simPayda})<sup>${n}</sup>`;
+
+    if (n === 0) {
+      document.getElementById('o-step3').innerText = "3. Her sayının 0. kuvveti 1'dir.";
+      document.getElementById('o-result').innerText = "1";
+      return;
+    }
+
+    let finalPay, finalPayda;
+    if (n < 0) {
+      let posN = Math.abs(n);
+      document.getElementById('o-step3').innerText = `3. Ters Çevir ve Üs Al: (${simPayda}/${simPay})<sup>${posN}</sup> = ${Math.pow(simPayda, posN)} / ${Math.pow(simPay, posN)}`;
+      finalPay = Math.pow(simPayda, posN);
+      finalPayda = Math.pow(simPay, posN);
+    } else {
+      document.getElementById('o-step3').innerText = `3. Kuvvet Al: ${Math.pow(simPay, n)} / ${Math.pow(simPayda, n)}`;
+      finalPay = Math.pow(simPay, n);
+      finalPayda = Math.pow(simPayda, n);
+    }
+
+    let res = finalPay / finalPayda;
+    document.getElementById('o-result').innerText = finalPayda === 1 ? `${finalPay}` : `${finalPay}/${finalPayda} (${res.toFixed(4)})`;
+  }
+
+  // TAB 3: QUIZ JS
+  const explanations = {
+    'q1': {
+      correct: "Mükemmel! (-2/3)⁻³ = (-3/2)³ olur. Negatif tabanın tek kuvveti negatif kalır: -27/8.",
+      wrong: "Yanlış! Negatif üs kesri ters çevirir: (-3/2)³. Tek kuvvet olduğu için eksi korunur: -27/8."
+    },
+    'q2': {
+      correct: "Harika! 0,5 = 1/2 'dir. (1/2)⁻² = (2/1)² = 4 eder.",
+      wrong: "Yanlış! 0,5 = 1/2 şeklinde yazılır. Negatif üs ters çevirir: (2/1)² = 4."
+    },
+    'q3': {
+      correct: "Doğru! -0,2 = -1/5 'tir. (-1/5)⁴ ifadesinde çift kuvvet eksiyi artı yapar: 1/625.",
+      wrong: "Dikkat! -0,2 = -1/5 'tir. 4. kuvvet çift olduğu için sonuç (+) olmalıdır: 1/625."
+    },
+    'q4': {
+      correct: "Tebrikler! (3/4)⁻¹ = 4/3 ve (0,25)⁰ = 1 'dir. 4/3 + 1 = 7/3 eder.",
+      wrong: "Yanlış! (3/4)⁻¹ = 4/3, her sayının 0. kuvveti ise 1'dir. 4/3 + 1 = 7/3."
+    },
+    'q5': {
+      correct: "Harika! -0,1 = -1/10 'dur. (-1/10)⁻³ = (-10/1)³ = -1000 eder.",
+      wrong: "Yanlış! -0,1 = -1/10 eder. Negatif üs ters çevirir: (-10)³ = -1000."
+    }
+  };
+
+  function checkQ(qId, btn, isCorrect) {
+    const parent = btn.closest('.quiz-card');
+    parent.querySelectorAll('.option-btn').forEach(b => b.style.background = 'white');
+    btn.style.background = isCorrect ? '#dcfce7' : '#fee2e2';
+
+    const fb = document.getElementById(qId + '-fb');
+    if(isCorrect) {
+      fb.innerText = explanations[qId].correct;
+      fb.className = "feedback correct";
+    } else {
+      fb.innerText = explanations[qId].wrong;
+      fb.className = "feedback wrong";
+    }
+  }
+
+  // İlk Yükleme
+  updateRasyonel();
+  updateOndalik();
+</script>
+
+</body>
+</html>
