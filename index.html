@@ -3,24 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eğitici Araçlar - Sınıf Seçimi</title>
+    <title>Eğitici Araçlar Portalı</title>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background: #f8fafc; text-align: center; padding: 40px; }
-        h1 { color: #0284c7; margin-bottom: 30px; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; max-width: 600px; margin: 0 auto; }
-        .card { background: white; padding: 30px; border-radius: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); text-decoration: none; color: #0f172a; font-weight: bold; font-size: 1.2rem; transition: transform 0.2s, background 0.2s; border: 1px solid #e2e8f0; }
-        .card:hover { transform: translateY(-5px); background: #f0f9ff; color: #0284c7; border-color: #0284c7; }
+        :root { --primary: #0284c7; --bg: #f8fafc; --card: #ffffff; --text: #0f172a; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+        body { background-color: var(--bg); color: var(--text); padding: 40px 20px; text-align: center; }
+        h1 { color: var(--primary); font-size: 2.2rem; margin-bottom: 10px; }
+        p { color: #64748b; margin-bottom: 40px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; max-width: 800px; margin: 0 auto; }
+        .card { background: var(--card); padding: 30px; border-radius: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); text-decoration: none; color: var(--text); font-weight: bold; font-size: 1.3rem; transition: all 0.2s; border: 1px solid #e2e8f0; display: flex; flex-direction: column; align-items: center; gap: 15px; }
+        .card:hover { transform: translateY(-5px); border-color: var(--primary); background: #f0f9ff; color: var(--primary); }
     </style>
 </head>
 <body>
+
     <h1>Eğitici Araçlar Portalı</h1>
-    <p style="color: #64748b; margin-bottom: 40px;">Lütfen sınıf seviyesini seçiniz:</p>
-    
-    <div class="grid">
-        <a href="5_sinif/index.html" class="card">5. Sınıf</a>
-        <a href="6_sinif/index.html" class="card">6. Sınıf</a>
-        <a href="7_sinif/index.html" class="card">7. Sınıf</a>
-        <a href="8_sinif/index.html" class="card">8. Sınıf</a>
+    <p>Lütfen sınıf seviyesini seçiniz</p>
+
+    <div class="grid" id="siniflarGrid">
+        <!-- Dinamik olarak dolacak -->
     </div>
+
+    <script src="data.js"></script>
+    <script>
+        const grid = document.getElementById('siniflarGrid');
+        
+        for (const [key, sinifBilgisi] of Object.entries(egitimVerileri)) {
+            const card = document.createElement('a');
+            card.href = `sinif.html?sinif=${key}`;
+            card.className = 'card';
+            card.innerHTML = `<span>📚</span> ${sinifBilgisi.baslik}`;
+            grid.appendChild(card);
+        }
+    </script>
 </body>
 </html>
