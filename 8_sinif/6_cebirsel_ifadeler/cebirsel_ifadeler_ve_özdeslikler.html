@@ -4,6 +4,25 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>8. Sınıf Matematik - Cebirsel İfadeler ve Özdeşlikler Laboratuvarı</title>
+
+  <!-- MathJax Yapılandırması -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['[', ']']]
+      },
+      startup: {
+        pageReady: () => {
+          return MathJax.startup.defaultPageReady().then(() => {
+            if (window.onMathJaxReady) window.onMathJaxReady();
+          });
+        }
+      }
+    };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
   <style>
     :root {
       --primary: #0284c7;
@@ -27,51 +46,58 @@
     body {
       background-color: var(--bg);
       color: var(--text);
-      padding: 24px;
-      line-height: 1.5;
+      padding: 20px;
+      line-height: 1.4;
     }
 
     .container {
-      max-width: 1050px;
+      max-width: 1000px;
       margin: 0 auto;
     }
 
     .header {
       text-align: center;
-      margin-bottom: 24px;
+      margin-bottom: 20px;
     }
 
     .header h1 {
       color: var(--primary);
-      font-size: 2rem;
-      margin-bottom: 6px;
+      font-size: 1.8rem;
+      margin-bottom: 4px;
     }
 
     .header p {
       color: #64748b;
-      font-size: 1rem;
+      font-size: 0.95rem;
+    }
+
+    /* MathJax Boşluk Sıfırlama */
+    mjx-container {
+      margin: 0 !important;
+      padding: 0 !important;
+      display: inline-block !important;
     }
 
     /* Sekmeler */
     .tabs {
       display: flex;
       gap: 8px;
-      margin-bottom: 24px;
+      margin-bottom: 20px;
       background: #e2e8f0;
-      padding: 6px;
-      border-radius: 12px;
+      padding: 5px;
+      border-radius: 10px;
     }
 
     .tab-btn {
       flex: 1;
-      padding: 12px 16px;
+      padding: 10px 14px;
       border: none;
       background: transparent;
       color: #475569;
       font-weight: 600;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       cursor: pointer;
-      border-radius: 8px;
+      border-radius: 6px;
       transition: all 0.2s ease;
     }
 
@@ -92,17 +118,17 @@
     /* Kartlar ve Paneller */
     .visual-card, .quiz-card {
       background: var(--card);
-      padding: 24px;
-      border-radius: 16px;
-      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -2px rgba(0,0,0,0.05);
-      margin-bottom: 24px;
+      padding: 20px;
+      border-radius: 14px;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+      margin-bottom: 20px;
       border: 1px solid #e2e8f0;
     }
 
     .panel {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 24px;
+      gap: 20px;
     }
 
     @media (max-width: 768px) {
@@ -112,15 +138,15 @@
     }
 
     .control-group {
-      margin-bottom: 18px;
+      margin-bottom: 12px;
     }
 
     .control-group label {
       display: flex;
       justify-content: space-between;
       font-weight: 600;
-      margin-bottom: 8px;
-      font-size: 0.95rem;
+      margin-bottom: 4px;
+      font-size: 0.9rem;
     }
 
     .control-group label span.val {
@@ -141,11 +167,11 @@
     .chip {
       display: inline-flex;
       align-items: center;
-      padding: 6px 14px;
+      padding: 4px 10px;
       background: #f1f5f9;
-      border-radius: 20px;
+      border-radius: 16px;
       font-weight: 600;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       border: 1px solid #cbd5e1;
     }
 
@@ -157,29 +183,33 @@
     .pair-chips {
       display: flex;
       flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 12px;
+      gap: 6px;
+      margin-top: 10px;
     }
 
     .expression-display {
       background: #f0f9ff;
       border: 2px dashed var(--primary);
-      padding: 16px;
-      border-radius: 12px;
+      padding: 12px;
+      border-radius: 10px;
       text-align: center;
-      font-size: 1.4rem;
+      font-size: 1.25rem;
       font-weight: bold;
       color: var(--text);
-      margin-bottom: 16px;
+      margin-bottom: 12px;
+      min-height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     /* Cebirsel Karolar Modeli */
     .tile-area {
       background: #f8fafc;
       border: 2px dashed #cbd5e1;
-      border-radius: 12px;
-      padding: 16px;
-      min-height: 220px;
+      border-radius: 10px;
+      padding: 12px;
+      min-height: 160px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -190,15 +220,15 @@
       display: flex;
       flex-wrap: wrap;
       gap: 6px;
-      max-width: 320px;
+      max-width: 300px;
       justify-content: center;
       align-items: center;
-      margin-top: 10px;
+      margin-top: 8px;
     }
 
     .tile-x2 {
-      width: 50px;
-      height: 50px;
+      width: 44px;
+      height: 44px;
       background: var(--accent-purple);
       color: white;
       display: flex;
@@ -210,8 +240,8 @@
     }
 
     .tile-x {
-      width: 50px;
-      height: 22px;
+      width: 44px;
+      height: 20px;
       background: var(--accent-green);
       color: white;
       display: flex;
@@ -223,8 +253,8 @@
     }
 
     .tile-1 {
-      width: 22px;
-      height: 22px;
+      width: 20px;
+      height: 20px;
       background: var(--accent-amber);
       color: white;
       display: flex;
@@ -237,19 +267,19 @@
 
     /* Quiz Stilleri */
     .quiz-question {
-      font-size: 1.1rem;
+      font-size: 1.05rem;
       font-weight: 600;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
     }
 
     .option-btn {
       width: 100%;
       text-align: left;
-      padding: 12px 16px;
-      margin: 6px 0;
+      padding: 10px 14px;
+      margin: 5px 0;
       border: 2px solid #e2e8f0;
       background: var(--card);
-      border-radius: 10px;
+      border-radius: 8px;
       cursor: pointer;
       font-size: 0.95rem;
       font-weight: 500;
@@ -263,12 +293,12 @@
     }
 
     .feedback {
-      margin-top: 12px;
-      padding: 14px;
-      border-radius: 10px;
+      margin-top: 10px;
+      padding: 12px;
+      border-radius: 8px;
       display: none;
-      font-size: 0.95rem;
-      line-height: 1.5;
+      font-size: 0.9rem;
+      line-height: 1.4;
     }
 
     .feedback.correct {
@@ -291,8 +321,8 @@
       justify-content: center;
       align-items: center;
       background: #f8fafc;
-      border-radius: 12px;
-      padding: 16px;
+      border-radius: 10px;
+      padding: 12px;
       border: 1px solid #e2e8f0;
     }
 
@@ -304,12 +334,12 @@
     .radio-group {
       display: flex;
       gap: 10px;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
 
     .radio-btn {
       flex: 1;
-      padding: 10px;
+      padding: 8px;
       border: 2px solid #e2e8f0;
       border-radius: 8px;
       text-align: center;
@@ -346,28 +376,28 @@
   <!-- SEKME 1: ÇARPMA VE KARO LABI -->
   <div class="tab-content active" id="tab-0">
     <div class="visual-card">
-      <h3>İki Terimli Cebirsel İfadelerin Çarpımı</h3>
-      <p style="color: #64748b; font-size: 0.9rem; margin-bottom: 16px;">
-        $(ax + b) \cdot (cx + d)$ formundaki cebirsel ifadelerin çarpımını katsayıları değiştirerek inceleyin.
+      <h3 style="margin-bottom: 4px; font-size: 1.1rem;">İki Terimli Cebirsel İfadelerin Çarpımı</h3>
+      <p style="color: #64748b; font-size: 0.85rem; margin-bottom: 12px;">
+        (ax + b) &middot; (cx + d) formundaki cebirsel ifadelerin çarpımını katsayıları değiştirerek inceleyin.
       </p>
 
       <div class="panel">
         <!-- Kontroller -->
         <div>
           <div class="control-group">
-            <label>1. Çarpan $x$ Katsayısı ($a$): <span class="val" id="val-a">1</span></label>
+            <label>1. Çarpan x Katsayısı (a): <span class="val" id="val-a">1</span></label>
             <input type="range" id="input-a" min="1" max="3" value="1" oninput="updateLab1()">
           </div>
           <div class="control-group">
-            <label>1. Çarpan Sabit Terim ($b$): <span class="val" id="val-b">2</span></label>
+            <label>1. Çarpan Sabit Terim (b): <span class="val" id="val-b">2</span></label>
             <input type="range" id="input-b" min="1" max="4" value="2" oninput="updateLab1()">
           </div>
           <div class="control-group">
-            <label>2. Çarpan $x$ Katsayısı ($c$): <span class="val" id="val-c">1</span></label>
+            <label>2. Çarpan x Katsayısı (c): <span class="val" id="val-c">1</span></label>
             <input type="range" id="input-c" min="1" max="3" value="1" oninput="updateLab1()">
           </div>
           <div class="control-group">
-            <label>2. Çarpan Sabit Terim ($d$): <span class="val" id="val-d">1</span></label>
+            <label>2. Çarpan Sabit Terim (d): <span class="val" id="val-d">1</span></label>
             <input type="range" id="input-d" min="1" max="4" value="1" oninput="updateLab1()">
           </div>
 
@@ -381,12 +411,10 @@
 
         <!-- Görsel ve Matematiksel Gösterim -->
         <div>
-          <div class="expression-display" id="exp-display">
-            $(x + 2)(x + 1) = x^2 + 3x + 2$
-          </div>
+          <div class="expression-display" id="exp-display"></div>
 
           <div class="tile-area">
-            <strong style="margin-bottom: 8px; font-size: 0.9rem; color: #475569;">Cebirsel Karo Model Karşılığı</strong>
+            <strong style="font-size: 0.85rem; color: #475569;">Cebirsel Karo Model Karşılığı</strong>
             <div class="tile-grid" id="tile-container"></div>
           </div>
         </div>
@@ -397,15 +425,15 @@
   <!-- SEKME 2: ÖZDEŞLİKLER VE GEOMETRİ -->
   <div class="tab-content" id="tab-1">
     <div class="visual-card">
-      <h3>Özdeşliklerin Geometrik İspat Paneli</h3>
-      <p style="color: #64748b; font-size: 0.9rem; margin-bottom: 16px;">
-        Model seçin, $a$ ve $b$ değerlerini ayarlayarak alan paylaşımlarını canlı gözlemleyin.
+      <h3 style="margin-bottom: 4px; font-size: 1.1rem;">Özdeşliklerin Geometrik İspat Paneli</h3>
+      <p style="color: #64748b; font-size: 0.85rem; margin-bottom: 12px;">
+        Model seçin, a ve b değerlerini ayarlayarak alan paylaşımlarını canlı gözlemleyin.
       </p>
 
       <div class="radio-group">
-        <div class="radio-btn selected" id="rd-1" onclick="selectIdentity(1)">Tam Kare Toplamı <br> $(a+b)^2$</div>
-        <div class="radio-btn" id="rd-2" onclick="selectIdentity(2)">Tam Kare Farkı <br> $(a-b)^2$</div>
-        <div class="radio-btn" id="rd-3" onclick="selectIdentity(3)">İki Kare Farkı <br> $a^2 - b^2$</div>
+        <div class="radio-btn selected" id="rd-1" onclick="selectIdentity(1)">Tam Kare Toplamı <br> (a+b)<sup>2</sup></div>
+        <div class="radio-btn" id="rd-2" onclick="selectIdentity(2)">Tam Kare Farkı <br> (a-b)<sup>2</sup></div>
+        <div class="radio-btn" id="rd-3" onclick="selectIdentity(3)">İki Kare Farkı <br> a<sup>2</sup> - b<sup>2</sup></div>
       </div>
 
       <div class="panel">
@@ -419,7 +447,7 @@
             <input type="range" id="input-geo-b" min="1" max="3" value="2" oninput="updateLab2()">
           </div>
 
-          <div class="expression-display" id="geo-exp-display" style="font-size: 1.1rem; text-align: left;">
+          <div class="expression-display" id="geo-exp-display" style="font-size: 1.05rem; text-align: left; justify-content: flex-start;">
             -
           </div>
 
@@ -427,7 +455,7 @@
         </div>
 
         <div class="geo-container">
-          <svg id="geo-svg" width="260" height="260" viewBox="0 0 260 260"></svg>
+          <svg id="geo-svg" width="240" height="240" viewBox="0 0 240 240"></svg>
         </div>
       </div>
     </div>
@@ -437,7 +465,7 @@
   <div class="tab-content" id="tab-2">
     <!-- Soru 1 -->
     <div class="quiz-card" id="q-card-1">
-      <div class="quiz-question">Soru 1: $(2x - 3)^2$ cebirsel ifadesinin açılımındaki katsayılar toplamı kaçtır?</div>
+      <div class="quiz-question">Soru 1: (2x - 3)<sup>2</sup> cebirsel ifadesinin açılımındaki katsayılar toplamı kaçtır?</div>
       <button class="option-btn" onclick="checkQ(1, this, false)">A) 25</button>
       <button class="option-btn" onclick="checkQ(1, this, true)">B) 1</button>
       <button class="option-btn" onclick="checkQ(1, this, false)">C) -1</button>
@@ -447,7 +475,7 @@
 
     <!-- Soru 2 -->
     <div class="quiz-card" id="q-card-2">
-      <div class="quiz-question">Soru 2: $(3x + 4) \cdot (x - 2)$ çarpımı yapıldığında $x$'li terimin katsayısı kaç olur?</div>
+      <div class="quiz-question">Soru 2: (3x + 4) &middot; (x - 2) çarpımı yapıldığında x'li terimin katsayısı kaç olur?</div>
       <button class="option-btn" onclick="checkQ(2, this, false)">A) 2</button>
       <button class="option-btn" onclick="checkQ(2, this, true)">B) -2</button>
       <button class="option-btn" onclick="checkQ(2, this, false)">C) -10</button>
@@ -457,17 +485,17 @@
 
     <!-- Soru 3 -->
     <div class="quiz-card" id="q-card-3">
-      <div class="quiz-question">Soru 3: Bir kenar uzunluğu $(x + 5)$ cm olan karenin alanından, bir kenar uzunluğu $(x - 3)$ cm olan karenin alanı çıkarılırsa kalan alan veren cebirsel ifade nedir?</div>
-      <button class="option-btn" onclick="checkQ(3, this, false)">A) $16$</button>
-      <button class="option-btn" onclick="checkQ(3, this, true)">B) $16x + 16$</button>
-      <button class="option-btn" onclick="checkQ(3, this, false)">C) $4x + 16$</button>
-      <button class="option-btn" onclick="checkQ(3, this, false)">D) $16x + 34$</button>
+      <div class="quiz-question">Soru 3: Bir kenar uzunluğu (x + 5) cm olan karenin alanından, bir kenar uzunluğu (x - 3) cm olan karenin alanı çıkarılırsa kalan alanı veren cebirsel ifade nedir?</div>
+      <button class="option-btn" onclick="checkQ(3, this, false)">A) 16</button>
+      <button class="option-btn" onclick="checkQ(3, this, true)">B) 16x + 16</button>
+      <button class="option-btn" onclick="checkQ(3, this, false)">C) 4x + 16</button>
+      <button class="option-btn" onclick="checkQ(3, this, false)">D) 16x + 34</button>
       <div class="feedback" id="fb-3"></div>
     </div>
 
     <!-- Soru 4 -->
     <div class="quiz-card" id="q-card-4">
-      <div class="quiz-question">Soru 4: İki kare farkı özdeşliğini kullanarak $101^2 - 99^2$ işleminin sonucunu bulunuz.</div>
+      <div class="quiz-question">Soru 4: İki kare farkı özdeşliğini kullanarak 101<sup>2</sup> - 99<sup>2</sup> işleminin sonucunu bulunuz.</div>
       <button class="option-btn" onclick="checkQ(4, this, false)">A) 200</button>
       <button class="option-btn" onclick="checkQ(4, this, true)">B) 400</button>
       <button class="option-btn" onclick="checkQ(4, this, false)">C) 404</button>
@@ -477,7 +505,7 @@
 
     <!-- Soru 5 -->
     <div class="quiz-card" id="q-card-5">
-      <div class="quiz-question">Soru 5: Cebirsel karolarla $(2x + 1) \cdot (x + 2)$ çarpımı modellendiğinde toplam kaç adet $x$ karosu (dikdörtgen) kullanılır?</div>
+      <div class="quiz-question">Soru 5: Cebirsel karolarla (2x + 1) &middot; (x + 2) çarpımı modellendiğinde toplam kaç adet x karosu (dikdörtgen) kullanılır?</div>
       <button class="option-btn" onclick="checkQ(5, this, false)">A) 3</button>
       <button class="option-btn" onclick="checkQ(5, this, false)">B) 4</button>
       <button class="option-btn" onclick="checkQ(5, this, true)">C) 5</button>
@@ -488,6 +516,17 @@
 </div>
 
 <script>
+  // MathJax Güvenli Render Fonksiyonu
+  function renderMath() {
+    if (window.MathJax && window.MathJax.typesetPromise) {
+      MathJax.typesetPromise();
+    }
+  }
+
+  window.onMathJaxReady = function() {
+    renderMath();
+  };
+
   // TAB DEĞİŞTİRME FONKSİYONU
   function switchTab(index) {
     const tabs = document.querySelectorAll('.tab-btn');
@@ -502,6 +541,8 @@
         contents[i].classList.remove('active');
       }
     });
+
+    renderMath();
   }
 
   // --- SEKME 1 MANTIĞI ---
@@ -522,15 +563,15 @@
     const constTerm = b * d;
     const coeffSum = coeffX2 + coeffX + constTerm;
 
-    // Metin Formatı
+    // Metin Formatı (HTML superscript ile yerel olarak desteklendi)
     const str1 = `${a === 1 ? '' : a}x + ${b}`;
     const str2 = `${c === 1 ? '' : c}x + ${d}`;
-    const strRes = `${coeffX2 === 1 ? '' : coeffX2}x² + ${coeffX}x + ${constTerm}`;
+    const strRes = `${coeffX2 === 1 ? '' : coeffX2}x<sup>2</sup> + ${coeffX}x + ${constTerm}`;
 
-    document.getElementById('exp-display').innerText = `(${str1}) · (${str2}) = ${strRes}`;
+    document.getElementById('exp-display').innerHTML = `(${str1}) &middot; (${str2}) = ${strRes}`;
 
     // Çip güncelleme
-    document.getElementById('chip-terms').innerText = `Terimler: ${coeffX2}x², ${coeffX}x, ${constTerm}`;
+    document.getElementById('chip-terms').innerHTML = `Terimler: ${coeffX2}x<sup>2</sup>, ${coeffX}x, ${constTerm}`;
     document.getElementById('chip-coefs').innerText = `Katsayılar: ${coeffX2}, ${coeffX}, ${constTerm}`;
     document.getElementById('chip-const').innerText = `Sabit Terim: ${constTerm}`;
     document.getElementById('chip-sum').innerText = `Katsayılar Toplamı: ${coeffSum}`;
@@ -560,6 +601,8 @@
       tile.innerText = '1';
       tileContainer.appendChild(tile);
     }
+
+    renderMath();
   }
 
   // --- SEKME 2 MANTIĞI ---
@@ -578,7 +621,7 @@
     const a = parseInt(document.getElementById('input-geo-a').value);
     const b = parseInt(document.getElementById('input-geo-b').value);
 
-    // b'nin a'dan büyük olması durumunu engelle (Özellikle Tam Kare Farkı için)
+    // b'nin a'dan büyük olması durumunu engelle
     if (b >= a && (selectedIdentityId === 2 || selectedIdentityId === 3)) {
       document.getElementById('input-geo-b').value = a - 1;
       return updateLab2();
@@ -591,28 +634,26 @@
     const breakdown = document.getElementById('geo-breakdown');
     const svg = document.getElementById('geo-svg');
 
-    let scale = 220 / (selectedIdentityId === 1 ? (a + b) : a);
+    let scale = 200 / (selectedIdentityId === 1 ? (a + b) : a);
     let sa = a * scale;
     let sb = b * scale;
 
     svg.innerHTML = '';
 
     if (selectedIdentityId === 1) {
-      // (a+b)² = a² + 2ab + b²
       const total = (a + b) * (a + b);
       const a2 = a * a;
       const ab2 = 2 * a * b;
       const b2 = b * b;
 
-      display.innerHTML = `<strong>(${a} + ${b})² = ${a}² + 2·(${a}·${b}) + ${b}²</strong><br>= ${a2} + ${ab2} + ${b2} = <strong>${total}</strong>`;
+      display.innerHTML = `(${a} + ${b})<sup>2</sup> = ${a}<sup>2</sup> + 2&middot;(${a}&middot;${b}) + ${b}<sup>2</sup> = ${a2} + ${ab2} + ${b2} = <b>${total}</b>`;
 
       breakdown.innerHTML = `
-        <div class="chip chip-purple">a² = ${a2}</div>
+        <div class="chip chip-purple">a<sup>2</sup> = ${a2}</div>
         <div class="chip chip-green">2ab = ${ab2}</div>
-        <div class="chip chip-amber">b² = ${b2}</div>
+        <div class="chip chip-amber">b<sup>2</sup> = ${b2}</div>
       `;
 
-      // SVG Çizimi (a+b karesi)
       svg.innerHTML = `
         <rect x="10" y="10" width="${sa}" height="${sa}" fill="#9333ea" opacity="0.8" />
         <rect x="${10 + sa}" y="10" width="${sb}" height="${sa}" fill="#16a34a" opacity="0.8" />
@@ -626,15 +667,14 @@
       `;
 
     } else if (selectedIdentityId === 2) {
-      // (a-b)² = a² - 2ab + b²
       const diff = a - b;
       const res = diff * diff;
 
-      display.innerHTML = `<strong>(${a} - ${b})² = ${a}² - 2·(${a}·${b}) + ${b}²</strong><br>= ${a*a} - ${2*a*b} + ${b*b} = <strong>${res}</strong>`;
+      display.innerHTML = `(${a} - ${b})<sup>2</sup> = ${a}<sup>2</sup> - 2&middot;(${a}&middot;${b}) + ${b}<sup>2</sup> = ${a*a} - ${2*a*b} + ${b*b} = <b>${res}</b>`;
 
       breakdown.innerHTML = `
-        <div class="chip chip-purple">(a-b)² = ${res}</div>
-        <div class="chip chip-red">Kayıp Alanlar (2ab - b²)</div>
+        <div class="chip chip-purple">(a-b)<sup>2</sup> = ${res}</div>
+        <div class="chip chip-red">Kayıp Alanlar (2ab - b<sup>2</sup>)</div>
       `;
 
       let sdiff = diff * scale;
@@ -648,16 +688,15 @@
       `;
 
     } else if (selectedIdentityId === 3) {
-      // a² - b² = (a-b)(a+b)
       const a2 = a * a;
       const b2 = b * b;
       const res = a2 - b2;
 
-      display.innerHTML = `<strong>${a}² - ${b}² = (${a} - ${b})·(${a} + ${b})</strong><br>= ${a2} - ${b2} = <strong>${res}</strong>`;
+      display.innerHTML = `${a}<sup>2</sup> - ${b}<sup>2</sup> = (${a} - ${b}) &middot; (${a} + ${b}) = ${a2} - ${b2} = <b>${res}</b>`;
 
       breakdown.innerHTML = `
-        <div class="chip chip-purple">a² = ${a2}</div>
-        <div class="chip chip-red">Çıkarılan b² = ${b2}</div>
+        <div class="chip chip-purple">a<sup>2</sup> = ${a2}</div>
+        <div class="chip chip-red">Çıkarılan b<sup>2</sup> = ${b2}</div>
         <div class="chip chip-green">Kalan Alan = ${res}</div>
       `;
 
@@ -669,15 +708,17 @@
         <text x="${10 + sa - sb/2}" y="${10 + sb/2 + 4}" fill="#fff" font-size="12" font-weight="bold" text-anchor="middle">b²</text>
       `;
     }
+
+    renderMath();
   }
 
   // --- SEKME 3: QUIZ MANTIĞI ---
   const explanations = {
-    1: "<b>Doğru Cevap B!</b><br>Açılım: $(2x - 3)^2 = 4x^2 - 12x + 9$<br>Katsayılar toplamı: $4 + (-12) + 9 = 1$.<br><i>Pratik Yol:</i> Değişkene $x=1$ verilirsa: $(2(1) - 3)^2 = (-1)^2 = 1$ bulunur.",
-    2: "<b>Doğru Cevap B!</b><br>Çarpma işlemini dağıtırsak:<br>$(3x+4)(x-2) = 3x^2 - 6x + 4x - 8 = 3x^2 - 2x - 8$<br>Buradan $x$'li terim $-2x$ olup katsayısı <b>-2</b>'dir.",
-    3: "<b>Doğru Cevap B!</b><br>Büyük kare alanı: $(x + 5)^2 = x^2 + 10x + 25$<br>Küçük kare alanı: $(x - 3)^2 = x^2 - 6x + 9$<br>Fark: $(x^2 + 10x + 25) - (x^2 - 6x + 9) = 16x + 16$ bulunur.",
-    4: "<b>Doğru Cevap B!</b><br>İki kare farkı kuralı: $a^2 - b^2 = (a - b)(a + b)$<br>$101^2 - 99^2 = (101 - 99) \cdot (101 + 99) = 2 \cdot 200 = 400$.",
-    5: "<b>Doğru Cevap C!</b><br>Çarpımı genişletelim: $(2x + 1)(x + 2) = 2x^2 + 4x + 1x + 2 = 2x^2 + 5x + 2$.<br>Ortadaki $5x$ terimi, cebirsel karolarda tam <b>5 adet $x$ karosuna</b> karşılık gelir."
+    1: "<b>Doğru Cevap B!</b><br>Açılım: (2x - 3)<sup>2</sup> = 4x<sup>2</sup> - 12x + 9<br>Katsayılar toplamı: 4 + (-12) + 9 = 1.<br><i>Pratik Yol:</i> Değişkene x=1 verilirse: (2(1) - 3)<sup>2</sup> = (-1)<sup>2</sup> = 1 bulunur.",
+    2: "<b>Doğru Cevap B!</b><br>Çarpma işlemini dağıtırsak:<br>(3x+4)(x-2) = 3x<sup>2</sup> - 6x + 4x - 8 = 3x<sup>2</sup> - 2x - 8<br>Buradan x'li terim -2x olup katsayısı <b>-2</b>'dir.",
+    3: "<b>Doğru Cevap B!</b><br>Büyük kare alanı: (x + 5)<sup>2</sup> = x<sup>2</sup> + 10x + 25<br>Küçük kare alanı: (x - 3)<sup>2</sup> = x<sup>2</sup> - 6x + 9<br>Fark: (x<sup>2</sup> + 10x + 25) - (x<sup>2</sup> - 6x + 9) = 16x + 16 bulunur.",
+    4: "<b>Doğru Cevap B!</b><br>İki kare farkı kuralı: a<sup>2</sup> - b<sup>2</sup> = (a - b)(a + b)<br>101<sup>2</sup> - 99<sup>2</sup> = (101 - 99) &middot; (101 + 99) = 2 &middot; 200 = 400.",
+    5: "<b>Doğru Cevap C!</b><br>Çarpımı genişletelim: (2x + 1)(x + 2) = 2x<sup>2</sup> + 4x + 1x + 2 = 2x<sup>2</sup> + 5x + 2.<br>Ortadaki 5x terimi, cebirsel karolarda tam <b>5 adet x karosuna</b> karşılık gelir."
   };
 
   function checkQ(qId, btn, isCorrect) {
@@ -703,6 +744,7 @@
     }
 
     feedback.innerHTML = explanations[qId];
+    renderMath();
   }
 
   // Sayfa yüklendiğinde ilk hesaplamaları yap
