@@ -41,7 +41,7 @@
     .val-display { font-weight: bold; color: var(--primary); }
 
     .visual-box { background: #fafafa; border: 2px dashed #cbd5e1; border-radius: 12px; padding: 24px; text-align: center; min-height: 220px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; }
-    .math-expression { font-size: 2.2rem; font-weight: bold; color: var(--primary); }
+    .math-expression { font-size: 2.2rem; font-weight: bold; color: var(--primary); line-height: 1.2; }
     .step-box { background: #fff; border: 1px solid #e2e8f0; padding: 12px 20px; border-radius: 8px; font-size: 1.1rem; color: #334155; max-width: 100%; overflow-x: auto; }
     .rule-badge { background: #e0e7ff; color: #3730a3; padding: 6px 12px; border-radius: 20px; font-weight: 600; font-size: 0.85rem; }
 
@@ -91,7 +91,7 @@
     </div>
 
     <div class="visual-box">
-      <div id="lab-expression" class="math-expression">(-2)⁻³</div>
+      <div id="lab-expression" class="math-expression">(-2)<sup>-3</sup></div>
       <div id="lab-badge" class="rule-badge">Negatif Üs: Pay/Payda Yer Değiştirir</div>
       <div id="lab-step1" class="step-box">1 / (-2)³</div>
       <div id="lab-step2" class="step-box">1 / (-8)</div>
@@ -213,7 +213,6 @@
     document.getElementById('exp-val').innerText = n;
 
     const baseStr = a < 0 ? `(${a})` : `${a}`;
-    const expStr = n < 0 ? `⁻${toSuperscript(Math.abs(n))}` : toSuperscript(n);
     
     document.getElementById('lab-expression').innerHTML = `${baseStr}<sup>${n}</sup>`;
 
@@ -237,7 +236,7 @@
       const posN = Math.abs(n);
       const posPow = Math.pow(a, posN);
       document.getElementById('lab-badge').innerText = "Negatif Üs: Çarpmaya Göre Tersini Al";
-      document.getElementById('lab-step1').innerText = `1 / (${baseStr}<sup>${posN}</sup>)`;
+      document.getElementById('lab-step1').innerHTML = `1 / (${baseStr}<sup>${posN}</sup>)`;
       document.getElementById('lab-step2').innerText = `1 / (${posPow})`;
       
       const val = 1 / posPow;
@@ -251,11 +250,6 @@
       document.getElementById('lab-step2').innerText = `Sonuç: ${pow}`;
       document.getElementById('lab-result').innerText = `${pow}`;
     }
-  }
-
-  function toSuperscript(num) {
-    const map = {'0':'⁰','1':'¹','2':'²','3':'³','4':'⁴','5':'⁵','6':'⁶','7':'⁷','8':'⁸','9':'⁹','-':'⁻'};
-    return String(num).split('').map(c => map[c] || c).join('');
   }
 
   // TAB 2: DEDEKTİF JS
