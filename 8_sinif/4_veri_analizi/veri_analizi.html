@@ -4,6 +4,20 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>8. Sınıf Veri Analizi - İnteraktif Öğrenme Laboratuvarı</title>
+  
+  <!-- MathJax Konfigürasyonu (Satır içi $...$ formüllerini aktifleştirmek için) -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['[', ']']]
+      }
+    };
+  </script>
+  <!-- MathJax Kütüphanesi -->
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
   <style>
     :root {
       --primary: #0284c7;
@@ -520,6 +534,11 @@
     if (index === 0) {
       updateLab();
     }
+    
+    // MathJax sekme geçişinde formülleri tekrar işlesin
+    if (window.MathJax) {
+      MathJax.typesetPromise();
+    }
   }
 
   // Preset Controls
@@ -628,6 +647,10 @@
         </tr>
       `;
     });
+
+    if (window.MathJax) {
+      MathJax.typesetPromise();
+    }
   }
 
   // Interactive Calculator Logic for Tab 2
@@ -679,6 +702,10 @@
     }
 
     feedbackEl.classList.add('visible');
+
+    if (window.MathJax) {
+      MathJax.typesetPromise();
+    }
   }
 
   // Initialize Simulation on Load
