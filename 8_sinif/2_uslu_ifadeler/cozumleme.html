@@ -34,10 +34,43 @@
     .tab-content.active { display: block; }
 
     /* Controls Panel */
-    .panel { background: #f1f5f9; padding: 20px; border-radius: 12px; margin-bottom: 20px; display: flex; flex-wrap: wrap; gap: 16px; align-items: center; justify-content: space-between; }
+    .panel { background: #f1f5f9; padding: 20px; border-radius: 12px; margin-bottom: 20px; display: flex; flex-wrap: wrap; gap: 16px; align-items: center; justify-content: flex-start; }
     .control-group { display: flex; flex-direction: column; gap: 6px; }
     .control-group label { font-weight: 600; font-size: 0.9rem; color: #334155; }
     .control-group input[type=number], .control-group select { padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 1.1rem; font-weight: bold; width: 180px; }
+
+    /* Sayı Oluşturucu Özel Grid Düzeni */
+    .builder-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+      gap: 12px;
+      width: 100%;
+    }
+    .builder-card {
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+    .builder-card label {
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: #334155;
+      text-align: center;
+    }
+    .builder-card input[type=number] {
+      width: 100%;
+      text-align: center;
+      padding: 6px 8px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-size: 1.1rem;
+      font-weight: bold;
+    }
 
     /* Digit Cards Grid */
     .digits-grid { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 20px; }
@@ -101,7 +134,7 @@
 
     <div class="visual-box">
       <div class="badge">10'un Kuvvetleriyle Çözümlenmiş Hali</div>
-      <div id="lab-expr" class="math-expr">3·10² + 4·10¹ + 5·10⁰ + 2·10⁻¹ + 8·10⁻³</div>
+      <div id="lab-expr" class="math-expr">3·10<sup>2</sup> + 4·10<sup>1</sup> + 5·10<sup>0</sup> + 2·10<sup>-1</sup> + 8·10<sup>-3</sup></div>
     </div>
   </div>
 
@@ -111,18 +144,20 @@
       <p style="font-weight:600; color:#334155;">Verilen Çözümleme İfadesindeki Katsayıları Ayarlayarak Sayıyı Oluşturun:</p>
     </div>
 
-    <div class="panel" style="justify-content:center; gap:12px;">
-      <div class="control-group" style="width:90px;"><label>10² (Yüzler)</label><input type="number" id="c-102" value="4" min="0" max="9" onchange="updateTers()"></div>
-      <div class="control-group" style="width:90px;"><label>10¹ (Onlar)</label><input type="number" id="c-101" value="0" min="0" max="9" onchange="updateTers()"></div>
-      <div class="control-group" style="width:90px;"><label>10⁰ (Birler)</label><input type="number" id="c-100" value="7" min="0" max="9" onchange="updateTers()"></div>
-      <div class="control-group" style="width:90px;"><label>10⁻¹ (Onda B.)</label><input type="number" id="c-10-1" value="5" min="0" max="9" onchange="updateTers()"></div>
-      <div class="control-group" style="width:90px;"><label>10⁻² (Yüzde B.)</label><input type="number" id="c-10-2" value="0" min="0" max="9" onchange="updateTers()"></div>
-      <div class="control-group" style="width:90px;"><label>10⁻³ (Binde B.)</label><input type="number" id="c-10-3" value="3" min="0" max="9" onchange="updateTers()"></div>
+    <div class="panel">
+      <div class="builder-grid">
+        <div class="builder-card"><label>10<sup>2</sup> (Yüzler)</label><input type="number" id="c-102" value="4" min="0" max="9" onchange="updateTers()" onkeyup="updateTers()"></div>
+        <div class="builder-card"><label>10<sup>1</sup> (Onlar)</label><input type="number" id="c-101" value="0" min="0" max="9" onchange="updateTers()" onkeyup="updateTers()"></div>
+        <div class="builder-card"><label>10<sup>0</sup> (Birler)</label><input type="number" id="c-100" value="7" min="0" max="9" onchange="updateTers()" onkeyup="updateTers()"></div>
+        <div class="builder-card"><label>10<sup>-1</sup> (Onda B.)</label><input type="number" id="c-10-1" value="5" min="0" max="9" onchange="updateTers()" onkeyup="updateTers()"></div>
+        <div class="builder-card"><label>10<sup>-2</sup> (Yüzde B.)</label><input type="number" id="c-10-2" value="0" min="0" max="9" onchange="updateTers()" onkeyup="updateTers()"></div>
+        <div class="builder-card"><label>10<sup>-3</sup> (Binde B.)</label><input type="number" id="c-10-3" value="3" min="0" max="9" onchange="updateTers()" onkeyup="updateTers()"></div>
+      </div>
     </div>
 
     <div class="visual-box">
       <div class="badge">Çözümlenmiş İfade</div>
-      <div id="ters-expr" class="math-expr" style="font-size: 1.3rem;">4·10² + 7·10⁰ + 5·10⁻¹ + 3·10⁻³</div>
+      <div id="ters-expr" class="math-expr" style="font-size: 1.3rem;">4·10<sup>2</sup> + 7·10<sup>0</sup> + 5·10<sup>-1</sup> + 3·10<sup>-3</sup></div>
       <div style="margin-top:10px;" class="badge">Oluşan Ondalık Sayı</div>
       <div id="ters-result" class="math-expr" style="font-size: 2.2rem; color: var(--accent-purple);">407,503</div>
     </div>
@@ -134,17 +169,17 @@
     <div class="quiz-card">
       <h3>1) 205,04 sayısının 10'un kuvvetlerine göre çözümlenmiş hali aşağıdakilerden hangisidir?</h3>
       <div class="options">
-        <button class="option-btn" onclick="checkQ('q1', this, false)">A) 2·10² + 5·10¹ + 4·10⁻¹</button>
-        <button class="option-btn" onclick="checkQ('q1', this, true)">B) 2·10² + 5·10⁰ + 4·10⁻²</button>
-        <button class="option-btn" onclick="checkQ('q1', this, false)">C) 2·10³ + 5·10⁰ + 4·10⁻²</button>
-        <button class="option-btn" onclick="checkQ('q1', this, false)">D) 2·10² + 5·10⁰ + 4·10⁻¹</button>
+        <button class="option-btn" onclick="checkQ('q1', this, false)">A) 2·10<sup>2</sup> + 5·10<sup>1</sup> + 4·10<sup>-1</sup></button>
+        <button class="option-btn" onclick="checkQ('q1', this, true)">B) 2·10<sup>2</sup> + 5·10<sup>0</sup> + 4·10<sup>-2</sup></button>
+        <button class="option-btn" onclick="checkQ('q1', this, false)">C) 2·10<sup>3</sup> + 5·10<sup>0</sup> + 4·10<sup>-2</sup></button>
+        <button class="option-btn" onclick="checkQ('q1', this, false)">D) 2·10<sup>2</sup> + 5·10<sup>0</sup> + 4·10<sup>-1</sup></button>
       </div>
       <div id="q1-fb" class="feedback"></div>
     </div>
 
     <!-- Soru 2 -->
     <div class="quiz-card">
-      <h3>2) 3·10¹ + 8·10⁻¹ + 5·10⁻³ şeklinde çözümlenen ondalık gösterim hangisidir?</h3>
+      <h3>2) 3·10<sup>1</sup> + 8·10<sup>-1</sup> + 5·10<sup>-3</sup> şeklinde çözümlenen ondalık gösterim hangisidir?</h3>
       <div class="options">
         <button class="option-btn" onclick="checkQ('q2', this, false)">A) 38,05</button>
         <button class="option-btn" onclick="checkQ('q2', this, false)">B) 30,85</button>
@@ -156,7 +191,7 @@
 
     <!-- Soru 3 -->
     <div class="quiz-card">
-      <h3>3) 504,27 = 5·10² + A·10⁰ + 2·10⁻¹ + 7·10⁻² eşitliğinde A kaçtır?</h3>
+      <h3>3) 504,27 = 5·10<sup>2</sup> + A·10<sup>0</sup> + 2·10<sup>-1</sup> + 7·10<sup>-2</sup> eşitliğinde A kaçtır?</h3>
       <div class="options">
         <button class="option-btn" onclick="checkQ('q3', this, false)">A) 0</button>
         <button class="option-btn" onclick="checkQ('q3', this, true)">B) 4</button>
@@ -168,7 +203,7 @@
 
     <!-- Soru 4 -->
     <div class="quiz-card">
-      <h3>4) 6·10³ + 2·10⁻² ifadesinin ondalık gösterimi aşağıdakilerden hangisidir?</h3>
+      <h3>4) 6·10<sup>3</sup> + 2·10<sup>-2</sup> ifadesinin ondalık gösterimi aşağıdakilerden hangisidir?</h3>
       <div class="options">
         <button class="option-btn" onclick="checkQ('q4', this, false)">A) 600,02</button>
         <button class="option-btn" onclick="checkQ('q4', this, true)">B) 6000,02</button>
@@ -182,10 +217,10 @@
     <div class="quiz-card">
       <h3>5) 12,304 sayısının çözümlemesinde aşağıdaki ifadelerden hangisi BULUNMAZ?</h3>
       <div class="options">
-        <button class="option-btn" onclick="checkQ('q5', this, false)">A) 1·10¹</button>
-        <button class="option-btn" onclick="checkQ('q5', this, false)">B) 3·10⁻¹</button>
-        <button class="option-btn" onclick="checkQ('q5', this, true)">C) 0·10⁻² (veya bulunmayan terim)</button>
-        <button class="option-btn" onclick="checkQ('q5', this, false)">D) 4·10⁻³</button>
+        <button class="option-btn" onclick="checkQ('q5', this, false)">A) 1·10<sup>1</sup></button>
+        <button class="option-btn" onclick="checkQ('q5', this, false)">B) 3·10<sup>-1</sup></button>
+        <button class="option-btn" onclick="checkQ('q5', this, true)">C) 0·10<sup>-2</sup> (veya bulunmayan terim)</button>
+        <button class="option-btn" onclick="checkQ('q5', this, false)">D) 4·10<sup>-3</sup></button>
       </div>
       <div id="q5-fb" class="feedback"></div>
     </div>
@@ -211,12 +246,12 @@
     let ondalikStr = parts[1];
 
     let digits = [
-      { val: tamStr[0], place: 'Yüzler', power: '10²', isTam: true },
-      { val: tamStr[1], place: 'Onlar', power: '10¹', isTam: true },
-      { val: tamStr[2], place: 'Birler', power: '10⁰', isTam: true },
-      { val: ondalikStr[0], place: 'Onda Birler', power: '10⁻¹', isTam: false },
-      { val: ondalikStr[1], place: 'Yüzde Birler', power: '10⁻²', isTam: false },
-      { val: ondalikStr[2], place: 'Binde Birler', power: '10⁻³', isTam: false }
+      { val: tamStr[0], place: 'Yüzler', power: '10<sup>2</sup>', isTam: true },
+      { val: tamStr[1], place: 'Onlar', power: '10<sup>1</sup>', isTam: true },
+      { val: tamStr[2], place: 'Birler', power: '10<sup>0</sup>', isTam: true },
+      { val: ondalikStr[0], place: 'Onda Birler', power: '10<sup>-1</sup>', isTam: false },
+      { val: ondalikStr[1], place: 'Yüzde Birler', power: '10<sup>-2</sup>', isTam: false },
+      { val: ondalikStr[2], place: 'Binde Birler', power: '10<sup>-3</sup>', isTam: false }
     ];
 
     let gridHtml = '';
@@ -256,12 +291,12 @@
     const c10_3 = parseInt(document.getElementById('c-10-3').value) || 0;
 
     let terms = [];
-    if(c102 > 0) terms.push(`${c102}·10²`);
-    if(c101 > 0) terms.push(`${c101}·10¹`);
-    if(c100 > 0) terms.push(`${c100}·10⁰`);
-    if(c10_1 > 0) terms.push(`${c10_1}·10⁻¹`);
-    if(c10_2 > 0) terms.push(`${c10_2}·10⁻²`);
-    if(c10_3 > 0) terms.push(`${c10_3}·10⁻³`);
+    if(c102 > 0) terms.push(`${c102}·10<sup>2</sup>`);
+    if(c101 > 0) terms.push(`${c101}·10<sup>1</sup>`);
+    if(c100 > 0) terms.push(`${c100}·10<sup>0</sup>`);
+    if(c10_1 > 0) terms.push(`${c10_1}·10<sup>-1</sup>`);
+    if(c10_2 > 0) terms.push(`${c10_2}·10<sup>-2</sup>`);
+    if(c10_3 > 0) terms.push(`${c10_3}·10<sup>-3</sup>`);
 
     document.getElementById('ters-expr').innerHTML = terms.length > 0 ? terms.join(' + ') : '0';
 
