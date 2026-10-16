@@ -47,7 +47,7 @@ const egitimVerileri = {
         uniteAdi: "2. Üslü İfadeler",
         araclar: [
           { ad: "Üslü İfadeler Etkinliği", dosya: "8_sinif/2_uslu_ifadeler/uslu_ifadeler.html" },
-          { ad: "Üslü İfadelerde Çarpma ve Bölme Etkinliği", dosya: "8_sinif/2_uslu_ifadeler/uslu_ifadelerde_carpma_bolme.html" },
+          { ad: "Üslü İfadelerde Çarpma ve Bölme Etkinliği", dosya: "8_sinif/2_uslu_ifadeler/uslu_ifadelerde_carpma_ve_bolme.html" },
           { ad: "Üslü İfadelerde Toplama ve Çıkarma Etkinliği", dosya: "8_sinif/2_uslu_ifadeler/uslu_ifadelerde_toplama_cikarma.html" },
           { ad: "Ondalık ve Rasyonel Sayıların Kuvvetleri Etkinliği", dosya: "8_sinif/2_uslu_ifadeler/ondalik_ve_rasyonel_sayilarin_kuvvetleri.html" },
           { ad: "Üslü İfadelerde Çözümleme Etkinliği", dosya: "8_sinif/2_uslu_ifadeler/cozumleme.html" },
