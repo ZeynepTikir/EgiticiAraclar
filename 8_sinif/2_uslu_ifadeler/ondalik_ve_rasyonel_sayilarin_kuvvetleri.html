@@ -43,7 +43,7 @@
 
     /* Visualizer Box */
     .visual-box { background: #fafafa; border: 2px dashed #cbd5e1; border-radius: 12px; padding: 24px; text-align: center; min-height: 240px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; }
-    .math-expr { font-size: 2rem; font-weight: bold; color: var(--primary); }
+    .math-expr { font-size: 2rem; font-weight: bold; color: var(--primary); line-height: 1.2; }
     .step-card { background: #fff; border: 1px solid #e2e8f0; padding: 12px 20px; border-radius: 8px; font-size: 1.1rem; color: #334155; width: 100%; max-width: 600px; }
     .badge { background: #dbeafe; color: #1e40af; padding: 6px 14px; border-radius: 20px; font-weight: 600; font-size: 0.85rem; }
 
@@ -91,10 +91,10 @@
     </div>
 
     <div class="visual-box">
-      <div id="r-expr" class="math-expr">(2/3)⁻²</div>
+      <div id="r-expr" class="math-expr">(2/3)<sup>-2</sup></div>
       <div id="r-badge" class="badge">Negatif Üs: Kesri Ters Çevir</div>
-      <div id="r-step1" class="step-card">Ters Çevrilmiş Kesir: (3/2)²</div>
-      <div id="r-step2" class="step-card">Ayrı Ayrı Üs Alma: 3² / 2² = 9 / 4</div>
+      <div id="r-step1" class="step-card">Ters Çevrilmiş Kesir: (3/2)<sup>2</sup></div>
+      <div id="r-step2" class="step-card">Ayrı Ayrı Üs Alma: 3<sup>2</sup> / 2<sup>2</sup> = 9 / 4</div>
       <div id="r-result" class="math-expr" style="font-size: 1.8rem; color: var(--accent-purple);">9 / 4  (2.25)</div>
     </div>
   </div>
@@ -119,10 +119,10 @@
     </div>
 
     <div class="visual-box">
-      <div id="o-expr" class="math-expr">(0,2)⁻³</div>
-      <div id="o-step1" class="step-card">1. Adım (Rasyonel Yap): (2/10)⁻³</div>
-      <div id="o-step2" class="step-card">2. Adım (Sadeleştir): (1/5)⁻³</div>
-      <div id="o-step3" class="step-card">3. Adım (Ters Çevir ve Kuvvet Al): (5/1)³ = 5³</div>
+      <div id="o-expr" class="math-expr">(0,2)<sup>-3</sup></div>
+      <div id="o-step1" class="step-card">1. Adım (Rasyonel Yap): (2/10)<sup>-3</sup></div>
+      <div id="o-step2" class="step-card">2. Adım (Sadeleştir): (1/5)<sup>-3</sup></div>
+      <div id="o-step3" class="step-card">3. Adım (Ters Çevir ve Kuvvet Al): (5/1)<sup>3</sup> = 5<sup>3</sup></div>
       <div id="o-result" class="math-expr" style="font-size: 1.8rem; color: var(--accent-orange);">125</div>
     </div>
   </div>
@@ -131,7 +131,7 @@
   <div id="quiz" class="tab-content">
     <!-- Soru 1 -->
     <div class="quiz-card">
-      <h3>1) (-2/3)⁻³ ifadesinin değeri kaçtır?</h3>
+      <h3>1) (-2/3)<sup>-3</sup> ifadesinin değeri kaçtır?</h3>
       <div class="options">
         <button class="option-btn" onclick="checkQ('q1', this, false)">A) 8/27</button>
         <button class="option-btn" onclick="checkQ('q1', this, false)">B) -8/27</button>
@@ -143,7 +143,7 @@
 
     <!-- Soru 2 -->
     <div class="quiz-card">
-      <h3>2) (0,5)⁻² ifadesinin değeri kaçtır?</h3>
+      <h3>2) (0,5)<sup>-2</sup> ifadesinin değeri kaçtır?</h3>
       <div class="options">
         <button class="option-btn" onclick="checkQ('q2', this, false)">A) 0,25</button>
         <button class="option-btn" onclick="checkQ('q2', this, false)">B) 1/4</button>
@@ -155,7 +155,7 @@
 
     <!-- Soru 3 -->
     <div class="quiz-card">
-      <h3>3) (-0,2)⁴ ifadesinin rasyonel sayı olarak karşılığı hangisidir?</h3>
+      <h3>3) (-0,2)<sup>4</sup> ifadesinin rasyonel sayı olarak karşılığı hangisidir?</h3>
       <div class="options">
         <button class="option-btn" onclick="checkQ('q3', this, true)">A) 1 / 625</button>
         <button class="option-btn" onclick="checkQ('q3', this, false)">B) -1 / 625</button>
@@ -167,7 +167,7 @@
 
     <!-- Soru 4 -->
     <div class="quiz-card">
-      <h3>4) (3/4)⁻¹ + (0,25)⁰ işleminin sonucu kaçtır?</h3>
+      <h3>4) (3/4)<sup>-1</sup> + (0,25)<sup>0</sup> işleminin sonucu kaçtır?</h3>
       <div class="options">
         <button class="option-btn" onclick="checkQ('q4', this, false)">A) 4/3</button>
         <button class="option-btn" onclick="checkQ('q4', this, true)">B) 7/3</button>
@@ -179,7 +179,7 @@
 
     <!-- Soru 5 -->
     <div class="quiz-card">
-      <h3>5) (-0,1)⁻³ ifadesinin değeri kaçtır?</h3>
+      <h3>5) (-0,1)<sup>-3</sup> ifadesinin değeri kaçtır?</h3>
       <div class="options">
         <button class="option-btn" onclick="checkQ('q5', this, false)">A) 1000</button>
         <button class="option-btn" onclick="checkQ('q5', this, true)">B) -1000</button>
@@ -206,25 +206,21 @@
 
   // TAB 1: RASYONEL KUVVET JS
   function updateRasyonel() {
-    let a = parseInt(document.getElementById('r-pay').value) || 1;
-    let b = parseInt(document.getElementById('r-payda').value) || 1;
+    let a = parseInt(document.getElementById('r-pay').value);
+    if (isNaN(a)) a = 1;
+    let b = parseInt(document.getElementById('r-payda').value);
+    if (isNaN(b) || b === 0) b = 1;
     let n = parseInt(document.getElementById('r-exp').value);
 
     document.getElementById('r-exp-val').innerText = n;
-
-    if (b === 0) {
-      document.getElementById('r-expr').innerText = "Payda 0 Olamaz!";
-      document.getElementById('r-result').innerText = "Tanımsız";
-      return;
-    }
 
     const baseStr = a < 0 ? `(${a}/${b})` : `(${a}/${b})`;
     document.getElementById('r-expr').innerHTML = `${baseStr}<sup>${n}</sup>`;
 
     if (n === 0) {
       document.getElementById('r-badge').innerText = "Sıfırıncı Üs Kuralı";
-      document.getElementById('r-step1').innerText = "Sıfırdan farklı her rasyonel sayının 0. kuvveti 1'dir.";
-      document.getElementById('r-step2').innerText = `${baseStr}⁰ = 1`;
+      document.getElementById('r-step1').innerHTML = "Sıfırdan farklı her rasyonel sayının 0. kuvveti 1'dir.";
+      document.getElementById('r-step2').innerHTML = `${baseStr}<sup>0</sup> = 1`;
       document.getElementById('r-result').innerText = "1";
       return;
     }
@@ -233,18 +229,18 @@
     if (n < 0) {
       document.getElementById('r-badge').innerText = "Negatif Üs: Pay ile Payda Yer Değiştirir";
       let posN = Math.abs(n);
-      document.getElementById('r-step1').innerText = `Ters çevrilmiş hali: (${b}/${a})<sup>${posN}</sup>`;
+      document.getElementById('r-step1').innerHTML = `Ters çevrilmiş hali: (${b}/${a})<sup>${posN}</sup>`;
       
       finalPay = Math.pow(b, posN);
       finalPayda = Math.pow(a, posN);
       
-      document.getElementById('r-step2').innerText = `Ayrı ayrı kuvvet al: ${b}<sup>${posN}</sup> / ${a}<sup>${posN}</sup> = ${finalPay} / ${finalPayda}`;
+      document.getElementById('r-step2').innerHTML = `Ayrı ayrı kuvvet al: ${b}<sup>${posN}</sup> / ${a}<sup>${posN}</sup> = ${finalPay} / ${finalPayda}`;
     } else {
       document.getElementById('r-badge').innerText = "Pozitif Üs: Pay ve Paydanın Kuvveti Alınır";
       finalPay = Math.pow(a, n);
       finalPayda = Math.pow(b, n);
-      document.getElementById('r-step1').innerText = `Ayrı ayrı kuvvet al: ${a}<sup>${n}</sup> / ${b}<sup>${n}</sup>`;
-      document.getElementById('r-step2').innerText = `${finalPay} / ${finalPayda}`;
+      document.getElementById('r-step1').innerHTML = `Ayrı ayrı kuvvet al: ${a}<sup>${n}</sup> / ${b}<sup>${n}</sup>`;
+      document.getElementById('r-step2').innerHTML = `${finalPay} / ${finalPayda}`;
     }
 
     let resVal = finalPay / finalPayda;
@@ -268,11 +264,11 @@
     let simPay = rawPay / div;
     let simPayda = rawPayda / div;
 
-    document.getElementById('o-step1').innerText = `1. Rasyonel Yazım: (${rawPay}/${rawPayda})<sup>${n}</sup>`;
-    document.getElementById('o-step2').innerText = `2. En Sade Hal: (${simPay}/${simPayda})<sup>${n}</sup>`;
+    document.getElementById('o-step1').innerHTML = `1. Rasyonel Yazım: (${rawPay}/${rawPayda})<sup>${n}</sup>`;
+    document.getElementById('o-step2').innerHTML = `2. En Sade Hal: (${simPay}/${simPayda})<sup>${n}</sup>`;
 
     if (n === 0) {
-      document.getElementById('o-step3').innerText = "3. Her sayının 0. kuvveti 1'dir.";
+      document.getElementById('o-step3').innerHTML = "3. Her sayının 0. kuvveti 1'dir.";
       document.getElementById('o-result').innerText = "1";
       return;
     }
@@ -280,11 +276,11 @@
     let finalPay, finalPayda;
     if (n < 0) {
       let posN = Math.abs(n);
-      document.getElementById('o-step3').innerText = `3. Ters Çevir ve Üs Al: (${simPayda}/${simPay})<sup>${posN}</sup> = ${Math.pow(simPayda, posN)} / ${Math.pow(simPay, posN)}`;
+      document.getElementById('o-step3').innerHTML = `3. Ters Çevir ve Üs Al: (${simPayda}/${simPay})<sup>${posN}</sup> = ${Math.pow(simPayda, posN)} / ${Math.pow(simPay, posN)}`;
       finalPay = Math.pow(simPayda, posN);
       finalPayda = Math.pow(simPay, posN);
     } else {
-      document.getElementById('o-step3').innerText = `3. Kuvvet Al: ${Math.pow(simPay, n)} / ${Math.pow(simPayda, n)}`;
+      document.getElementById('o-step3').innerHTML = `3. Kuvvet Al: ${Math.pow(simPay, n)} / ${Math.pow(simPayda, n)}`;
       finalPay = Math.pow(simPay, n);
       finalPayda = Math.pow(simPayda, n);
     }
