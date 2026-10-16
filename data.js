@@ -85,7 +85,7 @@ const egitimVerileri = {
           { ad: "Cebirsel İfadeler Etkinliği", dosya: "8_sinif/6_cebirsel_ifadeler/cebirsel_ifadeler.html" },
           { ad: "Cebirsel İfadeler ve Özdeşlikler Etkinliği", dosya: "8_sinif/6_cebirsel_ifadeler/cebirsel_ifadeler_ve_özdeslikler.html" },
           { ad: "Özdeşlikleri Çarpanlarına Ayırma Etkinliği", dosya: "8_sinif/6_cebirsel_ifadeler/cebirsel_ifadeleri_carpanlara_ayirma.html" },
-          { ad: "Özdeşlikler Etkinliği", dosya: "8_sinif/6_cebirsel_ifadeler/özdeslikler_etkinliği.html" }
+          { ad: "Özdeşlikler Etkinliği", dosya: "8_sinif/6_cebirsel_ifadeler/özdeslikler.html" }
         ]
       },
       {
