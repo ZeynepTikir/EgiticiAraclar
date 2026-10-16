@@ -245,10 +245,12 @@
     }
 
     .chip-root { background-color: var(--primary); }
-    .chip-a { background-color: var(--accent-purple); }
-    .chip-b { background-color: var(--accent-amber); }
-    .chip-green { background-color: var(--accent-green); }
-    .chip-red { background-color: var(--accent-red); }
+    
+    /* DÜZELTME: Sadece çiplardaki yazı rengi siyah (koyu) yapıldı */
+    .chip-purple { background-color: #f3e8ff; color: #0f172a; border: 1px solid #d8b4fe; }
+    .chip-amber { background-color: #fef3c7; color: #0f172a; border: 1px solid #fde68a; }
+    .chip-green { background-color: #dcfce7; color: #0f172a; border: 1px solid #86efac; }
+    .chip-red { background-color: #fee2e2; color: #0f172a; border: 1px solid #fca5a5; }
 
     /* Step Breakdown Box */
     .step-box {
@@ -266,6 +268,50 @@
       text-transform: uppercase;
       color: #64748b;
       margin-bottom: 4px;
+    }
+
+    /* Tab 2 Özel Stiller (Kareköklü Terim Kartları) */
+    .terms-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-top: 15px;
+    }
+
+    .term-card {
+      background: #ffffff;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      text-align: center;
+    }
+
+    .term-card.matched {
+      border-color: var(--accent-green);
+      background-color: #f0fdf4;
+    }
+
+    .term-card.unmatched {
+      border-color: var(--accent-red);
+      background-color: #fef2f2;
+    }
+
+    .term-raw {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--primary);
+      margin-bottom: 6px;
+    }
+
+    .term-simplified {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #334155;
+      background: #f1f5f9;
+      padding: 4px 8px;
+      border-radius: 6px;
+      display: inline-block;
+      margin-bottom: 6px;
     }
 
     /* Quiz Styling */
@@ -331,40 +377,6 @@
       border: 1px solid #fca5a5;
       color: #7f1d1d;
     }
-
-    /* Comparison Table / Panel Specifics */
-    .compare-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 15px;
-    }
-
-    @media (max-width: 640px) {
-      .compare-grid {
-        grid-template-columns: 1fr;
-      }
-      .control-group {
-        flex-direction: column;
-      }
-    }
-
-    .badge-error {
-      background: var(--accent-red);
-      color: white;
-      padding: 2px 8px;
-      border-radius: 4px;
-      font-size: 0.75rem;
-      font-weight: bold;
-    }
-
-    .badge-success {
-      background: var(--accent-green);
-      color: white;
-      padding: 2px 8px;
-      border-radius: 4px;
-      font-size: 0.75rem;
-      font-weight: bold;
-    }
   </style>
 </head>
 <body>
@@ -378,7 +390,7 @@
   <!-- SEKMELER (TABS) -->
   <div class="tabs">
     <button class="tab-btn active" onclick="switchTab(0)">1. İnteraktif Laboratuvar</button>
-    <button class="tab-btn" onclick="switchTab(1)">2. Kurallar ve Görsel Analiz</button>
+    <button class="tab-btn" onclick="switchTab(1)">2. Kök Eşleştirme & Toplanabilirlik Analizi</button>
     <button class="tab-btn" onclick="switchTab(2)">3. 5 Soruluk Test</button>
   </div>
 
@@ -427,48 +439,43 @@
     </div>
   </div>
 
-  <!-- SEKME 2: KURALLAR VE GÖRSEL ANALİZ -->
+  <!-- SEKME 2: KÖK EŞLEŞTİRME VE TOPLANABİLİRLİK ANALİZİ -->
   <div class="tab-content" id="tab-1">
     <div class="visual-card">
-      <h2 style="font-size: 1.3rem; margin-bottom: 15px; color: var(--primary);">Temel Kural ve En Çok Yapılan Hatalar</h2>
-      
-      <!-- Kavramsal Yanılgı Analizi -->
-      <div class="panel">
-        <div class="panel-title">
-          <span>⚠️ Sık Yapılan Yanılgı: √a + √b = √(a+b) midir?</span>
-        </div>
-        <p style="font-size: 0.95rem; margin-bottom: 12px;">
-          Kareköklü sayılarda kök içleri doğrudan <b>toplanamaz veya çıkarılamaz!</b> Aşağıdaki simülasyonda değerleri değiştirerek sonucu inceleyin:
-        </p>
+      <h2 style="font-size: 1.3rem; margin-bottom: 12px; color: var(--primary);">Kök İçi Eşleştirici ve Sadeleştirme Analizi</h2>
+      <p style="font-size: 0.95rem; color: #475569; margin-bottom: 16px;">
+        İki kareköklü ifadenin toplanıp çıkarılabilmesi için önce ikisinin de <b>a√b</b> formuna getirilmesi ve <b>kök içlerinin (b) aynı olması</b> gerekir.
+      </p>
 
+      <div class="panel">
+        <div class="panel-title">🔍 Karşılaştırılacak İki Karekök Seçin</div>
         <div class="control-group">
           <div class="input-wrapper">
-            <label>a = </label>
-            <input type="number" id="misA" value="9" min="1" max="100" onchange="checkMisconception()">
+            <label>1. Sayı: &radic;</label>
+            <input type="number" id="matchN1" value="48" min="1" max="200" onchange="analyzeMatching()">
           </div>
+          <span style="font-weight: bold; font-size: 1.1rem; color: #64748b;">ve</span>
           <div class="input-wrapper">
-            <label>b = </label>
-            <input type="number" id="misB" value="16" min="1" max="100" onchange="checkMisconception()">
+            <label>2. Sayı: &radic;</label>
+            <input type="number" id="matchN2" value="75" min="1" max="200" onchange="analyzeMatching()">
           </div>
         </div>
 
-        <div class="compare-grid" id="misconception-results">
-          <!-- JS Dinamik Üretecek -->
+        <div class="terms-grid" id="match-cards">
+          <!-- JS dinamik kartları üretecek -->
+        </div>
+
+        <div id="match-result-box" style="margin-top: 16px;">
+          <!-- JS sonucu üretecek -->
         </div>
       </div>
 
-      <!-- Kök Dışına Çıkarma Sihirbazı -->
-      <div class="panel" style="margin-top: 20px;">
-        <div class="panel-title">🔍 Karekök İçini a√b Şeklinde Yazma Analizörü</div>
-        <p style="font-size: 0.9rem; margin-bottom: 10px;">Toplama/çıkarma yapabilmek için kök içindeki sayıların <b>en büyük tam kare çarpanı</b> dışarı çıkarılır.</p>
-        <div class="control-group" style="justify-content: flex-start;">
-          <div class="input-wrapper">
-            <label>Sayı (N): </label>
-            <input type="number" id="simN" value="72" min="1" max="500" onchange="analyzeSimplification()">
-          </div>
-        </div>
-        <div id="sim-output" class="step-box" style="border-left-color: var(--accent-purple);">
-          <!-- JS dinamik dolduracak -->
+      <div class="step-box" style="border-left-color: var(--accent-green);">
+        <div class="step-title" style="color: var(--accent-green);">📌 Altın Kural</div>
+        <div style="font-weight: 600; font-size: 0.95rem; color: #1e293b;">
+          1. Sayılar önce <b>a&radic;b</b> biçiminde yazılır (kök dışına en büyük tam kare çarpan çıkarılır).<br>
+          2. Kök içindeki sayı <b>b</b> iki ifadede de eşitse katsayılar işleme alınır.<br>
+          3. Kök içleri eşit değilse sayılar bu şekilde kalır, tek terim yapılamaz!
         </div>
       </div>
     </div>
@@ -556,7 +563,6 @@
   }
 
   // YARDIMCI MATEMATİK FONKSİYONLARI
-  // n sayısını a√b formatına dönüştürür
   function simplifyRadical(n) {
     if (n <= 0) return { coef: 0, rad: 0 };
     let outer = 1;
@@ -588,10 +594,9 @@
 
     const container = document.getElementById('solution-output');
     
-    // HTML Oluşturma
     let html = '';
 
-    // Adım 1: İlk hali
+    // Adım 1
     let term1Str = `${c1 === 1 ? '' : c1 === -1 ? '-' : c1}&radic;${r1}`;
     let term2Str = `${c2 === 1 ? '' : c2 === -1 ? '-' : c2}&radic;${r2}`;
     
@@ -602,13 +607,7 @@
       </div>
     </div>`;
 
-    // Adım 2: a√b Formatına Dönüştürme
-    let simp1Str = `${c1 !== 1 ? c1 + ' · ' : ''}${s1.coef > 1 ? s1.coef : ''}&radic;${s1.rad}`;
-    if (s1.coef === 1 && c1 === 1) simp1Str = `&radic;${s1.rad}`;
-    
-    let simp2Str = `${c2 !== 1 ? c2 + ' · ' : ''}${s2.coef > 1 ? s2.coef : ''}&radic;${s2.rad}`;
-    if (s2.coef === 1 && c2 === 1) simp2Str = `&radic;${s2.rad}`;
-
+    // Adım 2
     let term1Simplified = `${totalCoef1}&radic;${s1.rad}`;
     let term2Simplified = `${totalCoef2}&radic;${s2.rad}`;
 
@@ -623,7 +622,7 @@
       </div>
     </div>`;
 
-    // Adım 3: Kök İçlerini Kontrol Etme ve Toplama/Çıkarma
+    // Adım 3
     if (s1.rad === s2.rad) {
       let finalCoef = op === '+' ? (totalCoef1 + totalCoef2) : (totalCoef1 - totalCoef2);
       let finalResultStr = '';
@@ -645,7 +644,7 @@
         </div>
       </div>`;
 
-      // Görsel Nesne / Çip Temsili
+      // Çip Temsili (Gözükecek şekilde yazılar siyah yapıldı)
       html += `<div class="chip-container">
         <div class="pair-chips">
           <span class="chip chip-purple">${totalCoef1} tane</span>
@@ -657,14 +656,13 @@
           <span class="chip chip-root">&radic;${s1.rad}</span>
         </div>
         <span style="font-size: 1.3rem; font-weight: bold; align-self: center;">=</span>
-        <div class="pair-chips" style="background: #f0fdf4; border-color: #86efac;">
+        <div class="pair-chips">
           <span class="chip chip-green">${finalCoef} tane</span>
           <span class="chip chip-root">&radic;${s1.rad}</span>
         </div>
       </div>`;
 
     } else {
-      // Kök içleri eşit değilse
       html += `<div class="step-box" style="border-left-color: var(--accent-red);">
         <div class="step-title">3. Adım: Kök İçleri Eşit Değil!</div>
         <p style="color: var(--accent-red); font-weight: 600;">
@@ -688,72 +686,55 @@
     calculateMainLab();
   }
 
-  // SEKME 2: GÖRSEL ANALİZ VE KAVRAMSAL YANILGI
-  function checkMisconception() {
-    const a = parseFloat(document.getElementById('misA').value) || 0;
-    const b = parseFloat(document.getElementById('misB').value) || 0;
+  // SEKME 2: KÖK EŞLEŞTİRME VE TOPLANABİLİRLİK ANALİZİ JS
+  function analyzeMatching() {
+    const n1 = parseInt(document.getElementById('matchN1').value) || 1;
+    const n2 = parseInt(document.getElementById('matchN2').value) || 1;
 
-    const sqrtA = Math.sqrt(a);
-    const sqrtB = Math.sqrt(b);
-    const separateSum = sqrtA + sqrtB;
+    const s1 = simplifyRadical(n1);
+    const s2 = simplifyRadical(n2);
 
-    const sumAB = a + b;
-    const combinedSqrt = Math.sqrt(sumAB);
+    const isMatch = s1.rad === s2.rad;
 
-    const isEqual = Math.abs(separateSum - combinedSqrt) < 0.0001;
+    const cardsContainer = document.getElementById('match-cards');
+    const resultBox = document.getElementById('match-result-box');
 
-    const resDiv = document.getElementById('misconception-results');
-    resDiv.innerHTML = `
-      <div style="background: white; padding: 15px; border-radius: 8px; border: 1px solid var(--border);">
-        <div style="font-weight: bold; color: var(--accent-green); margin-bottom: 5px;">
-          DOĞRU YOL: &radic;a + &radic;b
-        </div>
-        <div>&radic;${a} + &radic;${b}</div>
-        <div style="font-size: 1.1rem; font-weight: bold; margin-top: 5px;">
-          = ${sqrtA.toFixed(2)} + ${sqrtB.toFixed(2)} = <span style="color: var(--accent-green);">${separateSum.toFixed(2)}</span>
-        </div>
+    cardsContainer.innerHTML = `
+      <div class="term-card ${isMatch ? 'matched' : 'unmatched'}">
+        <div class="term-raw">&radic;${n1}</div>
+        <div class="term-simplified">${s1.coef > 1 ? s1.coef + '&radic;' + s1.rad : '&radic;' + s1.rad}</div>
+        <div>Kök İçi: <b style="color: var(--primary);">&radic;${s1.rad}</b></div>
       </div>
-
-      <div style="background: white; padding: 15px; border-radius: 8px; border: 1px solid var(--border);">
-        <div style="font-weight: bold; color: var(--accent-red); margin-bottom: 5px;">
-          YANLIŞ YOL: &radic;(a + b)
-        </div>
-        <div>&radic;(${a} + ${b}) = &radic;${sumAB}</div>
-        <div style="font-size: 1.1rem; font-weight: bold; margin-top: 5px;">
-          = <span style="color: var(--accent-red);">${combinedSqrt.toFixed(2)}</span>
-        </div>
-      </div>
-
-      <div style="grid-column: 1 / -1; text-align: center; background: #fff; padding: 10px; border-radius: 8px;">
-        Sonuçlar Eşit mi? 
-        ${isEqual 
-          ? '<span class="badge-success">EŞİT (İstisnai Durum)</span>' 
-          : '<span class="badge-error">EŞİT DEĞİL! (' + separateSum.toFixed(2) + ' ≠ ' + combinedSqrt.toFixed(2) + ')</span>'}
+      <div class="term-card ${isMatch ? 'matched' : 'unmatched'}">
+        <div class="term-raw">&radic;${n2}</div>
+        <div class="term-simplified">${s2.coef > 1 ? s2.coef + '&radic;' + s2.rad : '&radic;' + s2.rad}</div>
+        <div>Kök İçi: <b style="color: var(--primary);">&radic;${s2.rad}</b></div>
       </div>
     `;
-  }
 
-  function analyzeSimplification() {
-    const n = parseInt(document.getElementById('simN').value) || 0;
-    const s = simplifyRadical(n);
-    const out = document.getElementById('sim-output');
-
-    if (n <= 0) {
-      out.innerHTML = 'Lütfen pozitif bir tam sayı girin.';
-      return;
-    }
-
-    if (s.coef === 1) {
-      out.innerHTML = `<b>&radic;${n}</b> sayısı tam kare çarpan içermez. En sade hali yine <b>&radic;${n}</b> olarak kalır.`;
-    } else if (s.rad === 1) {
-      out.innerHTML = `<b>&radic;${n}</b> bir tam kare sayıdır! <b>&radic;${n} = ${s.coef}</b> olarak dışarı çıkar.`;
+    if (isMatch) {
+      const sumCoef = s1.coef + s2.coef;
+      resultBox.innerHTML = `
+        <div class="step-box" style="border-left-color: var(--accent-green); background: #f0fdf4;">
+          <div class="step-title" style="color: var(--accent-green);">✅ KÖK İÇLERİ EŞİT (&radic;${s1.rad})</div>
+          <p style="font-size: 1rem; color: #1e293b;">
+            İki sayının da kök içi <b>&radic;${s1.rad}</b> olduğu için bu iki sayı toplanabilir!
+          </p>
+          <div style="font-size: 1.25rem; font-weight: bold; color: var(--accent-green); margin-top: 6px;">
+            &radic;${n1} + &radic;${n2} = ${s1.coef}&radic;${s1.rad} + ${s2.coef}&radic;${s2.rad} = <b>${sumCoef}&radic;${s1.rad}</b>
+          </div>
+        </div>
+      `;
     } else {
-      const squarePart = s.coef * s.coef;
-      out.innerHTML = `
-        &radic;${n} sayısı çarpanlarına ayrılır: &radic;(${squarePart} · ${s.rad})<br>
-        Burada <b>${squarePart}</b> sayısı <b>${s.coef}²</b> olduğu için dışarı <b>${s.coef}</b> olarak çıkar.<br>
-        <div style="font-size: 1.2rem; font-weight: bold; color: var(--accent-purple); margin-top: 5px;">
-          &radic;${n} = ${s.coef}&radic;${s.rad}
+      resultBox.innerHTML = `
+        <div class="step-box" style="border-left-color: var(--accent-red); background: #fef2f2;">
+          <div class="step-title" style="color: var(--accent-red);">❌ KÖK İÇLERİ FARKLI (&radic;${s1.rad} ≠ &radic;${s2.rad})</div>
+          <p style="font-size: 1rem; color: #1e293b;">
+            Kök içleri eşit olmadığı için bu sayılar <b>toplanamaz veya çıkarılamaz</b>. İfade aynen kalır.
+          </p>
+          <div style="font-size: 1.15rem; font-weight: bold; color: var(--text); margin-top: 6px;">
+            En Sade Hali = ${s1.coef > 1 ? s1.coef + '&radic;' + s1.rad : '&radic;' + s1.rad} + ${s2.coef > 1 ? s2.coef + '&radic;' + s2.rad : '&radic;' + s2.rad}
+          </div>
         </div>
       `;
     }
@@ -773,7 +754,6 @@
     const buttons = card.querySelectorAll('.option-btn');
     const feedback = document.getElementById(`feedback-${qId}`);
 
-    // Butonları devre dışı bırak
     buttons.forEach(b => {
       b.disabled = true;
       b.style.cursor = 'default';
@@ -797,8 +777,7 @@
   // Sayfa yüklendiğinde ilk hesaplamaları yap
   window.onload = function() {
     calculateMainLab();
-    checkMisconception();
-    analyzeSimplification();
+    analyzeMatching();
   };
 </script>
 
