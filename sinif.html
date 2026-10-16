@@ -19,19 +19,21 @@
 </head>
 <body>
 
-    <a href="index.html" class="back-btn">← Sınıf Seçimine Dön</a>
+    <a href="index.html" class="back-dbn back-btn">← Sınıf Seçimine Dön</a>
     <h1 id="baslik">Yükleniyor...</h1>
     
     <div id="icerikContainer"></div>
 
     <script src="data.js"></script>
     <script>
+        // URL'den sınıf bilgisini al (Örn: ?sinif=8_sinif)
         const urlParams = new URLSearchParams(window.location.search);
         const sinifKey = urlParams.get('sinif');
-        const sinifData = egitimVerileri[sinifKey];
 
-        if (sinifData) {
-            document.getElementById('baslik.innerHTML = sinifData.baslik; // Düzeltme
+        // Verinin gelip gelmediğini ve data.js'in yüklenip yüklenmediğini kontrol edelim
+        if (typeof egitimVerileri !== 'undefined' && sinifKey && egitimVerileri[sinifKey]) {
+            const sinifData = egitimVerileri[sinifKey];
+            
             document.title = sinifData.baslik;
             document.getElementById('baslik').innerText = sinifData.baslik;
 
@@ -41,12 +43,17 @@
                 let unitDiv = document.createElement('div');
                 unitDiv.className = 'unit-box';
                 
-                let toolsHtml = unite.araclar.map(arac => `
-                    <a href="${arac.dosya}" class="tool-item">
-                        <span>🧩 ${arac.ad}</span>
-                        <span>▶ Başlat</span>
-                    </a>
-                `).join('');
+                let toolsHtml = "";
+                if (unite.araclar && unite.araclar.length > 0) {
+                    toolsHtml = unite.araclar.map(arac => `
+                        <a href="${arac.dosya}" class="tool-item">
+                            <span>🧩 ${arac.ad}</span>
+                            <span>▶ Başlat</span>
+                        </a>
+                    `).join('');
+                } else {
+                    toolsHtml = `<p style="color: #94a3b8; font-size: 0.9rem; padding: 5px;">Bu ünitede henüz etkinlik bulunmuyor.</p>`;
+                }
 
                 unitDiv.innerHTML = `
                     <h3>📂 ${unite.uniteAdi}</h3>
@@ -55,7 +62,8 @@
                 container.appendChild(unitDiv);
             });
         } else {
-            document.body.innerHTML = "<h2>Sınıf bulunamadı!</h2><a href='index.html'>Ana Sayfaya Dön</a>";
+            document.getElementById('baslik').innerText = "İçerik Bulunamadı!";
+            document.getElementById('icerikContainer').innerHTML = "<p style='text-align:center; color:#64748b;'>Bu sınıfa ait veri bulunamadı veya data.js yüklenemedi.</p><br><div style='text-align:center;'><a href='index.html'>Ana Sayfaya Dön</a></div>";
         }
     </script>
 </body>
