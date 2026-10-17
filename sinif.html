@@ -10,6 +10,7 @@
         body { background-color: var(--bg); color: var(--text); padding: 30px 20px; max-width: 800px; margin: 0 auto; }
         h1 { color: var(--primary); margin-bottom: 20px; text-align: center; }
         .back-btn { display: inline-block; margin-bottom: 20px; color: var(--primary); text-decoration: none; font-weight: 600; }
+        .back-btn:hover { text-decoration: underline; }
         
         .unit-box { background: var(--card); border-radius: 16px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
         .unit-box h3 { margin-bottom: 15px; color: #334155; border-bottom: 2px solid #f1f5f9; padding-bottom: 8px; }
@@ -31,27 +32,40 @@
 
     <script>
         const urlParams = new URLSearchParams(window.location.search);
-        const dersKey = urlParams.get('ders') || 'mat'; // Varsayılan mat
+        const dersKey = urlParams.get('ders') || 'mat';
         const sinifKey = urlParams.get('sinif');
 
-        // Ders adına göre ilgili data scriptini dinamik yükleme
-        const dataScript = document.createElement('script');
-        dataScript.src = dersKey === 'fen' ? 'fen_data.js' : 'mat_data.js';
-        document.head.appendChild(dataScript);
+        // Dinamik Script Yükleyici
+        const script = document.createElement('script');
+        script.src = dersKey === 'fen' ? 'fen_data.js' : 'mat_data.js';
 
-        dataScript.onload = function() {
-            const veriler = dersKey === 'fen' ? (window.fenVerileri || null) : window.matVerileri;
+        // onload callback script.src atanmadan ÖNCE tanımlanmalı
+        script.onload = function() {
+            yukleIcerik();
+        };
+
+        script.onerror = function() {
+            document.getElementById('baslik').innerText = dersKey === 'fen' ? "Fen Bilimleri Henüz Hazır Değil" : "Veri Dosyası Bulunamadı";
+            document.getElementById('icerikContainer').innerHTML = "<p style='text-align:center; color:#64748b;'>İlgili data.js dosyası sunucuda bulunamadı.</p>";
+        };
+
+        document.head.appendChild(script);
+
+        function yukleIcerik() {
+            // mat_data.js içindeki matVerileri veya fen_data.js içindeki fenVerileri
+            const veriler = (typeof matVerileri !== 'undefined') ? matVerileri : ((typeof fenVerileri !== 'undefined') ? fenVerileri : null);
+            
             const container = document.getElementById('icerikContainer');
             const baslikEl = document.getElementById('baslik');
             const geriBtn = document.getElementById('geriBtn');
 
             if (!veriler) {
-                baslikEl.innerText = dersKey === 'fen' ? "Fen Bilimleri Hazırlanıyor" : "Veri Bulunamadı";
-                container.innerHTML = "<p style='text-align:center; color:#64748b;'>Bu ders için veri dosyası henüz eklenmedi.</p>";
+                baslikEl.innerText = "Veri Bulunamadı";
+                container.innerHTML = "<p style='text-align:center; color:#64748b;'>Veri değişkeni okunamadı.</p>";
                 return;
             }
 
-            // DURUM 1: Sadece ders seçilmişse -> Sınıfları Listele (5, 6, 7, 8)
+            // DURUM 1: Sınıf seçilmemişse -> 5, 6, 7, 8 Sınıf Kartlarını Göster
             if (!sinifKey) {
                 const dersAdi = dersKey === 'fen' ? 'Fen Bilimleri' : 'Matematik';
                 baslikEl.innerText = `${dersAdi} - Sınıf Seçiniz`;
@@ -68,7 +82,7 @@
                 html += '</div>';
                 container.innerHTML = html;
             } 
-            // DURUM 2: Sınıf seçilmişse -> Üniteleri ve Araçları Listele
+            // DURUM 2: Sınıf seçilmişse -> Üniteleri ve Etkinlikleri Göster
             else if (veriler[sinifKey]) {
                 const sinifData = veriler[sinifKey];
                 document.title = sinifData.baslik;
@@ -76,10 +90,8 @@
                 geriBtn.href = `sinif.html?ders=${dersKey}`;
                 geriBtn.innerText = "← Sınıf Seçimine Dön";
 
+                let contentHtml = "";
                 sinifData.uniteler.forEach(unite => {
-                    let unitDiv = document.createElement('div');
-                    unitDiv.className = 'unit-box';
-                    
                     let toolsHtml = "";
                     if (unite.araclar && unite.araclar.length > 0) {
                         toolsHtml = unite.araclar.map(arac => `
@@ -92,16 +104,19 @@
                         toolsHtml = `<p style="color: #94a3b8; font-size: 0.9rem; padding: 5px;">Bu ünitede henüz etkinlik bulunmuyor.</p>`;
                     }
 
-                    unitDiv.innerHTML = `
-                        <h3>📂 ${unite.uniteAdi}</h3>
-                        <div class="tool-list">${toolsHtml}</div>
+                    contentHtml += `
+                        <div class="unit-box">
+                            <h3>📂 ${unite.uniteAdi}</h3>
+                            <div class="tool-list">${toolsHtml}</div>
+                        </div>
                     `;
-                    container.appendChild(unitDiv);
                 });
+                container.innerHTML = contentHtml;
             } else {
                 baslikEl.innerText = "Sınıf Bulunamadı!";
+                container.innerHTML = "<p style='text-align:center; color:#64748b;'>Seçilen sınıfa ait veri bulunamadı.</p>";
             }
-        };
+        }
     </script>
 </body>
 </html>
