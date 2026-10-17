@@ -5,42 +5,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Eğitici Araçlar Portalı</title>
     <style>
-        :root { --primary: #0284c7; --bg: #f8fafc; --card: #ffffff; --text: #0f172a; --accent: #9333ea; }
+        :root { --primary: #0284c7; --bg: #f8fafc; --card: #ffffff; --text: #0f172a; --accent: #9333ea; --success: #10b981; }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
-        body { background-color: var(--bg); color: var(--text); padding: 40px 20px; text-align: center; }
-        h1 { color: var(--primary); font-size: 2.2rem; margin-bottom: 10px; }
-        p { color: #64748b; margin-bottom: 40px; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; max-width: 900px; margin: 0 auto; }
-        .card { background: var(--card); padding: 30px; border-radius: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); text-decoration: none; color: var(--text); font-weight: bold; font-size: 1.3rem; transition: all 0.2s; border: 1px solid #e2e8f0; display: flex; flex-direction: column; align-items: center; gap: 15px; }
+        body { background-color: var(--bg); color: var(--text); padding: 50px 20px; text-align: center; }
+        h1 { color: var(--primary); font-size: 2.5rem; margin-bottom: 10px; }
+        p { color: #64748b; margin-bottom: 40px; font-size: 1.1rem; }
+        
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; max-width: 950px; margin: 0 auto; }
+        
+        .card { background: var(--card); padding: 35px 20px; border-radius: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); text-decoration: none; color: var(--text); font-weight: bold; font-size: 1.3rem; transition: all 0.2s; border: 1px solid #e2e8f0; display: flex; flex-direction: column; align-items: center; gap: 15px; }
         .card:hover { transform: translateY(-5px); border-color: var(--primary); background: #f0f9ff; color: var(--primary); }
         
-        /* Lab Üreteci Butonu İçin Özel Vurgu */
+        /* Lab Üreteci Vurgusu */
         .card.lab-generator { border-color: #d8b4fe; background: #faf5ff; color: var(--accent); }
-        .card.lab-generator:hover { border-color: var(--accent); background: #f3e8ff; color: var(--accent); }
+        .card.lab-generator:hover { border-color: #d8b4fe; background: #f3e8ff; color: var(--accent); }
+
+        /* Fen Bilimleri Vurgusu */
+        .card.fen-bilimleri { border-color: #a7f3d0; background: #f0fdf4; color: #047857; }
+        .card.fen-bilimleri:hover { border-color: #34d399; background: #ecfdf5; color: #047857; }
     </style>
 </head>
 <body>
 
-    <h1>Eğitici Araçlar Portalı</h1>
-    <p>Lütfen ders/sınıf seçiniz veya Lab Üreteci'ni kullanınız</p>
+    <h1>🎓 Eğitici Araçlar Portalı</h1>
+    <p>Lütfen bir branş seçin veya yapay zeka ile anında araç üretin</p>
 
-    <div class="grid" id="siniflarGrid">
-        <!-- Lab Üreteci Butonu (Sabit Eklenen Kart) -->
+    <div class="grid">
+        <!-- Lab Üreteci -->
         <a href="lab_ureteci.html" class="card lab-generator">
-            <span style="font-size: 2rem;">🧪</span>
+            <span style="font-size: 2.5rem;">🧪</span>
             <span>Lab Üreteci</span>
+            <span style="font-size: 0.85rem; font-weight: normal; color: #7e22ce;">Yapay zeka ile araç tasarla</span>
         </a>
 
-        <!-- Matematik Kartı (Sabit) -->
-        <a href="sinif.html?sinif=8_sinif" class="card">
-            <span style="font-size: 2rem;">📐</span>
-            <span>Matematik (8. Sınıf)</span>
+        <!-- Matematik (Sınıf seçim sayfasına gider) -->
+        <a href="sinif.html" class="card">
+            <span style="font-size: 2.5rem;">📐</span>
+            <span>Matematik Laboratuvarı</span>
+            <span style="font-size: 0.85rem; font-weight: normal; color: #64748b;">5, 6, 7 ve 8. Sınıf Etkinlikleri</span>
         </a>
 
-        <!-- Fen Bilimleri Kartı (Sabit - Fen için ekleyeceğin sayfaya yönlendirir) -->
-        <a href="fen_sinif.html" class="card" style="border-color: #34d399; background: #f0fdf4; color: #15803d;" id="fenCard">
-            <span style="font-size: 2rem;">⚗️</span>
-            <span>Fen Bilimleri (8. Sınıf)</span>
+        <!-- Fen Bilimleri (İleride fen_sinif.html yapılabilir) -->
+        <a href="fen_sinif.html" class="card fen-bilimleri">
+            <span style="font-size: 2.5rem;">⚗️</span>
+            <span>Fen Bilimleri Laboratuvarı</span>
+            <span style="font-size: 0.85rem; font-weight: normal; color: #047857;">Basınç ve Fen Simülasyonları</span>
         </a>
     </div>
 
