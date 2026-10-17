@@ -55,7 +55,7 @@
     /* Tabs */
     .tabs {
       display: flex;
-      gap: 10px;
+      gap: 8px;
       margin-bottom: 20px;
       border-bottom: 2px solid #e2e8f0;
       padding-bottom: 10px;
@@ -64,13 +64,13 @@
 
     .tab-btn {
       flex: 1;
-      min-width: 200px;
-      padding: 12px 16px;
+      min-width: 190px;
+      padding: 10px 14px;
       border: none;
       background-color: #e2e8f0;
       color: var(--text);
       font-weight: 600;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       border-radius: 8px;
       cursor: pointer;
       transition: all 0.2s ease;
@@ -143,7 +143,8 @@
       border-radius: 6px;
       font-size: 1rem;
       outline: none;
-      width: 140px;
+      width: 130px;
+      text-align: center;
     }
 
     .action-btn-group {
@@ -195,7 +196,6 @@
       text-align: left;
     }
 
-    /* Rules Grid */
     .rules-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -211,33 +211,88 @@
     .rule-box.green { background: #f0fdf4; border-color: #bbf7d0; color: #166534; }
     .rule-box.amber { background: #fffbeb; border-color: #fde68a; color: #92400e; }
 
-    /* Tab 2 Models & Interactive Scale */
-    .model-grid {
+    /* --- GÖRSEL DENGE TERAZİSİ CSS --- */
+    .scale-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 480px;
+      height: 250px;
+      margin: 20px auto;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+    }
+
+    .scale-base {
+      position: absolute;
+      bottom: 0;
+      width: 0;
+      height: 0;
+      border-left: 30px solid transparent;
+      border-right: 30px solid transparent;
+      border-bottom: 70px solid #475569;
+      z-index: 3;
+    }
+
+    .scale-beam-container {
+      position: absolute;
+      bottom: 60px;
+      width: 380px;
+      height: 10px;
+      transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      transform-origin: center center;
+      z-index: 2;
+    }
+
+    .scale-beam {
+      width: 100%;
+      height: 8px;
+      background: #334155;
+      border-radius: 4px;
+      position: relative;
+    }
+
+    .scale-pan-left, .scale-pan-right {
+      position: absolute;
+      top: 8px;
+      width: 110px;
+      height: 90px;
+      border: 3px dashed #94a3b8;
+      border-top: none;
+      border-radius: 0 0 15px 15px;
+      background: #f8fafc;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 5px;
+      font-size: 0.9rem;
+      font-weight: bold;
+      color: #0f172a;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    }
+
+    .scale-pan-left { left: -10px; }
+    .scale-pan-right { right: -10px; }
+
+    .scale-string-left, .scale-string-right {
+      position: absolute;
+      top: -45px;
+      width: 2px;
+      height: 45px;
+      background: #64748b;
+    }
+    .scale-string-left { left: 40px; }
+    .scale-string-right { right: 40px; }
+
+    .scale-inputs-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 20px;
-      margin-bottom: 20px;
-    }
-
-    .model-card {
-      background: #fdf4ff;
-      border: 1px solid #f5d0fe;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      background: #f1f5f9;
+      padding: 15px;
       border-radius: 10px;
-      padding: 20px;
-    }
-
-    .model-card.blue {
-      background: #f0f9ff;
-      border-color: #bae6fd;
-    }
-
-    .scale-box {
-      background: #faf5ff;
-      border: 2px dashed #d8b4fe;
-      border-radius: 12px;
-      padding: 20px;
-      text-align: center;
-      margin-top: 20px;
+      margin-top: 15px;
     }
 
     /* Quiz Options & Feedback */
@@ -309,8 +364,9 @@
   <!-- SEKMELER -->
   <div class="tabs">
     <button class="tab-btn active" onclick="switchTab(0)">1. İnteraktif Laboratuvar</button>
-    <button class="tab-btn" onclick="switchTab(1)">2. Terazi & Asansör Modeli</button>
-    <button class="tab-btn" onclick="switchTab(2)">3. Kazanım Testi (5 Soru)</button>
+    <button class="tab-btn" onclick="switchTab(1)">2. Görsel Denge Terazisi</button>
+    <button class="tab-btn" onclick="switchTab(2)">3. Bilimsel Çevirici (Pratik)</button>
+    <button class="tab-btn" onclick="switchTab(3)">4. Kazanım Testi</button>
   </div>
 
   <!-- SEKME 1: İNTERAKTİF LABORATUVAR -->
@@ -320,7 +376,6 @@
         <span>🧪</span> Virgül Kaydırma Simülatörü
       </div>
 
-      <!-- Kurallar Özet Şeritleri -->
       <div class="rules-grid">
         <div class="rule-box green">
           <b>⬅️ Virgül SOLA Kayarsa:</b> Sayı küçülür, dengesini korumak için 10'un üssü basamak sayısı kadar <b>ARTAR (+)</b>.
@@ -356,55 +411,99 @@
     </div>
   </div>
 
-  <!-- SEKME 2: İNTERAKTİF TERAZİ & ASANSÖR MODELİ -->
+  <!-- SEKME 2: GÖRSEL DENGE TERAZİSİ -->
   <div class="tab-content" id="tab-1">
     <div class="visual-card">
       <div class="card-title">
-        <span>⚖️</span> İnteraktif Denge Terazisi ve Asansör Laboratuvarı
+        <span>⚖️</span> Canlı Görsel Denge Terazisi Simülatörü
       </div>
-      <p style="margin-bottom: 20px; color: #475569;">
-        Matematikte katsayı ile 10'un üssü birbirine görünmez bir terazi ipiyle bağlıdır. Aşağıdaki simülasyonda katsayıyı değiştirdiğinizde, terazinin dengede kalması için üssün nasıl otomatik telafi edildiğini test edin!
+      <p style="color: #475569; font-size: 0.95rem;">
+        Terazinin iki kefesindeki sayısal değerlerin birbirine eşit olup olmadığını <b>görsel olarak</b> gözlemleyin. Değerler eşit olduğunda terazi tam yatay (dengede) durur; eşit olmadığında ağır basan taraf aşağı çöker!
       </p>
 
-      <div class="model-grid">
-        <div class="model-card">
-          <h3 style="color: var(--accent-purple); margin-bottom: 10px;">🛗 Asansör Mantığı</h3>
-          <p style="font-size: 0.90rem; color: #475569;">
-            • Ön taraf <b>küçülürse</b> (aşağı inilirse), arka taraf (üs) yukarı çıkıp <b>artar (+)<br>
-            • Ön taraf <b>büyürse</b> (yukarı çıkılırsa), arka taraf (üs) aşağı inip <b>azalır (-)</b>.
-          </p>
-        </div>
+      <!-- CANLI GÖRSEL TERAZİ GRAFİĞİ -->
+      <div class="scale-wrapper">
+        <div class="scale-base"></div>
+        <div id="scaleBeamContainer" class="scale-beam-container" style="transform: rotate(0deg);">
+          <div class="scale-beam"></div>
+          
+          <!-- Sol Kefe -->
+          <div class="scale-string-left"></div>
+          <div class="scale-pan-left">
+            <span style="font-size:0.75rem; color:#64748b;">Sol Kefe</span>
+            <span id="panLeftText" style="font-size:0.9rem; color:var(--primary-hover);">345,2 × 10<sup>4</sup></span>
+          </div>
 
-        <div class="model-card blue">
-          <h3 style="color: var(--primary-hover); margin-bottom: 10px;">⚖️ Terazi Kefesi Kuralı</h3>
-          <p style="font-size: 0.90rem; color: #475569;">
-            Terazinin bir kefesine ağırlık eklerseniz (sayıyı büyütürseniz), dengede kalması için diğer kefeden ağırlık almanız gerekir (üssü küçültmeniz gerekir).
-          </p>
+          <!-- Sağ Kefe -->
+          <div class="scale-string-right"></div>
+          <div class="scale-pan-right">
+            <span style="font-size:0.75rem; color:#64748b;">Sağ Kefe</span>
+            <span id="panRightText" style="font-size:0.9rem; color:var(--accent-purple);">34,52 × 10<sup>5</sup></span>
+          </div>
         </div>
       </div>
 
-      <!-- İNTERAKTİF DENGE TERAZİSİ WIDGET -->
-      <div class="scale-box">
-        <h3 style="color: var(--accent-purple); margin-bottom: 10px;">🎯 Denge Terazisi Test Paneli</h3>
-        <p style="font-size: 0.95rem; color: #475569; margin-bottom: 15px;">
-          Başlangıç Değeri: <b>540 × 10<sup>5</sup></b><br>
-          Hedefiniz: Katsayısını <b>5,4</b> yapmak (Virgülü sola 2 basamak kaydırmak). Terazi dengesinin bozulmaması için yeni üs kaç olmalıdır?
-        </p>
-
-        <div class="control-group" style="justify-content: center; margin-bottom: 15px;">
-          <label>Katsayı: <b>5,4</b></label>
-          <label>× 10<sup><input type="number" id="scaleExpInput" value="5" style="width: 70px; text-align: center;"></sup></label>
-          <button class="action-btn btn-purple" onclick="checkScaleBalance()">Dengeyi Kontrol Et ⚖️</button>
+      <!-- Terazi Kontrol Paneli -->
+      <div class="scale-inputs-grid">
+        <div>
+          <h4 style="color: var(--primary); margin-bottom: 8px;">Sol Kefe Değeri:</h4>
+          <div style="display: flex; gap: 5px; align-items: center;">
+            <input type="text" id="scaleNum1" value="345.2" oninput="updateScale()" style="width: 80px;">
+            <span>× 10<sup><input type="number" id="scaleExp1" value="4" oninput="updateScale()" style="width: 50px;"></sup></span>
+          </div>
         </div>
 
-        <div id="scaleFeedback" style="font-weight: 600; margin-top: 10px; font-size: 1.05rem;"></div>
+        <div>
+          <h4 style="color: var(--accent-purple); margin-bottom: 8px;">Sağ Kefe Değeri:</h4>
+          <div style="display: flex; gap: 5px; align-items: center;">
+            <input type="text" id="scaleNum2" value="34.52" oninput="updateScale()" style="width: 80px;">
+            <span>× 10<sup><input type="number" id="scaleExp2" value="5" oninput="updateScale()" style="width: 50px;"></sup></span>
+          </div>
+        </div>
       </div>
 
+      <div id="scaleStatusBox" style="margin-top: 15px; padding: 12px; border-radius: 8px; text-align: center; font-weight: 600; background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0;">
+        ⚖️ Terazi Dengede! Her iki ifade de matematiksel olarak aynı değere sahiptir.
+      </div>
     </div>
   </div>
 
-  <!-- SEKME 3: 5 SORULUK TEST -->
+  <!-- SEKME 3: BİLİMSEL ÇEVİRİCİ (YENİ SEKME) -->
   <div class="tab-content" id="tab-2">
+    <div class="visual-card">
+      <div class="card-title">
+        <span>🔍</span> Bilimsel Gösterim Pratik Dönüştürücüsü
+      </div>
+      <p style="color: #475569; font-size: 0.95rem; margin-bottom: 15px;">
+        İstediğiniz herhangi bir ondalık veya tam sayıyı girin; aracımız bu sayıyı bilimsel gösterime ($\mathbf{a \times 10^n}$, $1 \le \vert{}a\vert{} < 10$) dönüştürürken virgülün kaç basamak ve hangi yöne kaydığını adım adım göstersin!
+      </p>
+
+      <div class="panel">
+        <div class="control-group">
+          <label for="converterInput">Dönüştürülecek Sayı:</label>
+          <input type="text" id="converterInput" value="452000" style="width: 180px;" oninput="runConverter()">
+          <button class="action-btn btn-purple" onclick="runConverter()">Hesapla & Göster</button>
+        </div>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px;">
+          <span style="font-size: 0.85rem; font-weight: 600; color: #64748b; align-self: center;">Hızlı Örnekler:</span>
+          <button class="action-btn btn-slate" style="padding: 5px 10px; font-size: 0.85rem;" onclick="setConverterVal('452000')">452000</button>
+          <button class="action-btn btn-slate" style="padding: 5px 10px; font-size: 0.85rem;" onclick="setConverterVal('0.00078')">0,00078</button>
+          <button class="action-btn btn-slate" style="padding: 5px 10px; font-size: 0.85rem;" onclick="setConverterVal('85.4')">85,4</button>
+        </div>
+      </div>
+
+      <div class="math-display">
+        <div id="converterResult" class="main-math">4,52 × 10<sup>5</sup></div>
+      </div>
+
+      <div class="step-box" id="converterSteps">
+        <!-- Adım açıklamaları buraya gelecek -->
+      </div>
+    </div>
+  </div>
+
+  <!-- SEKME 4: KAZANIM TESTİ -->
+  <div class="tab-content" id="tab-3">
     <!-- SORU 1 -->
     <div class="quiz-card" id="q-card-1">
       <div class="quiz-question">Soru 1: 24,5 × 10<sup>5</sup> ifadesinde virgül <b>2 basamak sola</b> kaydırılırsa yeni ifade ne olur?</div>
@@ -566,23 +665,108 @@
     updateDisplay("Değerler başlangıç durumuna sıfırlandı.");
   }
 
-  // TERAZİ DENGE KONTROLÜ (SEKME 2)
-  function checkScaleBalance() {
-    const userExp = parseInt(document.getElementById('scaleExpInput').value);
-    const feedback = document.getElementById('scaleFeedback');
+  // --- SEKME 2: GÖRSEL TERAZİ MANTIĞI ---
+  function updateScale() {
+    let num1Str = document.getElementById('scaleNum1').value.trim().replace(',', '.');
+    let exp1 = parseInt(document.getElementById('scaleExp1').value) || 0;
+    let num2Str = document.getElementById('scaleNum2').value.trim().replace(',', '.');
+    let exp2 = parseInt(document.getElementById('scaleExp2').value) || 0;
 
-    // Başlangıç: 540 x 10^5 -> Katsayı 5,4 yapıldığında sola 2 basamak kaymıştır. Sayı 100 kat küçülmüştür.
-    // Dengeyi korumak için üs 2 artmalıdır: 5 + 2 = 7 olmalıdır.
-    if (userExp === 7) {
-      feedback.style.color = 'var(--accent-green)';
-      feedback.innerHTML = "Tebrikler! 🎉 Terazi dengede! Katsayı 2 basamak sola kayarak küçüldüğü için üs 2 artarak 7 olmalıdır (5,4 × 10<sup>7</sup>).";
+    let val1 = parseFloat(num1Str) * Math.pow(10, exp1);
+    let val2 = parseFloat(num2Str) * Math.pow(10, exp2);
+
+    document.getElementById('panLeftText').innerHTML = `${num1Str.replace('.', ',')} × 10<sup>${exp1}</sup>`;
+    document.getElementById('panRightText').innerHTML = `${num2Str.replace('.', ',')} × 10<sup>${exp2}</sup>`;
+
+    let beamContainer = document.getElementById('scaleBeamContainer');
+    let statusBox = document.getElementById('scaleStatusBox');
+
+    if (isNaN(val1) || isNaN(val2)) {
+      beamContainer.style.transform = 'rotate(0deg)';
+      statusBox.style.background = '#fef2f2';
+      statusBox.style.color = '#991b1b';
+      statusBox.style.borderColor = '#fca5a5';
+      statusBox.innerHTML = "⚠️ Lütfen geçerli sayılar girin!";
+      return;
+    }
+
+    // Tolerans kontrolü (küçük ondalık kaymaları için)
+    let diffRatio = Math.abs(val1 - val2) / Math.max(Math.abs(val1), Math.abs(val2), 1e-9);
+
+    if (diffRatio < 1e-6 || Math.abs(val1 - val2) < 1e-12) {
+      beamContainer.style.transform = 'rotate(0deg)';
+      statusBox.style.background = '#f0fdf4';
+      statusBox.style.color = '#166534';
+      statusBox.style.borderColor = '#bbf7d0';
+      statusBox.innerHTML = "⚖️ Terazi Dengede! Her iki ifade de matematiksel olarak tam olarak aynı değere sahiptir.";
+    } else if (val1 > val2) {
+      // Sol taraf daha ağır, sol aşağı çöker (negatif açı)
+      beamContainer.style.transform = 'rotate(-8deg)';
+      statusBox.style.background = '#fffbeb';
+      statusBox.style.color = '#92400e';
+      statusBox.style.borderColor = '#fde68a';
+      statusBox.innerHTML = "⚖️ Sol Kefe Daha Ağır! Sol tarafın değeri sağ taraftan büyüktür.";
     } else {
-      feedback.style.color = 'var(--accent-red)';
-      feedback.innerHTML = "Terazi dengede değil! 🧐 Katsayı sola 2 basamak kaydıysa, sayı küçülmüştür. Dengeyi korumak için üssü artırmalısın (İpucu: 5 + 2 = ?).";
+      // Sağ taraf daha ağır, sağ aşağı çöker (pozitif açı)
+      beamContainer.style.transform = 'rotate(8deg)';
+      statusBox.style.background = '#fffbeb';
+      statusBox.style.color = '#92400e';
+      statusBox.style.borderColor = '#fde68a';
+      statusBox.innerHTML = "⚖️ Sağ Kefe Daha Ağır! Sağ tarafın değeri sol taraftan büyüktür.";
     }
   }
 
-  // QUIZ AÇIKLAMALARI (SEKME 3)
+  // --- SEKME 3: BİLİMSEL ÇEVİRİCİ MANTIĞI ---
+  function setConverterVal(val) {
+    document.getElementById('converterInput').value = val;
+    runConverter();
+  }
+
+  function runConverter() {
+    let inputStr = document.getElementById('converterInput').value.trim().replace(',', '.');
+    let num = parseFloat(inputStr);
+
+    if (isNaN(num) || num === 0) {
+      document.getElementById('converterResult').innerHTML = "Geçersiz Sayı";
+      document.getElementById('converterSteps').innerHTML = "📌 Lütfen sıfırdan farklı geçerli bir ondalık sayı giriniz.";
+      return;
+    }
+
+    // Bilimsel gösterime çevir
+    // a * 10^n formatı
+    let exponent = Math.floor(Math.log10(Math.abs(num)));
+    let coefficient = num / Math.pow(10, exponent);
+
+    // Eğer katsayı 10 veya daha büyükse veya 1'den küçükse düzelt
+    // Standart bilimsel gösterim: 1 <= |coefficient| < 10
+    while (Math.abs(coefficient) >= 10) {
+      coefficient /= 10;
+      exponent += 1;
+    }
+    while (Math.abs(coefficient) < 1 && coefficient !== 0) {
+      coefficient *= 10;
+      exponent -= 1;
+    }
+
+    // Basamak hassasiyeti (virgülden sonra en fazla 4 hane)
+    coefficient = Math.round(coefficient * 10000) / 10000;
+
+    let coeffStr = coefficient.toString().replace('.', ',');
+    document.getElementById('converterResult').innerHTML = `${coeffStr} × 10<sup>${exponent}</sup>`;
+
+    let originalClean = inputStr.replace('.', ',');
+    let shiftDirection = exponent >= 0 ? "sağa veya sola uygun şekilde" : "";
+    
+    document.getElementById('converterSteps').innerHTML = `
+      <strong>Adım Adım Bilimsel Gösterim Çevirisi:</strong><br>
+      1. Verilen sayı: <b>${originalClean}</b><br>
+      2. Katsayının $\\mathbf{1 \\le |a| < 10}$ aralığında olması gerekir. Bu şartı sağlamak için virgül uygun yönde kaydırılır ve katsayı <b>${coeffStr}</b> yapılır.<br>
+      3. Sayı dengesini korumak için 10'un üssü otomatik olarak <b>${exponent}</b> olarak ayarlanır.<br>
+      <b>Sonuç: ${coeffStr} × 10<sup>${exponent}</sup></b>
+    `;
+  }
+
+  // QUIZ AÇIKLAMALARI (SEKME 4)
   const explanations = {
     1: "Doğru Cevap A! Virgül 2 basamak sola kaydırıldığında sayı 100 kat küçülür, dengeyi sağlamak için üs 2 artar: 5 + 2 = 7 olur (0,245 × 10<sup>7</sup>).",
     2: "Doğru Cevap A! Virgül 2 basamak sağa kaydırıldığında sayı 100 kat büyür, dengeyi sağlamak için üs 2 azalır: -2 - 2 = -4 olur (380 × 10<sup>-4</sup>).",
@@ -618,9 +802,11 @@
     feedback.style.display = 'block';
   }
 
-  // İlk yükleme tetikleyicisi
+  // İlk yükleme tetikleyicileri
   window.onload = function() {
     updateDisplay();
+    updateScale();
+    runConverter();
   };
 </script>
 
