@@ -5,35 +5,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Eğitici Araçlar Portalı</title>
     <style>
-        :root { --primary: #0284c7; --bg: #f8fafc; --card: #ffffff; --text: #0f172a; }
+        :root { --primary: #0284c7; --bg: #f8fafc; --card: #ffffff; --text: #0f172a; --accent: #9333ea; }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
         body { background-color: var(--bg); color: var(--text); padding: 40px 20px; text-align: center; }
         h1 { color: var(--primary); font-size: 2.2rem; margin-bottom: 10px; }
         p { color: #64748b; margin-bottom: 40px; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; max-width: 800px; margin: 0 auto; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; max-width: 900px; margin: 0 auto; }
         .card { background: var(--card); padding: 30px; border-radius: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); text-decoration: none; color: var(--text); font-weight: bold; font-size: 1.3rem; transition: all 0.2s; border: 1px solid #e2e8f0; display: flex; flex-direction: column; align-items: center; gap: 15px; }
         .card:hover { transform: translateY(-5px); border-color: var(--primary); background: #f0f9ff; color: var(--primary); }
+        
+        /* Lab Üreteci Butonu İçin Özel Vurgu */
+        .card.lab-generator { border-color: #d8b4fe; background: #faf5ff; color: var(--accent); }
+        .card.lab-generator:hover { border-color: var(--accent); background: #f3e8ff; color: var(--accent); }
     </style>
 </head>
 <body>
 
     <h1>Eğitici Araçlar Portalı</h1>
-    <p>Lütfen sınıf seviyesini seçiniz</p>
+    <p>Lütfen sınıf seviyesini seçiniz veya Lab Üreteci'ni kullanınız</p>
 
     <div class="grid" id="siniflarGrid">
-        <!-- Dinamik olarak dolacak -->
+        <!-- Lab Üreteci Butonu (Sabit Eklenen Kart) -->
+        <a href="lab_ureteci.html" class="card lab-generator">
+            <span style="font-size: 2rem;">🧪</span>
+            <span>Lab Üreteci</span>
+        </a>
+
+        <!-- Sınıflar data.js dosyasından buraya dinamik gelecek -->
     </div>
 
     <script src="data.js"></script>
     <script>
         const grid = document.getElementById('siniflarGrid');
         
-        for (const [key, sinifBilgisi] of Object.entries(egitimVerileri)) {
-            const card = document.createElement('a');
-            card.href = `sinif.html?sinif=${key}`;
-            card.className = 'card';
-            card.innerHTML = `<span>📚</span> ${sinifBilgisi.baslik}`;
-            grid.appendChild(card);
+        if (typeof egitimVerileri !== 'undefined') {
+            for (const [key, sinifBilgisi] of Object.entries(egitimVerileri)) {
+                const card = document.createElement('a');
+                card.href = `sinif.html?sinif=${key}`;
+                card.className = 'card';
+                card.innerHTML = `<span style="font-size: 2rem;">📚</span> <span>${sinifBilgisi.baslik}</span>`;
+                grid.appendChild(card);
+            }
         }
     </script>
 </body>
