@@ -38,7 +38,7 @@ const fenVerileri = {
       {
         uniteAdi: "1. Mevsimler ve İklim",
         araclar: [
-          { ad: "Mevsimler ve İklim Etkinliği", dosya: "8_sinif/1_mevsimler_iklim/mevsimler_iklim.html" }
+          { ad: "Mevsimler ve İklim Etkinliği", dosya: "fen/8_sinif/1_mevsimler_iklim/mevsimler_iklim.html" }
         ]
       }
     ]
