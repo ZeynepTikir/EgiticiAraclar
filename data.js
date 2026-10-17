@@ -51,10 +51,9 @@ const egitimVerileri = {
           { ad: "Üslü İfadelerde Toplama ve Çıkarma Etkinliği", dosya: "8_sinif/2_uslu_ifadeler/uslu_ifadelerde_toplama_cikarma.html" },
           { ad: "Ondalık ve Rasyonel Sayıların Kuvvetleri Etkinliği", dosya: "8_sinif/2_uslu_ifadeler/ondalik_ve_rasyonel_sayilarin_kuvvetleri.html" },
           { ad: "Üslü İfadelerde Çözümleme Etkinliği", dosya: "8_sinif/2_uslu_ifadeler/cozumleme.html" },
-
           { ad: "Üslü İfadelerde Virgül Kaydırma Etkinliği", dosya: "8_sinif/2_uslu_ifadeler/virgul_kaydirma.html" },
-
-          { ad: "Üslü İfadelerle Bilimsel Gösterim Etkinliği", dosya: "8_sinif/2_uslu_ifadeler/bilimsel_gosterim.html" }
+          { ad: "10'un Kuvvetleriyle Virgül Kaydırma Etkinliği", dosya: "8_sinif/2_uslu_ifadeler/virgul_kaydirma_2.html" },
+          { ad: "Bilimsel Gösterim Etkinliği", dosya: "8_sinif/2_uslu_ifadeler/bilimsel_gosterim.html" }
         ]
       },
       {
