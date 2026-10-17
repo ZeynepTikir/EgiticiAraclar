@@ -1,4 +1,4 @@
-const egitimVerileri = {
+const matVerileri = {
   "5_sinif": {
     baslik: "5. Sınıf",
     uniteler: [
