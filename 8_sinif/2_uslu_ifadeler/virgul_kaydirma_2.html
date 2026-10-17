@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>8. Sınıf Matematik - 10'un Kuvvetleri ve Virgül Kaydırma</title>
+  <style>
+    :root {
+      --primary: #0284c7;
+      --primary-hover: #0369a1;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #0f172a;
+      --accent-green: #16a34a;
+      --accent-red: #dc2626;
+      --accent-purple: #9333ea;
+      --accent-amber: #d97706;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      padding: 20px;
+      line-height: 1.5;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    header h1 {
+      color: var(--primary);
+      font-size: 1.8rem;
+      margin-bottom: 8px;
+    }
+
+    header p {
+      color: #64748b;
+      font-size: 0.95rem;
+    }
+
+    /* Tabs UI */
+    .tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+      background: #e2e8f0;
+      padding: 4px;
+      border-radius: 12px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      background: transparent;
+      color: #475569;
+      font-weight: 600;
+      font-size: 0.95rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: var(--card);
+      color: var(--primary);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    /* Cards */
+    .visual-card, .quiz-card, .panel {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
+      border: 1px solid #e2e8f0;
+    }
+
+    /* Simulation Elements */
+    .display-area {
+      background: #0f172a;
+      color: #fff;
+      padding: 30px 20px;
+      border-radius: 12px;
+      text-align: center;
+      margin-bottom: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .math-expression {
+      font-size: 2.2rem;
+      font-family: 'Courier New', Courier, monospace;
+      letter-spacing: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .number-part {
+      color: #38bdf8;
+      font-weight: bold;
+      transition: all 0.3s;
+    }
+
+    .comma {
+      color: #f43f5e;
+      font-weight: bold;
+      font-size: 2.5rem;
+      animation: pulse 1.5s infinite;
+    }
+
+    .times {
+      color: #94a3b8;
+    }
+
+    .power-part {
+      color: #facc15;
+      font-weight: bold;
+    }
+
+    .power-exponent {
+      vertical-align: super;
+      font-size: 1.4rem;
+      color: #f43f5e;
+    }
+
+    .controls-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    @media (max-width: 600px) {
+      .controls-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .btn {
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 0.95rem;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-hover);
+    }
+
+    .btn-purple {
+      background: var(--accent-purple);
+      color: white;
+    }
+
+    .btn-purple:hover {
+      opacity: 0.9;
+    }
+
+    .preset-btn {
+      background: #f1f5f9;
+      color: var(--text);
+      border: 1px solid #cbd5e1;
+      padding: 8px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .preset-btn:hover {
+      background: #e2e8f0;
+    }
+
+    .pair-chips {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+
+    .chip {
+      background: #f1f5f9;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      color: #475569;
+      border: 1px solid #e2e8f0;
+    }
+
+    .chip-active {
+      background: #e0f2fe;
+      color: var(--primary);
+      border-color: #bae6fd;
+      font-weight: bold;
+    }
+
+    .info-box {
+      background: #f0fdf4;
+      border-left: 4px solid var(--accent-green);
+      padding: 16px;
+      border-radius: 0 8px 8px 0;
+      margin-top: 15px;
+      font-size: 0.95rem;
+    }
+
+    .rule-card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+    }
+
+    .rule-card {
+      border: 2px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 16px;
+      background: #fff;
+      transition: border-color 0.2s;
+    }
+
+    .rule-card.left {
+      border-top: 6px solid var(--primary);
+    }
+
+    .rule-card.right {
+      border-top: 6px solid var(--accent-purple);
+    }
+
+    .rule-card h3 {
+      font-size: 1.1rem;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Quiz Styles */
+    .quiz-question {
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin-bottom: 16px;
+      color: var(--text);
+    }
+
+    .options-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    @media (max-width: 500px) {
+      .options-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .option-btn {
+      background: #f8fafc;
+      border: 2px solid #e2e8f0;
+      padding: 12px 16px;
+      border-radius: 8px;
+      text-align: left;
+      cursor: pointer;
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+
+    .option-btn:hover {
+      border-color: var(--primary);
+      background: #f0f9ff;
+    }
+
+    .feedback {
+      padding: 12px 16px;
+      border-radius: 8px;
+      margin-top: 12px;
+      font-size: 0.9rem;
+      display: none;
+    }
+
+    .feedback.correct {
+      display: block;
+      background: #dcfce7;
+      color: #14532d;
+      border: 1px solid #86efac;
+    }
+
+    .feedback.incorrect {
+      display: block;
+      background: #fee2e2;
+      color: #7f1d1d;
+      border: 1px solid #fca5a5;
+    }
+
+    .balance-visual {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      background: #f8fafc;
+      padding: 20px;
+      border-radius: 12px;
+      margin-top: 15px;
+      border: 1px dashed #cbd5e1;
+    }
+
+    .balance-item {
+      text-align: center;
+    }
+
+    .balance-arrow {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    .arrow-up { color: var(--accent-green); }
+    .arrow-down { color: var(--accent-red); }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>Virgül Kaydırma ve 10'un Kuvvetleri</h1>
+    <p>8. Sınıf Matematik İnteraktif Öğrenme Laboratuvarı</p>
+  </header>
+
+  <!-- Sekme Butonları -->
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('tab1')">🧪 Etkileşimli Simülasyon</button>
+    <button class="tab-btn" onclick="switchTab('tab2')">📐 Mantık & Dengeli Değişim</button>
+    <button class="tab-btn" onclick="switchTab('tab3')">📝 5 Soruluk Test</button>
+  </div>
+
+  <!-- SEKME 1: İNTERAKTİF SİMÜLASYON -->
+  <div id="tab1" class="tab-content active">
+    <div class="visual-card">
+      <h2 style="font-size: 1.2rem; margin-bottom: 16px; color: var(--primary);">Virgül Hareket Laboratuvarı</h2>
+      
+      <!-- Ana Matematiksel Gösterim Ekranı -->
+      <div class="display-area">
+        <div class="math-expression" id="mathDisplay">
+          <!-- JS dinamik olarak dolduracak -->
+        </div>
+      </div>
+
+      <!-- Kontrol Butonları -->
+      <div class="controls-grid">
+        <button class="btn btn-primary" onclick="shiftComma(-1)">
+          ⬅️ Virgülü SOLA Kaydır<br><small style="font-weight:normal">(Sayı Küçülür ⬇️ | Üs Artar ⬆️)</small>
+        </button>
+        <button class="btn btn-purple" onclick="shiftComma(1)">
+          ➡️ Virgülü SAĞA Kaydır<br><small style="font-weight:normal">(Sayı Büyür ⬆️ | Üs Azalır ⬇️)</small>
+        </button>
+      </div>
+
+      <!-- Hazır Örnekler -->
+      <div class="control-group">
+        <label style="font-weight: 600; font-size: 0.9rem; color: #475569;">Örnek Sayı Seçin:</label>
+        <div class="pair-chips">
+          <button class="preset-btn" onclick="loadPreset('0.00045', 6)">0,00045 × 10⁶</button>
+          <button class="preset-btn" onclick="loadPreset('125000', -2)">125000 × 10⁻²</button>
+          <button class="preset-btn" onclick="loadPreset('0.078', -4)">0,078 × 10⁻⁴</button>
+          <button class="preset-btn" onclick="loadPreset('3.14', 5)">3,14 × 10⁵</button>
+          <button class="preset-btn" onclick="resetSim()">🔄 Sıfırla</button>
+        </div>
+      </div>
+
+      <!-- Canlı Açıklama Kutusu -->
+      <div class="info-box" id="stepExplanation">
+        Virgülü hareket ettirmek için butonları kullanın. Eşitliğin bozulmaması için sayının değeri değiştikçe 10'un üssünün nasıl denge sağladığını gözlemleyin.
+      </div>
+    </div>
+  </div>
+
+  <!-- SEKME 2: MANTIK VE KURALLAR -->
+  <div id="tab2" class="tab-content">
+    <div class="visual-card">
+      <h2 style="font-size: 1.2rem; margin-bottom: 16px; color: var(--primary);">Altın Kural: Terazi Mantığı</h2>
+      <p style="margin-bottom: 20px; color: #475569;">
+        Bir sayıda virgülü sağa veya sola kaydırdığımızda sayının değeri değişir. Sayının değerinin değişmesi, 10'un üssü ile **zıt yönlü** bir denge kurar. Eşitliğin korunması için terazi dengede kalmalıdır!
+      </p>
+
+      <div class="rule-card-grid">
+        <div class="rule-card left">
+          <h3>⬅️ Sola Kaydırma</h3>
+          <p>Virgül <strong>SOLA</strong> kaydırıldığında:</p>
+          <ul style="margin-left: 20px; margin-top: 8px; color: #334155;">
+            <li>Katsayı (sayı) <strong>KÜÇÜLÜR</strong> ⬇️</li>
+            <li>10'un üssü kaydırılan basamak sayısı kadar <strong>ARTAR</strong> ⬆️</li>
+          </ul>
+          <div style="background:#f0f9ff; padding:8px; margin-top:10px; border-radius:6px; font-weight:bold; font-size:0.9rem;">
+            Örnek: 450 × 10³ = 4,5 × 10⁵
+          </div>
+        </div>
+
+        <div class="rule-card right">
+          <h3>➡️ Sağa Kaydırma</h3>
+          <p>Virgül <strong>SAĞA</strong> kaydırıldığında:</p>
+          <ul style="margin-left: 20px; margin-top: 8px; color: #334155;">
+            <li>Katsayı (sayı) <strong>BÜYÜR</strong> ⬆️</li>
+            <li>10'un üssü kaydırılan basamak sayısı kadar <strong>AZALIR</strong> ⬇️</li>
+          </ul>
+          <div style="background:#fdf4ff; padding:8px; margin-top:10px; border-radius:6px; font-weight:bold; font-size:0.9rem;">
+            Örnek: 0,007 × 10⁸ = 7 × 10⁵
+          </div>
+        </div>
+      </div>
+
+      <!-- Canlı Dönüşüm Tablosu İnceleyici -->
+      <div style="margin-top: 24px;">
+        <h3 style="font-size: 1.05rem; margin-bottom: 12px;">Eşdeğer Gösterimler İnceleyicisi</h3>
+        <p style="font-size:0.9rem; color:#64748b; margin-bottom:12px;">Aşağıdaki tüm ifadeler birbirine <strong>BİREBİR EŞİTTİR</strong>:</p>
+        
+        <div style="overflow-x: auto;">
+          <table style="width: 100%; border-collapse: collapse; text-align: center; font-size: 0.95rem;">
+            <thead>
+              <tr style="background: #f1f5f9; border-bottom: 2px solid #cbd5e1;">
+                <th style="padding: 10px;">Sayısal İfade</th>
+                <th style="padding: 10px;">Katsayı Durumu</th>
+                <th style="padding: 10px;">Üs Durumu</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid #e2e8f0;">
+                <td style="padding: 10px; font-family: monospace; font-weight: bold;">0,00052 × 10⁸</td>
+                <td style="color: var(--accent-red);">En Küçük Katsayı</td>
+                <td style="color: var(--accent-green);">En Büyük Üs (8)</td>
+              </tr>
+              <tr style="border-bottom: 1px solid #e2e8f0; background: #fafafa;">
+                <td style="padding: 10px; font-family: monospace; font-weight: bold;">0,052 × 10⁶</td>
+                <td>100 Kat Büyüdü (2 sağ)</td>
+                <td>2 Azaldı (6)</td>
+              </tr>
+              <tr style="border-bottom: 1px solid #e2e8f0;">
+                <td style="padding: 10px; font-family: monospace; font-weight: bold;">5,2 × 10⁴</td>
+                <td style="color: var(--primary); font-weight: bold;">Standart Form</td>
+                <td>4 Olana Kadar Azaldı</td>
+              </tr>
+              <tr style="border-bottom: 1px solid #e2e8f0; background: #fafafa;">
+                <td style="padding: 10px; font-family: monospace; font-weight: bold;">520 × 10²</td>
+                <td style="color: var(--accent-green);">En Büyük Katsayı</td>
+                <td style="color: var(--accent-red);">En Küçük Üs (2)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEKME 3: 5 SORULUK TEST -->
+  <div id="tab3" class="tab-content">
+    
+    <!-- SORU 1 -->
+    <div class="quiz-card" id="qCard1">
+      <div class="quiz-question">Soru 1: 0,00038 × 10⁹ = 3,8 × 10ⁿ eşitliğini sağlayan "n" değeri kaçtır?</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkQ(1, this, false)">A) 13</button>
+        <button class="option-btn" onclick="checkQ(1, this, true)">B) 5</button>
+        <button class="option-btn" onclick="checkQ(1, this, false)">C) 4</button>
+        <button class="option-btn" onclick="checkQ(1, this, false)">D) 12</button>
+      </div>
+      <div class="feedback" id="fb1"></div>
+    </div>
+
+    <!-- SORU 2 -->
+    <div class="quiz-card" id="qCard2">
+      <div class="quiz-question">Soru 2: 14500 × 10⁻⁶ sayısı aşağıdakilerden hangisine eşittir?</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkQ(2, this, false)">A) 1,45 × 10⁻¹</button>
+        <button class="option-btn" onclick="checkQ(2, this, true)">B) 1,45 × 10⁻²</button>
+        <button class="option-btn" onclick="checkQ(2, this, false)">C) 14,5 × 10⁻⁴</button>
+        <button class="option-btn" onclick="checkQ(2, this, false)">D) 145 × 10⁻³</button>
+      </div>
+      <div class="feedback" id="fb2"></div>
+    </div>
+
+    <!-- SORU 3 -->
+    <div class="quiz-card" id="qCard3">
+      <div class="quiz-question">Soru 3: Virgül 3 basamak SAĞA kaydırıldığında 10'un üssünde nasıl bir değişim gerçekleşir?</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkQ(3, this, false)">A) 3 artar</button>
+        <button class="option-btn" onclick="checkQ(3, this, true)">B) 3 azalır</button>
+        <button class="option-btn" onclick="checkQ(3, this, false)">C) Değişmez</button>
+        <button class="option-btn" onclick="checkQ(3, this, false)">D) 10³ ile çarpılır</button>
+      </div>
+      <div class="feedback" id="fb3"></div>
+    </div>
+
+    <!-- SORU 4 -->
+    <div class="quiz-card" id="qCard4">
+      <div class="quiz-question">Soru 4: 0,085 × 10ᵃ = 850 × 10⁴ olduğuna göre "a" kaçtır?</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkQ(4, this, false)">A) 0</button>
+        <button class="option-btn" onclick="checkQ(4, this, false)">B) 6</button>
+        <button class="option-btn" onclick="checkQ(4, this, true)">C) 8</button>
+        <button class="option-btn" onclick="checkQ(4, this, false)">D) 10</button>
+      </div>
+      <div class="feedback" id="fb4"></div>
+    </div>
+
+    <!-- SORU 5 -->
+    <div class="quiz-card" id="qCard5">
+      <div class="quiz-question">Soru 5: 0,0000072 sayısının katsayısı 72 yapılacak şekilde 10'un kuvveti olarak gösterimi aşağıdakilerden hangisidir?</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkQ(5, this, false)">A) 72 × 10⁻⁵</button>
+        <button class="option-btn" onclick="checkQ(5, this, false)">B) 72 × 10⁻⁶</button>
+        <button class="option-btn" onclick="checkQ(5, this, true)">C) 72 × 10⁻⁷</button>
+        <button class="option-btn" onclick="checkQ(5, this, false)">D) 72 × 10⁻⁸</button>
+      </div>
+      <div class="feedback" id="fb5"></div>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+  // SIMULATION STATE
+  let currentRawNumber = "0.00045";
+  let currentExponent = 6;
+  let defaultRaw = "0.00045";
+  let defaultExp = 6;
+
+  // TAB SWITCHER
+  function switchTab(tabId) {
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+    
+    event.target.classList.add('active');
+    document.getElementById(tabId).classList.add('active');
+  }
+
+  // SIMULATION LOGIC
+  function updateDisplay(lastActionText = "") {
+    const mathDisplay = document.getElementById('mathDisplay');
+    const infoBox = document.getElementById('stepExplanation');
+
+    // Format display string with Turkish comma
+    let numStr = currentRawNumber.replace('.', ',');
+    
+    mathDisplay.innerHTML = `
+      <span class="number-part">${numStr}</span>
+      <span class="times">×</span>
+      <span class="power-part">10<span class="power-exponent">${currentExponent}</span></span>
+    `;
+
+    if(lastActionText) {
+      infoBox.innerHTML = lastActionText;
+    }
+  }
+
+  function shiftComma(direction) {
+    // direction: +1 (SAĞA), -1 (SOLA)
+    let num = parseFloat(currentRawNumber);
+    let oldExp = currentExponent;
+
+    if (direction === 1) {
+      // Sağa kaydırma: Sayı 10 ile çarpılır, üs 1 azalır
+      num = num * 10;
+      currentExponent -= 1;
+      
+      // Precision fixing for JS floats
+      currentRawNumber = cleanFloat(num);
+      
+      let msg = `➡️ <strong>Virgül 1 basamak SAĞA kaydırıldı.</strong><br>`;
+      msg += `• Katsayı 10 kat <strong>BÜYÜDÜ</strong> (Sayı büyüdü).<br>`;
+      msg += `• Dengelenmesi için 10'un üssü 1 <strong>AZALDI</strong> (${oldExp} → ${currentExponent}).`;
+      updateDisplay(msg);
+
+    } else if (direction === -1) {
+      // Sola kaydırma: Sayı 10'a bölünür, üs 1 artar
+      num = num / 10;
+      currentExponent += 1;
+      
+      currentRawNumber = cleanFloat(num);
+
+      let msg = `⬅️ <strong>Virgül 1 basamak SOLA kaydırıldı.</strong><br>`;
+      msg += `• Katsayı 10 kat <strong>KÜÇÜLDÜ</strong> (Sayı küçüldü).<br>`;
+      msg += `• Dengelenmesi için 10'un üssü 1 <strong>ARTTI</strong> (${oldExp} → ${currentExponent}).`;
+      updateDisplay(msg);
+    }
+  }
+
+  function cleanFloat(val) {
+    // Avoids 0.00045 * 10 = 0.0045000000000000005 bug
+    let str = val.toPrecision(12);
+    return parseFloat(str).toString();
+  }
+
+  function loadPreset(raw, exp) {
+    currentRawNumber = raw;
+    currentExponent = exp;
+    defaultRaw = raw;
+    defaultExp = exp;
+    updateDisplay(`Örnek yüklendi: <strong>${raw.replace('.', ',')} × 10<sup>${exp}</sup></strong>. Virgülü sağa veya sola kaydırarak inceleyebilirsiniz.`);
+  }
+
+  function resetSim() {
+    currentRawNumber = defaultRaw;
+    currentExponent = defaultExp;
+    updateDisplay("Simülasyon başlangıç durumuna sıfırlandı.");
+  }
+
+  // QUIZ SYSTEM
+  const explanations = {
+    1: "<strong>Açıklama:</strong> 0,00038 sayısını 3,8 yapmak için virgül <strong>4 basamak SAĞA</strong> kaydırılır. Sayı büyüdüğü için 10'un üssü 4 basamak AZALMALIDIR. 9 - 4 = <strong>5</strong> olur.",
+    2: "<strong>Açıklama:</strong> 14500 sayısında virgül en sondadır. Sayıyı 1,45 yapmak için virgül <strong>4 basamak SOLA</strong> kaydırılır. Sayı küçüldüğü için üs 4 ARTAR. -6 + 4 = <strong>-2</strong> olur. Cevap: 1,45 × 10⁻²",
+    3: "<strong>Açıklama:</strong> Virgül SAĞA kaydırıldığında katsayının değeri büyür. Eşitliğin bozulmaması (terazi dengesi) için 10'un üssü kaydırılan basamak sayısı kadar <strong>AZALMALIDIR</strong>.",
+    4: "<strong>Açıklama:</strong> 850 × 10⁴ ifadesini 0,085 cinsinden yazalım. 850'den 0,085'e ulaşmak için virgül <strong>4 basamak SOLA</strong> kaydırılır. Sayı küçüldüğü için üs 4 ARTAR: 4 + 4 = <strong>8</strong> olur (a = 8).",
+    5: "<strong>Açıklama:</strong> 0,0000072 sayısını 72 yapmak için virgül <strong>7 basamak SAĞA</strong> kaydırılır. Sayı büyüdüğü için 10'un üssü 0'dan 7 AZALARAK <strong>-7</strong> olur. Gösterim: 72 × 10⁻⁷"
+  };
+
+  function checkQ(qId, btn, isCorrect) {
+    const card = document.getElementById(`qCard${qId}`);
+    const feedback = document.getElementById(`fb${qId}`);
+    const buttons = card.querySelectorAll('.option-btn');
+
+    // Disable all options in this question card
+    buttons.forEach(b => {
+      b.disabled = true;
+      b.style.cursor = 'default';
+    });
+
+    if (isCorrect) {
+      btn.style.background = "#dcfce7";
+      btn.style.borderColor = "#22c55e";
+      btn.style.color = "#15803d";
+      feedback.className = "feedback correct";
+      feedback.innerHTML = "✅ <strong>Tebrikler! Doğru Cevap.</strong><br>" + explanations[qId];
+    } else {
+      btn.style.background = "#fee2e2";
+      btn.style.borderColor = "#ef4444";
+      btn.style.color = "#b91c1c";
+      feedback.className = "feedback incorrect";
+      feedback.innerHTML = "❌ <strong>Yanlış Cevap.</strong><br>" + explanations[qId];
+    }
+  }
+
+  // INITIALIZE EKRAN
+  window.onload = function() {
+    updateDisplay();
+  };
+</script>
+
+</body>
+</html>
