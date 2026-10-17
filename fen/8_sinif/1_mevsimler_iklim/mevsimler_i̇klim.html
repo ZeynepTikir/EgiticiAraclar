@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>8. Sınıf Fen Bilimleri - Mevsimler ve İklim İnteraktif Laboratuvarı</title>
+  <style>
+    :root {
+      --primary: #0284c7;
+      --primary-hover: #0369a1;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #0f172a;
+      --accent-green: #16a34a;
+      --accent-red: #dc2626;
+      --accent-purple: #9333ea;
+      --accent-amber: #d97706;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    header h1 {
+      font-size: 1.8rem;
+      color: var(--primary);
+      margin-bottom: 6px;
+    }
+
+    header p {
+      color: #64748b;
+      font-size: 0.95rem;
+    }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      gap: 8px;
+      background: #e2e8f0;
+      padding: 6px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 10px 16px;
+      border: none;
+      background: transparent;
+      color: #475569;
+      font-weight: 600;
+      font-size: 0.9rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .tab-btn.active {
+      background: var(--card);
+      color: var(--primary);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    /* Cards */
+    .visual-card, .quiz-card, .info-card {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+      border: 1px solid #e2e8f0;
+    }
+
+    /* Controls & Panels */
+    .panel {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .control-group label {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #334155;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .preset-btn {
+      padding: 8px 12px;
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      color: var(--text);
+      transition: 0.2s;
+    }
+
+    .preset-btn:hover, .preset-btn.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary-hover);
+    }
+
+    .preset-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    /* Chips */
+    .pair-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .chip {
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      background: #f1f5f9;
+      color: #334155;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .chip.green { background: #dcfce7; color: var(--accent-green); }
+    .chip.red { background: #fee2e2; color: var(--accent-red); }
+    .chip.purple { background: #f3e8ff; color: var(--accent-purple); }
+    .chip.amber { background: #fef3c7; color: var(--accent-amber); }
+
+    /* Canvas Area */
+    .simulation-area {
+      position: relative;
+      width: 100%;
+      height: 380px;
+      background: #090d16;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    /* Output Grid */
+    .data-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .data-item {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      padding: 12px;
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    .data-item .val {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-top: 4px;
+    }
+
+    .data-item .lbl {
+      font-size: 0.75rem;
+      color: #64748b;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    /* Comparison Table / Interactive Classifier */
+    .compare-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    @media (max-width: 640px) {
+      .compare-container { grid-template-columns: 1fr; }
+    }
+
+    .compare-box {
+      border: 2px dashed #cbd5e1;
+      border-radius: 12px;
+      padding: 16px;
+      background: #fafafa;
+    }
+
+    .compare-box h3 {
+      font-size: 1rem;
+      margin-bottom: 12px;
+      text-align: center;
+    }
+
+    .item-card {
+      background: white;
+      padding: 10px 14px;
+      border-radius: 8px;
+      border: 1px solid #e2e8f0;
+      margin-bottom: 8px;
+      font-size: 0.9rem;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.2s;
+    }
+
+    .item-card:hover {
+      border-color: var(--primary);
+      transform: translateY(-1px);
+    }
+
+    /* Quiz */
+    .quiz-card {
+      border-left: 4px solid var(--primary);
+    }
+
+    .quiz-card h3 {
+      font-size: 1rem;
+      margin-bottom: 12px;
+      color: var(--text);
+    }
+
+    .options-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .option-btn {
+      padding: 12px 16px;
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      text-align: left;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .option-btn:hover {
+      background: #f1f5f9;
+      border-color: #94a3b8;
+    }
+
+    .feedback {
+      margin-top: 12px;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      display: none;
+    }
+
+    .feedback.show {
+      display: block;
+    }
+
+    .feedback.correct {
+      background: #dcfce7;
+      color: #15803d;
+      border: 1px solid #86efac;
+    }
+
+    .feedback.wrong {
+      background: #fee2e2;
+      color: #b91c1c;
+      border: 1px solid #fca5a5;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h1>Mevsimler ve İklim İnteraktif Laboratuvarı</h1>
+      <p>8. Sınıf Fen Bilimleri - Dünya'nın Hareketleri, Eksen Eğikliği ve Hava Olayları</p>
+    </header>
+
+    <!-- TAB NAVIGATION -->
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab(0)">1. Dünya ve Mevsim Simülasyonu</button>
+      <button class="tab-btn" onclick="switchTab(1)">2. İklim ve Hava Olayları</button>
+      <button class="tab-btn" onclick="switchTab(2)">3. Kazanım Testi (5 Soru)</button>
+    </div>
+
+    <!-- TAB 1: SIMULATION -->
+    <div class="tab-content active" id="tab-0">
+      <div class="visual-card">
+        <div class="panel">
+          <div class="control-group">
+            <label>Kritik Tarih Seçimi (Yıllık Dolanım)</label>
+            <div class="preset-group">
+              <button class="preset-btn active" onclick="setPreset(0)">21 Haziran</button>
+              <button class="preset-btn" onclick="setPreset(90)">23 Eylül</button>
+              <button class="preset-btn" onclick="setPreset(180)">21 Aralık</button>
+              <button class="preset-btn" onclick="setPreset(270)">21 Mart</button>
+            </div>
+          </div>
+          <div class="control-group">
+            <label>Eksen Eğikliği Durumu</label>
+            <div class="preset-group">
+              <button class="preset-btn active" id="tilt-on-btn" onclick="toggleTilt(true)">Var (23.5°)</button>
+              <button class="preset-btn" id="tilt-off-btn" onclick="toggleTilt(false)">Yok (0°)</button>
+            </div>
+          </div>
+          <div class="control-group">
+            <label>İncelenen Yarım Küre</label>
+            <div class="preset-group">
+              <button class="preset-btn active" id="hem-n-btn" onclick="setHemisphere('N')">Kuzey (KYK)</button>
+              <button class="preset-btn" id="hem-s-btn" onclick="setHemisphere('S')">Güney (GYK)</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="control-group" style="margin-bottom: 12px;">
+          <label for="orbit-range">Yörünge Konumu (Açı Manuel Ayar): <span id="angle-val">0°</span></label>
+          <input type="range" id="orbit-range" min="0" max="359" value="0" style="width:100%" oninput="updateOrbit(this.value)">
+        </div>
+
+        <div class="simulation-area">
+          <canvas id="simCanvas"></canvas>
+        </div>
+
+        <div class="data-grid">
+          <div class="data-item">
+            <div class="lbl">Tarih / Konum</div>
+            <div class="val" id="disp-date">21 Haziran</div>
+          </div>
+          <div class="data-item">
+            <div class="lbl">Güneş Işığı Açısı</div>
+            <div class="val" id="disp-angle">83.5° (Dik / Dike Yakın)</div>
+          </div>
+          <div class="data-item">
+            <div class="lbl">Yaşanan Mevsim</div>
+            <div class="val" id="disp-season">Yaz</div>
+          </div>
+          <div class="data-item">
+            <div class="lbl">Gündüz / Gece Süresi</div>
+            <div class="val" id="disp-daylight">Uzun Gündüz</div>
+          </div>
+          <div class="data-item">
+            <div class="lbl">Birim Alana Düşen Enerji</div>
+            <div class="val" id="disp-energy">Yüksek</div>
+          </div>
+          <div class="data-item">
+            <div class="lbl">Gölge Boyu (Öğle)</div>
+            <div class="val" id="disp-shadow">Çok Kısa</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 2: CLIMATE vs WEATHER -->
+    <div class="tab-content" id="tab-1">
+      <div class="visual-card">
+        <h2 style="font-size: 1.1rem; margin-bottom: 10px; color: var(--primary);">İklim ve Hava Olayları Karşılaştırması</h2>
+        <p style="font-size: 0.88rem; color: #64748b; margin-bottom: 16px;">
+          Aşağıdaki özellik kartlarına tıklayarak doğru kategoriye yönlendirin ve farkları pekiştirin.
+        </p>
+
+        <div class="compare-container">
+          <div class="compare-box" id="box-iklim">
+            <h3 style="color: var(--primary);">İKLİM</h3>
+            <div id="list-iklim"></div>
+          </div>
+          <div class="compare-box" id="box-hava">
+            <h3 style="color: var(--accent-purple);">HAVA OLAYLARI</h3>
+            <div id="list-hava"></div>
+          </div>
+        </div>
+
+        <div style="margin-top:20px;">
+          <h3 style="font-size: 0.95rem; margin-bottom: 8px;">Kararsız Kartlar (Sınıflandırmak için Tıkla):</h3>
+          <div id="unclassified-pool" class="pair-chips" style="min-height: 50px;"></div>
+        </div>
+      </div>
+
+      <!-- Key Dates Summary Card -->
+      <div class="visual-card">
+        <h2 style="font-size: 1.1rem; margin-bottom: 12px; color: var(--primary);">Mevsimlerin Dönüm Noktaları Özeti</h2>
+        <div class="pair-chips">
+          <span class="chip green">21 Haziran: KYK'da Yaz Başlangıcı - En Uzun Gündüz (Yengeç Dönencesi'ne Dik)</span>
+          <span class="chip amber">23 Eylül: Sonbahar Ekinoksu - Gece/Gündüz Eşitliği (12s / 12s)</span>
+          <span class="chip red">21 Aralık: KYK'da Kış Başlangıcı - En Uzun Gece (Oğlak Dönencesi'ne Dik)</span>
+          <span class="chip purple">21 Mart: İlkbahar Ekinoksu - Gece/Gündüz Eşitliği (12s / 12s)</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: QUIZ -->
+    <div class="tab-content" id="tab-2">
+      <!-- Q1 -->
+      <div class="quiz-card" id="q1">
+        <h3>Soru 1: Dünya'nın dönme ekseninin 23,5° eğik olmasının temel sonucu aşağıdakilerden hangisidir?</h3>
+        <div class="options-grid">
+          <button class="option-btn" onclick="checkQ(1, this, false)">A) Dünya'nın kendi etrafında dönerek gece ve gündüzü oluşturması</button>
+          <button class="option-btn" onclick="checkQ(1, this, true)">B) Yıl boyunca bir bölgeye düşen güneş ışığı açısının değişmesi ve mevsimlerin oluşması</button>
+          <button class="option-btn" onclick="checkQ(1, this, false)">C) Dünya'nın Güneş'e olan mesafesinin yıl içinde değişmesi</button>
+          <button class="option-btn" onclick="checkQ(1, this, false)">D) Yüksek basınç ve alçak basınç alanlarının sürekli sabit kalması</button>
+        </div>
+        <div class="feedback" id="fb-1"></div>
+      </div>
+
+      <!-- Q2 -->
+      <div class="quiz-card" id="q2">
+        <h3>Soru 2: 21 Haziran tarihinde Güneş ışınları Yengeç Dönencesi'ne dik açıyla (90°) gelmektedir. Bu durumla ilgili hangisi doğrudur?</h3>
+        <div class="options-grid">
+          <button class="option-btn" onclick="checkQ(2, this, false)">A) Güney Yarım Küre'de yaz mevsimi başlar.</button>
+          <button class="option-btn" onclick="checkQ(2, this, false)">B) Kuzey Yarım Küre'de en uzun gece yaşanır.</button>
+          <button class="option-btn" onclick="checkQ(2, this, true)">C) Kuzey Yarım Küre'de bir cismin öğle vaktindeki gölge boyu en kısa seviyededir.</button>
+          <button class="option-btn" onclick="checkQ(2, this, false)">D) Dünya genelinde gece ve gündüz süreleri eşittir.</button>
+        </div>
+        <div class="feedback" id="fb-2"></div>
+      </div>
+
+      <!-- Q3 -->
+      <div class="quiz-card" id="q3">
+        <h3>Soru 3: "Erzurum'da kışlar soğuk ve kar yağışlı geçer; yazlar ise kısa ve serindir." ifadesi hangisine örnektir ve ilgili bilim dalı nedir?</h3>
+        <div class="options-grid">
+          <button class="option-btn" onclick="checkQ(3, this, false)">A) Hava Olayı - Meteoroloji</button>
+          <button class="option-btn" onclick="checkQ(3, this, true)">B) İklim - Klimatoloji</button>
+          <button class="option-btn" onclick="checkQ(3, this, false)">C) Hava Olayı - Klimatoloji</button>
+          <button class="option-btn" onclick="checkQ(3, this, false)">D) İklim - Meteoroloji</button>
+        </div>
+        <div class="feedback" id="fb-3"></div>
+      </div>
+
+      <!-- Q4 -->
+      <div class="quiz-card" id="q4">
+        <h3>Soru 4: Eğer Dünya'nın eksen eğikliği ortadan kalksaydı (0° olsaydı) aşağıdakilerden hangisi gerçekleşirdi?</h3>
+        <div class="options-grid">
+          <button class="option-btn" onclick="checkQ(4, this, false)">A) Mevsimler arası sıcaklık farkları daha belirgin hale gelirdi.</button>
+          <button class="option-btn" onclick="checkQ(4, this, false)">B) Kutup bölgeleri ekvatordan daha sıcak olurdu.</button>
+          <button class="option-btn" onclick="checkQ(4, this, true)">C) Yıl boyunca bir bölgede güneş ışınlarının geliş açısı değişmez, mevsimler oluşmazdı.</button>
+          <button class="option-btn" onclick="checkQ(4, this, false)">D) Gece ve gündüz süreleri yıl boyunca sürekli değişmeye devam ederdi.</button>
+        </div>
+        <div class="feedback" id="fb-4"></div>
+      </div>
+
+      <!-- Q5 -->
+      <div class="quiz-card" id="q5">
+        <h3>Soru 5: Rüzgarın yönü ve oluşumuyla ilgili verilen ifadelerden hangisi DOĞRUDUR?</h3>
+        <div class="options-grid">
+          <button class="option-btn" onclick="checkQ(5, this, true)">A) Yüksek basınç alanından (soğuk) alçak basınç alanına (sıcak) doğru yatay hava hareketidir.</button>
+          <button class="option-btn" onclick="checkQ(5, this, false)">B) Alçak basınç alanından yüksek basınç alanına doğru dikine harekettir.</button>
+          <button class="option-btn" onclick="checkQ(5, this, false)">C) Sıcaklığın yüksek olduğu yerlerde yüksek basınç alanı oluşur.</button>
+          <button class="option-btn" onclick="checkQ(5, this, false)">D) Rüzgar her zaman denizden karaya doğru esmek zorundadır.</button>
+        </div>
+        <div class="feedback" id="fb-5"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // --- TAB SYSTEM ---
+    function switchTab(idx) {
+      const tabs = document.querySelectorAll('.tab-btn');
+      const contents = document.querySelectorAll('.tab-content');
+      tabs.forEach((t, i) => {
+        t.classList.toggle('active', i === idx);
+        contents[i].classList.toggle('active', i === idx);
+      });
+      if (idx === 0) {
+        drawSim();
+      }
+    }
+
+    // --- TAB 1: SIMULATION LOGIC ---
+    const canvas = document.getElementById('simCanvas');
+    const ctx = canvas.getContext('2d');
+
+    let currentAngle = 0; // 0: 21 Haziran, 90: 23 Eylül, 180: 21 Aralık, 270: 21 Mart
+    let axisTilt = true;
+    let selectedHemisphere = 'N'; // 'N' or 'S'
+
+    function resizeCanvas() {
+      canvas.width = canvas.parentElement.clientWidth;
+      canvas.height = canvas.parentElement.clientHeight;
+      drawSim();
+    }
+    window.addEventListener('resize', resizeCanvas);
+
+    function updateOrbit(val) {
+      currentAngle = parseInt(val);
+      document.getElementById('angle-val').innerText = currentAngle + '°';
+      updatePresetUI();
+      drawSim();
+      updateDataCards();
+    }
+
+    function setPreset(angle) {
+      document.getElementById('orbit-range').value = angle;
+      updateOrbit(angle);
+    }
+
+    function toggleTilt(hasTilt) {
+      axisTilt = hasTilt;
+      document.getElementById('tilt-on-btn').classList.toggle('active', hasTilt);
+      document.getElementById('tilt-off-btn').classList.toggle('active', !hasTilt);
+      drawSim();
+      updateDataCards();
+    }
+
+    function setHemisphere(hem) {
+      selectedHemisphere = hem;
+      document.getElementById('hem-n-btn').classList.toggle('active', hem === 'N');
+      document.getElementById('hem-s-btn').classList.toggle('active', hem === 'S');
+      updateDataCards();
+    }
+
+    function updatePresetUI() {
+      const presets = [0, 90, 180, 270];
+      const btns = document.querySelectorAll('.preset-group .preset-btn');
+      btns.forEach((btn, i) => {
+        if (i < 4) {
+          btn.classList.toggle('active', Math.abs(currentAngle - presets[i]) < 5);
+        }
+      });
+    }
+
+    function drawSim() {
+      if (!canvas.width) resizeCanvas();
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      const cx = canvas.width / 2;
+      const cy = canvas.height / 2;
+      const rx = canvas.width * 0.35;
+      const ry = canvas.height * 0.25;
+
+      // Draw Orbit Ellipse
+      ctx.beginPath();
+      ctx.ellipse(cx, cy, rx, ry, 0, 0, Math.PI * 2);
+      ctx.strokeStyle = '#334155';
+      ctx.setLineDash([4, 4]);
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // Draw Sun
+      ctx.beginPath();
+      ctx.arc(cx, cy, 28, 0, Math.PI * 2);
+      ctx.fillStyle = '#f59e0b';
+      ctx.shadowColor = '#fbbf24';
+      ctx.shadowBlur = 20;
+      ctx.fill();
+      ctx.shadowBlur = 0;
+
+      // Sun Label
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 12px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('GÜNEŞ', cx, cy + 4);
+
+      // Earth Position on Orbit
+      // Radian conversion: 0° is Right (June 21 in this model visual)
+      const rad = (currentAngle * Math.PI) / 180;
+      const ex = cx + rx * Math.cos(rad);
+      const ey = cy + ry * Math.sin(rad);
+
+      // Draw Sun Rays to Earth
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.lineTo(ex, ey);
+      ctx.strokeStyle = 'rgba(251, 191, 36, 0.4)';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // Earth Body
+      const eRadius = 18;
+      ctx.beginPath();
+      ctx.arc(ex, ey, eRadius, 0, Math.PI * 2);
+      ctx.fillStyle = '#0284c7';
+      ctx.fill();
+
+      // Shadow side (Night)
+      // Angle from Sun to Earth
+      const sunEarthAngle = Math.atan2(ey - cy, ex - cx);
+      ctx.beginPath();
+      ctx.arc(ex, ey, eRadius, sunEarthAngle - Math.PI / 2, sunEarthAngle + Math.PI / 2);
+      ctx.fillStyle = 'rgba(15, 23, 42, 0.65)';
+      ctx.fill();
+
+      // Axis Line
+      const tiltAngleRad = axisTilt ? (23.5 * Math.PI) / 180 : 0;
+      // Axis direction points fixed in space (always tilted rightwards)
+      const axisLen = 30;
+      const ax1 = ex + axisLen * Math.sin(tiltAngleRad);
+      const ay1 = ey - axisLen * Math.cos(tiltAngleRad);
+      const ax2 = ex - axisLen * Math.sin(tiltAngleRad);
+      const ay2 = ey + axisLen * Math.cos(tiltAngleRad);
+
+      ctx.beginPath();
+      ctx.moveTo(ax1, ay1);
+      ctx.lineTo(ax2, ay2);
+      ctx.strokeStyle = '#ef4444';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // Equator Line
+      const eqLen = 22;
+      const eqx1 = ex - eqLen * Math.cos(tiltAngleRad);
+      const eqy1 = ey - eqLen * Math.sin(tiltAngleRad);
+      const eqx2 = ex + eqLen * Math.cos(tiltAngleRad);
+      const eqy2 = ey + eqLen * Math.sin(tiltAngleRad);
+
+      ctx.beginPath();
+      ctx.moveTo(eqx1, eqy1);
+      ctx.lineTo(eqx2, eqy2);
+      ctx.strokeStyle = '#facc15';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      // North Pole Marker
+      ctx.fillStyle = '#ef4444';
+      ctx.font = '10px sans-serif';
+      ctx.fillText('K', ax1, ay1 - 4);
+    }
+
+    function updateDataCards() {
+      const dDate = document.getElementById('disp-date');
+      const dAngle = document.getElementById('disp-angle');
+      const dSeason = document.getElementById('disp-season');
+      const dDay = document.getElementById('disp-daylight');
+      const dEnergy = document.getElementById('disp-energy');
+      const dShadow = document.getElementById('disp-shadow');
+
+      // Determine date label
+      let dateText = "Ara Tarih";
+      if (Math.abs(currentAngle - 0) < 15 || Math.abs(currentAngle - 360) < 15) dateText = "21 Haziran";
+      else if (Math.abs(currentAngle - 90) < 15) dateText = "23 Eylül";
+      else if (Math.abs(currentAngle - 180) < 15) dateText = "21 Aralık";
+      else if (Math.abs(currentAngle - 270) < 15) dateText = "21 Mart";
+      dDate.innerText = dateText;
+
+      if (!axisTilt) {
+        dAngle.innerText = "90° / Eşit (Eksen Eğikliği Yok)";
+        dSeason.innerText = "Mevsim Oluşmaz (Bahar Havası)";
+        dDay.innerText = "12 Sa Gece / 12 Sa Gündüz";
+        dEnergy.innerText = "Sabit / Orta";
+        dShadow.innerText = "Sabit";
+        return;
+      }
+
+      // Calculate relative summer/winter intensity based on angle
+      // Angle 0: N Summer / S Winter
+      // Angle 180: N Winter / S Summer
+      let factor = Math.cos((currentAngle * Math.PI) / 180); // 1 at 0deg, -1 at 180deg
+      if (selectedHemisphere === 'S') factor = -factor;
+
+      if (factor > 0.4) {
+        dAngle.innerText = "Dik veya Dike Yakın";
+        dSeason.innerText = selectedHemisphere === 'N' ? "Yaz" : "Yaz";
+        dDay.innerText = "Uzun Gündüz, Kısa Gece";
+        dEnergy.innerText = "Yüksek (Yoğun)";
+        dShadow.innerText = "Kısa";
+      } else if (factor < -0.4) {
+        dAngle.innerText = "Eğik Açıyla";
+        dSeason.innerText = "Kış";
+        dDay.innerText = "Kısa Gündüz, Uzun Gece";
+        dEnergy.innerText = "Düşük (Yayvan)";
+        dShadow.innerText = "Uzun";
+      } else {
+        dAngle.innerText = "Orta Açıyla";
+        dSeason.innerText = (currentAngle > 45 && currentAngle < 135) ? 
+          (selectedHemisphere === 'N' ? "Sonbahar" : "İlkbahar") : 
+          (selectedHemisphere === 'N' ? "İlkbahar" : "Sonbahar");
+        dDay.innerText = "Gece ve Gündüz Eşit (Ekinoks)";
+        dEnergy.innerText = "Orta";
+        dShadow.innerText = "Orta";
+      }
+    }
+
+    // --- TAB 2: CLASSIFIER LOGIC ---
+    const itemsData = [
+      { id: 1, text: "35-40 yıllık geniş zaman dilimini kapsar.", type: "iklim" },
+      { id: 2, text: "Günün belirli saatlerinde yapılan gözlemlere dayanır.", type: "hava" },
+      { id: 3, text: "Kesinlik bildirir, değişkenlik azdır.", type: "iklim" },
+      { id: 4, text: "Tahminidir, gün içinde bile değişkenlik gösterebilir.", type: "hava" },
+      { id: 5, text: "İnceleyen bilim dalı Klimatolojidir.", type: "iklim" },
+      { id: 6, text: "İnceleyen bilim dalı Meteorolojidir.", type: "hava" },
+      { id: 7, text: "Güneşli, rüzgarlı, yağmurlu gibi ifadeler kullanılır.", type: "hava" },
+      { id: 8, text: "Kurak, ılıman, sıcak, soğuk gibi ifadeler kullanılır.", type: "iklim" }
+    ];
+
+    function initClassifier() {
+      const pool = document.getElementById('unclassified-pool');
+      pool.innerHTML = '';
+      document.getElementById('list-iklim').innerHTML = '';
+      document.getElementById('list-hava').innerHTML = '';
+
+      itemsData.forEach(item => {
+        const el = document.createElement('div');
+        el.className = 'item-card';
+        el.innerText = item.text;
+        el.onclick = () => classifyItem(item, el);
+        pool.appendChild(el);
+      });
+    }
+
+    function classifyItem(item, element) {
+      if (item.type === 'iklim') {
+        document.getElementById('list-iklim').appendChild(element);
+        element.style.borderColor = 'var(--accent-green)';
+      } else {
+        document.getElementById('list-hava').appendChild(element);
+        element.style.borderColor = 'var(--accent-purple)';
+      }
+      element.onclick = null;
+    }
+
+    // --- TAB 3: QUIZ LOGIC ---
+    const explanations = {
+      1: "Dünya'nın 23,5°'lik eksen eğikliği, Güneş etrafında dolanırken ışınların geliş açısının yıl boyunca değişmesine ve böylece mevsimlerin oluşmasına neden olur.",
+      2: "Güneş ışınları bir bölgeye ne kadar dik (90°'ye yakın) gelirse, gölge boyu o kadar kısa olur. 21 Haziran'da Yengeç Dönencesi'nde gölge boyu sıfırdır.",
+      3: "Geniş bir bölgede uzun yıllar boyunca değişmeyen ortalama hava şartlarına 'İklim', bunu inceleyen bilim dalına ise 'Klimatoloji' denir.",
+      4: "Eksen eğikliği olmasaydı, Güneş ışınlarının bir noktaya geliş açısı yıl boyunca hiç değişmezdi. Bu durumda mevsim kavramı oluşmaz, daimi bahar yaşanırdı.",
+      5: "Rüzgar, daima soğuk olan Yüksek Basınç alanından, sıcak olan Alçak Basınç alanına doğru gerçekleşen yatay yönlü hava hareketidir."
+    };
+
+    function checkQ(qId, btn, isCorrect) {
+      const card = document.getElementById(`q${qId}`);
+      const btns = card.querySelectorAll('.option-btn');
+      const fb = document.getElementById(`fb-${qId}`);
+
+      btns.forEach(b => {
+        b.disabled = true;
+        b.style.cursor = 'default';
+      });
+
+      if (isCorrect) {
+        btn.style.background = '#dcfce7';
+        btn.style.color = '#15803d';
+        btn.style.borderColor = '#22c55e';
+        fb.className = 'feedback show correct';
+        fb.innerHTML = '<strong>Doğru Tebrikler!</strong> ' + explanations[qId];
+      } else {
+        btn.style.background = '#fee2e2';
+        btn.style.color = '#b91c1c';
+        btn.style.borderColor = '#ef4444';
+        fb.className = 'feedback show wrong';
+        fb.innerHTML = '<strong>Yanlış Yanıt.</strong> ' + explanations[qId];
+      }
+    }
+
+    // Init on load
+    window.onload = () => {
+      resizeCanvas();
+      updateOrbit(0);
+      initClassifier();
+    };
+  </script>
+</body>
+</html>
