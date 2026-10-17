@@ -1,424 +1,589 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Virgül Kaydırma ve Üs Ayarlama Sihirbazı</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Poppins', sans-serif; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Virgül Kaydırma ve Üs Ayarlama - 8. Sınıf Matematik Laboratuvarı</title>
+  <style>
+    :root {
+      --primary: #0284c7;
+      --primary-hover: #0369a1;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #0f172a;
+      --accent-green: #16a34a;
+      --accent-red: #dc2626;
+      --accent-purple: #9333ea;
+      --accent-amber: #d97706;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    header h1 {
+      color: var(--primary);
+      font-size: 2rem;
+      margin-bottom: 6px;
+    }
+
+    header p {
+      color: #64748b;
+      font-size: 1rem;
+    }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 10px;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      flex: 1;
+      min-width: 200px;
+      padding: 12px 16px;
+      border: none;
+      background-color: #e2e8f0;
+      color: var(--text);
+      font-weight: 600;
+      font-size: 0.95rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn:hover {
+      background-color: #cbd5e1;
+    }
+
+    .tab-btn.active {
+      background-color: var(--primary);
+      color: white;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    /* Cards */
+    .visual-card, .quiz-card {
+      background-color: var(--card);
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+      margin-bottom: 20px;
+      border: 1px solid #e2e8f0;
+    }
+
+    .card-title {
+      font-size: 1.25rem;
+      color: var(--primary-hover);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Controls & Panels */
+    .panel {
+      background-color: #f1f5f9;
+      padding: 18px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+
+    .control-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .control-group:last-child {
+      margin-bottom: 0;
+    }
+
+    label {
+      font-weight: 600;
+      color: #334155;
+    }
+
+    input[type="number"], input[type="text"] {
+      padding: 8px 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-size: 1rem;
+      outline: none;
+      width: 140px;
+    }
+
+    .action-btn-group {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 15px;
+    }
+
+    .action-btn {
+      padding: 10px 18px;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      color: white;
+      transition: opacity 0.2s;
+    }
+
+    .btn-green { background-color: var(--accent-green); }
+    .btn-amber { background-color: var(--accent-amber); }
+    .btn-slate { background-color: #64748b; }
+    .action-btn:hover { opacity: 0.9; }
+
+    /* Math Displays */
+    .math-display {
+      text-align: center;
+      padding: 20px;
+      background: #f8fafc;
+      border-radius: 10px;
+      border: 2px dashed #cbd5e1;
+      margin: 15px 0;
+    }
+
+    .main-math {
+      font-size: 2.2rem;
+      font-weight: bold;
+      color: var(--primary-hover);
+    }
+
+    .step-box {
+      margin-top: 15px;
+      padding: 15px;
+      background-color: #ffffff;
+      border-left: 4px solid var(--accent-purple);
+      border-radius: 4px;
+      font-size: 1.05rem;
+      text-align: left;
+    }
+
+    /* Rules Grid */
+    .rules-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .rule-box {
+      padding: 15px;
+      border-radius: 10px;
+      border: 1px solid;
+    }
+    .rule-box.green { background: #f0fdf4; border-color: #bbf7d0; color: #166534; }
+    .rule-box.amber { background: #fffbeb; border-color: #fde68a; color: #92400e; }
+
+    /* Tab 2 Models */
+    .model-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .model-card {
+      background: #fdf4ff;
+      border: 1px solid #f5d0fe;
+      border-radius: 10px;
+      padding: 20px;
+    }
+
+    .model-card.blue {
+      background: #f0f9ff;
+      border-color: #bae6fd;
+    }
+
+    /* Quiz Options & Feedback */
+    .quiz-question {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 15px;
+    }
+
+    .options-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    @media (max-width: 600px) {
+      .options-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .option-btn {
+      padding: 12px 15px;
+      border: 2px solid #e2e8f0;
+      background: white;
+      border-radius: 8px;
+      cursor: pointer;
+      text-align: left;
+      font-size: 1rem;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+
+    .option-btn:hover:not([disabled]) {
+      border-color: var(--primary);
+      background-color: #f0f9ff;
+    }
+
+    .feedback {
+      display: none;
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .feedback.correct {
+      background-color: #dcfce7;
+      color: #15803d;
+      border: 1px solid #86efac;
+    }
+
+    .feedback.incorrect {
+      background-color: #fee2e2;
+      color: #b91c1c;
+      border: 1px solid #fca5a5;
+    }
+  </style>
 </head>
-<body class="bg-gradient-to-br from-indigo-50 via-blue-50 to-emerald-50 min-h-screen text-slate-800 p-4 md:p-8">
+<body>
 
-    <div class="max-w-4xl mx-auto space-y-6">
+<div class="container">
+  <header>
+    <h1>Virgül Kaydırma ve Üs Ayarlama Sihirbazı</h1>
+    <p>8. Sınıf Matematik: Bilimsel Gösterim ve Ondalık Sayılarda Denge Kuralı</p>
+  </header>
+
+  <!-- SEKMELER -->
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab(0)">1. İnteraktif Laboratuvar</button>
+    <button class="tab-btn" onclick="switchTab(1)">2. Terazi & Asansör Modeli</button>
+    <button class="tab-btn" onclick="switchTab(2)">3. Kazanım Testi (5 Soru)</button>
+  </div>
+
+  <!-- SEKME 1: İNTERAKTİF LABORATUVAR -->
+  <div class="tab-content active" id="tab-0">
+    <div class="visual-card">
+      <div class="card-title">
+        <span>🧪</span> Virgül Kaydırma Simülatörü
+      </div>
+
+      <!-- Kurallar Özet Şeritleri -->
+      <div class="rules-grid">
+        <div class="rule-box green">
+          <b>⬅️ Virgül SOLA Kayarsa:</b> Sayı küçülür, dengesini korumak için 10'un üssü basamak sayısı kadar <b>ARTAR (+)</b>.
+        </div>
+        <div class="rule-box amber">
+          <b>➡️ Virgül SAĞA Kayarsa:</b> Sayı büyür, dengesini korumak için 10'un üssü basamak sayısı kadar <b>AZALIR (-)</b>.
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="control-group">
+          <label for="inputNum">Ondalık Sayı (Katsayı):</label>
+          <input type="text" id="inputNum" value="345.2" oninput="syncState()">
+          
+          <label for="inputExp">10'un Üssü:</label>
+          <input type="number" id="inputExp" value="4" oninput="syncState()">
+        </div>
         
-        <!-- Başlık Kartı -->
-        <header class="bg-white rounded-2xl shadow-xl p-6 border-b-4 border-indigo-500 text-center">
-            <span class="bg-indigo-100 text-indigo-700 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">8. Sınıf Matematik Eğitici Araç</span>
-            <h1 class="text-2xl md:text-3xl font-bold text-slate-900 mt-2">Virgül Kaydırma ve Üs Ayarlama Sihirbazı</h1>
-            <p class="text-slate-600 mt-1 text-sm md:text-base">Bilimsel gösterim ve ondalık sayılarda virgül hareketlerinin sırrını keşfedin!</p>
-        </header>
+        <div class="action-btn-group">
+          <button class="action-btn btn-green" onclick="shiftLeft()">⬅️ Sola 1 Basamak Kaydır</button>
+          <button class="action-btn btn-amber" onclick="shiftRight()">Sağa 1 Basamak Kaydır ➡️</button>
+          <button class="action-btn btn-slate" onclick="resetValues()">Sıfırla</button>
+        </div>
+      </div>
 
-        <!-- SEKME BUTONLARI -->
-        <div class="flex rounded-2xl bg-white p-2 shadow-md gap-2">
-            <button onclick="switchTab('tab1')" id="btnTab1" class="flex-1 py-3 px-4 rounded-xl font-semibold text-sm md:text-base transition bg-indigo-600 text-white shadow">
-                🧪 1. Sekme: İnteraktif Laboratuvar & Kurallar
-            </button>
-            <button onclick="switchTab('tab2')" id="btnTab2" class="flex-1 py-3 px-4 rounded-xl font-semibold text-sm md:text-base transition bg-slate-100 text-slate-600 hover:bg-slate-200">
-                📖 2. Sekme: Farklı Bakış (Terazi & Asansör Metodu)
-            </button>
+      <div class="math-display">
+        <div id="tab1-main-math" class="main-math">345,2 × 10<sup>4</sup></div>
+      </div>
+
+      <div class="step-box" id="tab1-steps">
+        📌 Başlangıç durumu. Virgül kaydırmak için yukarıdaki butonları kullanabilirsiniz.
+      </div>
+    </div>
+  </div>
+
+  <!-- SEKME 2: TERAZİ & ASANSÖR MODELİ -->
+  <div class="tab-content" id="tab-1">
+    <div class="visual-card">
+      <div class="card-title">
+        <span>⚖️</span> Denge Terazisi ve Asansör Metodolojisi
+      </div>
+      <p style="margin-bottom: 20px; color: #475569;">
+        Matematikte katsayı ile 10'un üssü birbirine görünmez bir denge ipiyle bağlıdır. Toplam değerin bozulmaması için biri değiştiğinde diğeri zıt yönde telafi etmek zorundadır.
+      </p>
+
+      <div class="model-grid">
+        <div class="model-card">
+          <h3 style="color: var(--accent-purple); margin-bottom: 10px;">🛗 Asansör Mantığı</h3>
+          <p style="font-size: 0.95rem; color: #475569;">
+            Bir binada asansörle aşağı inerseniz başınızın üstündeki kat numarası küçülür ama yerdeki konumunuz değişir. Burada da tam tersi bir denge vardır:<br><br>
+            • Ön taraf <b>küçülürse</b> (virgül sola kayarsa), arka taraf (üs) yukarı çıkıp <b>artar</b>.<br>
+            • Ön taraf <b>büyürse</b> (virgül sağa kayarsa), arka taraf (üs) aşağı inip <b>azalır</b>.
+          </p>
         </div>
 
-        <!-- ==================== SEKME 1: İNTERAKTİF LABORATUVAR ==================== -->
-        <div id="contentTab1" class="space-y-6">
-            
-            <!-- Altın Kurallar Kartı -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="bg-emerald-50 border-l-4 border-emerald-500 p-5 rounded-xl shadow-md">
-                    <div class="flex items-center space-x-3">
-                        <span class="text-3xl">⬅️</span>
-                        <div>
-                            <h3 class="font-bold text-emerald-900 text-lg">Virgül SOLA Kayarsa</h3>
-                            <p class="text-emerald-700 text-sm mt-1">Sayı küçülür, dengesini korumak için 10'un üssü kaydırılan basamak sayısı kadar <strong class="underline">ARTAR (+)</strong>.</p>
-                        </div>
-                    </div>
-                    <div class="mt-3 bg-white/80 p-2 rounded text-xs font-mono text-emerald-800">
-                        Örn: 45,2 × 10<sup>3</sup> &rightarrow; 4,52 × 10<sup>4</sup> (Sola 1 basamak, üs +1)
-                    </div>
-                </div>
-
-                <div class="bg-amber-50 border-l-4 border-amber-500 p-5 rounded-xl shadow-md">
-                    <div class="flex items-center space-x-3">
-                        <span class="text-3xl">➡️</span>
-                        <div>
-                            <h3 class="font-bold text-amber-900 text-lg">Virgül SAĞA Kayarsa</h3>
-                            <p class="text-amber-700 text-sm mt-1">Sayı büyür, dengesini korumak için 10'un üssü kaydırılan basamak sayısı kadar <strong class="underline">AZALIR (-)</strong>.</p>
-                        </div>
-                    </div>
-                    <div class="mt-3 bg-white/80 p-2 rounded text-xs font-mono text-amber-800">
-                        Örn: 45,2 × 10<sup>3</sup> &rightarrow; 452 × 10<sup>2</sup> (Sağa 1 basamak, üs -1)
-                    </div>
-                </div>
-            </div>
-
-            <!-- Simülatör Bölümü -->
-            <div class="bg-white rounded-2xl shadow-xl p-6 md:p-8">
-                <h2 class="text-xl font-bold text-slate-800 mb-2 flex items-center gap-2">
-                    <span>🧪</span> Virgül Kaydırma Laboratuvarı
-                </h2>
-                <p class="text-slate-600 text-sm mb-6">Sayı ve üs değerini girip butonları kullanarak değişimi anlık takip edin.</p>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-                    <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-1">Ondalık Sayı (Katsayı):</label>
-                        <input type="text" id="inputNum" value="345.2" class="w-full px-4 py-2 border rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-lg font-mono">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-1">10'un Kuvveti (Üs):</label>
-                        <input type="number" id="inputExp" value="4" class="w-full px-4 py-2 border rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-lg font-mono">
-                    </div>
-                </div>
-
-                <div class="flex flex-wrap gap-3 justify-center mb-6">
-                    <button onclick="shiftLeft()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-6 py-3 rounded-xl shadow transition flex items-center gap-2">
-                        <span>⬅️</span> Sola 1 Basamak Kaydır
-                    </button>
-                    <button onclick="shiftRight()" class="bg-amber-600 hover:bg-amber-700 text-white font-semibold px-6 py-3 rounded-xl shadow transition flex items-center gap-2">
-                        Sağa 1 Basamak Kaydır <span>➡️</span>
-                    </button>
-                    <button onclick="resetValues()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold px-4 py-3 rounded-xl transition">
-                        Sıfırla
-                    </button>
-                </div>
-
-                <!-- Sonuç Gösterge Paneli -->
-                <div class="bg-slate-900 text-white p-6 rounded-2xl text-center shadow-inner">
-                    <p class="text-xs uppercase tracking-wider text-slate-400 mb-1">Güncel Değer (Hep Aynı Sayıya Eşittir)</p>
-                    <div id="displayResult" class="text-3xl md:text-4xl font-mono font-bold text-indigo-300 my-2">
-                        345,2 × 10<sup>4</sup>
-                    </div>
-                    <div id="displayExplanation" class="text-sm text-slate-300 mt-2 italic">
-                        Başlangıç durumu. Virgül kaydırmak için butonları kullanın.
-                    </div>
-                </div>
-            </div>
-
-            <!-- Alıştırma / Test Modu -->
-            <div class="bg-white rounded-2xl shadow-xl p-6 md:p-8">
-                <h2 class="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
-                    <span>🎯</span> Kendini Test Et (Alıştırma Modu)
-                </h2>
-                <div id="quizContainer" class="bg-indigo-50/50 border border-indigo-100 rounded-xl p-5">
-                    <div id="questionText" class="text-lg font-semibold text-slate-800 mb-4">
-                        Soru yükleniyor...
-                    </div>
-                    <div id="optionsContainer" class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4"></div>
-                    <div class="flex justify-between items-center">
-                        <span id="scoreText" class="text-sm font-medium text-slate-600">Skor: 0 / 0</span>
-                        <button onclick="nextQuestion()" id="nextBtn" class="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2 rounded-xl text-sm font-semibold transition hidden">
-                            Sonraki Soru ➡️
-                        </button>
-                    </div>
-                </div>
-            </div>
-
+        <div class="model-card blue">
+          <h3 style="color: var(--primary-hover); margin-bottom: 10px;">⚖️ Terazi Kefesi Kuralı</h3>
+          <p style="font-size: 0.95rem; color: #475569;">
+            Terazinin bir kefesine ağırlık eklerseniz (sayıyı büyütürseniz), dengede kalması için diğer kefeden ağırlık almanız gerekir (üssü küçültmeniz gerekir).<br><br>
+            <b>Örnek:</b> 540 × 10<sup>5</sup><br>
+            - Sayı küçülür: 540 &rarr; 5,4 (Sola 2 basamak)<br>
+            - Üs artar: 10<sup>5</sup> &rarr; 10<sup>7</sup><br>
+            - Sonuç: <b>5,4 × 10<sup>7</sup></b>
+          </p>
         </div>
+      </div>
+    </div>
+  </div>
 
-        <!-- ==================== SEKME 2: FARKLI BAKIŞ (TERAZİ & ASANSÖR) ==================== -->
-        <div id="contentTab2" class="space-y-6 hidden">
-            
-            <div class="bg-white rounded-2xl shadow-xl p-6 md:p-8 space-y-6">
-                <div class="border-b pb-4">
-                    <span class="bg-purple-100 text-purple-700 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">Alternatif Anlatım Modeli</span>
-                    <h2 class="text-2xl font-bold text-slate-800 mt-2">⚖️ Denge Terazisi ve Asansör Metodolojisi</h2>
-                    <p class="text-slate-600 text-sm mt-1">Matematikte katsayı ile 10'un üssü birbirine görünmez bir ip (terazi) ile bağlıdır. Toplam değerin bozulmaması için biri değiştiğinde diğeri zıt yönde telafi etmek zorundadır.</p>
-                </div>
-
-                <!-- Görsel İllüstrasyon Kutusu -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="bg-gradient-to-br from-purple-50 to-indigo-50 p-6 rounded-2xl border border-purple-200">
-                        <h3 class="font-bold text-purple-900 text-lg flex items-center gap-2">
-                            <span>🛗</span> 1. Asansör Mantığı (Yukarı - Aşağı)
-                        </h3>
-                        <p class="text-slate-700 text-sm mt-2">
-                            Bir binada asansörle aşağı inerseniz, başınızın üzerindeki kat numarası küçülür ama yerdeki sayı artar. Burada tam tersi bir denge vardır:
-                        </p>
-                        <ul class="mt-3 space-y-2 text-sm text-slate-700">
-                            <li>• <strong>Ön taraf küçülürse</strong> (virgül sola kayarsa), arka taraf (üs) yukarı çıkıp <strong>artar</strong>.</li>
-                            <li>• <strong>Ön taraf büyürse</strong> (virgül sağa kayarsa), arka taraf (üs) aşağı inip <strong>azalır</strong>.</li>
-                        </ul>
-                    </div>
-
-                    <div class="bg-gradient-to-br from-blue-50 to-teal-50 p-6 rounded-2xl border border-blue-200">
-                        <h3 class="font-bold text-blue-900 text-lg flex items-center gap-2">
-                            <span>⚖️</span> 2. Terazi Kefesi Kuralı
-                        </h3>
-                        <p class="text-slate-700 text-sm mt-2">
-                            Terazinin bir kefesine ağırlık eklerseniz (sayıyı büyütürseniz), dengede kalması için diğer kefeden ağırlık almanız gerekir (üssü küçültmeniz gerekir).
-                        </p>
-                        <div class="mt-3 bg-white p-3 rounded-xl text-xs font-mono text-blue-900 border border-blue-100">
-                            <strong>Örnek:</strong> 540 × 10<sup>5</sup> sayısını bilimsel gösterime çevirelim.<br>
-                            - Sayı küçülmeli: 540 &rightarrow; 5,40 (Sola 2 basamak kaydı, sayı 100 kat küçüldü).<br>
-                            - Denge için üs 2 artmalı: 10<sup>5</sup> &rightarrow; 10<sup>7</sup>.<br>
-                            - Sonuç: <strong>5,4 × 10<sup>7</sup></strong>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Adım Adım Özet Tablosu -->
-                <div>
-                    <h3 class="font-bold text-slate-800 text-lg mb-3">📊 Pratik Özet Karşılaştırma Tablosu</h3>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left border-collapse rounded-xl overflow-hidden shadow-sm">
-                            <thead>
-                                <tr class="bg-slate-800 text-white text-sm">
-                                    <th class="p-3">İşlem</th>
-                                    <th class="p-3">Katsayıya Ne Olur?</th>
-                                    <th class="p-3">10'un Üssüne Ne Olur?</th>
-                                    <th class="p-3">Örnek Gösterim</th>
-                                </tr>
-                            </thead>
-                            <tbody class="text-sm bg-white divide-y divide-slate-100">
-                                <tr class="hover:bg-slate-50">
-                                    <td class="p-3 font-semibold text-emerald-700">Virgül Sola Kayarsa (⬅️)</td>
-                                    <td class="p-3">Küçülür</td>
-                                    <td class="p-3 font-bold text-emerald-600">Artar (+)</td>
-                                    <td class="p-3 font-mono">35,4 × 10<sup>4</sup> &rightarrow; 3,54 × 10<sup>5</sup></td>
-                                </tr>
-                                <tr class="hover:bg-slate-50">
-                                    <td class="p-3 font-semibold text-amber-700">Virgül Sağa Kayarsa (➡️)</td>
-                                    <td class="p-3">Büyür</td>
-                                    <td class="p-3 font-bold text-amber-600">Azalır (-)</td>
-                                    <td class="p-3 font-mono">0,354 × 10<sup>4</sup> &rightarrow; 3,54 × 10<sup>3</sup></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-            </div>
-
-        </div>
-
-        <footer class="text-center text-xs text-slate-500 py-4">
-            8. Sınıf Matematik Eğitici Araçlar | Bilimsel Gösterim ve Virgül Kaydırma Çalışması
-        </footer>
-
+  <!-- SEKME 3: 5 SORULUK TEST -->
+  <div class="tab-content" id="tab-2">
+    <!-- SORU 1 -->
+    <div class="quiz-card" id="q-card-1">
+      <div class="quiz-question">Soru 1: 24,5 × 10<sup>5</sup> ifadesinde virgül <b>2 basamak sola</b> kaydırılırsa yeni ifade ne olur?</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkQ(1, this, true)">A) 0,245 × 10<sup>7</sup></button>
+        <button class="option-btn" onclick="checkQ(1, this, false)">B) 2450 × 10<sup>3</sup></button>
+        <button class="option-btn" onclick="checkQ(1, this, false)">C) 2,45 × 10<sup>6</sup></button>
+        <button class="option-btn" onclick="checkQ(1, this, false)">D) 0,0245 × 10<sup>7</sup></button>
+      </div>
+      <div class="feedback" id="fb-1"></div>
     </div>
 
-    <!-- JavaScript Mantığı -->
-    <script>
-        // --- SEKME DEĞİŞTİRME MANTIĞI ---
-        function switchTab(tabId) {
-            let tab1Content = document.getElementById('contentTab1');
-            let tab2Content = document.getElementById('contentTab2');
-            let btn1 = document.getElementById('btnTab1');
-            let btn2 = document.getElementById('btnTab2');
+    <!-- SORU 2 -->
+    <div class="quiz-card" id="q-card-2">
+      <div class="quiz-question">Soru 2: 3,8 × 10<sup>-2</sup> ifadesinde virgül <b>2 basamak sağa</b> kaydırılırsa yeni ifade ne olur?</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkQ(2, this, true)">A) 380 × 10<sup>-4</sup></button>
+        <button class="option-btn" onclick="checkQ(2, this, false)">B) 38 × 10<sup>-3</sup></button>
+        <button class="option-btn" onclick="checkQ(2, this, false)">C) 380 × 10<sup>-3</sup></button>
+        <button class="option-btn" onclick="checkQ(2, this, false)">D) 0,038 × 10<sup>0</sup></button>
+      </div>
+      <div class="feedback" id="fb-2"></div>
+    </div>
 
-            if (tabId === 'tab1') {
-                tab1Content.classList.remove('hidden');
-                tab2Content.classList.add('hidden');
-                btn1.className = "flex-1 py-3 px-4 rounded-xl font-semibold text-sm md:text-base transition bg-indigo-600 text-white shadow";
-                btn2.className = "flex-1 py-3 px-4 rounded-xl font-semibold text-sm md:text-base transition bg-slate-100 text-slate-600 hover:bg-slate-200";
-            } else {
-                tab2Content.classList.remove('hidden');
-                tab1Content.classList.add('hidden');
-                btn2.className = "flex-1 py-3 px-4 rounded-xl font-semibold text-sm md:text-base transition bg-indigo-600 text-white shadow";
-                btn1.className = "flex-1 py-3 px-4 rounded-xl font-semibold text-sm md:text-base transition bg-slate-100 text-slate-600 hover:bg-slate-200";
-            }
-        }
+    <!-- SORU 3 -->
+    <div class="quiz-card" id="q-card-3">
+      <div class="quiz-question">Soru 3: Bir sayının virgülü sağa kaydırıldığında 10'un üssü matematiksel dengeyi korumak için nasıl değişir?</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkQ(3, this, false)">A) Değişmez</button>
+        <button class="option-btn" onclick="checkQ(3, this, false)">B) Artar (+)</button>
+        <button class="option-btn" onclick="checkQ(3, this, true)">C) Azalır (-)</button>
+        <button class="option-btn" onclick="checkQ(3, this, false)">D) Tersi alınır</button>
+      </div>
+      <div class="feedback" id="fb-3"></div>
+    </div>
 
-        // --- İNTERAKTİF SİMÜLATÖR MANTIĞI ---
-        let currentNumStr = "345.2";
-        let currentExp = 4;
+    <!-- SORU 4 -->
+    <div class="quiz-card" id="q-card-4">
+      <div class="quiz-question">Soru 4: 720 × 10<sup>4</sup> ifadesini bilimsel gösterime uygun hale getirmek için virgül sola kaç basamak kaydırılmalıdır?</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkQ(4, this, false)">A) 1 basamak</button>
+        <button class="option-btn" onclick="checkQ(4, this, true)">B) 2 basamak</button>
+        <button class="option-btn" onclick="checkQ(4, this, false)">C) 3 basamak</button>
+        <button class="option-btn" onclick="checkQ(4, this, false)">D) 4 basamak</button>
+      </div>
+      <div class="feedback" id="fb-4"></div>
+    </div>
 
-        function updateDisplay(explanation = "Başlangıç durumu.") {
-            let numInput = document.getElementById('inputNum');
-            let expInput = document.getElementById('inputExp');
-            
-            numInput.value = currentNumStr;
-            expInput.value = currentExp;
+    <!-- SORU 5 -->
+    <div class="quiz-card" id="q-card-5">
+      <div class="quiz-question">Soru 5: 0,0045 × 10<sup>8</sup> ifadesinde virgül 3 basamak sağa kaydırılırsa yeni üs kaç olur?</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkQ(5, this, true)">A) 10<sup>5</sup></button>
+        <button class="option-btn" onclick="checkQ(5, this, false)">B) 10<sup>11</sup></button>
+        <button class="option-btn" onclick="checkQ(5, this, false)">C) 10<sup>6</sup></button>
+        <button class="option-btn" onclick="checkQ(5, this, false)">D) 10<sup>9</sup></button>
+      </div>
+      <div class="feedback" id="fb-5"></div>
+    </div>
+  </div>
 
-            let formattedNum = currentNumStr.replace('.', ',');
-            document.getElementById('displayResult').innerHTML = `${formattedNum} × 10<sup>${currentExp}</sup>`;
-            document.getElementById('displayExplanation').innerText = explanation;
-        }
+</div>
 
-        function shiftLeftSafe() {
-            let num = document.getElementById('inputNum').value.trim().replace(',', '.');
-            let exp = parseInt(document.getElementById('inputExp').value);
+<script>
+  // TAB GEÇİŞİ
+  function switchTab(index) {
+    const tabs = document.querySelectorAll('.tab-btn');
+    const contents = document.querySelectorAll('.tab-content');
 
-            if (isNaN(exp)) exp = 0;
-            if (!num.includes('.')) num += '.0';
+    tabs.forEach((tab, i) => {
+      if (i === index) {
+        tab.classList.add('active');
+        contents[i].classList.add('active');
+      } else {
+        tab.classList.remove('active');
+        contents[i].classList.remove('active');
+      }
+    });
+  }
 
-            let parts = num.split('.');
-            let intP = parts[0];
-            let decP = parts[1];
+  // SİMÜLATÖR MANTIĞI
+  let currentNumStr = "345.2";
+  let currentExp = 4;
 
-            if (intP.length > 1) {
-                let moved = intP.slice(-1);
-                intP = intP.slice(0, -1);
-                decP = moved + decP;
-            } else if (intP.length === 1) {
-                let moved = intP;
-                intP = "0";
-                decP = moved + decP;
-            } else {
-                intP = "0";
-                decP = "0" + decP;
-            }
+  function updateDisplay(explanation = "Başlangıç durumu.") {
+    document.getElementById('inputNum').value = currentNumStr;
+    document.getElementById('inputExp').value = currentExp;
 
-            currentNumStr = intP + "." + decP;
-            currentExp = exp + 1;
-            updateDisplay("Virgül 1 basamak SOLA kaydırıldı ⬅️ | Sayı küçüldü, üs 1 ARTDI (+1).");
-        }
+    let formattedNum = currentNumStr.replace('.', ',');
+    document.getElementById('tab1-main-math').innerHTML = `${formattedNum} × 10<sup>${currentExp}</sup>`;
+    document.getElementById('tab1-steps').innerHTML = `📌 ${explanation}`;
+  }
 
-        function shiftRightSafe() {
-            let num = document.getElementById('inputNum').value.trim().replace(',', '.');
-            let exp = parseInt(document.getElementById('inputExp').value);
+  function syncState() {
+    let numInput = document.getElementById('inputNum').value.trim().replace(',', '.');
+    let expInput = parseInt(document.getElementById('inputExp').value);
+    if (!isNaN(expInput)) currentExp = expInput;
+    if (numInput !== "") currentNumStr = numInput;
+    
+    let formatted = currentNumStr.replace('.', ',');
+    document.getElementById('tab1-main-math').innerHTML = `${formatted} × 10<sup>${currentExp}</sup>`;
+    document.getElementById('tab1-steps').innerHTML = `📌 Değerler manuel olarak güncellendi.`;
+  }
 
-            if (isNaN(exp)) exp = 0;
-            if (!num.includes('.')) num += '.0';
+  function shiftLeft() {
+    let num = currentNumStr;
+    if (!num.includes('.')) num += '.0';
+    let parts = num.split('.');
+    let intP = parts[0];
+    let decP = parts[1];
 
-            let parts = num.split('.');
-            let intP = parts[0];
-            let decP = parts[1];
+    if (intP.length > 1) {
+      let moved = intP.slice(-1);
+      intP = intP.slice(0, -1);
+      decP = moved + decP;
+    } else if (intP.length === 1) {
+      let moved = intP;
+      intP = "0";
+      decP = moved + decP;
+    } else {
+      intP = "0";
+      decP = "0" + decP;
+    }
 
-            if (decP.length > 0) {
-                let moved = decP[0];
-                decP = decP.slice(1);
-                intP = intP + moved;
-            } else {
-                intP = intP + "0";
-                decP = "";
-            }
+    currentNumStr = intP + "." + decP;
+    currentExp += 1;
+    updateDisplay("Virgül 1 basamak SOLA kaydırıldı ⬅️ | Sayı küçüldü, üs 1 ARTDI (+1).");
+  }
 
-            if (intP.length > 1 && intP.startsWith('0')) {
-                intP = intP.replace(/^0+/, '');
-                if (intP === '') intP = '0';
-            }
+  function shiftRight() {
+    let num = currentNumStr;
+    if (!num.includes('.')) num += '.0';
+    let parts = num.split('.');
+    let intP = parts[0];
+    let decP = parts[1];
 
-            currentNumStr = decP.length > 0 ? intP + "." + decP : intP;
-            currentExp = exp - 1;
-            updateDisplay("Virgül 1 basamak SAĞA kaydırıldı ➡️ | Sayı büyüdü, üs 1 AZALDI (-1).");
-        }
+    if (decP.length > 0) {
+      let moved = decP[0];
+      decP = decP.slice(1);
+      intP = intP + moved;
+    } else {
+      intP = intP + "0";
+      decP = "";
+    }
 
-        window.shiftLeft = shiftLeftSafe;
-        window.shiftRight = shiftRightSafe;
+    if (intP.length > 1 && intP.startsWith('0')) {
+      intP = intP.replace(/^0+/, '');
+      if (intP === '') intP = '0';
+    }
 
-        function resetValues() {
-            currentNumStr = "345.2";
-            currentExp = 4;
-            updateDisplay("Değerler başlangıç durumuna sıfırlandı.");
-        }
+    currentNumStr = decP.length > 0 ? intP + "." + decP : intP;
+    currentExp -= 1;
+    updateDisplay("Virgül 1 basamak SAĞA kaydırıldı ➡️ | Sayı büyüdü, üs 1 AZALDI (-1).");
+  }
 
-        // --- ALIŞTIRMA / TEST MODU MANTIĞI ---
-        let score = 0;
-        let total = 0;
-        let currentQuestion = null;
+  function resetValues() {
+    currentNumStr = "345.2";
+    currentExp = 4;
+    updateDisplay("Değerler başlangıç durumuna sıfırlandı.");
+  }
 
-        const questionPool = [
-            {
-                q: "24,5 × 10<sup>5</sup> ifadesinde virgül <strong>2 basamak sola</strong> kaydırılırsa yeni ifade ne olur?",
-                options: [
-                    "0,245 × 10<sup>7</sup>",
-                    "2450 × 10<sup>3</sup>",
-                    "2,45 × 10<sup>6</sup>",
-                    "0,0245 × 10<sup>7</sup>"
-                ],
-                correct: 0
-            },
-            {
-                q: "3,8 × 10<sup>-2</sup> ifadesinde virgül <strong>2 basamak sağa</strong> kaydırılırsa yeni ifade ne olur?",
-                options: [
-                    "380 × 10<sup>-4</sup>",
-                    "38 × 10<sup>-3</sup>",
-                    "380 × 10<sup>-3</sup>",
-                    "0,038 × 10<sup>0</sup>"
-                ],
-                correct: 0
-            },
-            {
-                q: "Bir sayının virgülü sağa kaydırıldığında 10'un üssü nasıl değişir?",
-                options: [
-                    "Değişmez",
-                    "Artar (+)",
-                    "Azalır (-)",
-                    "Tersi alınır"
-                ],
-                correct: 2
-            },
-            {
-                q: "720 × 10<sup>4</sup> ifadesinde sayıyı bilimsel gösterime uygun yapmak için virgül sola kaç basamak kaydırılmalıdır?",
-                options: [
-                    "1 basamak",
-                    "2 basamak",
-                    "3 basamak",
-                    "4 basamak"
-                ],
-                correct: 1
-            },
-            {
-                q: "0,0045 × 10<sup>8</sup> ifadesinde virgül 3 basamak sağa kaydırılırsa yeni üs kaç olur?",
-                options: [
-                    "10<sup>5</sup>",
-                    "10<sup>11</sup>",
-                    "10<sup>6</sup>",
-                    "10<sup>9</sup>"
-                ],
-                correct: 0
-            }
-        ];
+  // QUIZ AÇIKLAMALARI
+  const explanations = {
+    1: "Doğru Cevap A! Virgül 2 basamak sola kaydırıldığında sayı 100 kat küçülür, dengeyi sağlamak için üs 2 artar: 5 + 2 = 7 olur (0,245 × 10<sup>7</sup>).",
+    2: "Doğru Cevap A! Virgül 2 basamak sağa kaydırıldığında sayı 100 kat büyür, dengeyi sağlamak için üs 2 azalır: -2 - 2 = -4 olur (380 × 10<sup>-4</sup>).",
+    3: "Doğru Cevap C! Sayının katsayısı sağa kayarak büyüdüğü için matematiksel dengeyi korumak adına 10'un üssü azalır (-).",
+    4: "Doğru Cevap B! Bilimsel gösterim kuralına göre katsayı 1 ile 10 arasında olmalıdır (1 ≤ |a| < 10). 720 sayısının virgülü 2 basamak sola kaydırılarak 7,2 yapılmalıdır.",
+    5: "Doğru Cevap A! Virgül 3 basamak sağa kaydırıldığında sayı büyür, dolayısıyla üs 3 azalır: 8 - 3 = 5 olur (10<sup>5</sup>)."
+  };
 
-        function nextQuestion() {
-            document.getElementById('nextBtn').classList.add('hidden');
-            let randomIndex = Math.floor(Math.random() * questionPool.length);
-            currentQuestion = questionPool[randomIndex];
+  function checkQ(qId, btn, isCorrect) {
+    const card = document.getElementById(`q-card-${qId}`);
+    const buttons = card.querySelectorAll('.option-btn');
+    const feedback = document.getElementById(`fb-${qId}`);
 
-            document.getElementById('questionText').innerHTML = currentQuestion.q;
-            let optionsContainer = document.getElementById('optionsContainer');
-            optionsContainer.innerHTML = '';
+    buttons.forEach(b => {
+      b.disabled = true;
+      b.style.cursor = 'default';
+    });
 
-            currentQuestion.options.forEach((opt, index) => {
-                let btn = document.createElement('button');
-                btn.className = "p-3 bg-white border border-indigo-200 rounded-xl hover:bg-indigo-50 font-medium text-slate-700 text-left transition shadow-sm";
-                btn.innerHTML = opt;
-                btn.onclick = () => checkAnswer(index, btn);
-                optionsContainer.appendChild(btn);
-            });
-        }
+    if (isCorrect) {
+      btn.style.backgroundColor = '#dcfce7';
+      btn.style.borderColor = '#16a34a';
+      btn.style.color = '#15803d';
+      feedback.className = 'feedback correct';
+      feedback.innerHTML = `<b>Tebrikler! 🎉</b><br>${explanations[qId]}`;
+    } else {
+      btn.style.backgroundColor = '#fee2e2';
+      btn.style.borderColor = '#dc2626';
+      btn.style.color = '#b91c1c';
+      feedback.className = 'feedback incorrect';
+      feedback.innerHTML = `<b>Yanlış Cevap. 🧐</b><br>${explanations[qId]}`;
+    }
 
-        function checkAnswer(selectedIndex, selectedBtn) {
-            let optionsContainer = document.getElementById('optionsContainer');
-            let buttons = optionsContainer.getElementsByTagName('button');
+    feedback.style.display = 'block';
+  }
 
-            for (let b of buttons) {
-                b.disabled = true;
-            }
+  // İlk yükleme tetikleyicisi
+  window.onload = function() {
+    updateDisplay();
+  };
+</script>
 
-            total++;
-            if (selectedIndex === currentQuestion.correct) {
-                selectedBtn.classList.remove('bg-white', 'border-indigo-200');
-                selectedBtn.classList.add('bg-emerald-100', 'border-emerald-500', 'text-emerald-900', 'font-bold');
-                score++;
-            } else {
-                selectedBtn.classList.remove('bg-white', 'border-indigo-200');
-                selectedBtn.classList.add('bg-rose-100', 'border-rose-500', 'text-rose-900');
-                buttons[currentQuestion.correct].classList.remove('bg-white', 'border-indigo-200');
-                buttons[currentQuestion.correct].classList.add('bg-emerald-100', 'border-emerald-500', 'text-emerald-900', 'font-bold');
-            }
-
-            document.getElementById('scoreText').innerText = `Skor: ${score} / ${total}`;
-            document.getElementById('nextBtn').classList.remove('hidden');
-        }
-
-        window.onload = function() {
-            updateDisplay();
-            nextQuestion();
-        }
-    </script>
 </body>
 </html>
