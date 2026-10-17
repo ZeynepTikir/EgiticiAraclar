@@ -20,7 +20,7 @@ const matVerileri = {
     baslik: "6. Sınıf Matematik",
     uniteler: [
       {
-        uniteAdi: "Doğal Sayılar",
+        uniteAdi: "Deneme",
         araclar: [
           { ad: "Örnek Araç 1", dosya: "6_sinif/dogal_sayilar/arac1.html" }
         ]
@@ -31,7 +31,7 @@ const matVerileri = {
     baslik: "7. Sınıf Matematik",
     uniteler: [
       {
-        uniteAdi: "Doğal Sayılar",
+        uniteAdi: "Deneme",
         araclar: [
           { ad: "Örnek Araç 1", dosya: "7_sinif/dogal_sayilar/arac1.html" }
         ]
