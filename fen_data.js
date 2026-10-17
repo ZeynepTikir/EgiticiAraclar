@@ -45,7 +45,8 @@ const fenVerileri = {
         uniteAdi: "2. DNA ve Genetik Kod",
         araclar: [
           { ad: "DNA'nın Yapısı", dosya: "fen/8_sinif/2_dna_genetik/dna_yapisi.html" },
-          { ad: "DNA'nın Eşlenmesi", dosya: "fen/8_sinif/2_dna_genetik/dna_esleme.html" }
+          { ad: "DNA'nın Eşlenmesi", dosya: "fen/8_sinif/2_dna_genetik/dna_esleme.html" },
+          { ad: "Kalıtım, Modifikasyon, Mutasyon, Adaptasyon, Biyoteknoloji", dosya: "fen/8_sinif/2_dna_genetik/kalitim_modi_muta_adap.html" }
         ]
       }
     ]
