@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virgül Kaydırma ve Üs Ayarlama Sihirbazı</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Poppins', sans-serif; }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-indigo-50 via-blue-50 to-emerald-50 min-h-screen text-slate-800 p-4 md:p-8">
+
+    <div class="max-w-4xl mx-auto space-y-6">
+        
+        <!-- Başlık Kartı -->
+        <header class="bg-white rounded-2xl shadow-xl p-6 border-b-4 border-indigo-500 text-center">
+            <span class="bg-indigo-100 text-indigo-700 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">8. Sınıf Matematik Eğitici Araç</span>
+            <h1 class="text-2xl md:text-3xl font-bold text-slate-900 mt-2">Virgül Kaydırma ve Üs Ayarlama Sihirbazı</h1>
+            <p class="text-slate-600 mt-1 text-sm md:text-base">Bilimsel gösterim ve ondalık gösterimlerde virgül kaydırdıkça 10'un kuvvetinin nasıl değiştiğini keşfedin!</p>
+        </header>
+
+        <!-- Altın Kurallar Kartı -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="bg-emerald-50 border-l-4 border-emerald-500 p-5 rounded-xl shadow-md">
+                <div class="flex items-center space-x-3">
+                    <span class="text-3xl">⬅️</span>
+                    <div>
+                        <h3 class="font-bold text-emerald-900 text-lg">Virgül SOLA Kayarsa</h3>
+                        <p class="text-emerald-700 text-sm mt-1">Sayı küçülür, dengesini korumak için 10'un üssü kaydırılan basamak sayısı kadar <strong class="underline">ARTAR (+).</strong></p>
+                    </div>
+                </div>
+                <div class="mt-3 bg-white/80 p-2 rounded text-xs font-mono text-emerald-800">
+                    Örn: $45,2 \times 10^3 \rightarrow 4,52 \times 10^4$ (Sola 1 basamak, üs +1)
+                </div>
+            </div>
+
+            <div class="bg-amber-50 border-l-4 border-amber-500 p-5 rounded-xl shadow-md">
+                <div class="flex items-center space-x-3">
+                    <span class="text-3xl">➡️</span>
+                    <div>
+                        <h3 class="font-bold text-amber-900 text-lg">Virgül SAĞA Kayarsa</h3>
+                        <p class="text-amber-700 text-sm mt-1">Sayı büyür, dengesini korumak için 10'un üssü kaydırılan basamak sayısı kadar <strong class="underline">AZALIR (-).</strong></p>
+                    </div>
+                </div>
+                <div class="mt-3 bg-white/80 p-2 rounded text-xs font-mono text-amber-800">
+                    Örn: $45,2 \times 10^3 \rightarrow 452 \times 10^2$ (Sağa 1 basamak, üs -1)
+                </div>
+            </div>
+        </div>
+
+        <!-- İnteraktif Simülatör Bölümü -->
+        <div class="bg-white rounded-2xl shadow-xl p-6 md:p-8">
+            <h2 class="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
+                <span>🧪</span> İnteraktif Virgül Kaydırma Laboratuvarı
+            </h2>
+            <p class="text-slate-600 text-sm mb-6">İstediğiniz bir sayı ve üs değeri girin, ardından sola veya sağa kaydırarak değişimi anlık olarak gözlemleyin.</p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Ondalık Sayı (Katsayı):</label>
+                    <input type="text" id="inputNum" value="345.2" class="w-full px-4 py-2 border rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-lg font-mono">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">10'un Kuvveti (Üs):</label>
+                    <input type="number" id="inputExp" value="4" class="w-full px-4 py-2 border rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-lg font-mono">
+                </div>
+            </div>
+
+            <div class="flex flex-wrap gap-3 justify-center mb-6">
+                <button onclick="shiftLeft()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-6 py-3 rounded-xl shadow transition flex items-center gap-2">
+                    <span>⬅️</span> Sola 1 Basamak Kaydır
+                </button>
+                <button onclick="shiftRight()" class="bg-amber-600 hover:bg-amber-700 text-white font-semibold px-6 py-3 rounded-xl shadow transition flex items-center gap-2">
+                    Sağa 1 Basamak Kaydır <span>➡️</span>
+                </button>
+                <button onclick="resetValues()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold px-4 py-3 rounded-xl transition">
+                    Sıfırla
+                </button>
+            </div>
+
+            <!-- Sonuç Gösterge Paneli -->
+            <div class="bg-slate-900 text-white p-6 rounded-2xl text-center shadow-inner">
+                <p class="text-xs uppercase tracking-wider text-slate-400 mb-1">Güncel Değer (Hep Aynı Değere Eşittir)</p>
+                <div id="displayResult" class="text-3xl md:text-4xl font-mono font-bold text-indigo-300 my-2">
+                    345,2 × 10⁴
+                </div>
+                <div id="displayExplanation" class="text-sm text-slate-300 mt-2 italic">
+                    Başlangıç durumu. Virgül kaydırmak için butonları kullanın.
+                </div>
+            </div>
+        </div>
+
+        <!-- Alıştırma / Test Modu -->
+        <div class="bg-white rounded-2xl shadow-xl p-6 md:p-8">
+            <h2 class="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
+                <span>🎯</span> Kendini Test Et (Alıştırma Modu)
+            </h2>
+            <div id="quizContainer" class="bg-indigo-50/50 border border-indigo-100 rounded-xl p-5">
+                <div id="questionText" class="text-lg font-semibold text-slate-800 mb-4">
+                    Soru yükleniyor...
+                </div>
+                <div id="optionsContainer" class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+                    <!-- Şıklar buraya gelecek -->
+                </div>
+                <div class="flex justify-between items-center">
+                    <span id="scoreText" class="text-sm font-medium text-slate-600">Skor: 0 / 0</span>
+                    <button onclick="nextQuestion()" id="nextBtn" class="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2 rounded-xl text-sm font-semibold transition hidden">
+                        Sonraki Soru ➡️
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <footer class="text-center text-xs text-slate-500 py-4">
+            8. Sınıf Matematik Eğitici Araçlar | Bilimsel Gösterim ve Virgül Kaydırma Çalışması
+        </footer>
+
+    </div>
+
+    <!-- JavaScript Mantığı -->
+    <script>
+        // --- İNTERAKTİF SİMÜLATÖR MANTIĞI ---
+        let currentNumStr = "345.2";
+        let currentExp = 4;
+
+        function updateDisplay(explanation = "Başlangıç durumu.") {
+            let numInput = document.getElementById('inputNum');
+            let expInput = document.getElementById('inputExp');
+            
+            numInput.value = currentNumStr;
+            expInput.value = currentExp;
+
+            // Görüntüleme için nokta yerine virgül kullanabiliriz
+            let formattedNum = currentNumStr.replace('.', ',');
+            document.getElementById('displayResult').innerText = `${formattedNum} × 10^${currentExp}`;
+            document.getElementById('displayExplanation').innerText = explanation;
+        }
+
+        function shiftLeft() {
+            let s = currentNumStr.includes('.') ? currentNumStr : currentNumStr + '.0';
+            let parts = s.split('.');
+            let intPart = parts[0];
+            let decPart = parts[1];
+
+            if (intPart.length > 1) {
+                let lastChar = intPart.slice(-1);
+                intPart = intPart.slice(0, -1);
+                decPart = lastChar + decPart;
+            } else if (intPart.length === 1) {
+                let lastChar = intPart;
+                intPart = "0";
+                decPart = lastChar + decPart;
+            } else {
+                intPart = "0";
+                decPart = "0" + decPart;
+            }
+
+            currentNumStr = intPart + "." + decPart;
+            currentExp += 1;
+            
+            // Temizlik (gereksiz son sıfırları temizle ama ondalık bozulmasın)
+            currentNumStr = parseFloat(currentNumStr).toString();
+            // Eğer float dönüşümü noktayı sildiyse ve başta ondalık yoksa düzelt
+            if(!currentNumStr.includes('.')) {
+                // Eğer orijinalinde ondalık kaybolduysa, tekrar string yapısına dikkat edelim
+                // Daha güvenli bir string düzenlemesi:
+            }
+            // Daha sağlam string tabanlı yaklaşım kullanalım:
+            // Basitleştirilmiş güncel state:
+            recalculateStateAfterShift('left');
+        }
+
+        // Daha güvenli string tabanlı kaydırma fonksiyonları
+        function shiftLeftSafe() {
+            let num = document.getElementById('inputNum').value.trim().replace(',', '.');
+            let exp = parseInt(document.getElementById('inputExp').value);
+
+            if (isNaN(exp)) exp = 0;
+            if (!num.includes('.')) num += '.0';
+
+            let parts = num.split('.');
+            let intP = parts[0];
+            let decP = parts[1];
+
+            if (intP.length > 1) {
+                let moved = intP.slice(-1);
+                intP = intP.slice(0, -1);
+                decP = moved + decP;
+            } else if (intP.length === 1) {
+                let moved = intP;
+                intP = "0";
+                decP = moved + decP;
+            } else {
+                intP = "0";
+                decP = "0" + decP;
+            }
+
+            currentNumStr = intP + "." + decP;
+            // Gereksiz sondaki fazlalıkları temizle ama format korunsun
+            currentExp = exp + 1;
+            updateDisplay("Virgül 1 basamak SOLA kaydırıldı ⬅️ | Sayı küçüldü, üs 1 ARTти (+1).");
+        }
+
+        function shiftRightSafe() {
+            let num = document.getElementById('inputNum').value.trim().replace(',', '.');
+            let exp = parseInt(document.getElementById('inputExp').value);
+
+            if (isNaN(exp)) exp = 0;
+            if (!num.includes('.')) num += '.0';
+
+            let parts = num.split('.');
+            let intP = parts[0];
+            let decP = parts[1];
+
+            if (decP.length > 0) {
+                let moved = decP[0];
+                decP = decP.slice(1);
+                intP = intP + moved;
+            } else {
+                intP = intP + "0";
+                decP = "";
+            }
+
+            // Başındaki gereksiz 0'ları temizle (örn: 034 -> 34)
+            if (intP.length > 1 && intP.startsWith('0')) {
+                intP = intP.replace(/^0+/, '');
+                if (intP === '') intP = '0';
+            }
+
+            currentNumStr = decP.length > 0 ? intP + "." + decP : intP;
+            currentExp = exp - 1;
+            updateDisplay("Virgül 1 basamak SAĞA kaydırıldı ➡️ | Sayı büyüdü, üs 1 AZALDI (-1).");
+        }
+
+        // Buton eventleri için sarmalayıcılar
+        window.shiftLeft = shiftLeftSafe;
+        window.shiftRight = shiftRightSafe;
+
+        function resetValues() {
+            currentNumStr = "345.2";
+            currentExp = 4;
+            updateDisplay("Değerler başlangıç durumuna sıfırlandı.");
+        }
+
+        // --- ALIŞTIRMA / TEST MODU MANTIĞI ---
+        let score = 0;
+        let total = 0;
+        let currentQuestion = null;
+
+        const questionPool = [
+            {
+                q: "$24,5 \\times 10^5$ ifadesinde virgül **2 basamak sola** kaydırılırsa yeni ifade ne olur?",
+                options: [
+                    "$0,245 \\times 10^7$",
+                    "$2450 \\times 10^3$",
+                    "$2,45 \\times 10^6$",
+                    "$0,0245 \\times 10^7$"
+                ],
+                correct: 0 // 0,245 x 10^7 (2 basamak sola kaydı, sayı küçüldü, üs 2 artıp 7 oldu)
+            },
+            {
+                q: "$3,8 \\times 10^{-2}$ ifadesinde virgül **2 basamak sağa** kaydırılırsa yeni ifade ne olur?",
+                options: [
+                    "$380 \\times 10^{-4}$",
+                    "$38 \\times 10^{-3}$",
+                    "$380 \\times 10^{-3}$",
+                    "$0,038 \\times 10^0$"
+                ],
+                correct: 0 // 380 x 10^-4 (2 basamak sağa kaydı, üs 2 azaldı: -2 - 2 = -4) -> Bekle: 3,8 -> 38 (1 sağa, üs -3), 380 (2 sağa, üs -4). Doğru: 380 x 10^-4
+            },
+            {
+                q: "Bir sayının virgülü sağa kaydırıldığında 10'un üssü nasıl değişir?",
+                options: [
+                    "Değişmez",
+                    "Artar (+)",
+                    "Azalır (-)",
+                    "Tersi alınır"
+                ],
+                correct: 2
+            },
+            {
+                q: "$720 \\times 10^4$ ifadesinde sayıyı bilimsel gösterime uygun yapmak için virgül (veya gizli virgül) sola kaç basamak kaydırılmalıdır?",
+                options: [
+                    "1 basamak",
+                    "2 basamak",
+                    "3 basamak",
+                    "4 basamak"
+                ],
+                correct: 1 // 7,20 x 10^6 olması için 2 basamak sola kaymalı.
+            },
+            {
+                q: "$0,0045 \\times 10^8$ ifadesinde virgül 3 basamak sağa kaydırılırsa yeni üs kaç olur?",
+                options: [
+                    "$10^5$",
+                    "$10^{11}$",
+                    "$10^6$",
+                    "$10^9$"
+                ],
+                correct: 0 // Sağa kaydığı için üs azalır: 8 - 3 = 5 -> 10^5
+            }
+        ];
+
+        // Soru havuzunu biraz daha zenginleştirelim veya rastgele getirelim
+        function nextQuestion() {
+            document.getElementById('nextBtn').classList.add('hidden');
+            let randomIndex = Math.floor(Math.random() * questionPool.length);
+            currentQuestion = questionPool[randomIndex];
+
+            document.getElementById('questionText').innerHTML = currentQuestion.q;
+            let optionsContainer = document.getElementById('optionsContainer');
+            optionsContainer.innerHTML = '';
+
+            currentQuestion.options.forEach((opt, index) => {
+                let btn = document.createElement('button');
+                btn.className = "p-3 bg-white border border-indigo-200 rounded-xl hover:bg-indigo-50 font-medium text-slate-700 text-left transition shadow-sm";
+                btn.innerHTML = opt;
+                btn.onclick = () => checkAnswer(index, btn);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(selectedIndex, selectedBtn) {
+            let optionsContainer = document.getElementById('optionsContainer');
+            let buttons = optionsContainer.getElementsByTagName('button');
+
+            // Tüm butonları devre dışı bırak
+            for (let b of buttons) {
+                b.disabled = true;
+            }
+
+            total++;
+            if (selectedIndex === currentQuestion.correct) {
+                selectedBtn.classList.remove('bg-white', 'border-indigo-200');
+                selectedBtn.classList.add('bg-emerald-100', 'border-emerald-500', 'text-emerald-900', 'font-bold');
+                score++;
+            } else {
+                selectedBtn.classList.remove('bg-white', 'border-indigo-200');
+                selectedBtn.classList.add('bg-rose-100', 'border-rose-500', 'text-rose-900');
+                // Doğru şıkkı yeşil yap
+                buttons[currentQuestion.correct].classList.remove('bg-white', 'border-indigo-200');
+                buttons[currentQuestion.correct].classList.add('bg-emerald-100', 'border-emerald-500', 'text-emerald-900', 'font-bold');
+            }
+
+            document.getElementById('scoreText').innerText = `Skor: ${score} / ${total}`;
+            document.getElementById('nextBtn').classList.remove('hidden');
+        }
+
+        // Sayfa açıldığında ilk soruyu yükle
+        window.onload = function() {
+            updateDisplay();
+            nextQuestion();
+        }
+    </script>
+</body>
+</html>
