@@ -3,68 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Üniteler ve Araçlar</title>
+    <title>Eğitici Araçlar Portalı</title>
     <style>
-        :root { --primary: #0284c7; --bg: #f8fafc; --card: #ffffff; --text: #0f172a; }
+        :root { --primary: #0284c7; --bg: #f8fafc; --card: #ffffff; --text: #0f172a; --accent: #9333ea; }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
-        body { background-color: var(--bg); color: var(--text); padding: 30px 20px; max-width: 800px; margin: 0 auto; }
-        h1 { color: var(--primary); margin-bottom: 20px; text-align: center; }
-        .back-btn { display: inline-block; margin-bottom: 20px; color: var(--primary); text-decoration: none; font-weight: 600; }
-        .unit-box { background: var(--card); border-radius: 16px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
-        .unit-box h3 { margin-bottom: 15px; color: #334155; border-bottom: 2px solid #f1f5f9; padding-bottom: 8px; }
-        .tool-list { display: flex; flex-direction: column; gap: 10px; }
-        .tool-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; text-decoration: none; color: var(--text); font-weight: 500; transition: all 0.2s; }
-        .tool-item:hover { background: #f0f9ff; border-color: var(--primary); color: var(--primary); }
+        body { background-color: var(--bg); color: var(--text); padding: 40px 20px; text-align: center; }
+        h1 { color: var(--primary); font-size: 2.2rem; margin-bottom: 10px; }
+        p { color: #64748b; margin-bottom: 40px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; max-width: 900px; margin: 0 auto; }
+        .card { background: var(--card); padding: 30px; border-radius: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); text-decoration: none; color: var(--text); font-weight: bold; font-size: 1.3rem; transition: all 0.2s; border: 1px solid #e2e8f0; display: flex; flex-direction: column; align-items: center; gap: 15px; }
+        .card:hover { transform: translateY(-5px); border-color: var(--primary); background: #f0f9ff; color: var(--primary); }
+        
+        /* Lab Üreteci Butonu İçin Özel Vurgu */
+        .card.lab-generator { border-color: #d8b4fe; background: #faf5ff; color: var(--accent); }
+        .card.lab-generator:hover { border-color: var(--accent); background: #f3e8ff; color: var(--accent); }
     </style>
 </head>
 <body>
 
-    <a href="index.html" class="back-dbn back-btn">← Sınıf Seçimine Dön</a>
-    <h1 id="baslik">Yükleniyor...</h1>
-    
-    <div id="icerikContainer"></div>
+    <h1>Eğitici Araçlar Portalı</h1>
+    <p>Lütfen ders/sınıf seçiniz veya Lab Üreteci'ni kullanınız</p>
 
-    <script src="data.js"></script>
-    <script>
-        // URL'den sınıf bilgisini al (Örn: ?sinif=8_sinif)
-        const urlParams = new URLSearchParams(window.location.search);
-        const sinifKey = urlParams.get('sinif');
+    <div class="grid" id="siniflarGrid">
+        <!-- Lab Üreteci Butonu (Sabit Eklenen Kart) -->
+        <a href="lab_ureteci.html" class="card lab-generator">
+            <span style="font-size: 2rem;">🧪</span>
+            <span>Lab Üreteci</span>
+        </a>
 
-        // Verinin gelip gelmediğini ve data.js'in yüklenip yüklenmediğini kontrol edelim
-        if (typeof egitimVerileri !== 'undefined' && sinifKey && egitimVerileri[sinifKey]) {
-            const sinifData = egitimVerileri[sinifKey];
-            
-            document.title = sinifData.baslik;
-            document.getElementById('baslik').innerText = sinifData.baslik;
+        <!-- Matematik Kartı (Sabit) -->
+        <a href="sinif.html?sinif=8_sinif" class="card">
+            <span style="font-size: 2rem;">📐</span>
+            <span>Matematik (8. Sınıf)</span>
+        </a>
 
-            const container = document.getElementById('icerikContainer');
+        <!-- Fen Bilimleri Kartı (Sabit - Fen için ekleyeceğin sayfaya yönlendirir) -->
+        <a href="fen_sinif.html" class="card" style="border-color: #34d399; background: #f0fdf4; color: #15803d;" id="fenCard">
+            <span style="font-size: 2rem;">⚗️</span>
+            <span>Fen Bilimleri (8. Sınıf)</span>
+        </a>
+    </div>
 
-            sinifData.uniteler.forEach(unite => {
-                let unitDiv = document.createElement('div');
-                unitDiv.className = 'unit-box';
-                
-                let toolsHtml = "";
-                if (unite.araclar && unite.araclar.length > 0) {
-                    toolsHtml = unite.araclar.map(arac => `
-                        <a href="${arac.dosya}" class="tool-item">
-                            <span>🧩 ${arac.ad}</span>
-                            <span>▶ Başlat</span>
-                        </a>
-                    `).join('');
-                } else {
-                    toolsHtml = `<p style="color: #94a3b8; font-size: 0.9rem; padding: 5px;">Bu ünitede henüz etkinlik bulunmuyor.</p>`;
-                }
-
-                unitDiv.innerHTML = `
-                    <h3>📂 ${unite.uniteAdi}</h3>
-                    <div class="tool-list">${toolsHtml}</div>
-                `;
-                container.appendChild(unitDiv);
-            });
-        } else {
-            document.getElementById('baslik').innerText = "İçerik Bulunamadı!";
-            document.getElementById('icerikContainer').innerHTML = "<p style='text-align:center; color:#64748b;'>Bu sınıfa ait veri bulunamadı veya data.js yüklenemedi.</p><br><div style='text-align:center;'><a href='index.html'>Ana Sayfaya Dön</a></div>";
-        }
-    </script>
 </body>
 </html>
