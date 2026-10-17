@@ -22,7 +22,7 @@
 <body>
 
     <h1>Eğitici Araçlar Portalı</h1>
-    <p>Lütfen sınıf seviyesini seçiniz veya Lab Üreteci'ni kullanınız</p>
+    <p>Lütfen branş / sınıf seviyesini seçiniz veya Lab Üreteci'ni kullanınız</p>
 
     <div class="grid" id="siniflarGrid">
         <!-- Lab Üreteci Butonu (Sabit Eklenen Kart) -->
@@ -31,7 +31,7 @@
             <span>Lab Üreteci</span>
         </a>
 
-        <!-- Sınıflar data.js dosyasından buraya dinamik gelecek -->
+        <!-- Dersler ve Sınıflar data.js dosyasından buraya dinamik gelecek -->
     </div>
 
     <script src="data.js"></script>
@@ -39,12 +39,16 @@
         const grid = document.getElementById('siniflarGrid');
         
         if (typeof egitimVerileri !== 'undefined') {
-            for (const [key, sinifBilgisi] of Object.entries(egitimVerileri)) {
-                const card = document.createElement('a');
-                card.href = `sinif.html?sinif=${key}`;
-                card.className = 'card';
-                card.innerHTML = `<span style="font-size: 2rem;">📚</span> <span>${sinifBilgisi.baslik}</span>`;
-                grid.appendChild(card);
+            // Yeni veri yapısına göre (matematik, fen vb.) döngü kuruyoruz
+            for (const [dersKey, dersBilgisi] of Object.entries(egitimVerileri)) {
+                for (const [sinifKey, sinifBilgisi] of Object.entries(dersBilgisi.siniflar)) {
+                    const card = document.createElement('a');
+                    // Hangi ders ve hangi sınıf olduğunu URL parametreleriyle sinif.html'e iletiyoruz
+                    card.href = `sinif.html?ders=${dersKey}&sinif=${sinifKey}`;
+                    card.className = 'card';
+                    card.innerHTML = `<span style="font-size: 2rem;">${dersBilgisi.ikon}</span> <span>${sinifBilgisi.baslik}</span>`;
+                    grid.appendChild(card);
+                }
             }
         }
     </script>
