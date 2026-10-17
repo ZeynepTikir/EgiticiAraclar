@@ -40,6 +40,12 @@ const fenVerileri = {
         araclar: [
           { ad: "Mevsimler ve İklim Etkinliği", dosya: "fen/8_sinif/1_mevsimler_iklim/mevsimler_iklim.html" }
         ]
+      },
+      {
+        uniteAdi: "2. DNA ve Genetik Kod",
+        araclar: [
+          { ad: "DNA'nın Yapısı", dosya: "fen/8_sinif/2_dna_genetik/dna_yapısı.html" }
+        ]
       }
     ]
   }
