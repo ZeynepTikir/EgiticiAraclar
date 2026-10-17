@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>8. Sınıf Fen Bilimleri - DNA ve Genetik Kod Laboratuvarı</title>
+  <style>
+    :root {
+      --primary: #0284c7;
+      --primary-hover: #0369a1;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #0f172a;
+      --accent-green: #16a34a;
+      --accent-red: #dc2626;
+      --accent-purple: #9333ea;
+      --accent-amber: #d97706;
+      
+      --base-a: #ef4444;
+      --base-t: #0284c7;
+      --base-g: #16a34a;
+      --base-c: #d97706;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    header h1 {
+      color: var(--primary);
+      font-size: 2rem;
+      margin-bottom: 8px;
+    }
+
+    header p {
+      color: #64748b;
+      font-size: 1rem;
+    }
+
+    /* Sekmeler (Tabs) */
+    .tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 2px;
+    }
+
+    .tab-btn {
+      padding: 12px 24px;
+      border: none;
+      background: none;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #64748b;
+      cursor: pointer;
+      border-radius: 8px 8px 0 0;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn:hover {
+      color: var(--primary);
+      background-color: #f1f5f9;
+    }
+
+    .tab-btn.active {
+      color: var(--primary);
+      border-bottom: 3px solid var(--primary);
+      background-color: #fff;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    /* Kart Yapıları */
+    .visual-card, .quiz-card, .panel {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      margin-bottom: 20px;
+      border: 1px solid #e2e8f0;
+    }
+
+    .panel-header {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    @media (max-width: 768px) {
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Kontrol Grupları */
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .control-group label {
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: #475569;
+    }
+
+    .control-group input[type="number"], .control-group select {
+      padding: 10px 14px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-size: 1rem;
+      outline: none;
+    }
+
+    .control-group input[type="number"]:focus, .control-group select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+    }
+
+    /* Çipler ve Butonlar */
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: #fff;
+    }
+
+    .chip-a { background-color: var(--base-a); }
+    .chip-t { background-color: var(--base-t); }
+    .chip-g { background-color: var(--base-g); }
+    .chip-c { background-color: var(--base-c); }
+
+    .pair-chips {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+
+    .preset-btn, .action-btn {
+      background-color: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .preset-btn:hover, .action-btn:hover {
+      background-color: var(--primary-hover);
+    }
+
+    .reset-btn {
+      background-color: #64748b;
+    }
+    .reset-btn:hover {
+      background-color: #475569;
+    }
+
+    /* DNA Sarmal / Eşleşme Simülasyonu */
+    .dna-builder {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      align-items: center;
+      margin: 20px 0;
+      background: #f1f5f9;
+      padding: 20px;
+      border-radius: 10px;
+    }
+
+    .strand {
+      display: flex;
+      gap: 8px;
+    }
+
+    .base-box {
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1.2rem;
+      border-radius: 8px;
+      color: white;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+    }
+
+    .base-box.empty {
+      background-color: #e2e8f0;
+      border: 2px dashed #94a3b8;
+      color: #64748b;
+      cursor: pointer;
+    }
+
+    .base-box.empty.selected {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.3);
+    }
+
+    .hydrogen-bonds {
+      display: flex;
+      gap: 8px;
+      height: 20px;
+      align-items: center;
+    }
+
+    .bond-connector {
+      width: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 0.8rem;
+      color: #94a3b8;
+      font-weight: bold;
+    }
+
+    .base-selector {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 15px;
+    }
+
+    .base-selector-btn {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      border: none;
+      color: #fff;
+      font-weight: bold;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: transform 0.1s;
+    }
+
+    .base-selector-btn:active {
+      transform: scale(0.95);
+    }
+
+    /* Nükleotid Yapısı Görseli */
+    .nucleotide-diagram {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 20px;
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      margin-top: 15px;
+    }
+
+    .part-phosphate {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background-color: var(--accent-purple);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .part-sugar {
+      width: 70px;
+      height: 60px;
+      clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
+      background-color: var(--accent-amber);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .part-base {
+      width: 80px;
+      height: 50px;
+      border-radius: 6px;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 0.9rem;
+    }
+
+    /* Genetik Hiyerarşi Akordeon / Adımlar */
+    .hierarchy-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .hierarchy-card {
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 16px;
+      cursor: pointer;
+      transition: all 0.2s;
+      background: #fff;
+    }
+
+    .hierarchy-card:hover {
+      border-color: var(--primary);
+      transform: translateX(4px);
+    }
+
+    .hierarchy-card.active {
+      border-color: var(--primary);
+      background-color: #f0f9ff;
+    }
+
+    .hierarchy-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: bold;
+      font-size: 1.1rem;
+    }
+
+    .hierarchy-desc {
+      margin-top: 10px;
+      font-size: 0.95rem;
+      color: #475569;
+      display: none;
+    }
+
+    .hierarchy-card.active .hierarchy-desc {
+      display: block;
+    }
+
+    /* Quiz Stilleri */
+    .option-btn {
+      width: 100%;
+      text-align: left;
+      padding: 14px 18px;
+      margin-bottom: 10px;
+      border: 2px solid #e2e8f0;
+      background-color: #fff;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      color: var(--text);
+    }
+
+    .option-btn:hover {
+      border-color: var(--primary);
+      background-color: #f0f9ff;
+    }
+
+    .feedback {
+      margin-top: 12px;
+      padding: 14px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      display: none;
+      line-height: 1.4;
+    }
+
+    .feedback.correct {
+      background-color: #dcfce7;
+      color: #15803d;
+      border: 1px solid #86efac;
+      display: block;
+    }
+
+    .feedback.incorrect {
+      background-color: #fee2e2;
+      color: #b91c1c;
+      border: 1px solid #fca5a5;
+      display: block;
+    }
+
+    .stats-badge {
+      background: #e0f2fe;
+      color: var(--primary);
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 0.85rem;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h1>DNA ve Genetik Kod İnteraktif Laboratuvarı</h1>
+      <p>8. Sınıf Fen Bilimleri • DNA'nın Yapısı, Nükleotid, Gen ve Kromozom</p>
+    </header>
+
+    <!-- Sekme Butonları -->
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab(0)">1. DNA Eşleme & Yapı Laboratuvarı</button>
+      <button class="tab-btn" onclick="switchTab(1)">2. Genetik Hiyerarşi & Hesaplayıcı</button>
+      <button class="tab-btn" onclick="switchTab(2)">3. Değerlendirme Testi (5 Soru)</button>
+    </div>
+
+    <!-- SEKME 1: DNA Eşleme & Yapı Laboratuvarı -->
+    <div class="tab-content active" id="tab-0">
+      <div class="grid-2">
+        <!-- Sol Panel: Tamamlayıcı Zincir İnşası -->
+        <div class="visual-card">
+          <div class="panel-header">
+            <span>🧬 DNA Zincirini Tamamla</span>
+          </div>
+          <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 12px;">
+            Birinci zincirdeki organik bazların karşısına uygun olan Nükleotidi yerleştiriniz (<strong>A - T</strong>, <strong>G - C</strong>).
+          </p>
+
+          <div class="dna-builder">
+            <!-- 1. Zincir (Sabit) -->
+            <div class="strand" id="strand-1"></div>
+            
+            <!-- Hidrojen Bağları Göstergesi -->
+            <div class="hydrogen-bonds" id="bonds-row"></div>
+
+            <!-- 2. Zincir (Kullanıcı Tamamlayacak) -->
+            <div class="strand" id="strand-2"></div>
+          </div>
+
+          <div style="text-align: center; margin-bottom: 8px; font-weight: 600; font-size: 0.9rem;">
+            Aşağıdaki Bazlardan Seçip Boş Kutulara Tıklayın:
+          </div>
+
+          <div class="base-selector">
+            <button class="base-selector-btn" style="background-color: var(--base-a);" onclick="selectBase('A')">A</button>
+            <button class="base-selector-btn" style="background-color: var(--base-t);" onclick="selectBase('T')">T</button>
+            <button class="base-selector-btn" style="background-color: var(--base-g);" onclick="selectBase('G')">G</button>
+            <button class="base-selector-btn" style="background-color: var(--base-c);" onclick="selectBase('C')">C</button>
+          </div>
+
+          <div style="margin-top: 20px; display: flex; gap: 10px; justify-content: center;">
+            <button class="preset-btn" onclick="checkDnaMatch()">Zinciri Kontrol Et</button>
+            <button class="preset-btn reset-btn" onclick="resetDnaBuilder()">Yeniden Başlat</button>
+          </div>
+
+          <div id="dna-builder-feedback" class="feedback"></div>
+        </div>
+
+        <!-- Sağ Panel: Nükleotid Anatomisi -->
+        <div class="visual-card">
+          <div class="panel-header">
+            <span>🔬 Nükleotidin Yapısı</span>
+          </div>
+          <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 12px;">
+            Her nükleotid 1 Fosfat, 1 Deoksiriboz Şekeri ve 1 Organik Bazdan oluşur. Nükleotidin adı, içerdiği **Organik Baza** göre belirlenir.
+          </p>
+
+          <div class="control-group">
+            <label for="nucleotide-type">Incelemek İstediğiniz Organik Baza Tıklayın/Seçin:</label>
+            <select id="nucleotide-type" onchange="updateNucleotideDiagram()">
+              <option value="A">Adenin Nükleotid</option>
+              <option value="T">Timin Nükleotid</option>
+              <option value="G">Guanin Nükleotid</option>
+              <option value="C">Sitozin Nükleotid</option>
+            </select>
+          </div>
+
+          <!-- İnteraktif Şema -->
+          <div class="nucleotide-diagram">
+            <div class="part-phosphate" title="Fosfat (P)">Fosfat<br>(P)</div>
+            <div style="width:20px; height:2px; background:#94a3b8;"></div>
+            <div class="part-sugar" title="Deoksiriboz Şekeri (D)">Deoksiriboz<br>(D)</div>
+            <div style="width:20px; height:2px; background:#94a3b8;"></div>
+            <div class="part-base" id="diagram-base" style="background-color: var(--base-a);">Adenin (A)</div>
+          </div>
+
+          <div style="margin-top: 16px; background: #f1f5f9; padding: 12px; border-radius: 8px; font-size: 0.85rem; color: #334155;">
+            <strong>📌 Unutma!</strong><br>
+            • Adenin ile Timin arasında <strong>2'li Zayıf Hidrojen Bağı</strong> bulunur.<br>
+            • Guanin ile Sitozin arasında <strong>3'lü Zayıf Hidrojen Bağı</strong> bulunur.<br>
+            • Toplam Nükleotid Sayısı = Toplam Fosfat Sayısı = Toplam Şeker Sayısı = Toplam Organik Baz Sayısı.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SEKME 2: Genetik Hiyerarşi & Hesaplayıcı -->
+    <div class="tab-content" id="tab-1">
+      <div class="grid-2">
+        <!-- Sol Panel: Karmaşıklıktan Basite Hiyerarşi (KEDİGENİ) -->
+        <div class="visual-card">
+          <div class="panel-header">
+            <span>📚 Genetik Yapı Hiyerarşisi (Karmaşıktan Basite)</span>
+          </div>
+          <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 12px;">
+            Şifreleme Akrostişi: <strong>K - E - D İ - G - E - N - İ</strong> (Kromozom > DNA > Gen > Nükleotid)
+          </p>
+
+          <div class="hierarchy-container">
+            <div class="hierarchy-card active" onclick="toggleHierarchy(this)">
+              <div class="hierarchy-title">
+                <span>1. KROMOZOM</span>
+                <span class="stats-badge">En Karmaşık</span>
+              </div>
+              <div class="hierarchy-desc">
+                DNA'nın özel proteinlerle sarılarak paketlenmiş halidir. Hücre bölünmesi sırasında belirginleşir. İnsanlarda 46 kromozom (23 çift) bulunur.
+              </div>
+            </div>
+
+            <div class="hierarchy-card" onclick="toggleHierarchy(this)">
+              <div class="hierarchy-title">
+                <span>2. DNA (Deoksiribo Nükleik Asit)</span>
+                <span class="stats-badge">Yönetici Molekül</span>
+              </div>
+              <div class="hierarchy-desc">
+                Hücrenin yönetici molekülüdür. Çift zincirli ve sarmal yapıdadır. Solunum, beslenme, üreme gibi tüm yaşamsal faaliyetleri yönetir.
+              </div>
+            </div>
+
+            <div class="hierarchy-card" onclick="toggleHierarchy(this)">
+              <div class="hierarchy-title">
+                <span>3. GEN</span>
+                <span class="stats-badge">Görev Birimi</span>
+              </div>
+              <div class="hierarchy-desc">
+                DNA üzerindeki anlamlı görev birimleridir. Göz rengi, kan grubu, saç şekli gibi kalıtsal karakterler genler tarafından belirlenir.
+              </div>
+            </div>
+
+            <div class="hierarchy-card" onclick="toggleHierarchy(this)">
+              <div class="hierarchy-title">
+                <span>4. NÜKLEOTİD</span>
+                <span class="stats-badge">Yapı Birimi (En Küçük)</span>
+              </div>
+              <div class="hierarchy-desc">
+                DNA'nın en küçük temel yapı birimidir. Bir nükleotid; Fosfat, Deoksiriboz Şekeri ve Organik Bazdan (A, T, G, C) oluşur.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sağ Panel: Nükleotid & Bağ Hesaplayıcı -->
+        <div class="visual-card">
+          <div class="panel-header">
+            <span>🧮 DNA Nükleotid Hesaplama Aracı</span>
+          </div>
+          <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 16px;">
+            Sağlıklı bir DNA molekülündeki bilinen baz sayılarını girerek toplam yapıtaşlarını ve bağ sayılarını otomatik hesaplayın.
+          </p>
+
+          <div class="control-group">
+            <label for="input-a">Adenin (A) Sayısı:</label>
+            <input type="number" id="input-a" value="300" min="0" oninput="calculateDNA()">
+          </div>
+
+          <div class="control-group">
+            <label for="input-g">Guanin (G) Sayısı:</label>
+            <input type="number" id="input-g" value="200" min="0" oninput="calculateDNA()">
+          </div>
+
+          <div style="background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; padding: 16px; margin-top: 15px;">
+            <h4 style="margin-bottom: 10px; color: var(--primary);">Hesaplama Sonuçları:</h4>
+            <ul style="list-style: none; display: flex; flex-direction: column; gap: 8px; font-size: 0.95rem;">
+              <li>• <strong>Timin (T) Sayısı:</strong> <span id="res-t" style="font-weight:bold; color:var(--base-t);">300</span></li>
+              <li>• <strong>Sitozin (C) Sayısı:</strong> <span id="res-c" style="font-weight:bold; color:var(--base-c);">200</span></li>
+              <li>• <strong>Toplam Nükleotid Sayısı:</strong> <span id="res-total" style="font-weight:bold;">1000</span></li>
+              <li>• <strong>Toplam Fosfat Sayısı:</strong> <span id="res-phos" style="font-weight:bold; color:var(--accent-purple);">1000</span></li>
+              <li>• <strong>Toplam Deoksiriboz Şekeri:</strong> <span id="res-sugar" style="font-weight:bold; color:var(--accent-amber);">1000</span></li>
+              <li>• <strong>Toplam Hidrojen Bağı Sayısı:</strong> <span id="res-bonds" style="font-weight:bold; color:var(--accent-green);">1200</span> <br><small style="color:#64748b;">(2×A + 3×G)</small></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SEKME 3: Değerlendirme Testi -->
+    <div class="tab-content" id="tab-2">
+      <!-- Soru 1 -->
+      <div class="quiz-card">
+        <h3>Soru 1:</h3>
+        <p style="margin: 12px 0; font-size: 1rem;">
+          Genetik yapıların karmaşıktan basite (büyükten küçüğe) doğru sıralanışı hangi seçenekte doğru verilmiştir?
+        </p>
+        <button class="option-btn" onclick="checkQ('q1', this, false)">A) Nükleotid > Gen > DNA > Kromozom</button>
+        <button class="option-btn" onclick="checkQ('q1', this, true)">B) Kromozom > DNA > Gen > Nükleotid</button>
+        <button class="option-btn" onclick="checkQ('q1', this, false)">C) DNA > Kromozom > Nükleotid > Gen</button>
+        <button class="option-btn" onclick="checkQ('q1', this, false)">D) Gen > Nükleotid > DNA > Kromozom</button>
+        <div id="q1-feedback" class="feedback"></div>
+      </div>
+
+      <!-- Soru 2 -->
+      <div class="quiz-card">
+        <h3>Soru 2:</h3>
+        <p style="margin: 12px 0; font-size: 1rem;">
+          Bir nükleotidin adlandırılması neye göre yapılır?
+        </p>
+        <button class="option-btn" onclick="checkQ('q2', this, false)">A) Bağlandığı şeker çeşidine göre</button>
+        <button class="option-btn" onclick="checkQ('q2', this, false)">B) Bulunduğu hücresel organele göre</button>
+        <button class="option-btn" onclick="checkQ('q2', this, true)">C) İçerdiği organik baza göre</button>
+        <button class="option-btn" onclick="checkQ('q2', this, false)">D) İçerdiği fosfat sayısına göre</button>
+        <div id="q2-feedback" class="feedback"></div>
+      </div>
+
+      <!-- Soru 3 -->
+      <div class="quiz-card">
+        <h3>Soru 3:</h3>
+        <p style="margin: 12px 0; font-size: 1rem;">
+          Toplam 1200 nükleotidden oluşan sağlıklı bir DNA molekülünde 200 adet Guanin nükleotidi bulunmaktadır. Bu DNA molekülündeki **Adenin nükleotidi sayısı** kaçtır?
+        </p>
+        <button class="option-btn" onclick="checkQ('q3', this, false)">A) 200</button>
+        <button class="option-btn" onclick="checkQ('q3', this, true)">B) 400</button>
+        <button class="option-btn" onclick="checkQ('q3', this, false)">C) 600</button>
+        <button class="option-btn" onclick="checkQ('q3', this, false)">D) 800</button>
+        <div id="q3-feedback" class="feedback"></div>
+      </div>
+
+      <!-- Soru 4 -->
+      <div class="quiz-card">
+        <h3>Soru 4:</h3>
+        <p style="margin: 12px 0; font-size: 1rem;">
+          DNA'nın yapısı ve eşlenmesi ile ilgili aşağıda verilen ifadelerden hangisi **YANLIŞTIR**?
+        </p>
+        <button class="option-btn" onclick="checkQ('q4', this, false)">A) Adenin karşısına her zaman Timin gelir.</button>
+        <button class="option-btn" onclick="checkQ('q4', this, false)">B) Sağlıklı bir DNA'da toplam şeker sayısı, toplam fosfat sayısına eşittir.</button>
+        <button class="option-btn" onclick="checkQ('q4', this, true)">C) DNA eşlenirken oluşan yeni DNA'lar birbirinden tamamen farklı genetik dizilime sahiptir.</button>
+        <button class="option-btn" onclick="checkQ('q4', this, false)">D) DNA çift zincirli ve sarmal bir yapıya sahiptir.</button>
+        <div id="q4-feedback" class="feedback"></div>
+      </div>
+
+      <!-- Soru 5 -->
+      <div class="quiz-card">
+        <h3>Soru 5:</h3>
+        <p style="margin: 12px 0; font-size: 1rem;">
+          DNA üzerindeki kalıtsal özellikleri belirleyen, anlamlı nükleotid dizilerinden oluşan **görev birimi** aşağıdakilerden hangisidir?
+        </p>
+        <button class="option-btn" onclick="checkQ('q5', this, false)">A) Nükleotid</button>
+        <button class="option-btn" onclick="checkQ('q5', this, true)">B) Gen</button>
+        <button class="option-btn" onclick="checkQ('q5', this, false)">C) Deoksiriboz</button>
+        <button class="option-btn" onclick="checkQ('q5', this, false)">D) Kromozom</button>
+        <div id="q5-feedback" class="feedback"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Sekme Geçiş Scripti
+    function switchTab(tabIndex) {
+      const tabs = document.querySelectorAll('.tab-btn');
+      const contents = document.querySelectorAll('.tab-content');
+
+      tabs.forEach((tab, index) => {
+        if (index === tabIndex) {
+          tab.classList.add('active');
+        } else {
+          tab.classList.remove('active');
+        }
+      });
+
+      contents.forEach((content, index) => {
+        if (index === tabIndex) {
+          content.classList.add('active');
+        } else {
+          content.classList.remove('active');
+        }
+      });
+    }
+
+    // --- TAB 1: DNA Builder Logic ---
+    const strand1Data = ['A', 'T', 'G', 'C', 'A', 'C', 'T'];
+    let strand2User = ['', '', '', '', '', '', ''];
+    let selectedIndex = 0;
+
+    function initDnaBuilder() {
+      const s1Container = document.getElementById('strand-1');
+      const s2Container = document.getElementById('strand-2');
+      const bondsContainer = document.getElementById('bonds-row');
+
+      s1Container.innerHTML = '';
+      s2Container.innerHTML = '';
+      bondsContainer.innerHTML = '';
+
+      strand1Data.forEach((base, index) => {
+        // Strand 1 Box
+        const box1 = document.createElement('div');
+        box1.className = 'base-box';
+        box1.style.backgroundColor = getBaseColor(base);
+        box1.textContent = base;
+        s1Container.appendChild(box1);
+
+        // Bond Connector
+        const bond = document.createElement('div');
+        bond.className = 'bond-connector';
+        bond.textContent = (base === 'A' || base === 'T') ? '═ (2)' : '≡ (3)';
+        bondsContainer.appendChild(bond);
+
+        // Strand 2 Box (User)
+        const box2 = document.createElement('div');
+        box2.className = 'base-box empty' + (index === selectedIndex ? ' selected' : '');
+        box2.id = 'user-box-' + index;
+        box2.textContent = strand2User[index] || '?';
+        if (strand2User[index]) {
+          box2.style.backgroundColor = getBaseColor(strand2User[index]);
+          box2.classList.remove('empty');
+        }
+        box2.onclick = () => {
+          selectedIndex = index;
+          renderStrand2();
+        };
+        s2Container.appendChild(box2);
+      });
+    }
+
+    function renderStrand2() {
+      strand1Data.forEach((_, index) => {
+        const box2 = document.getElementById('user-box-' + index);
+        if (!box2) return;
+
+        if (index === selectedIndex) {
+          box2.classList.add('selected');
+        } else {
+          box2.classList.remove('selected');
+        }
+
+        if (strand2User[index]) {
+          box2.textContent = strand2User[index];
+          box2.style.backgroundColor = getBaseColor(strand2User[index]);
+          box2.classList.remove('empty');
+        } else {
+          box2.textContent = '?';
+          box2.style.backgroundColor = '';
+          box2.classList.add('empty');
+        }
+      });
+    }
+
+    function selectBase(base) {
+      strand2User[selectedIndex] = base;
+      // Auto move to next empty slot if available
+      let nextEmpty = strand2User.findIndex((val, idx) => val === '' && idx > selectedIndex);
+      if (nextEmpty !== -1) {
+        selectedIndex = nextEmpty;
+      } else {
+        let firstEmpty = strand2User.findIndex(val => val === '');
+        if (firstEmpty !== -1) selectedIndex = firstEmpty;
+      }
+      renderStrand2();
+    }
+
+    function getBaseColor(base) {
+      switch(base) {
+        case 'A': return 'var(--base-a)';
+        case 'T': return 'var(--base-t)';
+        case 'G': return 'var(--base-g)';
+        case 'C': return 'var(--base-c)';
+        default: return '#cbd5e1';
+      }
+    }
+
+    function checkDnaMatch() {
+      const fb = document.getElementById('dna-builder-feedback');
+      let isComplete = true;
+      let isCorrect = true;
+
+      const pairs = { 'A': 'T', 'T': 'A', 'G': 'C', 'C': 'G' };
+
+      for (let i = 0; i < strand1Data.length; i++) {
+        if (!strand2User[i]) {
+          isComplete = false;
+          break;
+        }
+        if (strand2User[i] !== pairs[strand1Data[i]]) {
+          isCorrect = false;
+        }
+      }
+
+      if (!isComplete) {
+        fb.className = 'feedback incorrect';
+        fb.innerHTML = '⚠️ Lütfen tüm kutucukları uygun nükleotidlerle doldurun!';
+        return;
+      }
+
+      if (isCorrect) {
+        fb.className = 'feedback correct';
+        fb.innerHTML = '🎉 **Tebrikler!** DNA eşleşmesini kusursuz bir şekilde tamamladınız. Adenin-Timin ve Guanin-Sitozin eşleşmesi doğru!';
+      } else {
+        fb.className = 'feedback incorrect';
+        fb.innerHTML = '❌ **Hata Var!** Bazı eşleşmeler yanlış. Unutma: **A** karşısına **T**, **G** karşısına **C** gelmelidir.';
+      }
+    }
+
+    function resetDnaBuilder() {
+      strand2User = ['', '', '', '', '', '', ''];
+      selectedIndex = 0;
+      const fb = document.getElementById('dna-builder-feedback');
+      fb.style.display = 'none';
+      renderStrand2();
+    }
+
+    // Nükleotid Diagram Güncelleme
+    function updateNucleotideDiagram() {
+      const type = document.getElementById('nucleotide-type').value;
+      const baseBox = document.getElementById('diagram-base');
+      
+      const names = {
+        'A': 'Adenin (A)',
+        'T': 'Timin (T)',
+        'G': 'Guanin (G)',
+        'C': 'Sitozin (C)'
+      };
+
+      baseBox.textContent = names[type];
+      baseBox.style.backgroundColor = getBaseColor(type);
+    }
+
+    // --- TAB 2: Akordeon ve Hesaplayıcı ---
+    function toggleHierarchy(card) {
+      const allCards = document.querySelectorAll('.hierarchy-card');
+      allCards.forEach(c => c.classList.remove('active'));
+      card.classList.add('active');
+    }
+
+    function calculateDNA() {
+      const countA = parseInt(document.getElementById('input-a').value) || 0;
+      const countG = parseInt(document.getElementById('input-g').value) || 0;
+
+      const countT = countA;
+      const countC = countG;
+      const totalNucleotides = countA + countT + countG + countC;
+      const hydrogenBonds = (countA * 2) + (countG * 3);
+
+      document.getElementById('res-t').textContent = countT;
+      document.getElementById('res-c').textContent = countC;
+      document.getElementById('res-total').textContent = totalNucleotides;
+      document.getElementById('res-phos').textContent = totalNucleotides;
+      document.getElementById('res-sugar').textContent = totalNucleotides;
+      document.getElementById('res-bonds').textContent = hydrogenBonds;
+    }
+
+    // --- TAB 3: Quiz Logic ---
+    const explanations = {
+      q1: "Genetik yapılar karmaşıktan basite doğru: **Kromozom > DNA > Gen > Nükleotid** şeklinde sıralanır (Akrostiş: KEDİGENİ).",
+      q2: "Nükleotidler içerdikleri **Organik Baza** göre adlandırılırlar. Örneğin Adenin bazı içeriyorsa Adenin Nükleotid adını alır.",
+      q3: "Guanin = 200 ise Sitozin = 200'dür. Toplam (G + C) = 400 olur. Geride kalan nükleotid sayısı = 1200 - 400 = 800'dür. Bunlar eşit sayıda Adenin ve Timin'dir. Dolayısıyla Adenin = 800 / 2 = **400** olur.",
+      q4: "DNA kendisini eşlediğinde oluşan 2 yeni DNA molekülü, kalıtsal olarak **birbirinin ve ana DNA'nın birebir aynısıdır (kopyasıdır)**.",
+      q5: "DNA üzerindeki belirli kalıtsal özellikleri (göz rengi, kan grubu vb.) şifreleyen anlamlı görev birimlerine **Gen** denir."
+    };
+
+    function checkQ(qId, btn, isCorrect) {
+      const parentContainer = btn.parentElement;
+      const buttons = parentContainer.querySelectorAll('.option-btn');
+      const feedbackEl = document.getElementById(qId + '-feedback');
+
+      // Tıklanan tüm butonların durumunu sıfırla/kilitle
+      buttons.forEach(b => {
+        b.style.pointerEvents = 'none';
+        b.style.backgroundColor = '#fff';
+        b.style.borderColor = '#e2e8f0';
+      });
+
+      if (isCorrect) {
+        btn.style.backgroundColor = '#dcfce7';
+        btn.style.borderColor = '#16a34a';
+        btn.style.color = '#15803d';
+        feedbackEl.className = 'feedback correct';
+        feedbackEl.innerHTML = '✅ <strong>Doğru!</strong> ' + explanations[qId];
+      } else {
+        btn.style.backgroundColor = '#fee2e2';
+        btn.style.borderColor = '#dc2626';
+        btn.style.color = '#b91c1c';
+        feedbackEl.className = 'feedback incorrect';
+        feedbackEl.innerHTML = '❌ <strong>Yanlış!</strong> ' + explanations[qId];
+      }
+    }
+
+    // Başlangıç Çalıştırmaları
+    window.onload = function() {
+      initDnaBuilder();
+      calculateDNA();
+    };
+  </script>
+</body>
+</html>
