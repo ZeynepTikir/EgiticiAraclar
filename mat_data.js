@@ -1,11 +1,17 @@
-const matVerileri = {
+const egitimVerileri = {
   "5_sinif": {
-    baslik: "5. Sınıf Matematik",
+    baslik: "5. Sınıf",
     uniteler: [
       {
-        uniteAdi: "Doğal Sayılar",
+        uniteAdi: "1. Geometrik Şekiller",
         araclar: [
-          { ad: "Örnek Araç 1", dosya: "5_sinif/dogal_sayilar/arac1.html" }
+          { ad: "Temel Geometri", dosya: "5_sinif/geometrik_sekiller/temel_geometri.html" }
+        ]
+      },
+      {
+        uniteAdi: "2. Sayılar ve Nicelikler 1",
+        araclar: [
+          { ad: "Çok Basamaklı Sayılar", dosya: "5_sinif/sayilar_nicelikler_1/cok_basamakli_sayilar.html" }
         ]
       }
     ]
