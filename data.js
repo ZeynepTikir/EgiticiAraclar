@@ -3,9 +3,10 @@ const egitimVerileri = {
     baslik: "5. Sınıf",
     uniteler: [
       {
-        uniteAdi: "Doğal Sayılar",
+        uniteAdi: "Geometrik Şekiller",
         araclar: [
-          { ad: "Örnek Araç 1", dosya: "5_sinif/dogal_sayilar/arac1.html" }
+          { ad: "Temel Geometri", dosya: "5_sinif/geometrik_sekiller/temel_geometri.html" },
+          { ad: "Çok Basamaklı Sayılar", dosya: "5_sinif/sayilar_nicelikler_1/cok_basamakli_sayilar.html" }
         ]
       }
     ]
