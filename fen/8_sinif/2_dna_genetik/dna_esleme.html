@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>8. Sınıf DNA ve Genetik Kod İnteraktif Lab</title>
+  <style>
+    :root {
+      --primary: #0284c7;
+      --primary-hover: #0369a1;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #0f172a;
+      --accent-green: #16a34a;
+      --accent-red: #dc2626;
+      --accent-purple: #9333ea;
+      --accent-amber: #d97706;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    header h1 {
+      color: var(--primary);
+      font-size: 1.8rem;
+      margin-bottom: 8px;
+    }
+
+    header p {
+      color: #64748b;
+      font-size: 0.95rem;
+    }
+
+    /* Sekmeler (Tabs) */
+    .tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 4px;
+    }
+
+    .tab-btn {
+      padding: 10px 18px;
+      border: none;
+      background: none;
+      font-weight: 600;
+      color: #64748b;
+      cursor: pointer;
+      border-radius: 8px 8px 0 0;
+      transition: all 0.2s ease;
+      font-size: 0.95rem;
+    }
+
+    .tab-btn:hover {
+      color: var(--primary);
+      background-color: #f1f5f9;
+    }
+
+    .tab-btn.active {
+      color: var(--primary);
+      border-bottom: 3px solid var(--primary);
+      background-color: #e0f2fe;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    /* Kartlar */
+    .visual-card, .quiz-card {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      margin-bottom: 20px;
+      border: 1px solid #e2e8f0;
+    }
+
+    /* Panel ve Kontrol Grubu */
+    .panel {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .control-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      background: #f1f5f9;
+      padding: 12px;
+      border-radius: 8px;
+    }
+
+    /* Buton Stilleri */
+    .preset-btn {
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .preset-btn:hover {
+      background-color: var(--primary-hover);
+    }
+
+    .preset-btn:disabled {
+      background-color: #cbd5e1;
+      cursor: not-allowed;
+    }
+
+    .preset-btn.secondary {
+      background-color: #475569;
+    }
+
+    .preset-btn.secondary:hover {
+      background-color: #334155;
+    }
+
+    .preset-btn.amber {
+      background-color: var(--accent-amber);
+    }
+    .preset-btn.amber:hover {
+      background-color: #b45309;
+    }
+
+    /* Çipler */
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 10px;
+      border-radius: 16px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .chip-a { background: #fef3c7; color: #b45309; border: 1px solid var(--accent-amber); }
+    .chip-t { background: #dbeafe; color: #1d4ed8; border: 1px solid var(--primary); }
+    .chip-g { background: #f3e8ff; color: #6b21a8; border: 1px solid var(--accent-purple); }
+    .chip-c { background: #dcfce7; color: #15803d; border: 1px solid var(--accent-green); }
+
+    .pair-chips {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+
+    /* DNA Simülasyon Alanı */
+    .dna-stage {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 280px;
+      background-color: #0f172a;
+      border-radius: 8px;
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .dna-container {
+      display: flex;
+      gap: 40px;
+      transition: all 0.5s ease;
+    }
+
+    .strand {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      position: relative;
+      transition: all 0.5s ease;
+    }
+
+    .nucleotide-node {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 42px;
+      height: 36px;
+      border-radius: 6px;
+      font-weight: bold;
+      color: white;
+      font-size: 0.9rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+      transition: all 0.3s ease;
+    }
+
+    .node-A { background-color: var(--accent-amber); }
+    .node-T { background-color: var(--primary); }
+    .node-G { background-color: var(--accent-purple); }
+    .node-C { background-color: var(--accent-green); }
+
+    .bond-line {
+      height: 2px;
+      background: #475569;
+      flex-grow: 1;
+      align-self: center;
+      transition: all 0.3s;
+    }
+
+    .bond-line.active {
+      background: #f59e0b;
+      box-shadow: 0 0 8px #f59e0b;
+    }
+
+    .pair-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* İstatistik Tablosu */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .stat-box {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      padding: 10px;
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    .stat-box span {
+      display: block;
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: var(--primary);
+    }
+
+    .stat-box label {
+      font-size: 0.8rem;
+      color: #64748b;
+    }
+
+    /* Sekme 2: Hiyerarşi & Kurallar */
+    .hierarchy-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .hierarchy-item {
+      display: flex;
+      align-items: center;
+      padding: 14px;
+      border-radius: 8px;
+      background: #f8fafc;
+      border-left: 6px solid var(--primary);
+      cursor: pointer;
+      transition: transform 0.2s, background-color 0.2s;
+    }
+
+    .hierarchy-item:hover {
+      transform: translateX(4px);
+      background: #f1f5f9;
+    }
+
+    .hierarchy-badge {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      margin-right: 14px;
+      flex-shrink: 0;
+    }
+
+    .hierarchy-text h4 {
+      margin-bottom: 2px;
+      color: var(--text);
+    }
+
+    .hierarchy-text p {
+      font-size: 0.85rem;
+      color: #64748b;
+    }
+
+    .detail-card {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 8px;
+      padding: 16px;
+      margin-top: 15px;
+    }
+
+    /* Sekme 3: Quiz */
+    .quiz-question {
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px dashed #cbd5e1;
+    }
+
+    .quiz-question:last-child {
+      border-bottom: none;
+    }
+
+    .quiz-question h3 {
+      font-size: 1rem;
+      margin-bottom: 12px;
+      color: var(--text);
+    }
+
+    .options-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .option-btn {
+      text-align: left;
+      padding: 10px 14px;
+      border: 1px solid #cbd5e1;
+      background: white;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+    }
+
+    .option-btn:hover {
+      background: #f1f5f9;
+      border-color: #94a3b8;
+    }
+
+    .feedback {
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: 6px;
+      font-size: 0.88rem;
+      display: none;
+    }
+
+    .feedback.correct {
+      display: block;
+      background-color: #dcfce7;
+      color: #15803d;
+      border: 1px solid #86efac;
+    }
+
+    .feedback.incorrect {
+      display: block;
+      background-color: #fee2e2;
+      color: #b91c1c;
+      border: 1px solid #fca5a5;
+    }
+
+    .info-box {
+      background-color: #f0f9ff;
+      border-left: 4px solid var(--primary);
+      padding: 12px;
+      margin-bottom: 15px;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>DNA ve Genetik Kod Laboratuvarı</h1>
+    <p>8. Sınıf Fen Bilimleri İnteraktif Eşleşme, Hiyerarşi ve Eşlenme Simülasyonu</p>
+  </header>
+
+  <!-- Sekme Butonları -->
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('tab1')">1. DNA Eşlenmesi Simülatörü</button>
+    <button class="tab-btn" onclick="switchTab('tab2')">2. Genetik Hiyerarşi (KEDİGEN)</button>
+    <button class="tab-btn" onclick="switchTab('tab3')">3. 5 Soruluk Konu Testi</button>
+  </div>
+
+  <!-- SEKME 1: DNA EŞLENMESİ SİMÜLATÖRÜ -->
+  <div id="tab1" class="tab-content active">
+    <div class="visual-card">
+      <div class="info-box" id="step-instruction">
+        <strong>Aşama 1:</strong> Başlangıçta 1 adet çift zincirli DNA molekülü bulunmaktadır. "Fermuarı Aç (Eşlenmeyi Başlat)" butonuna basarak hidrojen bağlarını koparın.
+      </div>
+
+      <div class="control-group">
+        <button id="btn-step1" class="preset-btn" onclick="simStepUnzip()">1. Fermuarı Aç</button>
+        <button id="btn-step2" class="preset-btn amber" onclick="simStepMatch()" disabled>2. Serbest Nükleotidleri Eşleştir</button>
+        <button id="btn-reset" class="preset-btn secondary" onclick="simReset()">Sıfırla / Yeniden Başlat</button>
+      </div>
+
+      <div class="dna-stage" id="dna-stage">
+        <!-- JS ile Dinamik Oluşturulacak DNA Alanı -->
+      </div>
+
+      <!-- Sayısal İstatistik Paneli -->
+      <div class="stats-grid">
+        <div class="stat-box"><span id="stat-a">4</span><label>Adenin (A)</label></div>
+        <div class="stat-box"><span id="stat-t">4</span><label>Timin (T)</label></div>
+        <div class="stat-box"><span id="stat-g">3</span><label>Guanin (G)</label></div>
+        <div class="stat-box"><span id="stat-c">3</span><label>Sitozin (C)</label></div>
+        <div class="stat-box"><span id="stat-total-nuc">14</span><label>Toplam Nükleotid</label></div>
+        <div class="stat-box"><span id="stat-total-dna">1</span><label>DNA Sayısı</label></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEKME 2: GENETİK HİYERARŞİ -->
+  <div id="tab2" class="tab-content">
+    <div class="visual-card">
+      <h3>Genetik Yapıların Karmaşıklık Hiyerarşisi</h3>
+      <p style="font-size:0.9rem; color:#64748b; margin-bottom:15px;">
+        Hücredeki genetik materyaller <strong>Büyükten Küçüğe (Karmaşıktan Basite)</strong> doğru sıralandığında <strong>KEDİGEN</strong> şifresi oluşur:
+      </p>
+
+      <div class="pair-chips" style="margin-bottom: 20px;">
+        <span class="chip chip-a" style="font-size:1rem; padding:6px 14px;"><strong>K</strong>romozom</span> &gt;
+        <span class="chip chip-t" style="font-size:1rem; padding:6px 14px;"><strong>D</strong>NA</span> &gt;
+        <span class="chip chip-g" style="font-size:1rem; padding:6px 14px;"><strong>G</strong>en</span> &gt;
+        <span class="chip chip-c" style="font-size:1rem; padding:6px 14px;"><strong>N</strong>ükleotid</span>
+      </div>
+
+      <div class="hierarchy-container">
+        <div class="hierarchy-item" onclick="showHierarchyDetail('kromozom')">
+          <div class="hierarchy-badge" style="background-color: var(--accent-amber);">K</div>
+          <div class="hierarchy-text">
+            <h4>Kromozom</h4>
+            <p>DNA'nın özel proteinlerle sarılarak paketlenmiş, en karmaşık ve en büyük yapısıdır.</p>
+          </div>
+        </div>
+
+        <div class="hierarchy-item" onclick="showHierarchyDetail('dna')">
+          <div class="hierarchy-badge" style="background-color: var(--primary);">D</div>
+          <div class="hierarchy-text">
+            <h4>DNA (Deoksiribonükleik Asit)</h4>
+            <p>Hücrenin yönetici molekülüdür. Çift zincirli ve sarmal yapıdadır.</p>
+          </div>
+        </div>
+
+        <div class="hierarchy-item" onclick="showHierarchyDetail('gen')">
+          <div class="hierarchy-badge" style="background-color: var(--accent-purple);">G</div>
+          <div class="hierarchy-text">
+            <h4>Gen</h4>
+            <p>DNA üzerindeki görev birimleridir. Saç rengi, göz rengi gibi kalıtsal özellikleri belirler.</p>
+          </div>
+        </div>
+
+        <div class="hierarchy-item" onclick="showHierarchyDetail('nukleotid')">
+          <div class="hierarchy-badge" style="background-color: var(--accent-green);">N</div>
+          <div class="hierarchy-text">
+            <h4>Nükleotid</h4>
+            <p>DNA'nın en küçük yapı birimidir. Fosfat, Deoksiriboz Şekeri ve Organik Bazdan oluşur.</p>
+          </div>
+        </div>
+      </div>
+
+      <div id="hierarchy-detail" class="detail-card">
+        <strong>Detayları görmek için yukarıdaki yapılardan birine tıklayın.</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEKME 3: 5 SORULUK TEST -->
+  <div id="tab3" class="tab-content">
+    <div class="quiz-card">
+      <h2 style="margin-bottom: 15px; font-size: 1.2rem; color: var(--primary);">Konu Kavrama Testi</h2>
+
+      <!-- Soru 1 -->
+      <div class="quiz-question">
+        <h3>1. DNA'nın en küçük yapı birimi nedir ve ismini nereden alır?</h3>
+        <div class="options-group">
+          <button class="option-btn" onclick="checkQ('q1', this, false)">A) Gen - İçerdiği şeker çeşidinden alır.</button>
+          <button class="option-btn" onclick="checkQ('q1', this, true)">B) Nükleotid - Yapısında bulundurduğu organik bazdan alır.</button>
+          <button class="option-btn" onclick="checkQ('q1', this, false)">C) Kromozom - Hücre bölünmesindeki konumundan alır.</button>
+          <button class="option-btn" onclick="checkQ('q1', this, false)">D) Nükleotid - İçerdiği fosfat molekülünün sayısından alır.</button>
+        </div>
+        <div id="q1-feedback" class="feedback"></div>
+      </div>
+
+      <!-- Soru 2 -->
+      <div class="quiz-question">
+        <h3>2. Sağlıklı bir DNA molekülünde toplam 1200 nükleotid bulunmaktadır. Bu DNA'da 200 Adenin olduğuna göre Guanin sayısı kaçtır?</h3>
+        <div class="options-group">
+          <button class="option-btn" onclick="checkQ('q2', this, false)">A) 200</button>
+          <button class="option-btn" onclick="checkQ('q2', this, true)">B) 400</button>
+          <button class="option-btn" onclick="checkQ('q2', this, false)">C) 600</button>
+          <button class="option-btn" onclick="checkQ('q2', this, false)">D) 800</button>
+        </div>
+        <div id="q2-feedback" class="feedback"></div>
+      </div>
+
+      <!-- Soru 3 -->
+      <div class="quiz-question">
+        <h3>3. DNA'nın kendini eşlemesi sırasında gerçekleşen olayların sırası aşağıdakilerden hangisinde doğru verilmiştir?</h3>
+        <p style="font-size:0.85rem; color:#64748b; margin-bottom:8px;">
+          I. Sitoplazmadaki serbest nükleotidler çekirdeğe girer.<br>
+          II. DNA'nın iki zinciri bir fermuar gibi açılır.<br>
+          III. Birbiriyle tıpatıp aynı iki yeni DNA oluşur.<br>
+          IV. Nükleotidler uygun şekilde (A-T, G-C) eşleşir.
+        </p>
+        <div class="options-group">
+          <button class="option-btn" onclick="checkQ('q3', this, false)">A) I - II - IV - III</button>
+          <button class="option-btn" onclick="checkQ('q3', this, true)">B) II - I - IV - III</button>
+          <button class="option-btn" onclick="checkQ('q3', this, false)">C) II - IV - I - III</button>
+          <button class="option-btn" onclick="checkQ('q3', this, false)">D) I - IV - II - III</button>
+        </div>
+        <div id="q3-feedback" class="feedback"></div>
+      </div>
+
+      <!-- Soru 4 -->
+      <div class="quiz-question">
+        <h3>4. Karmaşıktan basite doğru yapılan "KEDİGEN" sıralaması göz önüne alındığında, bir insanın farklı dokularındaki (örneğin karaciğer ve göz) hücrelerinde hangisi kesinlikle aynıdır?</h3>
+        <div class="options-group">
+          <button class="option-btn" onclick="checkQ('q4', this, true)">A) Kromozom sayısı (46 kromozom)</button>
+          <button class="option-btn" onclick="checkQ('q4', this, false)">B) Aktif çalışan gen dizilimleri</button>
+          <button class="option-btn" onclick="checkQ('q4', this, false)">C) Hücrelerin şekli ve büyüklükleri</button>
+          <button class="option-btn" onclick="checkQ('q4', this, false)">D) Kullanılan protein çeşidi ve miktarı</button>
+        </div>
+        <div id="q4-feedback" class="feedback"></div>
+      </div>
+
+      <!-- Soru 5 -->
+      <div class="quiz-question">
+        <h3>5. Tamamlayıcı zincirinde "3' - A - T - G - C - C - 5'" dizilimi bulunan bir DNA zincirinin karşı (orijinal) zinciri nasıldır?</h3>
+        <div class="options-group">
+          <button class="option-btn" onclick="checkQ('q5', this, false)">A) T - A - C - C - G</button>
+          <button class="option-btn" onclick="checkQ('q5', this, true)">B) T - A - C - G - G</button>
+          <button class="option-btn" onclick="checkQ('q5', this, false)">C) A - T - G - C - C</button>
+          <button class="option-btn" onclick="checkQ('q5', this, false)">D) U - A - C - G - G</button>
+        </div>
+        <div id="q5-feedback" class="feedback"></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  // --- SEKMELER ARASI GEÇİŞ ---
+  function switchTab(tabId) {
+    document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    
+    document.getElementById(tabId).classList.add('active');
+    event.currentTarget.classList.add('active');
+  }
+
+  // --- TAB 1: DNA SİMÜLASYON MANTIĞI ---
+  const initialBaseSequence = ['A', 'T', 'G', 'C', 'A', 'T', 'C']; // 7 Çift = 14 Nükleotid
+  const compMap = { 'A': 'T', 'T': 'A', 'G': 'C', 'C': 'G' };
+  
+  let currentStep = 0; // 0: Normal, 1: Unzipped, 2: Replicated
+
+  function renderDNA() {
+    const stage = document.getElementById('dna-stage');
+    stage.innerHTML = '';
+
+    const container = document.createElement('div');
+    container.className = 'dna-container';
+
+    if (currentStep === 0) {
+      // Tek Bir Çift Zincirli DNA
+      const pairColumn = document.createElement('div');
+      pairColumn.style.display = 'flex';
+      pairColumn.style.flexDirection = 'column';
+      pairColumn.style.gap = '10px';
+
+      initialBaseSequence.forEach(base => {
+        const comp = compMap[base];
+        const row = document.createElement('div');
+        row.className = 'pair-row';
+        row.innerHTML = `
+          <div class="nucleotide-node node-${base}">${base}</div>
+          <div class="bond-line active" style="width: 60px;"></div>
+          <div class="nucleotide-node node-${comp}">${comp}</div>
+        `;
+        pairColumn.appendChild(row);
+      });
+      container.appendChild(pairColumn);
+
+    } else if (currentStep === 1) {
+      // Ayrılmış İki Zincir (Fermuar Açıldı)
+      const strand1 = document.createElement('div');
+      strand1.className = 'strand';
+      strand1.style.marginRight = '80px';
+
+      const strand2 = document.createElement('div');
+      strand2.className = 'strand';
+
+      initialBaseSequence.forEach(base => {
+        const comp = compMap[base];
+        
+        const node1 = document.createElement('div');
+        node1.className = `nucleotide-node node-${base}`;
+        node1.innerText = base;
+        strand1.appendChild(node1);
+
+        const node2 = document.createElement('div');
+        node2.className = `nucleotide-node node-${comp}`;
+        node2.innerText = comp;
+        strand2.appendChild(node2);
+      });
+
+      container.appendChild(strand1);
+      container.appendChild(strand2);
+
+    } else if (currentStep === 2) {
+      // Eşlenme Tamamlandı: 2 Yeni DNA Molekülü
+      const dna1 = document.createElement('div');
+      dna1.style.display = 'flex';
+      dna1.style.flexDirection = 'column';
+      dna1.style.gap = '10px';
+      dna1.style.border = '2px dashed #16a34a';
+      dna1.style.padding = '10px';
+      dna1.style.borderRadius = '8px';
+
+      const dna2 = document.createElement('div');
+      dna2.style.display = 'flex';
+      dna2.style.flexDirection = 'column';
+      dna2.style.gap = '10px';
+      dna2.style.border = '2px dashed #16a34a';
+      dna2.style.padding = '10px';
+      dna2.style.borderRadius = '8px';
+
+      initialBaseSequence.forEach(base => {
+        const comp = compMap[base];
+
+        // DNA 1 (Eski Zincir 1 + Yeni Tamamlayıcı)
+        const row1 = document.createElement('div');
+        row1.className = 'pair-row';
+        row1.innerHTML = `
+          <div class="nucleotide-node node-${base}">${base}</div>
+          <div class="bond-line active" style="width: 30px;"></div>
+          <div class="nucleotide-node node-${comp}" style="outline: 2px solid #86efac;">${comp}</div>
+        `;
+        dna1.appendChild(row1);
+
+        // DNA 2 (Yeni Tamamlayıcı + Eski Zincir 2)
+        const row2 = document.createElement('div');
+        row2.className = 'pair-row';
+        row2.innerHTML = `
+          <div class="nucleotide-node node-${base}" style="outline: 2px solid #86efac;">${base}</div>
+          <div class="bond-line active" style="width: 30px;"></div>
+          <div class="nucleotide-node node-${comp}">${comp}</div>
+        `;
+        dna2.appendChild(row2);
+      });
+
+      container.appendChild(dna1);
+      container.appendChild(dna2);
+    }
+
+    stage.appendChild(container);
+  }
+
+  function updateStats() {
+    let multiplier = (currentStep === 2) ? 2 : 1;
+    
+    // Temel Sayılar
+    let countA = initialBaseSequence.filter(x => x === 'A' || x === 'T').length * multiplier;
+    let countT = countA; // A = T
+    let countG = initialBaseSequence.filter(x => x === 'G' || x === 'C').length * multiplier;
+    let countC = countG; // G = C
+    let totalNuc = (countA + countT + countG + countC);
+
+    document.getElementById('stat-a').innerText = countA;
+    document.getElementById('stat-t').innerText = countT;
+    document.getElementById('stat-g').innerText = countG;
+    document.getElementById('stat-c').innerText = countC;
+    document.getElementById('stat-total-nuc').innerText = totalNuc;
+    document.getElementById('stat-total-dna').innerText = (currentStep === 2) ? 2 : 1;
+  }
+
+  function simStepUnzip() {
+    currentStep = 1;
+    renderDNA();
+    updateStats();
+    document.getElementById('btn-step1').disabled = true;
+    document.getElementById('btn-step2').disabled = false;
+    document.getElementById('step-instruction').innerHTML = 
+      '<strong>Aşama 2:</strong> Hidrojen bağları koptu ve zincirler ayrıldı. Şimdi sitoplazmada serbest halde bulunan uygun nükleotidlerin çekirdeğe girerek eşleşmesi için "Serbest Nükleotidleri Eşleştir" butonuna tıklayın.';
+  }
+
+  function simStepMatch() {
+    currentStep = 2;
+    renderDNA();
+    updateStats();
+    document.getElementById('btn-step2').disabled = true;
+    document.getElementById('step-instruction').innerHTML = 
+      '<strong>Aşama 3 (Tamamlandı):</strong> Serbest nükleotidler zincirlerin karşısına yerleşti. Biri eski biri yeni zincirden oluşan, genetik bilgisi <strong>tıpatıp aynı 2 adet yeni DNA molekülü</strong> elde edildi!';
+  }
+
+  function simReset() {
+    currentStep = 0;
+    renderDNA();
+    updateStats();
+    document.getElementById('btn-step1').disabled = false;
+    document.getElementById('btn-step2').disabled = true;
+    document.getElementById('step-instruction').innerHTML = 
+      '<strong>Aşama 1:</strong> Başlangıçta 1 adet çift zincirli DNA molekülü bulunmaktadır. "Fermuarı Aç (Eşlenmeyi Başlat)" butonuna basarak hidrojen bağlarını koparın.';
+  }
+
+  // --- TAB 2: HİYERARŞİ DETAYLARI ---
+  function showHierarchyDetail(type) {
+    const detailBox = document.getElementById('hierarchy-detail');
+    const details = {
+      'kromozom': '<strong>Kromozom:</strong> Hücre bölünmesi sırasında DNA\'nın kısalıp kalınlaşarak özel protein kılıflarla kaplanması sonucu oluşur. İnsanda 46 kromozom (23 çift) bulunur. Sağlıklı aynı tür canlıların kromozom sayıları eşittir.',
+      'dna': '<strong>DNA:</strong> Çift zincirli, sarmal yapılı yönetici moleküldür. Hücredeki beslenme, solunum, boşaltım, bölünme gibi tüm yaşamsal faaliyetleri yönetir.',
+      'gen': '<strong>Gen:</strong> DNA üzerindeki belirli anlamlı kalıtım birimleridir. Göz rengi, kan grubu, saç şekli gibi kalıtsal özelliklerimiz genlerde şifrelenmiştir.',
+      'nukleotid': '<strong>Nükleotid:</strong> DNA\'nın en küçük yapı birimidir. Bir nükleotidin yapısında 1 Fosfat, 1 Deoksiriboz Şekeri ve 1 Organik Baz (Adenin, Timin, Guanin veya Sitozin) yer alır.'
+    };
+    detailBox.innerHTML = details[type] || '';
+  }
+
+  // --- TAB 3: QUIZ KONTROL SİSTEMİ ---
+  const explanations = {
+    q1: "Doğru Cevap B! Nükleotidler yapılarında bulunan organik baza göre adlandırılırlar (Örn: Adenin organik bazı taşıyorsa Adenin Nükleotidi).",
+    q2: "Doğru Cevap B! Toplam 1200 nükleotid varsa: A = T = 200, yani A+T = 400 olur. Geriye kalan 1200 - 400 = 800 nükleotid Guanin ve Sitozin'e aittir. G = C olduğundan Guanin sayısı 800 / 2 = 400'dür.",
+    q3: "Doğru Cevap B! DNA eşlenmesi sırasıyla: 1) Zincirlerin fermuar gibi açılması, 2) Sitoplazmadaki serbest nükleotidlerin çekirdeğe girmesi, 3) Nükleotidlerin A-T ve G-C şeklinde eşleşmesi, 4) İki yeni aynı DNA'nın oluşması şeklindedir.",
+    q4: "Doğru Cevap A! Bir insanın tüm sağlıklı vücut hücrelerindeki DNA dizilimi ve kromozom sayısı (46) aynıdır. Farklı organlarda farklı genler aktif çalıştığı için dokular farklılaşır.",
+    q5: "Doğru Cevap B! DNA'da her zaman Adenin (A) karşısına Timin (T), Guanin (G) karşısına Sitozin (C) gelir. Bu yüzden A-T-G-C-C diziliminin karşısı T-A-C-G-G olur."
+  };
+
+  function checkQ(qId, btn, isCorrect) {
+    const questionDiv = btn.closest('.quiz-question');
+    const options = questionDiv.querySelectorAll('.option-btn');
+    const feedbackDiv = document.getElementById(qId + '-feedback');
+
+    options.forEach(opt => {
+      opt.disabled = true;
+      opt.style.opacity = '0.7';
+    });
+
+    btn.style.opacity = '1';
+
+    if (isCorrect) {
+      btn.style.backgroundColor = '#dcfce7';
+      btn.style.borderColor = '#16a34a';
+      btn.style.color = '#15803d';
+      btn.style.fontWeight = 'bold';
+      
+      feedbackDiv.className = 'feedback correct';
+      feedbackDiv.innerHTML = '<strong>Tebrikler! Doğru Cevap.</strong><br>' + explanations[qId];
+    } else {
+      btn.style.backgroundColor = '#fee2e2';
+      btn.style.borderColor = '#dc2626';
+      btn.style.color = '#b91c1c';
+      
+      feedbackDiv.className = 'feedback incorrect';
+      feedbackDiv.innerHTML = '<strong>Yanlış Cevap!</strong><br>' + explanations[qId];
+    }
+  }
+
+  // Sayfa Yüklendiğinde Simülasyonu Çalıştır
+  window.onload = function() {
+    renderDNA();
+    updateStats();
+  };
+</script>
+
+</body>
+</html>
