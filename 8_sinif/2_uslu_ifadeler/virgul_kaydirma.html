@@ -166,6 +166,7 @@
     .btn-green { background-color: var(--accent-green); }
     .btn-amber { background-color: var(--accent-amber); }
     .btn-slate { background-color: #64748b; }
+    .btn-purple { background-color: var(--accent-purple); }
     .action-btn:hover { opacity: 0.9; }
 
     /* Math Displays */
@@ -210,7 +211,7 @@
     .rule-box.green { background: #f0fdf4; border-color: #bbf7d0; color: #166534; }
     .rule-box.amber { background: #fffbeb; border-color: #fde68a; color: #92400e; }
 
-    /* Tab 2 Models */
+    /* Tab 2 Models & Interactive Scale */
     .model-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -228,6 +229,15 @@
     .model-card.blue {
       background: #f0f9ff;
       border-color: #bae6fd;
+    }
+
+    .scale-box {
+      background: #faf5ff;
+      border: 2px dashed #d8b4fe;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      margin-top: 20px;
     }
 
     /* Quiz Options & Feedback */
@@ -346,37 +356,50 @@
     </div>
   </div>
 
-  <!-- SEKME 2: TERAZİ & ASANSÖR MODELİ -->
+  <!-- SEKME 2: İNTERAKTİF TERAZİ & ASANSÖR MODELİ -->
   <div class="tab-content" id="tab-1">
     <div class="visual-card">
       <div class="card-title">
-        <span>⚖️</span> Denge Terazisi ve Asansör Metodolojisi
+        <span>⚖️</span> İnteraktif Denge Terazisi ve Asansör Laboratuvarı
       </div>
       <p style="margin-bottom: 20px; color: #475569;">
-        Matematikte katsayı ile 10'un üssü birbirine görünmez bir denge ipiyle bağlıdır. Toplam değerin bozulmaması için biri değiştiğinde diğeri zıt yönde telafi etmek zorundadır.
+        Matematikte katsayı ile 10'un üssü birbirine görünmez bir terazi ipiyle bağlıdır. Aşağıdaki simülasyonda katsayıyı değiştirdiğinizde, terazinin dengede kalması için üssün nasıl otomatik telafi edildiğini test edin!
       </p>
 
       <div class="model-grid">
         <div class="model-card">
           <h3 style="color: var(--accent-purple); margin-bottom: 10px;">🛗 Asansör Mantığı</h3>
-          <p style="font-size: 0.95rem; color: #475569;">
-            Bir binada asansörle aşağı inerseniz başınızın üstündeki kat numarası küçülür ama yerdeki konumunuz değişir. Burada da tam tersi bir denge vardır:<br><br>
-            • Ön taraf <b>küçülürse</b> (virgül sola kayarsa), arka taraf (üs) yukarı çıkıp <b>artar</b>.<br>
-            • Ön taraf <b>büyürse</b> (virgül sağa kayarsa), arka taraf (üs) aşağı inip <b>azalır</b>.
+          <p style="font-size: 0.90rem; color: #475569;">
+            • Ön taraf <b>küçülürse</b> (aşağı inilirse), arka taraf (üs) yukarı çıkıp <b>artar (+)<br>
+            • Ön taraf <b>büyürse</b> (yukarı çıkılırsa), arka taraf (üs) aşağı inip <b>azalır (-)</b>.
           </p>
         </div>
 
         <div class="model-card blue">
           <h3 style="color: var(--primary-hover); margin-bottom: 10px;">⚖️ Terazi Kefesi Kuralı</h3>
-          <p style="font-size: 0.95rem; color: #475569;">
-            Terazinin bir kefesine ağırlık eklerseniz (sayıyı büyütürseniz), dengede kalması için diğer kefeden ağırlık almanız gerekir (üssü küçültmeniz gerekir).<br><br>
-            <b>Örnek:</b> 540 × 10<sup>5</sup><br>
-            - Sayı küçülür: 540 &rarr; 5,4 (Sola 2 basamak)<br>
-            - Üs artar: 10<sup>5</sup> &rarr; 10<sup>7</sup><br>
-            - Sonuç: <b>5,4 × 10<sup>7</sup></b>
+          <p style="font-size: 0.90rem; color: #475569;">
+            Terazinin bir kefesine ağırlık eklerseniz (sayıyı büyütürseniz), dengede kalması için diğer kefeden ağırlık almanız gerekir (üssü küçültmeniz gerekir).
           </p>
         </div>
       </div>
+
+      <!-- İNTERAKTİF DENGE TERAZİSİ WIDGET -->
+      <div class="scale-box">
+        <h3 style="color: var(--accent-purple); margin-bottom: 10px;">🎯 Denge Terazisi Test Paneli</h3>
+        <p style="font-size: 0.95rem; color: #475569; margin-bottom: 15px;">
+          Başlangıç Değeri: <b>540 × 10<sup>5</sup></b><br>
+          Hedefiniz: Katsayısını <b>5,4</b> yapmak (Virgülü sola 2 basamak kaydırmak). Terazi dengesinin bozulmaması için yeni üs kaç olmalıdır?
+        </p>
+
+        <div class="control-group" style="justify-content: center; margin-bottom: 15px;">
+          <label>Katsayı: <b>5,4</b></label>
+          <label>× 10<sup><input type="number" id="scaleExpInput" value="5" style="width: 70px; text-align: center;"></sup></label>
+          <button class="action-btn btn-purple" onclick="checkScaleBalance()">Dengeyi Kontrol Et ⚖️</button>
+        </div>
+
+        <div id="scaleFeedback" style="font-weight: 600; margin-top: 10px; font-size: 1.05rem;"></div>
+      </div>
+
     </div>
   </div>
 
@@ -420,7 +443,7 @@
 
     <!-- SORU 4 -->
     <div class="quiz-card" id="q-card-4">
-      <div class="quiz-question">Soru 4: 720 × 10<sup>4</sup> ifadesini bilimsel gösterime uygun hale getirmek için virgül sola kaç basamak kaydırılmalıdır?</div>
+      <div class="quiz-question">Soru 4: 720 × 10<sup>4</sup> ifadesini bilimsel gösterim kuralına uygun hale getirmek için virgül sola kaç basamak kaydırılmalıdır?</div>
       <div class="options-grid">
         <button class="option-btn" onclick="checkQ(4, this, false)">A) 1 basamak</button>
         <button class="option-btn" onclick="checkQ(4, this, true)">B) 2 basamak</button>
@@ -462,7 +485,7 @@
     });
   }
 
-  // SİMÜLATÖR MANTIĞI
+  // SİMÜLATÖR MANTIĞI (SEKME 1)
   let currentNumStr = "345.2";
   let currentExp = 4;
 
@@ -543,7 +566,23 @@
     updateDisplay("Değerler başlangıç durumuna sıfırlandı.");
   }
 
-  // QUIZ AÇIKLAMALARI
+  // TERAZİ DENGE KONTROLÜ (SEKME 2)
+  function checkScaleBalance() {
+    const userExp = parseInt(document.getElementById('scaleExpInput').value);
+    const feedback = document.getElementById('scaleFeedback');
+
+    // Başlangıç: 540 x 10^5 -> Katsayı 5,4 yapıldığında sola 2 basamak kaymıştır. Sayı 100 kat küçülmüştür.
+    // Dengeyi korumak için üs 2 artmalıdır: 5 + 2 = 7 olmalıdır.
+    if (userExp === 7) {
+      feedback.style.color = 'var(--accent-green)';
+      feedback.innerHTML = "Tebrikler! 🎉 Terazi dengede! Katsayı 2 basamak sola kayarak küçüldüğü için üs 2 artarak 7 olmalıdır (5,4 × 10<sup>7</sup>).";
+    } else {
+      feedback.style.color = 'var(--accent-red)';
+      feedback.innerHTML = "Terazi dengede değil! 🧐 Katsayı sola 2 basamak kaydıysa, sayı küçülmüştür. Dengeyi korumak için üssü artırmalısın (İpucu: 5 + 2 = ?).";
+    }
+  }
+
+  // QUIZ AÇIKLAMALARI (SEKME 3)
   const explanations = {
     1: "Doğru Cevap A! Virgül 2 basamak sola kaydırıldığında sayı 100 kat küçülür, dengeyi sağlamak için üs 2 artar: 5 + 2 = 7 olur (0,245 × 10<sup>7</sup>).",
     2: "Doğru Cevap A! Virgül 2 basamak sağa kaydırıldığında sayı 100 kat büyür, dengeyi sağlamak için üs 2 azalır: -2 - 2 = -4 olur (380 × 10<sup>-4</sup>).",
