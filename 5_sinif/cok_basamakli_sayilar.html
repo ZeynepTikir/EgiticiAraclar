@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>5. Sınıf Matematik - Milyonlar ve Basamak Analizi</title>
+  <style>
+    :root {
+      --primary: #0284c7;
+      --primary-hover: #0369a1;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #0f172a;
+      --accent-green: #16a34a;
+      --accent-red: #dc2626;
+      --accent-purple: #9333ea;
+      --accent-amber: #d97706;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 24px;
+      background: var(--card);
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    header h1 {
+      color: var(--primary);
+      font-size: 1.8rem;
+      margin-bottom: 6px;
+    }
+
+    header p {
+      color: #64748b;
+      font-size: 0.95rem;
+    }
+
+    /* TABS */
+    .tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+      background: #e2e8f0;
+      padding: 6px;
+      border-radius: 10px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 12px 16px;
+      border: none;
+      background: transparent;
+      color: #475569;
+      font-weight: 600;
+      font-size: 0.95rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .tab-btn.active {
+      background: var(--card);
+      color: var(--primary);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    /* CARDS */
+    .visual-card, .quiz-card {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      border: 1px solid #e2e8f0;
+    }
+
+    .card-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* CONTROLS & INPUTS */
+    .panel {
+      background: #f1f5f9;
+      padding: 16px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+
+    .control-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+
+    label {
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    input[type="number"], input[type="text"] {
+      padding: 10px 14px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-size: 1rem;
+      outline: none;
+    }
+
+    input[type="number"]:focus, input[type="text"]:focus {
+      border-color: var(--primary);
+    }
+
+    /* BUTTONS */
+    .preset-btn, .action-btn {
+      padding: 10px 16px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .preset-btn:hover, .action-btn:hover {
+      background: var(--primary-hover);
+    }
+
+    .preset-btn.secondary {
+      background: #64748b;
+    }
+
+    .preset-btn.secondary:hover {
+      background: #475569;
+    }
+
+    .preset-btn.purple {
+      background: var(--accent-purple);
+    }
+
+    .preset-btn.purple:hover {
+      background: #7e22ce;
+    }
+
+    /* PLACE VALUE TABLE / VISUALIZER */
+    .periods-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    @media (max-width: 768px) {
+      .periods-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .period-box {
+      border-radius: 10px;
+      padding: 12px;
+      border: 2px solid #e2e8f0;
+      background: #fafafa;
+    }
+
+    .period-box.milyonlar { border-color: var(--accent-purple); background: #f3e8ff; }
+    .period-box.binler { border-color: var(--primary); background: #e0f2fe; }
+    .period-box.birler { border-color: var(--accent-green); background: #dcfce7; }
+
+    .period-header {
+      text-align: center;
+      font-weight: 800;
+      font-size: 1rem;
+      margin-bottom: 10px;
+      padding-bottom: 6px;
+      border-bottom: 2px dashed rgba(0,0,0,0.1);
+    }
+
+    .period-box.milyonlar .period-header { color: var(--accent-purple); }
+    .period-box.binler .period-header { color: var(--primary); }
+    .period-box.birler .period-header { color: var(--accent-green); }
+
+    .digits-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+    }
+
+    .digit-card {
+      background: white;
+      padding: 8px 4px;
+      border-radius: 6px;
+      text-align: center;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    }
+
+    .digit-name {
+      font-size: 0.7rem;
+      color: #64748b;
+      font-weight: 600;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1.1;
+    }
+
+    .digit-val-input {
+      width: 100%;
+      text-align: center;
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--text);
+      border: 1px solid #cbd5e1;
+      border-radius: 4px;
+      padding: 4px 0;
+      margin: 6px 0;
+    }
+
+    .digit-place-val {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #475569;
+      word-break: break-all;
+    }
+
+    /* CHIPS & DISPLAY READOUT */
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      background: #e2e8f0;
+      color: #334155;
+    }
+
+    .pair-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .readout-box {
+      background: #1e293b;
+      color: #f8fafc;
+      padding: 16px;
+      border-radius: 8px;
+      margin-top: 15px;
+    }
+
+    .readout-title {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #94a3b8;
+      margin-bottom: 4px;
+    }
+
+    .readout-value {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #38bdf8;
+    }
+
+    /* TAB 2 CONCEPT & COMPARISON */
+    .concept-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    @media (max-width: 768px) {
+      .concept-grid { grid-template-columns: 1fr; }
+    }
+
+    .info-card {
+      background: #f8fafc;
+      border-left: 4px solid var(--primary);
+      padding: 14px;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 12px;
+    }
+
+    .info-card h4 {
+      color: var(--primary);
+      margin-bottom: 4px;
+    }
+
+    .comp-box {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin: 20px 0;
+      flex-wrap: wrap;
+    }
+
+    .comp-input {
+      font-size: 1.2rem;
+      font-weight: bold;
+      width: 200px;
+      text-align: center;
+    }
+
+    .comp-symbol {
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--accent-amber);
+      background: #fef3c7;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+    }
+
+    /* QUIZ STYLES */
+    .question-block {
+      margin-bottom: 24px;
+      padding-bottom: 20px;
+      border-bottom: 1px dashed #cbd5e1;
+    }
+
+    .question-block:last-child {
+      border-bottom: none;
+    }
+
+    .q-title {
+      font-weight: 700;
+      font-size: 1.05rem;
+      margin-bottom: 12px;
+    }
+
+    .options-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    @media (max-width: 600px) {
+      .options-grid { grid-template-columns: 1fr; }
+    }
+
+    .option-btn {
+      padding: 12px 14px;
+      background: #f1f5f9;
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      text-align: left;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-weight: 500;
+    }
+
+    .option-btn:hover {
+      border-color: var(--primary);
+      background: #f0f9ff;
+    }
+
+    .feedback {
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      display: none;
+      margin-top: 8px;
+      line-height: 1.4;
+    }
+
+    .feedback.correct {
+      background: #dcfce7;
+      color: #14532d;
+      border: 1px solid #86efac;
+      display: block;
+    }
+
+    .feedback.incorrect {
+      background: #fee2e2;
+      color: #7f1d1d;
+      border: 1px solid #fca5a5;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>5. Sınıf Matematik: Milyonlar & Basamak Mimarisi</h1>
+    <p>Çok basamaklı doğal sayılar, bölükler, basamak değerleri ve problem çözme laboratuvarı</p>
+  </header>
+
+  <!-- SEKMELER -->
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab(0)">1. Milyonlar Laboratuvarı</button>
+    <button class="tab-btn" onclick="switchTab(1)">2. Bölük & Çözümleme Rehberi</button>
+    <button class="tab-btn" onclick="switchTab(2)">3. 5 Soruluk Test</button>
+  </div>
+
+  <!-- SEKME 1: İNTERAKTİF LABORATUVAR -->
+  <div id="tab-0" class="tab-content active">
+    <div class="visual-card">
+      <div class="card-title">
+        <span>🔢</span> Dinamik Sayı Oluşturucu ve Basamak Modeli
+      </div>
+
+      <div class="panel">
+        <div class="control-group">
+          <label for="numInput">Sayı Giriniz (En fazla 9 Basamak):</label>
+          <input type="text" id="numInput" maxlength="9" value="845209316" oninput="handleDirectInput(this.value)" placeholder="Örn: 845209316">
+          <button class="preset-btn" onclick="generateRandomNumber()">🎲 Rastgele Sayı</button>
+          <button class="preset-btn secondary" onclick="resetNumber()">🔄 Sıfırla</button>
+        </div>
+        <div class="pair-chips" style="margin-top: 12px;">
+          <button class="preset-btn purple" onclick="quickAdd(1000000)">+1 Milyon Ekle</button>
+          <button class="preset-btn purple" onclick="quickAdd(100000)">+100 Bin Ekle</button>
+          <button class="preset-btn purple" onclick="quickAdd(-1000000)">-1 Milyon Çıkar</button>
+        </div>
+      </div>
+
+      <!-- BÖLÜKLER VE BASAMAKLAR TABLOSU -->
+      <div class="periods-grid">
+        <!-- Milyonlar Bölüğü -->
+        <div class="period-box milyonlar">
+          <div class="period-header">MİLYONLAR BÖLÜĞÜ</div>
+          <div class="digits-row">
+            <div class="digit-card">
+              <div class="digit-name">Yüz Milyonlar</div>
+              <input type="text" class="digit-val-input" id="d8" maxlength="1" value="8" oninput="updateFromDigits()">
+              <div class="digit-place-val" id="pv8">800.000.000</div>
+            </div>
+            <div class="digit-card">
+              <div class="digit-name">On Milyonlar</div>
+              <input type="text" class="digit-val-input" id="d7" maxlength="1" value="4" oninput="updateFromDigits()">
+              <div class="digit-place-val" id="pv7">40.000.000</div>
+            </div>
+            <div class="digit-card">
+              <div class="digit-name">Milyonlar</div>
+              <input type="text" class="digit-val-input" id="d6" maxlength="1" value="5" oninput="updateFromDigits()">
+              <div class="digit-place-val" id="pv6">5.000.000</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Binler Bölüğü -->
+        <div class="period-box binler">
+          <div class="period-header">BİNLER BÖLÜĞÜ</div>
+          <div class="digits-row">
+            <div class="digit-card">
+              <div class="digit-name">Yüz Binler</div>
+              <input type="text" class="digit-val-input" id="d5" maxlength="1" value="2" oninput="updateFromDigits()">
+              <div class="digit-place-val" id="pv5">200.000</div>
+            </div>
+            <div class="digit-card">
+              <div class="digit-name">On Binler</div>
+              <input type="text" class="digit-val-input" id="d4" maxlength="1" value="0" oninput="updateFromDigits()">
+              <div class="digit-place-val" id="pv4">0</div>
+            </div>
+            <div class="digit-card">
+              <div class="digit-name">Binler</div>
+              <input type="text" class="digit-val-input" id="d3" maxlength="1" value="9" oninput="updateFromDigits()">
+              <div class="digit-place-val" id="pv3">9.000</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Birler Bölüğü -->
+        <div class="period-box birler">
+          <div class="period-header">BİRLER BÖLÜĞÜ</div>
+          <div class="digits-row">
+            <div class="digit-card">
+              <div class="digit-name">Yüzler</div>
+              <input type="text" class="digit-val-input" id="d2" maxlength="1" value="3" oninput="updateFromDigits()">
+              <div class="digit-place-val" id="pv2">300</div>
+            </div>
+            <div class="digit-card">
+              <div class="digit-name">Onlar</div>
+              <input type="text" class="digit-val-input" id="d1" maxlength="1" value="1" oninput="updateFromDigits()">
+              <div class="digit-place-val" id="pv1">10</div>
+            </div>
+            <div class="digit-card">
+              <div class="digit-name">Birler</div>
+              <input type="text" class="digit-val-input" id="d0" maxlength="1" value="6" oninput="updateFromDigits()">
+              <div class="digit-place-val" id="pv0">6</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ÇIKTI VE OKUNUŞ -->
+      <div class="readout-box">
+        <div class="readout-title">Sayı Biçimi (Bölüklerine Ayrılmış):</div>
+        <div class="readout-value" id="formattedNumDisplay">845.209.316</div>
+        <div class="readout-title" style="margin-top: 12px;">Sayının Okunuşu:</div>
+        <div class="readout-value" id="textReadoutDisplay" style="color: #4ade80; font-size: 1.1rem;">
+          Sekiz yüz kırk beş milyon iki yüz dokuz bin üç yüz on altı
+        </div>
+      </div>
+
+      <div class="pair-chips" style="margin-top: 15px;">
+        <span class="chip"> Milyonlar Bölüğü Değeri: <strong id="milyonlarBolukVal" style="margin-left:4px;">845</strong></span>
+        <span class="chip"> Binler Bölüğü Değeri: <strong id="binlerBolukVal" style="margin-left:4px;">209</strong></span>
+        <span class="chip"> Birler Bölüğü Değeri: <strong id="birlerBolukVal" style="margin-left:4px;">316</strong></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEKME 2: BÖLÜK & KARŞILAŞTIRMA REHBERİ -->
+  <div id="tab-2" class="tab-content">
+    <div class="visual-card">
+      <div class="card-title">📖 Temel Matematik Kuralları</div>
+      <div class="concept-grid">
+        <div class="info-card">
+          <h4>Bölük Kavramı</h4>
+          <p>Doğal sayılar yazılırken ve okunurken sağdan sola doğru üçerli gruplara ayrılır. Bu grupların her birine <strong>bölük</strong> denir. Bölükler en sağdaki basamağa göre adlandırılır (Birler, Binler, Milyonlar).</p>
+        </div>
+        <div class="info-card">
+          <h4>Basamak Değeri</h4>
+          <p>Rakamların sayıda bulunduğu basamağa göre aldığı değere <strong>basamak değeri</strong> denir. Bir rakamın basamak değeri, o rakam ile bulunduğu basamağın değerinin çarpımıdır.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="visual-card">
+      <div class="card-title">⚖️ Çok Basamaklı Sayıları Karşılaştırma Aracı</div>
+      <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 12px;">
+        İki sayı karşılaştırılırken önce basamak sayılarına bakılır. Basamak sayısı fazla olan sayı daha büyüktür. Basamak sayıları eşitse, en soldaki basamaktan başlanarak sırayla karşılaştırma yapılır.
+      </p>
+
+      <div class="comp-box">
+        <input type="text" id="compA" class="comp-input" value="125400000" oninput="runComparison()" maxlength="9">
+        <div class="comp-symbol" id="compSymbol">></div>
+        <input type="text" id="compB" class="comp-input" value="98500000" oninput="runComparison()" maxlength="9">
+      </div>
+
+      <div id="compAnalysis" class="panel" style="text-align: center; font-weight: 600; color: var(--primary);">
+        125.400.000 sayısı 9 basamaklı, 98.500.000 sayısı 8 basamaklıdır. Basamak sayısı büyük olan sayı daha büyüktür.
+      </div>
+    </div>
+
+    <div class="visual-card">
+      <div class="card-title">💡 Özel Örnek Şablonları</div>
+      <div class="pair-chips">
+        <button class="preset-btn secondary" onclick="loadPreset('999999999')">En Büyük 9 Basamaklı Sayı</button>
+        <button class="preset-btn secondary" onclick="loadPreset('100000000')">En Küçük 9 Basamaklı Sayı</button>
+        <button class="preset-btn secondary" onclick="loadPreset('987654321')">Rakamları Farklı En Büyük Sayı</button>
+        <button class="preset-btn secondary" onclick="loadPreset('102345678')">Rakamları Farklı En Küçük Sayı</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEKME 3: 5 SORULUK TEST -->
+  <div id="tab-3" class="tab-content">
+    <div class="quiz-card">
+      <div class="card-title">📝 Öğrenme Değerlendirme Testi (5 Soru)</div>
+
+      <!-- SORU 1 -->
+      <div class="question-block">
+        <div class="q-title">1) "452 809 316" sayısının binler bölüğündeki rakamların toplamı kaçtır?</div>
+        <div class="options-grid">
+          <button class="option-btn" onclick="checkQ(1, this, false)">A) 11</button>
+          <button class="option-btn" onclick="checkQ(1, this, true)">B) 17</button>
+          <button class="option-btn" onclick="checkQ(1, this, false)">C) 10</button>
+          <button class="option-btn" onclick="checkQ(1, this, false)">D) 20</button>
+        </div>
+        <div id="fb-1" class="feedback"></div>
+      </div>
+
+      <!-- SORU 2 -->
+      <div class="question-block">
+        <div class="q-title">2) Okunuşu "Yedi yüz iki milyon seksen bin beş" olan doğal sayı aşağıdakilerden hangisidir?</div>
+        <div class="options-grid">
+          <button class="option-btn" onclick="checkQ(2, this, false)">A) 720 080 005</button>
+          <button class="option-btn" onclick="checkQ(2, this, false)">B) 702 800 005</button>
+          <button class="option-btn" onclick="checkQ(2, this, true)">C) 702 080 005</button>
+          <button class="option-btn" onclick="checkQ(2, this, false)">D) 702 008 050</button>
+        </div>
+        <div id="fb-2" class="feedback"></div>
+      </div>
+
+      <!-- SORU 3 -->
+      <div class="question-block">
+        <div class="q-title">3) 83 491 526 sayısındaki '4' rakamının basamak değeri ile '9' rakamının basamak değeri arasındaki fark kaçtır?</div>
+        <div class="options-grid">
+          <button class="option-btn" onclick="checkQ(3, this, true)">A) 310 000</button>
+          <button class="option-btn" onclick="checkQ(3, this, false)">B) 390 000</button>
+          <button class="option-btn" onclick="checkQ(3, this, false)">C) 350 000</button>
+          <button class="option-btn" onclick="checkQ(3, this, false)">D) 410 000</button>
+        </div>
+        <div id="fb-3" class="feedback"></div>
+      </div>
+
+      <!-- SORU 4 -->
+      <div class="question-block">
+        <div class="q-title">4) Bir fırıncı ilk yıl 1 250 000 ekmek satmıştır. İkinci yıl ise ilk yıldan 350 000 adet daha fazla ekmek satmıştır. Fırıncı bu iki yılda toplam kaç ekmek satmıştır?</div>
+        <div class="options-grid">
+          <button class="option-btn" onclick="checkQ(4, this, false)">A) 1 600 000</button>
+          <button class="option-btn" onclick="checkQ(4, this, false)">B) 2 500 000</button>
+          <button class="option-btn" onclick="checkQ(4, this, true)">C) 2 850 000</button>
+          <button class="option-btn" onclick="checkQ(4, this, false)">D) 3 100 000</button>
+        </div>
+        <div id="fb-4" class="feedback"></div>
+      </div>
+
+      <!-- SORU 5 -->
+      <div class="question-block">
+        <div class="q-title">5) Rakamları farklı 8 basamaklı en büyük doğal sayının milyonlar bölüğündeki rakamların toplamı kaçtır?</div>
+        <div class="options-grid">
+          <button class="option-btn" onclick="checkQ(5, this, false)">A) 15</button>
+          <button class="option-btn" onclick="checkQ(5, this, true)">B) 17</button>
+          <button class="option-btn" onclick="checkQ(5, this, false)">C) 18</button>
+          <button class="option-btn" onclick="checkQ(5, this, false)">D) 12</button>
+        </div>
+        <div id="fb-5" class="feedback"></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  // SEKME DEĞİŞTİRME
+  function switchTab(idx) {
+    const tabs = document.querySelectorAll('.tab-btn');
+    const contents = document.querySelectorAll('.tab-content');
+    tabs.forEach((t, i) => {
+      if (i === idx) {
+        t.classList.add('active');
+        contents[i].classList.add('active');
+      } else {
+        t.classList.remove('active');
+        contents[i].classList.remove('active');
+      }
+    });
+  }
+
+  // SAYIYI YAZIYA ÇEVİRME Lojik (TÜRKÇE)
+  const onesArr = ["", "bir", "iki", "üç", "dört", "beş", "altı", "yedi", "sekiz", "dokuz"];
+  const tensArr = ["", "on", "yirmi", "otuz", "kırk", "elli", "altmış", "yetmiş", "seksen", "doksan"];
+
+  function tripletToText(num) {
+    let str = "";
+    let h = Math.floor(num / 100);
+    let t = Math.floor((num % 100) / 10);
+    let o = num % 10;
+
+    if (h > 0) {
+      if (h === 1) str += "yüz ";
+      else str += onesArr[h] + " yüz ";
+    }
+    if (t > 0) str += tensArr[t] + " ";
+    if (o > 0) str += onesArr[o] + " ";
+
+    return str.trim();
+  }
+
+  function numberToWords(numStr) {
+    let clean = numStr.replace(/^0+/, '');
+    if (!clean) return "sıfır";
+    let n = parseInt(clean, 10);
+    if (isNaN(n) || n === 0) return "sıfır";
+
+    let mil = Math.floor(n / 1000000);
+    let bin = Math.floor((n % 1000000) / 1000);
+    let bir = n % 1000;
+
+    let res = "";
+
+    if (mil > 0) {
+      res += tripletToText(mil) + " milyon ";
+    }
+
+    if (bin > 0) {
+      if (bin === 1) {
+        res += "bin ";
+      } else {
+        res += tripletToText(bin) + " bin ";
+      }
+    }
+
+    if (bir > 0) {
+      res += tripletToText(bir);
+    }
+
+    return res.trim();
+  }
+
+  // TABLO & GİRDİ GÜNCELLEME
+  function formatNumber(numStr) {
+    let clean = numStr.replace(/\D/g, '');
+    if (!clean) return "0";
+    return parseInt(clean, 10).toLocaleString('tr-TR');
+  }
+
+  function updateVisuals(valStr) {
+    let clean = valStr.replace(/\D/g, '').slice(0, 9);
+    if (!clean) clean = "0";
+    let padded = clean.padStart(9, '0');
+
+    // Basamak girdilerini doldur
+    for (let i = 0; i < 9; i++) {
+      let digitVal = padded[8 - i];
+      document.getElementById(`d${i}`).value = digitVal;
+
+      let mult = Math.pow(10, i);
+      let pv = parseInt(digitVal, 10) * mult;
+      document.getElementById(`pv${i}`).innerText = pv.toLocaleString('tr-TR');
+    }
+
+    // Input alanını güncelle
+    let numVal = parseInt(clean, 10);
+    document.getElementById('numInput').value = numVal;
+
+    // Okunuş ve Format
+    document.getElementById('formattedNumDisplay').innerText = numVal.toLocaleString('tr-TR');
+    document.getElementById('textReadoutDisplay').innerText = numberToWords(clean);
+
+    // Bölük Değerleri
+    let mPart = Math.floor(numVal / 1000000);
+    let bPart = Math.floor((numVal % 1000000) / 1000);
+    let uPart = numVal % 1000;
+
+    document.getElementById('milyonlarBolukVal').innerText = mPart;
+    document.getElementById('binlerBolukVal').innerText = bPart;
+    document.getElementById('birlerBolukVal').innerText = uPart;
+  }
+
+  function handleDirectInput(val) {
+    updateVisuals(val);
+  }
+
+  function updateFromDigits() {
+    let str = "";
+    for (let i = 8; i >= 0; i--) {
+      let v = document.getElementById(`d${i}`).value.replace(/\D/g, '') || "0";
+      str += v[0];
+    }
+    updateVisuals(str);
+  }
+
+  function generateRandomNumber() {
+    let rnd = Math.floor(Math.random() * 899999999) + 100000000;
+    updateVisuals(rnd.toString());
+  }
+
+  function resetNumber() {
+    updateVisuals("0");
+  }
+
+  function quickAdd(amount) {
+    let cur = parseInt(document.getElementById('numInput').value.replace(/\D/g, '') || "0", 10);
+    let next = Math.max(0, Math.min(999999999, cur + amount));
+    updateVisuals(next.toString());
+  }
+
+  // SEKME 2 KARŞILAŞTIRMA LOMATİĞİ
+  function runComparison() {
+    let aStr = document.getElementById('compA').value.replace(/\D/g, '') || "0";
+    let bStr = document.getElementById('compB').value.replace(/\D/g, '') || "0";
+
+    let a = parseInt(aStr, 10);
+    let b = parseInt(bStr, 10);
+
+    let symbolEl = document.getElementById('compSymbol');
+    let analysisEl = document.getElementById('compAnalysis');
+
+    let aLen = a.toString().length;
+    let bLen = b.toString().length;
+
+    if (a > b) {
+      symbolEl.innerText = ">";
+      if (aLen !== bLen) {
+        analysisEl.innerText = `${a.toLocaleString('tr-TR')} (${aLen} basamaklı) sayısı, ${b.toLocaleString('tr-TR')} (${bLen} basamaklı) sayısından daha fazla basamağa sahip olduğu için BÜYÜKTÜR.`;
+      } else {
+        analysisEl.innerText = `Her iki sayı da ${aLen} basamaklıdır. En soldaki basamaklardan başlanarak yapılan karşılaştırmada ${a.toLocaleString('tr-TR')} daha BÜYÜKTÜR.`;
+      }
+    } else if (a < b) {
+      symbolEl.innerText = "<";
+      if (aLen !== bLen) {
+        analysisEl.innerText = `${a.toLocaleString('tr-TR')} (${aLen} basamaklı) sayısı, ${b.toLocaleString('tr-TR')} (${bLen} basamaklı) sayısından daha az basamağa sahip olduğu için KÜÇÜKTÜR.`;
+      } else {
+        analysisEl.innerText = `Her iki sayı da ${aLen} basamaklıdır. En soldaki basamaklardan başlanarak yapılan karşılaştırmada ${a.toLocaleString('tr-TR')} daha KÜÇÜKTÜR.`;
+      }
+    } else {
+      symbolEl.innerText = "=";
+      analysisEl.innerText = `Her iki sayının tüm basamaklarındaki rakamlar ve basamak sayıları EŞİTTİR.`;
+    }
+  }
+
+  function loadPreset(valStr) {
+    switchTab(0);
+    updateVisuals(valStr);
+  }
+
+  // QUIZ LOGIC
+  const explanations = {
+    1: "Doğru Cevap B) 17. Sayı: 452 809 316. Binler bölüğündeki sayı '809'dur. Rakamları toplamı ise 8 + 0 + 9 = 17 olur.",
+    2: "Doğru Cevap C) 702 080 005. Milyonlar bölüğü: 702, Binler bölüğü: 080 (seksen bin), Birler bölüğü: 005 (beş). Çözüm: 702.080.005.",
+    3: "Doğru Cevap A) 310 000. '4' rakamı yüz binler basamağındadır (değeri 400.000). '9' rakamı on binler basamağındadır (değeri 90.000). Fark: 400.000 - 90.000 = 310.000 olur.",
+    4: "Doğru Cevap C) 2 850 000. 1. Yıl = 1.250.000 ekmek. 2. Yıl = 1.250.000 + 350.000 = 1.600.000 ekmek. Toplam = 1.250.000 + 1.600.000 = 2.850.000 ekmek.",
+    5: "Doğru Cevap B) 17. Rakamları farklı 8 basamaklı en büyük sayı: 98.765.432 olur. Milyonlar bölüğündeki sayı '98'dir. Rakamları toplamı 9 + 8 = 17 yapar."
+  };
+
+  function checkQ(qId, btn, isCorrect) {
+    const parent = btn.closest('.question-block');
+    const btns = parent.querySelectorAll('.option-btn');
+    const fb = parent.querySelector('.feedback');
+
+    btns.forEach(b => {
+      b.disabled = true;
+      b.style.opacity = "0.7";
+    });
+
+    btn.style.opacity = "1";
+
+    if (isCorrect) {
+      btn.style.background = "#dcfce7";
+      btn.style.borderColor = "#16a34a";
+      btn.style.color = "#14532d";
+      fb.className = "feedback correct";
+      fb.innerText = "✨ Tebrikler! " + explanations[qId];
+    } else {
+      btn.style.background = "#fee2e2";
+      btn.style.borderColor = "#dc2626";
+      btn.style.color = "#7f1d1d";
+      fb.className = "feedback incorrect";
+      fb.innerText = "❌ Yanlış Cevap. " + explanations[qId];
+    }
+  }
+
+  // SAYFA YÜKLENDİĞİNDE BAŞLAT
+  window.onload = function() {
+    updateVisuals("845209316");
+    runComparison();
+  };
+</script>
+</body>
+</html>
