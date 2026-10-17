@@ -182,12 +182,15 @@ Tasarım ve Kodlama Mimarisi Kuralları (Birebir Uygulanacak):
                 alert("Önce bir araç üretmelisiniz.");
                 return;
             }
+            
+            // Konu alanındaki metni güvenli dosya adına dönüştür
+            const subjectInput = document.getElementById('subject').value || "etkinlik";
+            const safeSubjectName = subjectInput.replace(/[^a-z0-9ğüşıöçĞÜŞİÖÇ]/gi, '_').toLowerCase();
+            
             const blob = new Blob([lastGeneratedCode], { type: 'text/html' });
             const a = document.createElement('a');
             a.href = URL.createObjectURL(blob);
-            
-	    const safeSubjectName = subject.replace(/[^a-z0-9]/gi, '_').toLowerCase();
-	    a.download = `${safeSubjectName}_etkinlik.html`;
+            a.download = `${safeSubjectName}.html`;
             a.click();
         }
 
