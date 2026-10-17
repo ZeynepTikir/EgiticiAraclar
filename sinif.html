@@ -3,66 +3,105 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Üniteler ve Araçlar</title>
+    <title>Eğitici Araçlar</title>
     <style>
         :root { --primary: #0284c7; --bg: #f8fafc; --card: #ffffff; --text: #0f172a; }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
         body { background-color: var(--bg); color: var(--text); padding: 30px 20px; max-width: 800px; margin: 0 auto; }
         h1 { color: var(--primary); margin-bottom: 20px; text-align: center; }
         .back-btn { display: inline-block; margin-bottom: 20px; color: var(--primary); text-decoration: none; font-weight: 600; }
+        
         .unit-box { background: var(--card); border-radius: 16px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
         .unit-box h3 { margin-bottom: 15px; color: #334155; border-bottom: 2px solid #f1f5f9; padding-bottom: 8px; }
         .tool-list { display: flex; flex-direction: column; gap: 10px; }
         .tool-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; text-decoration: none; color: var(--text); font-weight: 500; transition: all 0.2s; }
         .tool-item:hover { background: #f0f9ff; border-color: var(--primary); color: var(--primary); }
+
+        .sinif-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-top: 20px; }
+        .sinif-card { background: var(--card); border: 2px solid #bae6fd; padding: 25px 15px; border-radius: 12px; text-align: center; text-decoration: none; color: var(--primary); font-weight: bold; font-size: 1.2rem; transition: all 0.2s; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+        .sinif-card:hover { background: var(--primary); color: #fff; transform: translateY(-3px); }
     </style>
 </head>
 <body>
 
-    <a href="index.html" class="back-dbn back-btn">← Sınıf Seçimine Dön</a>
+    <a href="index.html" class="back-btn" id="geriBtn">← Ana Sayfaya Dön</a>
     <h1 id="baslik">Yükleniyor...</h1>
     
     <div id="icerikContainer"></div>
 
-    <script src="data.js"></script>
     <script>
         const urlParams = new URLSearchParams(window.location.search);
+        const dersKey = urlParams.get('ders') || 'mat'; // Varsayılan mat
         const sinifKey = urlParams.get('sinif');
 
-        if (typeof egitimVerileri !== 'undefined' && sinifKey && egitimVerileri[sinifKey]) {
-            const sinifData = egitimVerileri[sinifKey];
-            
-            document.title = sinifData.baslik;
-            document.getElementById('baslik').innerText = sinifData.baslik;
+        // Ders adına göre ilgili data scriptini dinamik yükleme
+        const dataScript = document.createElement('script');
+        dataScript.src = dersKey === 'fen' ? 'fen_data.js' : 'mat_data.js';
+        document.head.appendChild(dataScript);
 
+        dataScript.onload = function() {
+            const veriler = dersKey === 'fen' ? (window.fenVerileri || null) : window.matVerileri;
             const container = document.getElementById('icerikContainer');
+            const baslikEl = document.getElementById('baslik');
+            const geriBtn = document.getElementById('geriBtn');
 
-            sinifData.uniteler.forEach(unite => {
-                let unitDiv = document.createElement('div');
-                unitDiv.className = 'unit-box';
+            if (!veriler) {
+                baslikEl.innerText = dersKey === 'fen' ? "Fen Bilimleri Hazırlanıyor" : "Veri Bulunamadı";
+                container.innerHTML = "<p style='text-align:center; color:#64748b;'>Bu ders için veri dosyası henüz eklenmedi.</p>";
+                return;
+            }
+
+            // DURUM 1: Sadece ders seçilmişse -> Sınıfları Listele (5, 6, 7, 8)
+            if (!sinifKey) {
+                const dersAdi = dersKey === 'fen' ? 'Fen Bilimleri' : 'Matematik';
+                baslikEl.innerText = `${dersAdi} - Sınıf Seçiniz`;
                 
-                let toolsHtml = "";
-                if (unite.araclar && unite.araclar.length > 0) {
-                    toolsHtml = unite.araclar.map(arac => `
-                        <a href="${arac.dosya}" class="tool-item">
-                            <span>🧩 ${arac.ad}</span>
-                            <span>▶ Başlat</span>
+                let html = '<div class="sinif-grid">';
+                for (const [key, sData] of Object.entries(veriler)) {
+                    html += `
+                        <a href="sinif.html?ders=${dersKey}&sinif=${key}" class="sinif-card">
+                            <span style="font-size: 2rem;">📚</span>
+                            <span>${sData.baslik}</span>
                         </a>
-                    `).join('');
-                } else {
-                    toolsHtml = `<p style="color: #94a3b8; font-size: 0.9rem; padding: 5px;">Bu ünitede henüz etkinlik bulunmuyor.</p>`;
+                    `;
                 }
+                html += '</div>';
+                container.innerHTML = html;
+            } 
+            // DURUM 2: Sınıf seçilmişse -> Üniteleri ve Araçları Listele
+            else if (veriler[sinifKey]) {
+                const sinifData = veriler[sinifKey];
+                document.title = sinifData.baslik;
+                baslikEl.innerText = sinifData.baslik;
+                geriBtn.href = `sinif.html?ders=${dersKey}`;
+                geriBtn.innerText = "← Sınıf Seçimine Dön";
 
-                unitDiv.innerHTML = `
-                    <h3>📂 ${unite.uniteAdi}</h3>
-                    <div class="tool-list">${toolsHtml}</div>
-                `;
-                container.appendChild(unitDiv);
-            });
-        } else {
-            document.getElementById('baslik').innerText = "İçerik Bulunamadı!";
-            document.getElementById('icerikContainer').innerHTML = "<p style='text-align:center; color:#64748b;'>Bu sınıfa ait veri bulunamadı veya data.js yüklenemedi.</p><br><div style='text-align:center;'><a href='index.html'>Ana Sayfaya Dön</a></div>";
-        }
+                sinifData.uniteler.forEach(unite => {
+                    let unitDiv = document.createElement('div');
+                    unitDiv.className = 'unit-box';
+                    
+                    let toolsHtml = "";
+                    if (unite.araclar && unite.araclar.length > 0) {
+                        toolsHtml = unite.araclar.map(arac => `
+                            <a href="${arac.dosya}" class="tool-item">
+                                <span>🧩 ${arac.ad}</span>
+                                <span>▶ Başlat</span>
+                            </a>
+                        `).join('');
+                    } else {
+                        toolsHtml = `<p style="color: #94a3b8; font-size: 0.9rem; padding: 5px;">Bu ünitede henüz etkinlik bulunmuyor.</p>`;
+                    }
+
+                    unitDiv.innerHTML = `
+                        <h3>📂 ${unite.uniteAdi}</h3>
+                        <div class="tool-list">${toolsHtml}</div>
+                    `;
+                    container.appendChild(unitDiv);
+                });
+            } else {
+                baslikEl.innerText = "Sınıf Bulunamadı!";
+            }
+        };
     </script>
 </body>
 </html>
