@@ -54,4 +54,4 @@ Değişiklikleri GitHub'a gönderdiğinizde Vercel projeyi otomatik olarak günc
 
 ## 🌐 Canlı Önizleme
 
-Projeyi canlı olarak incelemek ve test etmek için: [Proje Vercel Linkiniz](https://egiticiaraclar.vercel.app/)
+Projeyi canlı olarak incelemek ve test etmek için: [Proje Linki için Tıklayınız.](https://egiticiaraclar.vercel.app/)
