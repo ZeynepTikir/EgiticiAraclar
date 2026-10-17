@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>8. Sınıf Fen Bilimleri: DNA ve Genetik Kod İnteraktif Laboratuvarı</title>
+  <style>
+    :root {
+      --primary: #0284c7;
+      --primary-hover: #0369a1;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #0f172a;
+      --accent-green: #16a34a;
+      --accent-red: #dc2626;
+      --accent-purple: #9333ea;
+      --accent-amber: #d97706;
+      --border: #e2e8f0;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    header h1 {
+      font-size: 2rem;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+
+    header p {
+      color: #64748b;
+      font-size: 1rem;
+    }
+
+    /* Tabs UI */
+    .tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 2px;
+    }
+
+    .tab-btn {
+      padding: 12px 24px;
+      background: none;
+      border: none;
+      border-bottom: 3px solid transparent;
+      font-weight: 600;
+      font-size: 1rem;
+      color: #64748b;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn:hover {
+      color: var(--primary);
+    }
+
+    .tab-btn.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    /* Cards & Panels */
+    .visual-card, .quiz-card, .panel {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 24px;
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      margin-bottom: 20px;
+    }
+
+    .panel {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .control-group label {
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--text);
+    }
+
+    select, button, input {
+      padding: 10px 14px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      font-size: 0.95rem;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    select:focus, input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+    }
+
+    /* Preset & Option Buttons */
+    .preset-btn, .option-btn {
+      background: #f1f5f9;
+      color: var(--text);
+      border: 1px solid #cbd5e1;
+      cursor: pointer;
+      font-weight: 500;
+      text-align: left;
+      width: 100%;
+    }
+
+    .preset-btn:hover, .option-btn:hover {
+      background: #e2e8f0;
+    }
+
+    .action-btn {
+      background: var(--primary);
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .action-btn:hover {
+      background: var(--primary-hover);
+    }
+
+    /* Chips */
+    .pair-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .chip {
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .chip-blue { background: #e0f2fe; color: #0369a1; }
+    .chip-green { background: #dcfce7; color: #15803d; }
+    .chip-purple { background: #f3e8ff; color: #6b21a8; }
+    .chip-amber { background: #fef3c7; color: #b45309; }
+
+    /* Punnett Square Grid */
+    .punnett-grid {
+      display: grid;
+      grid-template-columns: 50px 1fr 1fr;
+      grid-template-rows: 50px 1fr 1fr;
+      gap: 6px;
+      max-width: 320px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .punnett-cell {
+      background: #f1f5f9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.2rem;
+      border-radius: 8px;
+      border: 1px solid #cbd5e1;
+    }
+
+    .punnett-header {
+      background: #e2e8f0;
+      color: var(--primary);
+    }
+
+    .punnett-result {
+      background: #ffffff;
+      color: var(--text);
+      box-shadow: inset 0 0 4px rgba(0,0,0,0.05);
+    }
+
+    /* Environmental Factor Sim Box */
+    .sim-display {
+      text-align: center;
+      padding: 20px;
+      border-radius: 10px;
+      background: #f8fafc;
+      border: 2px solid var(--border);
+    }
+
+    .organism-avatar {
+      font-size: 4rem;
+      margin-bottom: 10px;
+    }
+
+    /* Quiz Styling */
+    .quiz-card {
+      margin-bottom: 24px;
+    }
+
+    .quiz-question {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    .options-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .option-btn {
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+    }
+
+    .feedback {
+      margin-top: 14px;
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      display: none;
+      line-height: 1.4;
+    }
+
+    .feedback.correct {
+      background-color: #dcfce7;
+      color: #15803d;
+      border: 1px solid #86efac;
+      display: block;
+    }
+
+    .feedback.incorrect {
+      background-color: #fee2e2;
+      color: #b91c1c;
+      border: 1px solid #fca5a5;
+      display: block;
+    }
+
+    /* Section titles */
+    .section-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-title span {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      background: var(--primary);
+      border-radius: 3px;
+    }
+
+    @media (max-width: 640px) {
+      .tabs {
+        overflow-x: auto;
+      }
+      .tab-btn {
+        padding: 10px 14px;
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h1>DNA ve Genetik Kod Laboratuvarı</h1>
+      <p>8. Sınıf Fen Bilimleri İnteraktif Öğrenme Platformu</p>
+    </header>
+
+    <!-- Sekmeler -->
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab(0)">1. İnteraktif Deney Laboratuvarı</button>
+      <button class="tab-btn" onclick="switchTab(1)">2. Kavram Rehberi & Analiz</button>
+      <button class="tab-btn" onclick="switchTab(2)">3. 5 Soruluk LGS Testi</button>
+    </div>
+
+    <!-- SEKME 1: İNTERAKTİF LABORATUVAR -->
+    <div id="tab-0" class="tab-content active">
+      
+      <!-- Modül 1: Kalıtım ve Punnett Karesi Simülatörü -->
+      <div class="panel">
+        <div class="visual-card" style="margin-bottom:0;">
+          <div class="section-title"><span></span> Modül 1: Kalıtım & Çaprazlama Simülatörü</div>
+          <div class="control-group" style="margin-bottom: 12px;">
+            <label for="parent1">Anne Genotipi:</label>
+            <select id="parent1" onchange="calculateCross()">
+              <option value="AA">Baskın Saf Döl (AA) - Melez Olmayan</option>
+              <option value="Aa" selected>Baskın Melez Döl (Aa)</option>
+              <option value="aa">Çekinik Saf Döl (aa)</option>
+            </select>
+          </div>
+
+          <div class="control-group" style="margin-bottom: 16px;">
+            <label for="parent2">Baba Genotipi:</label>
+            <select id="parent2" onchange="calculateCross()">
+              <option value="AA">Baskın Saf Döl (AA) - Melez Olmayan</option>
+              <option value="Aa" selected>Baskın Melez Döl (Aa)</option>
+              <option value="aa">Çekinik Saf Döl (aa)</option>
+            </select>
+          </div>
+
+          <div class="control-group">
+            <label>İncelenen Karakter Örneği:</label>
+            <select id="trait-select" onchange="calculateCross()">
+              <option value="eye">Göz Rengi (A: Kahverengi, a: Mavi)</option>
+              <option value="seed">Tohum Rengi (A: Sarı, a: Yeşil)</option>
+              <option value="height">Bitki Boyu (A: Uzun, a: Kısa)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="visual-card" style="margin-bottom:0; display: flex; flex-direction: column; justify-content: center;">
+          <div style="text-align: center; font-weight: 600; margin-bottom: 10px;">Punnett Karesi Oluşumu</div>
+          <div class="punnett-grid">
+            <div class="punnett-cell punnett-header">&male; \ &female;</div>
+            <div class="punnett-cell punnett-header" id="p1-allele1">A</div>
+            <div class="punnett-cell punnett-header" id="p1-allele2">a</div>
+            <div class="punnett-cell punnett-header" id="p2-allele1">A</div>
+            <div class="punnett-cell punnett-result" id="res-0">AA</div>
+            <div class="punnett-cell punnett-result" id="res-1">Aa</div>
+            <div class="punnett-cell punnett-header" id="p2-allele2">a</div>
+            <div class="punnett-cell punnett-result" id="res-2">Aa</div>
+            <div class="punnett-cell punnett-result" id="res-3">aa</div>
+          </div>
+
+          <div class="pair-chips" id="punnett-stats" style="justify-content: center;">
+            <!-- Dinamik doldurulacak -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Modül 2: Çevresel Faktörler (Mutasyon, Modifikasyon, Adaptasyon Test Laboratuvarı) -->
+      <div class="visual-card" style="margin-top: 20px;">
+        <div class="section-title"><span></span> Modül 2: Çevre Şartları & Değişim Laboratuvarı</div>
+        <p style="margin-bottom: 15px; color: #475569;">Bir canlı ve bir çevresel etken seçerek ortaya çıkan değişimin türünü inceleyin.</p>
+
+        <div class="panel" style="margin-bottom: 15px;">
+          <div class="control-group">
+            <label for="organism">Canlı / Örnek Seçin:</label>
+            <select id="organism">
+              <option value="chuha">Çuha Çiçeği</option>
+              <option value="himalaya">Himalaya Tavşanı</option>
+              <option value="human_uv">İnsan Hücresi (Radyasyon Maruziyeti)</option>
+              <option value="polar_bear">Kutup Ayısı</option>
+              <option value="bee">Arı Larvası</option>
+            </select>
+          </div>
+
+          <div class="control-group">
+            <label for="condition">Uygulanan Çevresel Faktör / Şart:</label>
+            <select id="condition">
+              <option value="temp_low">Düşük Sıcaklık (15°C)</option>
+              <option value="temp_high">Yüksek Sıcaklık (30-35°C)</option>
+              <option value="radiation">Aşırı UV / X-Işını Radyasyonu</option>
+              <option value="royal_jelly">Arı Sütü ile Beslenme</option>
+              <option value="cold_snow">Kutupsal İklim ve Kar Örtüsü</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="text-align: center; margin-bottom: 15px;">
+          <button class="action-btn" onclick="runEnvSim()" style="padding: 10px 30px;">Simülasyonu Çalıştır</button>
+        </div>
+
+        <div class="sim-display" id="sim-result-box">
+          <div class="organism-avatar" id="sim-icon">🌱</div>
+          <h3 id="sim-title" style="margin-bottom: 8px; color: var(--primary);">Deney Başlatılmadı</h3>
+          <p id="sim-desc">Lütfen canlı ve çevre şartı seçip "Simülasyonu Çalıştır" butonuna basınız.</p>
+          <div style="margin-top: 10px;" id="sim-chip-container"></div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- SEKME 2: KAVRAM REHBERİ VE ANALİZ -->
+    <div id="tab-1" class="tab-content">
+
+      <!-- Karşılaştırma Paneli -->
+      <div class="visual-card">
+        <div class="section-title"><span></span> Mutasyon vs Modifikasyon vs Adaptasyon Karşılaştırması</div>
+        
+        <div style="overflow-x: auto;">
+          <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.95rem;">
+            <thead>
+              <tr style="background: #f1f5f9; border-bottom: 2px solid var(--border);">
+                <th style="padding: 12px;">Özellik</th>
+                <th style="padding: 12px; color: var(--accent-red);">Mutasyon</th>
+                <th style="padding: 12px; color: var(--accent-amber);">Modifikasyon</th>
+                <th style="padding: 12px; color: var(--accent-green);">Adaptasyon</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid var(--border);">
+                <td style="padding: 10px; font-weight: bold;">Etki Alanı</td>
+                <td>Genin <strong>YAPISI</strong> bozulur / değişir.</td>
+                <td>Genin <strong>İŞLEYİŞİ</strong> değişir.</td>
+                <td>Genetik yapı çevreye uyum sağlayacak şekildedir.</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--border);">
+                <td style="padding: 10px; font-weight: bold;">Kalıtsallık</td>
+                <td>Üreme hücrelerinde ise <strong>Kalıtsaldır</strong>.</td>
+                <td>Kesinlikle <strong>Kalıtsal Değildir</strong>.</td>
+                <td>Nesilden nesile aktarılır, <strong>Kalıtsaldır</strong>.</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--border);">
+                <td style="padding: 10px; font-weight: bold;">Neden Olan Faktörler</td>
+                <td>Radyasyon, Kimyasallar, Yüksek Isı.</td>
+                <td>Sıcaklık, Işık, Beslenme, Basınç.</td>
+                <td>Doğal Seçilim ve Yaşama/Üreme Şansı.</td>
+              </tr>
+              <tr>
+                <td style="padding: 10px; font-weight: bold;">Örnekler</td>
+                <td>Van kedisi gözleri, Altı parmaklılık, Orak hücreli anemi.</td>
+                <td>Spor yapanın kas gelişimi, Çuha çiçeği renk değişimi.</td>
+                <td>Kutup ayısının beyaz kürk yapısı, Kaktüsün iğne yaprakları.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Biyoteknoloji ve Genetik Mühendisliği -->
+      <div class="visual-card">
+        <div class="section-title"><span></span> Biyoteknoloji & Genetik Mühendisliği Uygulamaları</div>
+        <div class="panel">
+          <div>
+            <span class="chip chip-purple" style="margin-bottom: 8px;">Gen Aktarımı</span>
+            <p style="font-size:0.9rem; color:#475569;">Bir canlıdaki genin başka bir canlıya aktarılarak yeni özellik kazandırılması (Örn: İnsülin üreten bakteriler).</p>
+          </div>
+          <div>
+            <span class="chip chip-blue" style="margin-bottom: 8px;">Gen Tedavisi</span>
+            <p style="font-size:0.9rem; color:#475569;">Hatalı veya işlevsiz genlerin tespit edilip etkisiz hale getirilmesi veya düzeltilmesi işlemi.</p>
+          </div>
+          <div>
+            <span class="chip chip-green" style="margin-bottom: 8px;">Klonlama</span>
+            <p style="font-size:0.9rem; color:#475569;">Bir canlının genetik olarak birebir kopyasının oluşturulması (Örn: Koyun Dolly örneği).</p>
+          </div>
+          <div>
+            <span class="chip chip-amber" style="margin-bottom: 8px;">Geleneksel Islah</span>
+            <p style="font-size:0.9rem; color:#475569;">İstenilen özellikteki canlıların çaprazlanması ile daha verimli ırkların elde edilmesi.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- SEKME 3: 5 SORULUK LGS TESTİ -->
+    <div id="tab-2" class="tab-content">
+      
+      <!-- Soru 1 -->
+      <div class="quiz-card" id="q1">
+        <div class="quiz-question">Soru 1: Sağlıklı bir DNA molekülü ile ilgili aşağıda verilen ifadelerden hangisi her zaman DOĞRUDUR?</div>
+        <div class="options-grid">
+          <button class="option-btn" onclick="checkQ(1, this, false)">A) Adenin nükleotid sayısı her zaman Sitozin nükleotid sayısına eşittir.</button>
+          <button class="option-btn" onclick="checkQ(1, this, true)">B) Toplam Şeker sayısı, Toplam Fosfat sayısına ve Toplam Organik Baz sayısına eşittir.</button>
+          <button class="option-btn" onclick="checkQ(1, this, false)">C) Bir DNA zincirinde her zaman eşit sayıda A, T, G ve C nükleotidi bulunur.</button>
+          <button class="option-btn" onclick="checkQ(1, this, false)">D) Nükleotidler isimlerini yapılarındaki Deoksiriboz şekerinden alırlar.</button>
+        </div>
+        <div class="feedback" id="fb-1"></div>
+      </div>
+
+      <!-- Soru 2 -->
+      <div class="quiz-card" id="q2">
+        <div class="quiz-question">Soru 2: Melez döl düz tohumlu (Aa) iki bezelyenin çaprazlanması sonucu elde edilecek yavru bezelyelerin genotipinde "Çekinik geni (a)" bulundurma olasılığı yüzde kaçtır?</div>
+        <div class="options-grid">
+          <button class="option-btn" onclick="checkQ(2, this, false)">A) %25</button>
+          <button class="option-btn" onclick="checkQ(2, this, false)">B) %50</button>
+          <button class="option-btn" onclick="checkQ(2, this, true)">C) %75</button>
+          <button class="option-btn" onclick="checkQ(2, this, false)">D) %100</button>
+        </div>
+        <div class="feedback" id="fb-2"></div>
+      </div>
+
+      <!-- Soru 3 -->
+      <div class="quiz-card" id="q3">
+        <div class="quiz-question">Soru 3: Sirke sineklerinin 16°C sıcaklıkta düz kanatlı, 25°C sıcaklıkta ise kıvrık kanatlı olması olayı ile ilgili olarak aşağıdakilerden hangisi söylenebilir?</div>
+        <div class="options-grid">
+          <button class="option-btn" onclick="checkQ(3, this, false)">A) Bir mutasyon örneğidir ve gen yapısı kalıcı olarak değişmiştir.</button>
+          <button class="option-btn" onclick="checkQ(3, this, true)">B) Bir modifikasyon örneğidir, genlerin yapısı değil işleyişi değişmiştir.</button>
+          <button class="option-btn" onclick="checkQ(3, this, false)">C) Sineklerin yaşama şansını artıran kalıtsal bir adaptasyondur.</button>
+          <button class="option-btn" onclick="checkQ(3, this, false)">D) Çevre şartı değişse bile kıvrık kanatlı sineğin yavruları hep kıvrık kanatlı doğar.</button>
+        </div>
+        <div class="feedback" id="fb-3"></div>
+      </div>
+
+      <!-- Soru 4 -->
+      <div class="quiz-card" id="q4">
+        <div class="quiz-question">Soru 4: Develerin hörgüçlerinde yağ depolaması ve uzun kirpiklere sahip olması hangi kavramla açıklanır?</div>
+        <div class="options-grid">
+          <button class="option-btn" onclick="checkQ(4, this, false)">A) Modifikasyon</button>
+          <button class="option-btn" onclick="checkQ(4, this, true)">B) Adaptasyon</button>
+          <button class="option-btn" onclick="checkQ(4, this, false)">C) Biyoteknoloji</button>
+          <button class="option-btn" onclick="checkQ(4, this, false)">D) Olumsuz Mutasyon</button>
+        </div>
+        <div class="feedback" id="fb-4"></div>
+      </div>
+
+      <!-- Soru 5 -->
+      <div class="quiz-card" id="q5">
+        <div class="quiz-question">Soru 5: Ateş böceğinin ışık saçmasını sağlayan genin tütün bitkisine aktarılması sonucu tütün bitkisinin ışık saçmaya başlaması hangi biyoteknolojik uygulamaya örnektir?</div>
+        <div class="options-grid">
+          <button class="option-btn" onclick="checkQ(5, this, true)">A) Gen Aktarımı</button>
+          <button class="option-btn" onclick="checkQ(5, this, false)">B) Klonlama</button>
+          <button class="option-btn" onclick="checkQ(5, this, false)">C) Geleneksel Islah</button>
+          <button class="option-btn" onclick="checkQ(5, this, false)">D) DNA Parmak İzi</button>
+        </div>
+        <div class="feedback" id="fb-5"></div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+    // Tab Değiştirme Fonksiyonu
+    function switchTab(tabIndex) {
+      const tabs = document.querySelectorAll('.tab-btn');
+      const contents = document.querySelectorAll('.tab-content');
+
+      tabs.forEach((tab, index) => {
+        if (index === tabIndex) {
+          tab.classList.add('active');
+        } else {
+          tab.classList.remove('active');
+        }
+      });
+
+      contents.forEach((content, index) => {
+        if (index === tabIndex) {
+          content.classList.add('active');
+        } else {
+          content.classList.remove('active');
+        }
+      });
+    }
+
+    // MODÜL 1: Punnett Karesi Hesaplayıcı
+    function calculateCross() {
+      const p1 = document.getElementById('parent1').value;
+      const p2 = document.getElementById('parent2').value;
+      const trait = document.getElementById('trait-select').value;
+
+      const p1_a1 = p1[0], p1_a2 = p1[1];
+      const p2_a1 = p2[0], p2_a2 = p2[1];
+
+      document.getElementById('p1-allele1').innerText = p1_a1;
+      document.getElementById('p1-allele2').innerText = p1_a2;
+      document.getElementById('p2-allele1').innerText = p2_a1;
+      document.getElementById('p2-allele2').innerText = p2_a2;
+
+      const results = [
+        formatGenotype(p2_a1, p1_a1),
+        formatGenotype(p2_a1, p1_a2),
+        formatGenotype(p2_a2, p1_a1),
+        formatGenotype(p2_a2, p1_a2)
+      ];
+
+      results.forEach((res, idx) => {
+        document.getElementById(`res-${idx}`).innerText = res;
+      });
+
+      // Stats
+      let counts = { AA: 0, Aa: 0, aa: 0 };
+      results.forEach(r => counts[r]++);
+
+      let dominantCount = counts.AA + counts.Aa;
+      let recessiveCount = counts.aa;
+
+      let traitNames = {
+        eye: { dom: 'Kahverengi Göz', rec: 'Mavi Göz' },
+        seed: { dom: 'Sarı Tohum', rec: 'Yeşil Tohum' },
+        height: { dom: 'Uzun Boy', rec: 'Kısa Boy' }
+      };
+
+      const statsContainer = document.getElementById('punnett-stats');
+      statsContainer.innerHTML = `
+        <span class="chip chip-blue">Genotip: %${counts.AA * 25} AA | %${counts.Aa * 25} Aa | %${counts.aa * 25} aa</span>
+        <span class="chip chip-green">Fenotip: %${dominantCount * 25} ${traitNames[trait].dom}</span>
+        <span class="chip chip-purple">Fenotip: %${recessiveCount * 25} ${traitNames[trait].rec}</span>
+      `;
+    }
+
+    function formatGenotype(a, b) {
+      if (a === 'A' || b === 'A') {
+        if (a === 'a' || b === 'a') return 'Aa';
+        return 'AA';
+      }
+      return 'aa';
+    }
+
+    // MODÜL 2: Çevre Şartları Simülasyonu
+    function runEnvSim() {
+      const org = document.getElementById('organism').value;
+      const cond = document.getElementById('condition').value;
+
+      const titleEl = document.getElementById('sim-title');
+      const descEl = document.getElementById('sim-desc');
+      const iconEl = document.getElementById('sim-icon');
+      const chipContainer = document.getElementById('sim-chip-container');
+
+      chipContainer.innerHTML = '';
+
+      if (org === 'chuha') {
+        iconEl.innerText = '🌺';
+        if (cond === 'temp_low') {
+          titleEl.innerText = 'Kırmızı Çiçek Açtı';
+          descEl.innerText = 'Çuha çiçeği 15°C düşük sıcaklıkta kırmızı renkli çiçek açar.';
+          chipContainer.innerHTML = '<span class="chip chip-amber">Modifikasyon</span> <span class="chip chip-blue">Kalıtsal Değil</span>';
+        } else if (cond === 'temp_high') {
+          titleEl.innerText = 'Beyaz Çiçek Açtı';
+          descEl.innerText = 'Çuha çiçeği 30-35°C yüksek sıcaklıkta beyaz renkli çiçek açar. Gen yapısı aynı kalır, işleyiş değişir.';
+          chipContainer.innerHTML = '<span class="chip chip-amber">Modifikasyon</span> <span class="chip chip-blue">Kalıtsal Değil</span>';
+        } else {
+          titleEl.innerText = 'Beklenen Etki Sınırlı';
+          descEl.innerText = 'Çuha çiçeğinde belirgin modifikasyon için sıcaklık değişimleri ana faktördür.';
+          chipContainer.innerHTML = '<span class="chip chip-blue">Genel Durum</span>';
+        }
+      } else if (org === 'himalaya') {
+        iconEl.innerText = '🐇';
+        if (cond === 'temp_low') {
+          titleEl.innerText = 'Siyah Kürk Gelişimi';
+          descEl.innerText = 'Tıraşlanan sırt alanına buz konulduğunda çıkan yeni tüyler siyah olur. Gen işleyişi sıcaklıkla değişmiştir.';
+          chipContainer.innerHTML = '<span class="chip chip-amber">Modifikasyon</span> <span class="chip chip-blue">Kalıtsal Değil</span>';
+        } else {
+          titleEl.innerText = 'Beyaz Kürk Muhafazası';
+          descEl.innerText = 'Normal veya yüksek sıcaklıkta Himalaya tavşanının tüy rengi beyaz kalır.';
+          chipContainer.innerHTML = '<span class="chip chip-amber">Modifikasyon</span>';
+        }
+      } else if (org === 'human_uv') {
+        iconEl.innerText = '🧬';
+        if (cond === 'radiation') {
+          titleEl.innerText = 'DNA Hasarı / Mutasyon';
+          descEl.innerText = 'Yüksek UV ve X-ışınları DNA bazı dizilimini bozar. Hücre yapısında bozulma veya kanser riski doğar.';
+          chipContainer.innerHTML = '<span class="chip chip-purple" style="background:#fee2e2; color:#b91c1c;">Mutasyon</span> <span class="chip chip-blue">Gen Yapısı Bozuldu</span>';
+        } else {
+          titleEl.innerText = 'Normal Hücre Bölünmesi';
+          descEl.innerText = 'Radyasyon olmaksızın hücre genetik kodunu koruyarak çoğalır.';
+          chipContainer.innerHTML = '<span class="chip chip-green">Sağlıklı Durum</span>';
+        }
+      } else if (org === 'polar_bear') {
+        iconEl.innerText = '🐻‍❄️';
+        if (cond === 'cold_snow') {
+          titleEl.innerText = 'Gelişmiş Yaşama ve Avlanma Şansı';
+          descEl.innerText = 'Beyaz kürk rengi, kalın yağ tabakası ve geniş tabanlı ayaklar kutup ayısının ortama tam uyumunu sağlar.';
+          chipContainer.innerHTML = '<span class="chip chip-green">Adaptasyon</span> <span class="chip chip-purple">Kalıtsal</span>';
+        } else {
+          titleEl.innerText = 'Uyum Yeteneği Özelliği';
+          descEl.innerText = 'Kutup ayısının sahip olduğu genetik özellikler nesiller boyu doğal seçilimle kazanılmıştır.';
+          chipContainer.innerHTML = '<span class="chip chip-green">Adaptasyon</span>';
+        }
+      } else if (org === 'bee') {
+        iconEl.innerText = '🐝';
+        if (cond === 'royal_jelly') {
+          titleEl.innerText = 'Kraliçe Arı Gelişimi';
+          descEl.innerText = 'Arı sütü ile beslenen arı larvası iri vücutlu ve doğurgan Kraliçe Arı olur.';
+          chipContainer.innerHTML = '<span class="chip chip-amber">Modifikasyon</span> <span class="chip chip-blue">Beslenmeye Bağlı</span>';
+        } else {
+          titleEl.innerText = 'İşçi Arı Gelişimi';
+          descEl.innerText = 'Çiçek tozu (polen) ile beslenen arı larvaları kısır ve küçük İşçi Arı olur.';
+          chipContainer.innerHTML = '<span class="chip chip-amber">Modifikasyon</span>';
+        }
+      }
+    }
+
+    // QUIZ MANTIĞI
+    const explanations = {
+      1: "Tüm sağlıklı DNA moleküllerinde Toplam Nükleotid Sayısı = Nükleotid Baz Sayısı = Toplam Deoksiriboz Şekeri Sayısı = Toplam Fosfat Sayısı kuralı vardır. Ancak A=C olmak zorunda değildir (A=T, G=C'dir).",
+      2: "Aa x Aa çaprazlamasında genotipler: %25 AA, %50 Aa, %25 aa şeklindedir. Çekinik 'a' genini barındıranlar AA dışındakilerdir (Aa, Aa, aa) yani %75'tir.",
+      3: "Sıcaklığa bağlı kanat şeklinin değişmesi genin yapısını değil, İŞLEYİŞİNİ değiştirir. Çevre şartı değişince durum eski haline dönebilir. Bu durum MODİFİKASYON'dur.",
+      4: "Develerin çöl ortamında su ve enerji depolamak için hörgüçlü olması, kumdan korunmak için uzun kirpikli olması yaşama şansını artıran ve nesilden nesile aktarılan ADAPTASYON'dur.",
+      5: "Farklı bir canlıya ait olan geni (ışık saçma geni) tütün bitkisine aktararak yeni bir özellik kazandırılması GEN AKTARIMI (Genetik Mühendisliği) uygulamasıdır."
+    };
+
+    function checkQ(qId, btn, isCorrect) {
+      const card = document.getElementById(`q${qId}`);
+      const buttons = card.querySelectorAll('.option-btn');
+      const feedback = document.getElementById(`fb-${qId}`);
+
+      // Tüm buton pasifleştirme ve temizleme
+      buttons.forEach(b => {
+        b.style.backgroundColor = '#f1f5f9';
+        b.style.borderColor = '#cbd5e1';
+      });
+
+      if (isCorrect) {
+        btn.style.backgroundColor = '#dcfce7';
+        btn.style.borderColor = '#86efac';
+        feedback.className = 'feedback correct';
+        feedback.innerHTML = `<strong>Tebrikler, Doğru Cevap!</strong><br>${explanations[qId]}`;
+      } else {
+        btn.style.backgroundColor = '#fee2e2';
+        btn.style.borderColor = '#fca5a5';
+        feedback.className = 'feedback incorrect';
+        feedback.innerHTML = `<strong>Yanlış Cevap.</strong><br>${explanations[qId]}`;
+      }
+    }
+
+    // Sayfa Yüklendiğinde İlk Kurulum
+    window.onload = function() {
+      calculateCross();
+    };
+  </script>
+</body>
+</html>
