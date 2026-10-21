@@ -94,7 +94,7 @@
             doc.close();
 
             const promptText = `
-Sen uzman bir Eğitsel Oyun Tasarımcısı ve İnteraktif Web Geliştiricisisin. Sana verilen şablon mimarisini ve modern UI tasarım dilini koruyarak, belirtilen ders ve konuya uygun **tam anlamıyla oynanabilir bir Eğitsel Mini Oyun** üreteceksin.
+Sen uzman bir Eğitsel Oyun Tasarımcısı ve İnteraktif Web Geliştiricisisin. Sana verilen şablon mimarisini ve modern UI tasarım dilini koruyarak, belirtilen ders ve konuya uygun **tam anlamıyla oynanabilir ve kurallara tam uyan bir Eğitsel Mini Oyun** üreteceksin.
 
 PARAMETRELER:
 - Sınıf Düzeyi: ${grade}
@@ -118,16 +118,14 @@ Oyun Tasarımı ve Kodlama Mimarisi Kuralları (Birebir Uygulanacak):
    }
    Arayüz son derece şık, renkli, akıcı ve çocuk/öğrenci dostu olmalıdır (.container, .game-card, .hud-panel, .option-btn).
 
-2. OYUN DÖNGÜSÜ VE HUD (Arayüz Göstergeleri):
-   Oyun ekranının üst kısmında her zaman şu göstergeler (HUD) yer almalı:
-   - **Skor Tablosu (Puan):** Doğru hamlelerde artı puan artışı.
-   - **Can / Hak Sistemi (Örn: 3 Kalp ❤️):** Yanlış hamlelerde azalma.
-   - **Zamanlayıcı (Timer) veya Seviye İlerleme Çubuğu:** Oyuna rekabet ve heyecan katacak dinamik bir sayaç.
+2. BAŞLAT / DURDUR KONTROLÜ VE OYUN DÖNGÜSÜ (HUD):
+   - **Başlat / Durdur Butonları (Çok Önemli):** Oyun ekranı (Sekme 1) ilk açıldığında ASLA otomatik olarak akmaya veya soruları getirmeye başlamasın. Arayüzde net bir şekilde **"▶️ Oyunu Başlat"** ve **"⏸️ Durdur / Beklet"** butonları bulunmalı. Oyuncu "Başlat" butonuna basana kadar süre, sayaç, puanlama ve oyun döngüsü tamamen durdurulmuş (paused) konumda olmalıdır. Durdur butonuna basıldığında oyun askıya alınmalı, tekrar başlat butonuna basıldığında kaldığı yerden devam etmelidir.
+   - **HUD Göstergeleri:** Oyun ekranının üst kısmında Skor Tablosu (Puan), Can / Hak Sistemi (Örn: 3 Kalp ❤️) ve Zamanlayıcı/İlerleme çubuğu yer almalı.
 
 3. SEKMELİ OYUN YAPISI (Tabs):
-   - **Sekme 1 (Oyun Alanı):** Konunun mekaniğine uygun **ana mini oyun** (Örn: Sürükle-bırak bulmaca, zaman karşı yarışı, hedef yakalama, doğru kutuyu seçme veya kart eşleştirme). Asla düz bir form veya sıkıcı test ekranı olmasın; gerçek bir oyun hissiyatı versin.
+   - **Sekme 1 (Oyun Alanı):** Başlat/Durdur butonlarıyla kontrol edilen, konunun mekaniğine uygun ana mini oyun (Sürükle-bırak bulmaca, zaman karşı yarışı, hedef yakalama, doğru kutuyu seçme veya kart eşleştirme). Asla düz bir form veya sıkıcı test ekranı olmasın; gerçek bir oyun hissiyatı versin.
    - **Sekme 2 (Nasıl Oynanır / Taktikler):** Oyunun kurallarının ve konunun pratik ipuçlarının özeti.
-   - **Sekme 3 (Meydan Okuma / Bölüm Sonu Canavarı):** Kazanımları ölçen, doğru cevaplarda kutlama efektleri (renkli uyarılar veya animasyonlar) çıkaran 3 veya 5 soruluk mini meydan okuma testi.
+   - **Sekme 3 (5 Soruluk Test / Meydan Okuma):** Kesinlikle **eksiksiz 5 soruluk** detaylı bir test alanı olmalı. Asla tek bir soruyla geçiştirilemez. Doğru cevaplarda kutlama efektleri (renkli uyarılar veya animasyonlar) çıkaran, 5 sorunun tamamı bittiğinde toplam başarı özeti sunan bir meydan okuma testi olmalıdır.
 
 4. PEDAGOJİK VE OYUNSEL UYUM:
    - İçerik girilen dersin kazanımına tam oturmalıdır (Örn: Fen Bilimleri için organ yerleştirme veya kuvvet/hareket simülasyonu yarışı; Matematik için hızlı işlem/eşleştirme bulmacası; İngilizce için kelime avı veya balon patlatma mantığı).
@@ -137,6 +135,7 @@ Oyun Tasarımı ve Kodlama Mimarisi Kuralları (Birebir Uygulanacak):
    - Yalnızca çalışan, tek bir dosyada birleşmiş, HTML, CSS ve JS kodlarını içeren eksiksiz HAM HTML KODU döndür.
    - Kodun başında veya sonunda Markdown (\`\`\`html vb.) kesinlikle kullanma.
 `;
+
 
 
             try {
