@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Eğitici Araçlar Portalı</title>
     <style>
-        :root { --primary: #0284c7; --bg: #f8fafc; --card: #ffffff; --text: #0f172a; --accent: #9333ea; --success: #059669; }
+        :root { --primary: #0284c7; --bg: #f8fafc; --card: #ffffff; --text: #0f172a; --accent: #9333ea; --success: #059669; --game: #d97706; }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
         body { background-color: var(--bg); color: var(--text); padding: 50px 20px; text-align: center; }
         h1 { color: var(--primary); font-size: 2.3rem; margin-bottom: 10px; }
@@ -18,6 +18,9 @@
         .card.lab-generator { border-color: #d8b4fe; background: #faf5ff; color: var(--accent); }
         .card.lab-generator:hover { border-color: var(--accent); background: #f3e8ff; color: var(--accent); }
 
+        .card.game-generator { border-color: #fde68a; background: #fffbeb; color: var(--game); }
+        .card.game-generator:hover { border-color: var(--game); background: #fef3c7; color: var(--game); }
+
         .card.fen-bilimleri { border-color: #a7f3d0; background: #f0fdf4; color: var(--success); }
         .card.fen-bilimleri:hover { border-color: var(--success); background: #ecfdf5; color: var(--success); }
     </style>
@@ -25,7 +28,7 @@
 <body>
 
     <h1>🎓 Eğitici Araçlar Portalı</h1>
-    <p>Lütfen bir ders seçiniz veya Lab Üreteci'ni kullanınız</p>
+    <p>Lütfen bir üreteç veya ders seçiniz</p>
 
     <div class="grid">
         <!-- Lab Üreteci -->
@@ -34,13 +37,19 @@
             <span>Lab Üreteci</span>
         </a>
 
-        <!-- Matematik (Ders parametresiyle sinif.html'e gider) -->
+        <!-- Oyun Üreteci -->
+        <a href="oyun_ureteci.html" class="card game-generator">
+            <span style="font-size: 2.5rem;">🎮</span>
+            <span>Oyun Üreteci</span>
+        </a>
+
+        <!-- Matematik -->
         <a href="sinif.html?ders=mat" class="card">
             <span style="font-size: 2.5rem;">📐</span>
             <span>Matematik</span>
         </a>
 
-        <!-- Fen Bilimleri (İleride fen_data hazır olunca açılacak) -->
+        <!-- Fen Bilimleri -->
         <a href="sinif.html?ders=fen" class="card fen-bilimleri">
             <span style="font-size: 2.5rem;">⚗️</span>
             <span>Fen Bilimleri</span>
