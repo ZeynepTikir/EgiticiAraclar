@@ -119,7 +119,7 @@
             doc.close();
 
             const promptText = `
-Sen uzman bir Eğitsel Oyun Tasarımcısı ve İnteraktif Web Geliştiricisisin. Sana verdiğim ve çok beğendiğimiz **"Kök Avcısı" oyununun birebir tasarım standartlarını, renk paletini, CSS mimarisini ve 3 sekmeli yapısını** kullanarak, yeni ders ve konuya uygun kusursuz bir mini oyun üreteceksin.
+Sen uzman bir Eğitsel Etkileşim ve Oyun Tasarımcısısın. Sana verilen tasarım standartlarını, renk paletini ve CSS mimarisini koruyarak, belirtilen ders ve konuya özel **interaktif bir eğitici mini etkinlik / oyun** üreteceksin.
 
 PARAMETRELER:
 - Sınıf Düzeyi: ${grade}
@@ -136,17 +136,18 @@ ZORUNLU TASARIM VE KODLAMA STANDARTLARI (BİREBİR UYGULANACAK):
    - Kartlar border: 3px solid #e2e8f0; border-radius: 24px; ve yumuşak gölgeli olacak.
    - Renk paleti: --primary (#0284c7), --accent-green (#16a34a), --accent-red (#dc2626), --accent-purple (#9333ea), --accent-amber (#d97706).
 
-2. BAŞLAT / DURDUR VE HUD KONTROLÜ (Çok Önemli):
-   - Oyun ekranı ilk açıldığında otomatik başlamayacak. Arayüzde **"▶️ Başlat"** ve **"⏸️ Durdur"** butonları bulunacak. Oyuncu "Başlat" demeden sayaç, süre ve oyun mekaniği çalışmayacak.
-   - Üst HUD panelinde Skor (🏆 Puan), Can (❤️ Can Hakları) ve Soru sayacı yer alacak. Üzerinde renk değiştiren dinamik Zamanlayıcı Çubuğu (Timer Bar) bulunacak.
+2. BAŞLAT / DURDUR VE HUD KONTROLÜ:
+   - Etkinlik alanı ilk açıldığında otomatik başlamayacak. Arayüzde **"▶️ Başlat"** ve **"⏸️ Durdur"** butonları bulunacak. Oyuncu "Başlat" demeden sayaç, süre veya dinamik hareketler çalışmayacak.
+   - Üst HUD panelinde Skor (🏆 Puan), Can (❤️ Haklar - konsept uygunsa) ve Zamanlayıcı/İlerleme Çubuğu yer alacak.
 
-3. ÜÇ SEKMELİ YAPI (Tabs):
-   - **Sekme 1 (Hızlı Oyuncu / Oyun Alanı):** Seçilen konsept karakterine (${concept}) ve konuya uygun, durdur-başlat özellikli ana mini oyun. Doğru cevaplarda yeşil kutlama/zıplama animasyonları ve floating metinler (+100 puan), yanlış cevaplarda kırmızı titreme efekti ve can kaybı (-1 can) olacak.
-   - **Sekme 2 (Pratik Taktikler / Rehber):** Konunun en pratik formüllerinin, püf noktalarının ve örnek çözümlerin yer aldığı şık kartlar.
-   - **Sekme 3 (Bölüm Sonu Canavarı / Meydan Okuma):** Kesinlikle **tam 5 soruluk** canavar meydan okuması. Üstte dinamik Canavar Can Barı (HP Bar), ortada canavar avatarı ve soru kartı olacak. 5 sorunun tamamı bitince şampiyonluk modalı açılacak.
+3. İKİ SEKMELİ YAPI (Tabs):
+   - **Sekme 1 (🎮 Etkileşimli Oyun & Uygulama Alanı):** Sadece şıklı bir test/yarışma OLMAYACAK. Girilen konunun niteliğine tam oturan, esnek bir mekanik kullanılacak. 
+     *Örnek Mekanikler:* Sürükle-bırak eşleştirme, sıralama/kronoloji, hedef yakalama, boşluk doldurmalı interaktif kartlar, görsel üzerinde doğru noktayı tıklama veya terazi/sayı doğrusu dengesi.
+     *Geri Bildirimler:* Doğru hamlelerde seçilen karakterle (${concept}) uyumlu tebrik animasyonları ve konfeti/yazı efektleri (+Puan), yanlış hamlelerde uyarı efektleri yer alacak.
+   - **Sekme 2 (💡 Pratik Taktikler / Bilgi Kartları):** Konunun en pratik formüllerinin, püf noktalarının, kavram haritasının veya örnek çözümlerinin yer aldığı şık ve okunabilir rehber kartları.
 
 4. ETKİLEŞİM VE POP-UP MODAL:
-   - Canlar bittiğinde veya tüm oyun tamamlandığında şık bir pop-up Modal (Tekrar Oyna butonuyla) çıkacak.
+   - Etkinlik başarıyla tamamlandığında veya haklar tükendiğinde şık bir pop-up Modal (Özet puan ve "Tekrar Oyna / Yeniden Başlat" butonuyla) açılacak.
 
 5. ÇIKTI FORMATI:
    - Yalnızca çalışan, tek bir dosyada birleşmiş, harici kütüphane istemeyen ham HTML, CSS ve JS kodlarını içeren eksiksiz HAM HTML KODU döndür.
