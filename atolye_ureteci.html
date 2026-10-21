@@ -2,28 +2,30 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>Eğitici Akıllı Simülasyon Üreteci</title>
+    <title>Eğitici Akıllı Atölye Üreteci</title>
     <style>
-        :root { --game: #d97706; --game-hover: #b45309; }
+        :root { --workshop: #0284c7; --workshop-hover: #0369a1; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 20px; background: #f8fafc; }
         .container { display: flex; gap: 20px; min-height: 85vh; }
         .form-panel { flex: 1; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); overflow-y: auto; max-height: 85vh; }
         .preview-panel { flex: 2; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); display: flex; flex-direction: column; }
         label { font-weight: bold; margin-top: 12px; display: block; color: #0f172a; font-size: 0.95rem; }
         input, select, textarea, button { width: 100%; padding: 10px; margin-top: 5px; box-sizing: border-box; border: 1px solid #cbd5e1; border-radius: 6px; }
-        button { background: var(--game); color: white; font-weight: bold; border: none; cursor: pointer; margin-top: 15px; }
-        button:hover { background: var(--game-hover); }
+        .checkbox-container { display: flex; align-items: center; gap: 8px; margin-top: 8px; font-weight: normal; font-size: 0.9rem; color: #475569; cursor: pointer; }
+        .checkbox-container input { width: auto; margin-top: 0; cursor: pointer; }
+        button { background: var(--workshop); color: white; font-weight: bold; border: none; cursor: pointer; margin-top: 15px; }
+        button:hover { background: var(--workshop-hover); }
         iframe { width: 100%; height: 100%; border: none; flex: 1; border-radius: 4px; background: #fff; }
         #previewContainer { width: 100%; flex: 1; border: 1px solid #ccc; margin-top: 10px; border-radius: 4px; overflow: hidden; display: flex; }
         #status { margin-top: 15px; padding: 12px; border-radius: 6px; font-weight: bold; display: none; text-align: center; }
         .back-link { display: inline-block; margin-bottom: 15px; color: #64748b; text-decoration: none; font-weight: bold; }
-        .back-link:hover { color: var(--game); }
+        .back-link:hover { color: var(--workshop); }
     </style>
 </head>
 <body>
 
     <a href="index.html" class="back-link">← Portala Dön</a>
-    <h2>🍰 Eğitici Akıllı Simülasyon Üreteci (Atölye Modu)</h2>
+    <h2>🛠️ Eğitici Akıllı Atölye Üreteci (Somutlaştırma Simülasyonları)</h2>
 
     <div class="container">
         <!-- SOL PANEL -->
@@ -34,7 +36,7 @@
             <label for="modelSelect">Model Seçiniz:</label>
             <select id="modelSelect">
                 <option value="gemini-3.5-flash-lite" selected>gemini-3.5-flash-lite (Önerilen & Hızlı)</option>
-                <option value="gemini-3.8-flash">gemini-3.8-flash (Yüksek Kapasite)</option>
+                <option value="gemini-3.8-flash">gemini-3.8-flash (Yüksek Başarı)</option>
                 <option value="gemini-3-flash">gemini-3-flash</option>
             </select>
 
@@ -46,32 +48,37 @@
                 <option value="8. Sınıf" selected>8. Sınıf</option>
             </select>
 
-            <label for="subject">Ders / Konu:</label>
-            <input type="text" id="subject" placeholder="Örn: Matematik - EBOB / EKOK veya Karekök">
-
-            <label for="subtopic">Alt Başlık / Kazanım:</label>
-            <input type="text" id="subtopic" placeholder="Örn: İki çubuktan eşit boyda parçalar oluşturma (EBOB)">
-
-            <label for="simulationType">Atölye / Simülasyon Senaryosu:</label>
-            <select id="simulationType">
-                <option value="Atölye / Dilimleme / Kesme Simülasyonu (Örn: Kek, Tahta, Kumaş)">🍰 Dilimleme & Parçalama Atölyesi (Kesirler / EBOB)</option>
-                <option value="Arsa / Çit Çekme & Sınır Simülasyonu (Örn: Karekök / Alan)">🏡 Arsa & Çit Tasarım Atölyesi (Karekök / Alan)</option>
-                <option value="Depo / Koli İstifleme Simülasyonu (Örn: Üslü Sayılar)">📦 Depo & Koli İstifleme Fabrikası (Üslü Sayılar)</option>
-                <option value="Zaman / Saat Senkronizasyon Simülasyonu (Örn: EKOK)">⏰ Kronometre & Buluşma Atölyesi (EKOK)</option>
-                <option value="Serbest / Konuya Uygun Görsel Simülasyon">✨ Akıllı Konu Simülasyonu (Yapay Zeka Seçsin)</option>
+            <label for="subject">Ders:</label>
+            <select id="subject">
+                <option value="Matematik" selected>📐 Matematik</option>
+                <option value="Fen Bilimleri">⚗️ Fen Bilimleri</option>
+                <option value="Sosyal Bilgiler">🌍 Sosyal Bilgiler</option>
+                <option value="Türkçe">📖 Türkçe</option>
+                <option value="İngilizce">🇬🇧 İngilizce</option>
+                <option value="Din Kültürü ve Ahlak Bilgisi">🌙 Din Kültürü ve Ahlak Bilgisi</option>
+                <option value="Bilişim Teknolojileri">💻 Bilişim Teknolojileri</option>
             </select>
 
-            <label for="details">Ekstra Özel İstekler (Opsiyonel):</label>
-            <textarea id="details" rows="2" placeholder="Örn: Müşteriler gelsin, doğru parçaları tabağa/alana yerleştirelim."></textarea>
+            <label for="subtopic">Konu / Alt Başlık:</label>
+            <input type="text" id="subtopic" placeholder="Örn: Kareköklü ifadeleri a kök b şeklinde yazma">
 
-            <button id="btnGenerate">🚀 İnteraktif Simülasyon Üret</button>
-            <button id="btnDownload" style="background:#059669; margin-top: 10px;">💾 Simülasyonu HTML Olarak İndir</button>
+            <label for="concept">Atölye / Simülasyon Konsepti:</label>
+            <input type="text" id="concept" placeholder="Örn: Kek dükkânı, arsa çitleme, ahşap kesme...">
+            <label class="checkbox-container">
+                <input type="checkbox" id="autoConcept" onchange="toggleConceptInput()"> Yapay zeka konsepti/senaryoyu kendisi seçsin
+            </label>
+
+            <label for="details">Ekstra Özel İstekler (Opsiyonel):</label>
+            <textarea id="details" rows="2" placeholder="Örn: Görsel elemanlar ağırlıklı olsun, müşteri tipleri değişsin..."></textarea>
+
+            <button id="btnGenerate">🚀 İnteraktif Atölye Üret</button>
+            <button id="btnDownload" style="background:#059669; margin-top: 10px;">💾 Atölyeyi HTML Olarak İndir</button>
             <div id="status"></div>
         </div>
 
         <!-- SAĞ PANEL -->
         <div class="preview-panel">
-            <h3>📱 Canlı Simülasyon Önizlemesi</h3>
+            <h3>📱 Canlı Atölye Önizlemesi</h3>
             <div id="previewContainer">
                 <iframe id="previewFrame"></iframe>
             </div>
@@ -80,6 +87,18 @@
 
     <script>
         let lastGeneratedCode = "";
+
+        function toggleConceptInput() {
+            const isChecked = document.getElementById('autoConcept').checked;
+            const conceptInput = document.getElementById('concept');
+            conceptInput.disabled = isChecked;
+            if (isChecked) {
+                conceptInput.value = "";
+                conceptInput.placeholder = "Yapay zeka konsepti kendisi belirleyecek...";
+            } else {
+                conceptInput.placeholder = "Örn: Kek dükkânı, arsa çitleme, ahşap kesme...";
+            }
+        }
 
         function showStatus(msg, isError) {
             const statusDiv = document.getElementById('status');
@@ -121,7 +140,8 @@
             const grade = document.getElementById('grade').value;
             const subject = document.getElementById('subject').value;
             const subtopic = document.getElementById('subtopic').value;
-            const simulationType = document.getElementById('simulationType').value;
+            const isAutoConcept = document.getElementById('autoConcept').checked;
+            const conceptInput = document.getElementById('concept').value.trim();
             const details = document.getElementById('details').value;
             const previewFrame = document.getElementById('previewFrame');
 
@@ -130,16 +150,20 @@
                 return;
             }
 
-            if (!subject || !subtopic) {
-                alert("Lütfen Ders/Konu ve Alt Başlık alanlarını doldurun!");
+            if (!subtopic) {
+                alert("Lütfen konu veya alt başlık alanını doldurun!");
                 return;
             }
 
-            showStatus("⏳ Seçtiğiniz atölye simülasyonu kodlanıyor...", false);
+            const conceptInstruction = isAutoConcept 
+                ? "Konsepte/Senaryoya Yapay Zeka karar versin (Günlük hayattan en somutlaştırıcı, eğlenceli ve konuya en uygun atölye veya dükkân senaryosunu kendin seç)." 
+                : (conceptInput ? `İstenen Konsept / Senaryo: ${conceptInput}` : "Yapay zeka en uygun konsepti seçsin.");
+
+            showStatus("⏳ Seçtiğiniz somutlaştırma atölyesi kodlanıyor...", false);
             
             const doc = previewFrame.contentDocument || previewFrame.contentWindow.document;
             doc.open();
-            doc.write("<div style='font-family:sans-serif; text-align:center; padding-top:50px; color:#64748b;'><h3>🛠️ Yapay zeka simülasyon tezgahını kuruyor...</h3><p>Lütfen bekleyin...</p></div>");
+            doc.write("<div style='font-family:sans-serif; text-align:center; padding-top:50px; color:#64748b;'><h3>🛠️ Yapay zeka atölye tezgahını hazırlıyor...</h3><p>Lütfen bekleyin...</p></div>");
             doc.close();
 
             const promptText = `
@@ -147,28 +171,31 @@ Sen uzman bir Eğitsel Simülasyon Tasarımcısı ve İnteraktif Web Geliştiric
 
 PARAMETRELER:
 - Sınıf Düzeyi: ${grade}
-- Ders / Konu: ${subject}
-- Alt Başlık / Kazanım: ${subtopic}
-- Simülasyon/Atölye Türü: ${simulationType}
+- Ders: ${subject}
+- Konu / Alt Başlık: ${subtopic}
+- Atölye Konsepti / Senaryo Talimatı: ${conceptInstruction}
 - Ekstra İstekler: ${details}
 
 ZORUNLU TASARIM VE SİMÜLASYON STANDARTLARI:
 
 1. ASLA TEST VEYA 4 ŞIKLI SORU OLMASIN:
-   - Bu araç bir çoktan seçmeli sınav değildir. Öğrencinin ekrandaki görsel nesnelere (kek dilimleri, tahta parçaları, arsa çitleri, koli kutuları vb.) tıklayarak, keserek, yerleştirerek veya eşleştirerek fiziksel deneyim kazandığı **aktif bir simülasyon** olmalıdır.
-   - Kek dükkânı örneğinde olduğu gibi; solda hammadde/nesne, sağda müşteri/hedef alanı ve kullanıcı tıklayarak hedefi yerine getirmelidir.
+   - Bu araç çoktan seçmeli bir sınav değildir. Öğrencinin ekrandaki görsel nesnelere (kek dilimleri, tahta parçaları, arsa çitleri, koli kutuları vb.) tıklayarak, keserek, yerleştirerek veya sürükleyerek fiziksel deneyim kazandığı **aktif bir simülasyon** olmalıdır.
+   - Tıpkı kek dükkânı örneğinde olduğu gibi; solda hammadde/nesne alanı, sağda müşteri/hedef alanı olmalı ve kullanıcı tıklayarak hedefi yerine getirmelidir.
 
-2. ARAYÜZ VE 2 SEKMELİ YAPI:
-   - **Üst HUD:** Skor (🏆 Puan) ve Hak (❤️ Haklar). Başlat / Durdur butonları (Durdurulduğunda asla skor/hak sıfırlanmaz).
-   - **Sekme 1 (Atölye / Simülasyon Alanı):** Canlı interaktif alan. Müşteri istekleri veya görevler belirir, kullanıcı görsel olarak çözer.
-   - **Sekme 2 (Pratik Bilgiler & Formüller):** Konunun temel kurallarının net ve pürüzsüz anlatıldığı rehber kartları.
-   - Asla ham LaTeX ($...$) kodu kullanılmayacak; matematiksel ifadeler düz ve şık HTML simgeleriyle (√, a², 1/2 vb.) yazılacak.
+2. KONTROL VE HUD STANDARTLARI:
+   - Üst HUD: Skor (🏆 Puan) ve Hak (❤️ Haklar).
+   - "▶️ Başlat" ve "⏸️ Durdur" butonları olacak. Durdurulduğunda overlay perde açılacak ancak **skor ve hak bilgileri kesinlikle sıfırlanmayacak**, kaldığı yerden devam edecektir.
 
-3. TEKNİK GEREKSİNİMLER:
+3. İKİ SEKMELİ YAPI:
+   - **Sekme 1 (Atölye / Tezgâh Alanı):** Canlı interaktif simülasyon alanı.
+   - **Sekme 2 (Pratik Bilgiler & Taktikler):** Konunun kurallarının ve püf noktalarının anlatıldığı rehber kartları.
+   - Arayüzde veya bilgi kartlarında **asla ham LaTeX ($...$) kodu kullanılmayacak**; matematiksel ifadeler şık ve pürüzsüz HTML simgeleriyle (√, a², 1/2 vb.) gösterilecektir.
+
+4. TEKNİK GEREKSİNİMLER:
    - Tek bir dosyada birleşmiş pürüzsüz HTML, CSS ve JavaScript. Harici kütüphane istemeyecek.
    - Görseller SVG veya temiz CSS şekilleriyle desteklenecek.
 
-4. ÇIKTI FORMATI:
+5. ÇIKTI FORMATI:
    - Yalnızca çalışan eksiksiz HAM HTML KODU döndür. Markdown (\`\`\`html vb.) kesinlikle kullanma.
 `;
 
@@ -197,7 +224,7 @@ ZORUNLU TASARIM VE SİMÜLASYON STANDARTLARI:
                 doc.write(lastGeneratedCode);
                 doc.close();
 
-                showStatus("🎉 İnteraktif simülasyon başarıyla üretildi!", false);
+                showStatus("🎉 Somut atölye simülasyonu başarıyla üretildi!", false);
 
             } catch (err) {
                 console.error(err);
@@ -207,17 +234,17 @@ ZORUNLU TASARIM VE SİMÜLASYON STANDARTLARI:
 
         function downloadHTML() {
             if (!lastGeneratedCode) {
-                alert("Önce bir simülasyon üretmelisiniz.");
+                alert("Önce bir atölye üretmelisiniz.");
                 return;
             }
             
-            const subjectInput = document.getElementById('subject').value || "simulasyon";
-            const safeSubjectName = subjectInput.replace(/[^a-z0-9ğüşıöçĞÜŞİÖÇ]/gi, '_').toLowerCase();
+            const subtopicInput = document.getElementById('subtopic').value || "atolye";
+            const safeName = subtopicInput.replace(/[^a-z0-9ğüşıöçĞÜŞİÖÇ]/gi, '_').toLowerCase();
             
             const blob = new Blob([lastGeneratedCode], { type: 'text/html' });
             const a = document.createElement('a');
             a.href = URL.createObjectURL(blob);
-            a.download = `${safeSubjectName}_simulasyon.html`;
+            a.download = `${safeName}_atolye.html`;
             a.click();
         }
 
