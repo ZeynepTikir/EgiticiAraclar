@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Eğitici Akıllı Görsel Araç Üreteci</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 20px; background: #f4f6f9; }
+        .container { display: flex; gap: 20px; min-height: 85vh; }
+        .form-panel { flex: 1; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .preview-panel { flex: 2; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); display: flex; flex-direction: column; }
+        label { font-weight: bold; margin-top: 10px; display: block; }
+        input, select, textarea, button { width: 100%; padding: 10px; margin-top: 5px; box-sizing: border-box; }
+        button { background: #0284c7; color: white; font-weight: bold; border: none; border-radius: 4px; cursor: pointer; margin-top: 15px; }
+        button:hover { background: #0369a1; }
+        iframe { width: 100%; height: 100%; border: none; flex: 1; border-radius: 4px; background: #fff; }
+        #previewContainer { width: 100%; flex: 1; border: 1px solid #ccc; margin-top: 10px; border-radius: 4px; overflow: hidden; display: flex; }
+        #status { margin-top: 15px; padding: 12px; border-radius: 6px; font-weight: bold; display: none; text-align: center; }
+    </style>
+</head>
+<body>
+
+    <h2>🛠️ Eğitici Akıllı Görsel Araç Üreteci (Laboratuvar Konsepti)</h2>
+
+    <div class="container">
+        <!-- SOL PANEL -->
+        <div class="form-panel">
+            <label for="apiKey">Gemini API Key:</label>
+            <input type="password" id="apiKey" placeholder="AIzaSy...">
+
+            <label for="modelSelect">Model:</label>
+            <select id="modelSelect">
+                <option value="gemini-3.6-flash" selected>gemini-3.6-flash</option>
+            </select>
+
+            <label for="grade">Sınıf Düzeyi:</label>
+            <select id="grade">
+                <option value="5. Sınıf">5. Sınıf</option>
+                <option value="6. Sınıf">6. Sınıf</option>
+                <option value="7. Sınıf">7. Sınıf</option>
+                <option value="8. Sınıf" selected>8. Sınıf</option>
+            </select>
+
+            <label for="subject">Ders / Konu:</label>
+            <input type="text" id="subject" placeholder="Örn: Fen Bilgisi - Hücre / İngilizce - Simple Past Tense">
+
+            <label for="details">Özel İstekler:</label>
+            <textarea id="details" rows="3" placeholder="Örn: Taban ve üssü değiştirilebilen interaktif görsel kart, üslü nicelik karşılaştırma sekmesi."></textarea>
+
+            <button id="btnGenerate">✨ Konsept ile Uyumlu Araç Üret</button>
+            <button id="btnDownload" style="background:#28a745; margin-top: 10px;">💾 HTML Olarak İndir</button>
+            <div id="status"></div>
+        </div>
+
+        <!-- SAĞ PANEL -->
+        <div class="preview-panel">
+            <h3>📱 Canlı Önizleme</h3>
+            <div id="previewContainer">
+                <iframe id="previewFrame"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let lastGeneratedCode = "";
+
+        function showStatus(msg, isError) {
+            const statusDiv = document.getElementById('status');
+            statusDiv.style.display = 'block';
+            statusDiv.style.background = isError ? '#f8d7da' : '#d4edda';
+            statusDiv.style.color = isError ? '#721c24' : '#155724';
+            statusDiv.innerText = msg;
+        }
+
+        async function generateTool() {
+            const apiKey = document.getElementById('apiKey').value.trim();
+            const modelName = document.getElementById('modelSelect').value;
+            const grade = document.getElementById('grade').value;
+            const subject = document.getElementById('subject').value;
+            const details = document.getElementById('details').value;
+            const previewFrame = document.getElementById('previewFrame');
+
+            if (!apiKey) {
+                alert("Lütfen geçerli bir Gemini API Key girin!");
+                return;
+            }
+
+            // 1. Sol panelde uyarıyı göster
+            showStatus("⏳ Örnek konsept formatına uygun araç kodlanıyor...", false);
+            
+            // 2. Önizleme iframe'ine yükleniyor mesajını bas
+            const doc = previewFrame.contentDocument || previewFrame.contentWindow.document;
+            doc.open();
+            doc.write("<div style='font-family:sans-serif; text-align:center; padding-top:50px; color:#64748b;'><h3>⏳ Yapay zeka materyali standart formata göre kodluyor...</h3><p>Lütfen bekleyin...</p></div>");
+            doc.close();
+
+            const promptText = `
+Sen uzman bir Eğitsel Oyun Tasarımcısı ve İnteraktif Web Geliştiricisisin. Sana verilen şablon mimarisini ve modern UI tasarım dilini koruyarak, belirtilen ders ve konuya uygun **tam anlamıyla oynanabilir bir Eğitsel Mini Oyun** üreteceksin.
+
+PARAMETRELER:
+- Sınıf Düzeyi: ${grade}
+- Ders / Konu: ${subject}
+- Özel Detaylar/İstekler: ${details}
+
+Oyun Tasarımı ve Kodlama Mimarisi Kuralları (Birebir Uygulanacak):
+
+1. GÖRSEL TEMA VE STİLLER (UI Mimarisi):
+   Şu CSS değişkenlerini ve modern kart yapısını kullan:
+   :root {
+     --primary: #0284c7;
+     --primary-hover: #0369a1;
+     --bg: #f8fafc;
+     --card: #ffffff;
+     --text: #0f172a;
+     --accent-green: #16a34a;
+     --accent-red: #dc2626;
+     --accent-purple: #9333ea;
+     --accent-amber: #d97706;
+   }
+   Arayüz son derece şık, renkli, akıcı ve çocuk/öğrenci dostu olmalıdır (.container, .game-card, .hud-panel, .option-btn).
+
+2. OYUN DÖNGÜSÜ VE HUD (Arayüz Göstergeleri):
+   Oyun ekranının üst kısmında her zaman şu göstergeler (HUD) yer almalı:
+   - **Skor Tablosu (Puan):** Doğru hamlelerde artı puan artışı.
+   - **Can / Hak Sistemi (Örn: 3 Kalp ❤️):** Yanlış hamlelerde azalma.
+   - **Zamanlayıcı (Timer) veya Seviye İlerleme Çubuğu:** Oyuna rekabet ve heyecan katacak dinamik bir sayaç.
+
+3. SEKMELİ OYUN YAPISI (Tabs):
+   - **Sekme 1 (Oyun Alanı):** Konunun mekaniğine uygun **ana mini oyun** (Örn: Sürükle-bırak bulmaca, zaman karşı yarışı, hedef yakalama, doğru kutuyu seçme veya kart eşleştirme). Asla düz bir form veya sıkıcı test ekranı olmasın; gerçek bir oyun hissiyatı versin.
+   - **Sekme 2 (Nasıl Oynanır / Taktikler):** Oyunun kurallarının ve konunun pratik ipuçlarının özeti.
+   - **Sekme 3 (Meydan Okuma / Bölüm Sonu Canavarı):** Kazanımları ölçen, doğru cevaplarda kutlama efektleri (renkli uyarılar veya animasyonlar) çıkaran 3 veya 5 soruluk mini meydan okuma testi.
+
+4. PEDAGOJİK VE OYUNSEL UYUM:
+   - İçerik girilen dersin kazanımına tam oturmalıdır (Örn: Fen Bilimleri için organ yerleştirme veya kuvvet/hareket simülasyonu yarışı; Matematik için hızlı işlem/eşleştirme bulmacası; İngilizce için kelime avı veya balon patlatma mantığı).
+   - Kullanıcı kazandığında veya kaybettiğinde ekranda tebrik/tekrar deneme ekranları pop-up (modal) olarak açılsın.
+
+5. ÇIKTI FORMATI:
+   - Yalnızca çalışan, tek bir dosyada birleşmiş, HTML, CSS ve JS kodlarını içeren eksiksiz HAM HTML KODU döndür.
+   - Kodun başında veya sonunda Markdown (\`\`\`html vb.) kesinlikle kullanma.
+`;
+
+
+            try {
+                const endpoint = "https://generativelanguage.googleapis.com/v1beta/models/" + modelName + ":generateContent?key=" + apiKey;
+                
+                const response = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{
+                            role: "user",
+                            parts: [{ text: promptText }]
+                        }]
+                    })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error ? data.error.message : "API Hatası: " + response.status);
+                }
+
+                if (!data.candidates || !data.candidates[0] || !data.candidates[0].content) {
+                    throw new Error("Model geçerli yanıt üretmedi.");
+                }
+
+                let rawCode = data.candidates[0].content.parts[0].text;
+                rawCode = rawCode.replace(/^```html/gi, '').replace(/^```/gi, '').replace(/```$/gi, '').trim();
+
+                lastGeneratedCode = rawCode;
+
+                doc.open();
+                doc.write(lastGeneratedCode);
+                doc.close();
+
+                showStatus("🎉 Şablonla %100 uyumlu araç başarıyla üretildi!", false);
+
+            } catch (err) {
+                console.error(err);
+                showStatus("❌ Hata: " + err.message, true);
+            }
+        }
+
+        function downloadHTML() {
+            if (!lastGeneratedCode) {
+                alert("Önce bir araç üretmelisiniz.");
+                return;
+            }
+            
+            // Konu alanındaki metni güvenli dosya adına dönüştür
+            const subjectInput = document.getElementById('subject').value || "etkinlik";
+            const safeSubjectName = subjectInput.replace(/[^a-z0-9ğüşıöçĞÜŞİÖÇ]/gi, '_').toLowerCase();
+            
+            const blob = new Blob([lastGeneratedCode], { type: 'text/html' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = `${safeSubjectName}.html`;
+            a.click();
+        }
+
+        // Tıklama olaylarını bağla
+        document.getElementById('btnGenerate').addEventListener('click', generateTool);
+        document.getElementById('btnDownload').addEventListener('click', downloadHTML);
+    </script>
+</body>
+</html>
