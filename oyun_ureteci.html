@@ -119,7 +119,7 @@
             doc.close();
 
             const promptText = `
-Sen uzman bir Eğitsel Etkileşim ve Oyun Tasarımcısısın. Sana verilen tasarım standartlarını, renk paletini ve CSS mimarisini koruyarak, belirtilen ders ve konuya özel **interaktif bir eğitici mini etkinlik / oyun** üreteceksin.
+Sen uzman bir Eğitsel Etkileşim ve Oyun Tasarımcısısın. Sana verdiğim standart tasarım şablonunu, renk paletini ve CSS mimarisini BİREBİR KULLANARAK, belirtilen ders ve konuya özel **oynanabilir, kusursuz bir eğitici mini etkinlik / oyun** üreteceksin.
 
 PARAMETRELER:
 - Sınıf Düzeyi: ${grade}
@@ -136,18 +136,17 @@ ZORUNLU TASARIM VE KODLAMA STANDARTLARI (BİREBİR UYGULANACAK):
    - Kartlar border: 3px solid #e2e8f0; border-radius: 24px; ve yumuşak gölgeli olacak.
    - Renk paleti: --primary (#0284c7), --accent-green (#16a34a), --accent-red (#dc2626), --accent-purple (#9333ea), --accent-amber (#d97706).
 
-2. BAŞLAT / DURDUR VE HUD KONTROLÜ:
-   - Etkinlik alanı ilk açıldığında otomatik başlamayacak. Arayüzde **"▶️ Başlat"** ve **"⏸️ Durdur"** butonları bulunacak. Oyuncu "Başlat" demeden sayaç, süre veya dinamik hareketler çalışmayacak.
-   - Üst HUD panelinde Skor (🏆 Puan), Can (❤️ Haklar - konsept uygunsa) ve Zamanlayıcı/İlerleme Çubuğu yer alacak.
+2. KONTROL VE HUD MEKANİĞİ:
+   - Arayüzde net bir şekilde **"▶️ Başlat"** ve **"⏸️ Durdur"** butonları bulunacak. 
+   - **Kritik Kural:** "Durdur" butonuna basıldığında oyun askıya alınmalı ancak **skor ve can (hak) bilgileri asla sıfırlanmamalıdır**. Tekrar "Başlat/Devam Et" dendiği yerden devam etmelidir.
+   - Üst HUD panelinde Skor (🏆 Puan) ve Can (❤️ Haklar) yer alacak.
 
 3. İKİ SEKMELİ YAPI (Tabs):
-   - **Sekme 1 (🎮 Etkileşimli Oyun & Uygulama Alanı):** Sadece şıklı bir test/yarışma OLMAYACAK. Girilen konunun niteliğine tam oturan, esnek bir mekanik kullanılacak. 
-     *Örnek Mekanikler:* Sürükle-bırak eşleştirme, sıralama/kronoloji, hedef yakalama, boşluk doldurmalı interaktif kartlar, görsel üzerinde doğru noktayı tıklama veya terazi/sayı doğrusu dengesi.
-     *Geri Bildirimler:* Doğru hamlelerde seçilen karakterle (${concept}) uyumlu tebrik animasyonları ve konfeti/yazı efektleri (+Puan), yanlış hamlelerde uyarı efektleri yer alacak.
-   - **Sekme 2 (💡 Pratik Taktikler / Bilgi Kartları):** Konunun en pratik formüllerinin, püf noktalarının, kavram haritasının veya örnek çözümlerinin yer aldığı şık ve okunabilir rehber kartları.
+   - **Sekme 1 (Oyun / Etkileşim Alanı):** Sadece şıklı bir test/yarışma olmayacak. Girilen konunun niteliğine tam oturan, esnek bir mekanik (sürükle-bırak eşleştirme, fabrika/makine simülasyonu, hedef yakalama veya kart seçme) içerecek. Doğru hamlelerde karakter/konsept animasyonları ve puan artışı, yanlışlarda can azalması yaşanacak.
+   - **Sekme 2 (Pratik Bilgiler / Taktikler):** Konunun formüllerinin ve ipuçlarının yer aldığı şık kartlar. **Önemli:** Matematiksel ifadeler veya formüller tarayıcının doğrudan okuyabileceği şekilde (örn: √(a² · b) = a√b veya doğrudan simgelerle) yazılacak, asla ham LaTeX ($...$) kodları ekranda düz metin olarak bırakılmayacak.
 
 4. ETKİLEŞİM VE POP-UP MODAL:
-   - Etkinlik başarıyla tamamlandığında veya haklar tükendiğinde şık bir pop-up Modal (Özet puan ve "Tekrar Oyna / Yeniden Başlat" butonuyla) açılacak.
+   - Haklar bittiğinde şık bir pop-up Modal (Özet puan ve "Tekrar Oyna" butonuyla) açılacak ve reset butonunda skor/can sıfırlanacak.
 
 5. ÇIKTI FORMATI:
    - Yalnızca çalışan, tek bir dosyada birleşmiş, harici kütüphane istemeyen ham HTML, CSS ve JS kodlarını içeren eksiksiz HAM HTML KODU döndür.
