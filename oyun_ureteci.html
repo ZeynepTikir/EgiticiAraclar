@@ -2,24 +2,28 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>Eğitici Akıllı Görsel Araç Üreteci</title>
+    <title>Eğitici Akıllı Oyun Üreteci</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 20px; background: #f4f6f9; }
+        :root { --game: #d97706; --game-hover: #b45309; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 20px; background: #f8fafc; }
         .container { display: flex; gap: 20px; min-height: 85vh; }
-        .form-panel { flex: 1; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .form-panel { flex: 1; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); overflow-y: auto; max-height: 85vh; }
         .preview-panel { flex: 2; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); display: flex; flex-direction: column; }
-        label { font-weight: bold; margin-top: 10px; display: block; }
-        input, select, textarea, button { width: 100%; padding: 10px; margin-top: 5px; box-sizing: border-box; }
-        button { background: #0284c7; color: white; font-weight: bold; border: none; border-radius: 4px; cursor: pointer; margin-top: 15px; }
-        button:hover { background: #0369a1; }
+        label { font-weight: bold; margin-top: 12px; display: block; color: #0f172a; font-size: 0.95rem; }
+        input, select, textarea, button { width: 100%; padding: 10px; margin-top: 5px; box-sizing: border-box; border: 1px solid #cbd5e1; border-radius: 6px; }
+        button { background: var(--game); color: white; font-weight: bold; border: none; cursor: pointer; margin-top: 15px; }
+        button:hover { background: var(--game-hover); }
         iframe { width: 100%; height: 100%; border: none; flex: 1; border-radius: 4px; background: #fff; }
         #previewContainer { width: 100%; flex: 1; border: 1px solid #ccc; margin-top: 10px; border-radius: 4px; overflow: hidden; display: flex; }
         #status { margin-top: 15px; padding: 12px; border-radius: 6px; font-weight: bold; display: none; text-align: center; }
+        .back-link { display: inline-block; margin-bottom: 15px; color: #64748b; text-decoration: none; font-weight: bold; }
+        .back-link:hover { color: var(--game); }
     </style>
 </head>
 <body>
 
-    <h2>🛠️ Eğitici Akıllı Görsel Araç Üreteci (Laboratuvar Konsepti)</h2>
+    <a href="index.html" class="back-link">← Portala Dön</a>
+    <h2>🎮 Eğitici Akıllı Oyun Üreteci (Standart Mimari)</h2>
 
     <div class="container">
         <!-- SOL PANEL -->
@@ -41,19 +45,31 @@
             </select>
 
             <label for="subject">Ders / Konu:</label>
-            <input type="text" id="subject" placeholder="Örn: Fen Bilgisi - Hücre / İngilizce - Simple Past Tense">
+            <input type="text" id="subject" placeholder="Örn: Matematik - Kareköklü İfadeler">
 
-            <label for="details">Özel İstekler:</label>
-            <textarea id="details" rows="3" placeholder="Örn: Taban ve üssü değiştirilebilen interaktif görsel kart, üslü nicelik karşılaştırma sekmesi."></textarea>
+            <label for="subtopic">Alt Başlık / Kazanım:</label>
+            <input type="text" id="subtopic" placeholder="Örn: Karekökün hangi iki tam sayı arasında olduğunu bulma">
 
-            <button id="btnGenerate">✨ Konsept ile Uyumlu Araç Üret</button>
-            <button id="btnDownload" style="background:#28a745; margin-top: 10px;">💾 HTML Olarak İndir</button>
+            <label for="concept">Görsel / Karakter Konsepti:</label>
+            <select id="concept">
+                <option value="Robot (Teknolojik, animasyonlu göz/anten tepkileri)" selected>🤖 Robot (Teknolojik & Eğlenceli)</option>
+                <option value="Sevgi Dolu Balık (Su altı dünyası, yüzme animasyonları)">🐠 Sevgi Dolu Balık (Su Altı Teması)</option>
+                <option value="Mutlu Çiçek (Yaprak açma ve güneş enerjisi teması)">🌻 Mutlu Çiçek (Doğa & Büyüme Teması)</option>
+                <option value="Uzay Roketi (Galaksi ve yıldızlar arasında macera)">🚀 Uzay Roketi (Galaksi Teması)</option>
+                <option value="Sevimli Kedi (Mırıldanan ve neşeli pati teması)">🐱 Sevimli Kedi (Hayvan Dostu Tema)</option>
+            </select>
+
+            <label for="details">Ekstra Özel İstekler (Opsiyonel):</label>
+            <textarea id="details" rows="2" placeholder="Örn: Sayı doğrusu görseli de eşlik etsin."></textarea>
+
+            <button id="btnGenerate">🚀 Standart Mimaride Mini Oyun Üret</button>
+            <button id="btnDownload" style="background:#059669; margin-top: 10px;">💾 Oyunu HTML Olarak İndir</button>
             <div id="status"></div>
         </div>
 
         <!-- SAĞ PANEL -->
         <div class="preview-panel">
-            <h3>📱 Canlı Önizleme</h3>
+            <h3>📱 Canlı Oyun Önizlemesi</h3>
             <div id="previewContainer">
                 <iframe id="previewFrame"></iframe>
             </div>
@@ -76,6 +92,8 @@
             const modelName = document.getElementById('modelSelect').value;
             const grade = document.getElementById('grade').value;
             const subject = document.getElementById('subject').value;
+            const subtopic = document.getElementById('subtopic').value;
+            const concept = document.getElementById('concept').value;
             const details = document.getElementById('details').value;
             const previewFrame = document.getElementById('previewFrame');
 
@@ -84,59 +102,52 @@
                 return;
             }
 
-            // 1. Sol panelde uyarıyı göster
-            showStatus("⏳ Örnek konsept formatına uygun araç kodlanıyor...", false);
+            if (!subject || !subtopic) {
+                alert("Lütfen Ders/Konu ve Alt Başlık alanlarını doldurun!");
+                return;
+            }
+
+            showStatus("⏳ Seçtiğiniz standart şablona göre oyun kodlanıyor...", false);
             
-            // 2. Önizleme iframe'ine yükleniyor mesajını bas
             const doc = previewFrame.contentDocument || previewFrame.contentWindow.document;
             doc.open();
-            doc.write("<div style='font-family:sans-serif; text-align:center; padding-top:50px; color:#64748b;'><h3>⏳ Yapay zeka materyali standart formata göre kodluyor...</h3><p>Lütfen bekleyin...</p></div>");
+            doc.write("<div style='font-family:sans-serif; text-align:center; padding-top:50px; color:#64748b;'><h3>🎮 Yapay zeka standart mimariyi kuruyor...</h3><p>Lütfen bekleyin...</p></div>");
             doc.close();
 
             const promptText = `
-Sen uzman bir Eğitsel Oyun Tasarımcısı ve İnteraktif Web Geliştiricisisin. Sana verilen şablon mimarisini ve modern UI tasarım dilini koruyarak, belirtilen ders ve konuya uygun **tam anlamıyla oynanabilir ve kurallara tam uyan bir Eğitsel Mini Oyun** üreteceksin.
+Sen uzman bir Eğitsel Oyun Tasarımcısı ve İnteraktif Web Geliştiricisisin. Sana verdiğim ve çok beğendiğimiz **"Kök Avcısı" oyununun birebir tasarım standartlarını, renk paletini, CSS mimarisini ve 3 sekmeli yapısını** kullanarak, yeni ders ve konuya uygun kusursuz bir mini oyun üreteceksin.
 
 PARAMETRELER:
 - Sınıf Düzeyi: ${grade}
 - Ders / Konu: ${subject}
-- Özel Detaylar/İstekler: ${details}
+- Alt Başlık / Kazanım: ${subtopic}
+- Görsel / Karakter Konsepti: ${concept}
+- Ekstra İstekler: ${details}
 
-Oyun Tasarımı ve Kodlama Mimarisi Kuralları (Birebir Uygulanacak):
+ZORUNLU TASARIM VE KODLAMA STANDARTLARI (BİREBİR UYGULANACAK):
 
-1. GÖRSEL TEMA VE STİLLER (UI Mimarisi):
-   Şu CSS değişkenlerini ve modern kart yapısını kullan:
-   :root {
-     --primary: #0284c7;
-     --primary-hover: #0369a1;
-     --bg: #f8fafc;
-     --card: #ffffff;
-     --text: #0f172a;
-     --accent-green: #16a34a;
-     --accent-red: #dc2626;
-     --accent-purple: #9333ea;
-     --accent-amber: #d97706;
-   }
-   Arayüz son derece şık, renkli, akıcı ve çocuk/öğrenci dostu olmalıdır (.container, .game-card, .hud-panel, .option-btn).
+1. TASARIM DİLİ VE CSS MİMARİSİ:
+   - Google Fonts ('Fredoka' ve 'Nunito') kullanılacak.
+   - Arka plan nokta desenli hafif dokulu grid (#f8fafc).
+   - Kartlar border: 3px solid #e2e8f0; border-radius: 24px; ve yumuşak gölgeli olacak.
+   - Renk paleti: --primary (#0284c7), --accent-green (#16a34a), --accent-red (#dc2626), --accent-purple (#9333ea), --accent-amber (#d97706).
 
-2. BAŞLAT / DURDUR KONTROLÜ VE OYUN DÖNGÜSÜ (HUD):
-   - **Başlat / Durdur Butonları (Çok Önemli):** Oyun ekranı (Sekme 1) ilk açıldığında ASLA otomatik olarak akmaya veya soruları getirmeye başlamasın. Arayüzde net bir şekilde **"▶️ Oyunu Başlat"** ve **"⏸️ Durdur / Beklet"** butonları bulunmalı. Oyuncu "Başlat" butonuna basana kadar süre, sayaç, puanlama ve oyun döngüsü tamamen durdurulmuş (paused) konumda olmalıdır. Durdur butonuna basıldığında oyun askıya alınmalı, tekrar başlat butonuna basıldığında kaldığı yerden devam etmelidir.
-   - **HUD Göstergeleri:** Oyun ekranının üst kısmında Skor Tablosu (Puan), Can / Hak Sistemi (Örn: 3 Kalp ❤️) ve Zamanlayıcı/İlerleme çubuğu yer almalı.
+2. BAŞLAT / DURDUR VE HUD KONTROLÜ (Çok Önemli):
+   - Oyun ekranı ilk açıldığında otomatik başlamayacak. Arayüzde **"▶️ Başlat"** ve **"⏸️ Durdur"** butonları bulunacak. Oyuncu "Başlat" demeden sayaç, süre ve oyun mekaniği çalışmayacak.
+   - Üst HUD panelinde Skor (🏆 Puan), Can (❤️ Can Hakları) ve Soru sayacı yer alacak. Üzerinde renk değiştiren dinamik Zamanlayıcı Çubuğu (Timer Bar) bulunacak.
 
-3. SEKMELİ OYUN YAPISI (Tabs):
-   - **Sekme 1 (Oyun Alanı):** Başlat/Durdur butonlarıyla kontrol edilen, konunun mekaniğine uygun ana mini oyun (Sürükle-bırak bulmaca, zaman karşı yarışı, hedef yakalama, doğru kutuyu seçme veya kart eşleştirme). Asla düz bir form veya sıkıcı test ekranı olmasın; gerçek bir oyun hissiyatı versin.
-   - **Sekme 2 (Nasıl Oynanır / Taktikler):** Oyunun kurallarının ve konunun pratik ipuçlarının özeti.
-   - **Sekme 3 (5 Soruluk Test / Meydan Okuma):** Kesinlikle **eksiksiz 5 soruluk** detaylı bir test alanı olmalı. Asla tek bir soruyla geçiştirilemez. Doğru cevaplarda kutlama efektleri (renkli uyarılar veya animasyonlar) çıkaran, 5 sorunun tamamı bittiğinde toplam başarı özeti sunan bir meydan okuma testi olmalıdır.
+3. ÜÇ SEKMELİ YAPI (Tabs):
+   - **Sekme 1 (Hızlı Oyuncu / Oyun Alanı):** Seçilen konsept karakterine (${concept}) ve konuya uygun, durdur-başlat özellikli ana mini oyun. Doğru cevaplarda yeşil kutlama/zıplama animasyonları ve floating metinler (+100 puan), yanlış cevaplarda kırmızı titreme efekti ve can kaybı (-1 can) olacak.
+   - **Sekme 2 (Pratik Taktikler / Rehber):** Konunun en pratik formüllerinin, püf noktalarının ve örnek çözümlerin yer aldığı şık kartlar.
+   - **Sekme 3 (Bölüm Sonu Canavarı / Meydan Okuma):** Kesinlikle **tam 5 soruluk** canavar meydan okuması. Üstte dinamik Canavar Can Barı (HP Bar), ortada canavar avatarı ve soru kartı olacak. 5 sorunun tamamı bitince şampiyonluk modalı açılacak.
 
-4. PEDAGOJİK VE OYUNSEL UYUM:
-   - İçerik girilen dersin kazanımına tam oturmalıdır (Örn: Fen Bilimleri için organ yerleştirme veya kuvvet/hareket simülasyonu yarışı; Matematik için hızlı işlem/eşleştirme bulmacası; İngilizce için kelime avı veya balon patlatma mantığı).
-   - Kullanıcı kazandığında veya kaybettiğinde ekranda tebrik/tekrar deneme ekranları pop-up (modal) olarak açılsın.
+4. ETKİLEŞİM VE POP-UP MODAL:
+   - Canlar bittiğinde veya tüm oyun tamamlandığında şık bir pop-up Modal (Tekrar Oyna butonuyla) çıkacak.
 
 5. ÇIKTI FORMATI:
-   - Yalnızca çalışan, tek bir dosyada birleşmiş, HTML, CSS ve JS kodlarını içeren eksiksiz HAM HTML KODU döndür.
+   - Yalnızca çalışan, tek bir dosyada birleşmiş, harici kütüphane istemeyen ham HTML, CSS ve JS kodlarını içeren eksiksiz HAM HTML KODU döndür.
    - Kodun başında veya sonunda Markdown (\`\`\`html vb.) kesinlikle kullanma.
 `;
-
-
 
             try {
                 const endpoint = "https://generativelanguage.googleapis.com/v1beta/models/" + modelName + ":generateContent?key=" + apiKey;
@@ -171,7 +182,7 @@ Oyun Tasarımı ve Kodlama Mimarisi Kuralları (Birebir Uygulanacak):
                 doc.write(lastGeneratedCode);
                 doc.close();
 
-                showStatus("🎉 Şablonla %100 uyumlu araç başarıyla üretildi!", false);
+                showStatus("🎉 Standart mimariyle oyun başarıyla üretildi!", false);
 
             } catch (err) {
                 console.error(err);
@@ -181,22 +192,20 @@ Oyun Tasarımı ve Kodlama Mimarisi Kuralları (Birebir Uygulanacak):
 
         function downloadHTML() {
             if (!lastGeneratedCode) {
-                alert("Önce bir araç üretmelisiniz.");
+                alert("Önce bir oyun üretmelisiniz.");
                 return;
             }
             
-            // Konu alanındaki metni güvenli dosya adına dönüştür
-            const subjectInput = document.getElementById('subject').value || "etkinlik";
+            const subjectInput = document.getElementById('subject').value || "egitici_oyun";
             const safeSubjectName = subjectInput.replace(/[^a-z0-9ğüşıöçĞÜŞİÖÇ]/gi, '_').toLowerCase();
             
             const blob = new Blob([lastGeneratedCode], { type: 'text/html' });
             const a = document.createElement('a');
             a.href = URL.createObjectURL(blob);
-            a.download = `${safeSubjectName}.html`;
+            a.download = `${safeSubjectName}_oyun.html`;
             a.click();
         }
 
-        // Tıklama olaylarını bağla
         document.getElementById('btnGenerate').addEventListener('click', generateTool);
         document.getElementById('btnDownload').addEventListener('click', downloadHTML);
     </script>
