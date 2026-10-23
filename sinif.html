@@ -4,30 +4,98 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Eğitici Araçlar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #0284c7; --bg: #f8fafc; --card: #ffffff; --text: #0f172a; }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
-        body { background-color: var(--bg); color: var(--text); padding: 30px 20px; max-width: 800px; margin: 0 auto; }
-        h1 { color: var(--primary); margin-bottom: 20px; text-align: center; }
-        .back-btn { display: inline-block; margin-bottom: 20px; color: var(--primary); text-decoration: none; font-weight: 600; }
-        .back-btn:hover { text-decoration: underline; }
-        
-        .unit-box { background: var(--card); border-radius: 16px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
-        .unit-box h3 { margin-bottom: 15px; color: #334155; border-bottom: 2px solid #f1f5f9; padding-bottom: 8px; }
-        .tool-list { display: flex; flex-direction: column; gap: 10px; }
-        .tool-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; text-decoration: none; color: var(--text); font-weight: 500; transition: all 0.2s; }
-        .tool-item:hover { background: #f0f9ff; border-color: var(--primary); color: var(--primary); }
+        :root {
+            --primary: #2563eb;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+        }
 
-        .sinif-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-top: 20px; }
-        .sinif-card { background: var(--card); border: 2px solid #bae6fd; padding: 25px 15px; border-radius: 12px; text-align: center; text-decoration: none; color: var(--primary); font-weight: bold; font-size: 1.2rem; transition: all 0.2s; display: flex; flex-direction: column; align-items: center; gap: 10px; }
-        .sinif-card:hover { background: var(--primary); color: #fff; transform: translateY(-3px); }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { background-color: var(--bg); color: var(--text-main); padding: 40px 20px; max-width: 900px; margin: 0 auto; }
+        
+        .nav-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
+        .back-btn { 
+            display: inline-flex; 
+            align-items: center; 
+            gap: 8px; 
+            color: var(--primary); 
+            text-decoration: none; 
+            font-weight: 600; 
+            padding: 8px 14px; 
+            border-radius: 8px; 
+            background: #eff6ff;
+            transition: all 0.2s;
+        }
+        .back-btn:hover { background: #dbeafe; }
+
+        h1 { font-size: 1.8rem; margin-bottom: 24px; color: var(--text-main); text-align: center; }
+
+        .sinif-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-top: 20px; }
+        .sinif-card { 
+            background: var(--card-bg); 
+            border: 1px solid var(--border); 
+            padding: 30px 20px; 
+            border-radius: 16px; 
+            text-align: center; 
+            text-decoration: none; 
+            color: var(--text-main); 
+            font-weight: 700; 
+            font-size: 1.2rem; 
+            transition: all 0.2s; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            gap: 12px; 
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+        .sinif-card:hover { border-color: var(--primary); color: var(--primary); transform: translateY(-3px); }
+
+        .unit-box { background: var(--card-bg); border-radius: 16px; padding: 24px; margin-bottom: 20px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); border: 1px solid var(--border); }
+        .unit-box h3 { font-size: 1.15rem; margin-bottom: 16px; color: var(--text-main); border-bottom: 1px solid var(--border); padding-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+        
+        .tool-list { display: flex; flex-direction: column; gap: 10px; }
+        .tool-item { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 14px 18px; 
+            background: #f8fafc; 
+            border: 1px solid var(--border); 
+            border-radius: 12px; 
+            text-decoration: none; 
+            color: var(--text-main); 
+            font-weight: 500; 
+            transition: all 0.2s; 
+        }
+        .tool-item:hover { background: #eff6ff; border-color: var(--primary); color: var(--primary); }
+
+        /* Rozetler: Lab, Atölye, Afiş */
+        .badge {
+            font-size: 0.75rem;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-weight: 600;
+            margin-right: 8px;
+            text-transform: uppercase;
+        }
+        .badge-lab { background: #dcfce7; color: #15803d; }
+        .badge-atolye { background: #dbeafe; color: #1d4ed8; }
+        .badge-afis { background: #f3e8ff; color: #7e22ce; }
+        .badge-varsayilan { background: #e2e8f0; color: #475569; }
     </style>
 </head>
 <body>
 
-    <a href="index.html" class="back-btn" id="geriBtn">← Ana Sayfaya Dön</a>
+    <div class="nav-bar">
+        <a href="index.html" class="back-btn" id="geriBtn">← Ana Sayfa</a>
+    </div>
+
     <h1 id="baslik">Yükleniyor...</h1>
-    
     <div id="icerikContainer"></div>
 
     <script>
@@ -35,37 +103,40 @@
         const dersKey = urlParams.get('ders') || 'mat';
         const sinifKey = urlParams.get('sinif');
 
-        // Dinamik Script Yükleyici
         const script = document.createElement('script');
         script.src = dersKey === 'fen' ? 'fen_data.js' : 'mat_data.js';
 
-        // onload callback script.src atanmadan ÖNCE tanımlanmalı
-        script.onload = function() {
-            yukleIcerik();
-        };
-
+        script.onload = function() { yukleIcerik(); };
         script.onerror = function() {
-            document.getElementById('baslik').innerText = dersKey === 'fen' ? "Fen Bilimleri Henüz Hazır Değil" : "Veri Dosyası Bulunamadı";
-            document.getElementById('icerikContainer').innerHTML = "<p style='text-align:center; color:#64748b;'>İlgili data.js dosyası sunucuda bulunamadı.</p>";
+            document.getElementById('baslik').innerText = dersKey === 'fen' ? "Fen Bilimleri Hazır Değil" : "Veri Dosyası Bulunamadı";
+            document.getElementById('icerikContainer').innerHTML = "<p style='text-align:center; color:#64748b;'>Sunucuda ilgili veri dosyası (data.js) bulunamadı.</p>";
         };
 
         document.head.appendChild(script);
 
+        function getBadgeHtml(tur) {
+            if (!tur) return `<span class="badge badge-varsayilan">İçerik</span>`;
+            switch(tur.toLowerCase()) {
+                case 'lab': return `<span class="badge badge-lab">🧪 Lab</span>`;
+                case 'atolye': return `<span class="badge badge-atolye">🛠️ Atölye</span>`;
+                case 'afis': return `<span class="badge badge-afis">🖼️ Afiş</span>`;
+                default: return `<span class="badge badge-varsayilan">🧩 ${tur}</span>`;
+            }
+        }
+
         function yukleIcerik() {
-            // mat_data.js içindeki matVerileri veya fen_data.js içindeki fenVerileri
             const veriler = (typeof matVerileri !== 'undefined') ? matVerileri : ((typeof fenVerileri !== 'undefined') ? fenVerileri : null);
-            
             const container = document.getElementById('icerikContainer');
             const baslikEl = document.getElementById('baslik');
             const geriBtn = document.getElementById('geriBtn');
 
             if (!veriler) {
                 baslikEl.innerText = "Veri Bulunamadı";
-                container.innerHTML = "<p style='text-align:center; color:#64748b;'>Veri değişkeni okunamadı.</p>";
+                container.innerHTML = "<p style='text-align:center; color:#64748b;'>Veri okunamadı.</p>";
                 return;
             }
 
-            // DURUM 1: Sınıf seçilmemişse -> 5, 6, 7, 8 Sınıf Kartlarını Göster
+            // Sınıf Seçimi
             if (!sinifKey) {
                 const dersAdi = dersKey === 'fen' ? 'Fen Bilimleri' : 'Matematik';
                 baslikEl.innerText = `${dersAdi} - Sınıf Seçiniz`;
@@ -74,7 +145,7 @@
                 for (const [key, sData] of Object.entries(veriler)) {
                     html += `
                         <a href="sinif.html?ders=${dersKey}&sinif=${key}" class="sinif-card">
-                            <span style="font-size: 2rem;">📚</span>
+                            <span style="font-size: 2.5rem;">📚</span>
                             <span>${sData.baslik}</span>
                         </a>
                     `;
@@ -82,7 +153,7 @@
                 html += '</div>';
                 container.innerHTML = html;
             } 
-            // DURUM 2: Sınıf seçilmişse -> Üniteleri ve Etkinlikleri Göster
+            // Ünite & Etkinlik Listesi
             else if (veriler[sinifKey]) {
                 const sinifData = veriler[sinifKey];
                 document.title = sinifData.baslik;
@@ -96,12 +167,15 @@
                     if (unite.araclar && unite.araclar.length > 0) {
                         toolsHtml = unite.araclar.map(arac => `
                             <a href="${arac.dosya}" class="tool-item">
-                                <span>🧩 ${arac.ad}</span>
-                                <span>▶ Başlat</span>
+                                <div>
+                                    ${getBadgeHtml(arac.tur)}
+                                    <span>${arac.ad}</span>
+                                </div>
+                                <span style="font-size:0.9rem; font-weight:600;">Aç →</span>
                             </a>
                         `).join('');
                     } else {
-                        toolsHtml = `<p style="color: #94a3b8; font-size: 0.9rem; padding: 5px;">Bu ünitede henüz etkinlik bulunmuyor.</p>`;
+                        toolsHtml = `<p style="color: #94a3b8; font-size: 0.9rem; padding: 5px;">Bu ünitede henüz içerik bulunmuyor.</p>`;
                     }
 
                     contentHtml += `
@@ -113,8 +187,7 @@
                 });
                 container.innerHTML = contentHtml;
             } else {
-                baslikEl.innerText = "Sınıf Bulunamadı!";
-                container.innerHTML = "<p style='text-align:center; color:#64748b;'>Seçilen sınıfa ait veri bulunamadı.</p>";
+                baslikEl.innerText = "Sınıf Bulunamadı";
             }
         }
     </script>
