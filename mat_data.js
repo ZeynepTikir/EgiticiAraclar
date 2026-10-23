@@ -5,13 +5,13 @@ const matVerileri = {
       {
         uniteAdi: "1. Geometrik Şekiller",
         araclar: [
-          { ad: "Temel Geometri", dosya: "5_sinif/geometrik_sekiller/temel_geometri.html" }
+          { ad: "Temel Geometri", dosya: "matematik/5_sinif/geometrik_sekiller/temel_geometri_lab.html", tur: "lab" }
         ]
       },
       {
         uniteAdi: "2. Sayılar ve Nicelikler 1",
         araclar: [
-          { ad: "Çok Basamaklı Sayılar", dosya: "5_sinif/sayilar_nicelikler_1/cok_basamakli_sayilar.html" }
+          { ad: "Çok Basamaklı Sayılar", dosya: "matematik/5_sinif/sayilar_nicelikler_1/cok_basamakli_sayilar_lab.html", tur: "lab" }
         ]
       }
     ]
@@ -22,7 +22,7 @@ const matVerileri = {
       {
         uniteAdi: "Deneme",
         araclar: [
-          { ad: "Örnek Araç 1", dosya: "6_sinif/dogal_sayilar/arac1.html" }
+          { ad: "Örnek Araç 1", dosya: "matematik/6_sinif/dogal_sayilar/arac1_lab.html", tur: "lab" }
         ]
       }
     ]
@@ -33,7 +33,7 @@ const matVerileri = {
       {
         uniteAdi: "Deneme",
         araclar: [
-          { ad: "Örnek Araç 1", dosya: "7_sinif/dogal_sayilar/arac1.html" }
+          { ad: "Örnek Araç 1", dosya: "matematik/7_sinif/dogal_sayilar/arac1_lab.html", tur: "lab" }
         ]
       }
     ]
@@ -44,62 +44,62 @@ const matVerileri = {
       {
         uniteAdi: "1. Çarpanlar ve Katlar",
         araclar: [
-          { ad: "Çarpanlar + Asal Çarpanlar Etkinliği", dosya: "8_sinif/1_carpanlar_katlar/carpanlar_asal_carpanlar.html" },
-          { ad: "Aralarında Asal Sayılar Etkinliği", dosya: "8_sinif/1_carpanlar_katlar/aralarinda_asal_sayilar.html" },
-          { ad: "EBOB EKOK Etkinliği", dosya: "8_sinif/1_carpanlar_katlar/ebob_ekok.html" }
+          { ad: "Çarpanlar + Asal Çarpanlar Etkinliği", dosya: "matematik/8_sinif/1_carpanlar_katlar/carpanlar_asal_carpanlar_lab.html", tur: "lab" },
+          { ad: "Aralarında Asal Sayılar Etkinliği", dosya: "matematik/8_sinif/1_carpanlar_katlar/aralarinda_asal_sayilar_lab.html", tur: "lab" },
+          { ad: "EBOB EKOK Etkinliği", dosya: "matematik/8_sinif/1_carpanlar_katlar/ebob_ekok_lab.html", tur: "lab" }
         ]
       },
       {
         uniteAdi: "2. Üslü İfadeler",
         araclar: [
-          { ad: "Üslü İfadeler Etkinliği", dosya: "8_sinif/2_uslu_ifadeler/uslu_ifadeler.html" },
-          { ad: "Üslü İfadelerde Çarpma ve Bölme Etkinliği", dosya: "8_sinif/2_uslu_ifadeler/uslu_ifadelerde_carpma_ve_bolme.html" },
-          { ad: "Üslü İfadelerde Toplama ve Çıkarma Etkinliği", dosya: "8_sinif/2_uslu_ifadeler/uslu_ifadelerde_toplama_cikarma.html" },
-          { ad: "Ondalık ve Rasyonel Sayıların Kuvvetleri Etkinliği", dosya: "8_sinif/2_uslu_ifadeler/ondalik_ve_rasyonel_sayilarin_kuvvetleri.html" },
-          { ad: "Üslü İfadelerde Çözümleme Etkinliği", dosya: "8_sinif/2_uslu_ifadeler/cozumleme.html" },
-          { ad: "Üslü İfadelerde Virgül Kaydırma Etkinliği", dosya: "8_sinif/2_uslu_ifadeler/virgul_kaydirma.html" },
-          { ad: "10'un Kuvvetleriyle Virgül Kaydırma Etkinliği", dosya: "8_sinif/2_uslu_ifadeler/virgul_kaydirma_2.html" },
-          { ad: "Bilimsel Gösterim Etkinliği", dosya: "8_sinif/2_uslu_ifadeler/bilimsel_gosterim.html" }
+          { ad: "Üslü İfadeler Etkinliği", dosya: "matematik/8_sinif/2_uslu_ifadeler/uslu_ifadeler_lab.html", tur: "lab" },
+          { ad: "Üslü İfadelerde Çarpma ve Bölme Etkinliği", dosya: "matematik/8_sinif/2_uslu_ifadeler/uslu_ifadelerde_carpma_ve_bolme_lab.html", tur: "lab" },
+          { ad: "Üslü İfadelerde Toplama ve Çıkarma Etkinliği", dosya: "matematik/8_sinif/2_uslu_ifadeler/uslu_ifadelerde_toplama_cikarma_lab.html", tur: "lab" },
+          { ad: "Ondalık ve Rasyonel Sayıların Kuvvetleri Etkinliği", dosya: "matematik/8_sinif/2_uslu_ifadeler/ondalik_ve_rasyonel_sayilarin_kuvvetleri_lab.html", tur: "lab" },
+          { ad: "Üslü İfadelerde Çözümleme Etkinliği", dosya: "matematik/8_sinif/2_uslu_ifadeler/cozumleme_lab.html", tur: "lab" },
+          { ad: "Üslü İfadelerde Virgül Kaydırma Etkinliği", dosya: "matematik/8_sinif/2_uslu_ifadeler/virgul_kaydirma_lab.html", tur: "lab" },
+          { ad: "10'un Kuvvetleriyle Virgül Kaydırma Etkinliği", dosya: "matematik/8_sinif/2_uslu_ifadeler/virgul_kaydirma_2_lab.html", tur: "lab" },
+          { ad: "Bilimsel Gösterim Etkinliği", dosya: "matematik/8_sinif/2_uslu_ifadeler/bilimsel_gosterim_lab.html", tur: "lab" }
         ]
       },
       {
         uniteAdi: "3. Kareköklü Sayılar",
         araclar: [
-          { ad: "Tam Kare Sayılar ve Karekök Etkinliği", dosya: "8_sinif/3_karekoklu_ifadeler/tam_kare_sayilar_ve_karekok.html" },
-          { ad: "Tam Kare Olmayan Sayıların Karekökleri Etkinliği", dosya: "8_sinif/3_karekoklu_ifadeler/tam_kare_olmayan_sayilarin_karekokleri.html" },
-          { ad: "Kök İçine Alma ve Sıralama Etkinliği", dosya: "8_sinif/3_karekoklu_ifadeler/karekokleri_kok_icine_alma_sıralama.html" },
-          { ad: "Ondalık Kesirlerin Karekökleri Etkinliği", dosya: "8_sinif/3_karekoklu_ifadeler/ondalikların_karekokleri.html" },
-          { ad: "Kareköklü İfadeleri Sıralama Etkinliği", dosya: "8_sinif/3_karekoklu_ifadeler/karekoklerde_siralama.html" },
-          { ad: "Kareköklü ifadelerle Çarpma ve Bölme Etkinliği", dosya: "8_sinif/3_karekoklu_ifadeler/karekoklerde_carpma_bolme.html" },
-          { ad: "Kareköklü İfadelerle Toplama ve Çıkarma Etkinliği", dosya: "8_sinif/3_karekoklu_ifadeler/karekoklerde_toplama_cikarma.html" },
-          { ad: "Gerçek Sayılar Etkinliği", dosya: "8_sinif/3_karekoklu_ifadeler/gercek_sayilar.html" }
+          { ad: "Tam Kare Sayılar ve Karekök Etkinliği", dosya: "matematik/8_sinif/3_karekoklu_ifadeler/tam_kare_sayilar_ve_karekok_lab.html", tur: "lab" },
+          { ad: "Tam Kare Olmayan Sayıların Karekökleri Etkinliği", dosya: "matematik/8_sinif/3_karekoklu_ifadeler/tam_kare_olmayan_sayilarin_karekokleri_lab.html", tur: "lab" },
+          { ad: "Kök İçine Alma ve Sıralama Etkinliği", dosya: "matematik/8_sinif/3_karekoklu_ifadeler/karekokleri_kok_icine_alma_sıralama_lab.html", tur: "lab" },
+          { ad: "Ondalık Kesirlerin Karekökleri Etkinliği", dosya: "matematik/8_sinif/3_karekoklu_ifadeler/ondalikların_karekokleri_lab.html", tur: "lab" },
+          { ad: "Kareköklü İfadeleri Sıralama Etkinliği", dosya: "matematik/8_sinif/3_karekoklu_ifadeler/karekoklerde_siralama_lab.html", tur: "lab" },
+          { ad: "Kareköklü ifadelerle Çarpma ve Bölme Etkinliği", dosya: "matematik/8_sinif/3_karekoklu_ifadeler/karekoklerde_carpma_bolme_lab.html", tur: "lab" },
+          { ad: "Kareköklü İfadelerle Toplama ve Çıkarma Etkinliği", dosya: "matematik/8_sinif/3_karekoklu_ifadeler/karekoklerde_toplama_cikarma_lab.html", tur: "lab" },
+          { ad: "Gerçek Sayılar Etkinliği", dosya: "matematik/8_sinif/3_karekoklu_ifadeler/gercek_sayilar_lab.html", tur: "lab" }
         ]
       },
       {
         uniteAdi: "4. Veri Analizi",
         araclar: [
-          { ad: "Grafik Etkinliği", dosya: "8_sinif/4_veri_analizi/veri_analizi.html" }
+          { ad: "Grafik Etkinliği", dosya: "matematik/8_sinif/4_veri_analizi/veri_analizi_lab.html", tur: "lab" }
         ]
       },
       {
         uniteAdi: "5. Olasılık",
         araclar: [
-          { ad: "Basit Olayların Olasılığı Etkinliği", dosya: "8_sinif/5_olasilik/olasilik.html" }
+          { ad: "Basit Olayların Olasılığı Etkinliği", dosya: "matematik/8_sinif/5_olasilik/olasilik_lab.html", tur: "lab" }
         ]
       },
       {
         uniteAdi: "6. Cebirsel İfadeler ve Özdeşlikler",
         araclar: [
-          { ad: "Cebirsel İfadeler Etkinliği", dosya: "8_sinif/6_cebirsel_ifadeler/cebirsel_ifadeler.html" },
-          { ad: "Cebirsel İfadeler ve Özdeşlikler Etkinliği", dosya: "8_sinif/6_cebirsel_ifadeler/cebirsel_ifadeler_ve_özdeslikler.html" },
-          { ad: "Özdeşlikleri Çarpanlarına Ayırma Etkinliği", dosya: "8_sinif/6_cebirsel_ifadeler/cebirsel_ifadeleri_carpanlara_ayirma.html" },
-          { ad: "Özdeşlikler Etkinliği", dosya: "8_sinif/6_cebirsel_ifadeler/özdeslikler.html" }
+          { ad: "Cebirsel İfadeler Etkinliği", dosya: "matematik/8_sinif/6_cebirsel_ifadeler/cebirsel_ifadeler_lab.html", tur: "lab" },
+          { ad: "Cebirsel İfadeler ve Özdeşlikler Etkinliği", dosya: "matematik/8_sinif/6_cebirsel_ifadeler/cebirsel_ifadeler_ve_özdeslikler_lab.html", tur: "lab" },
+          { ad: "Özdeşlikleri Çarpanlarına Ayırma Etkinliği", dosya: "matematik/8_sinif/6_cebirsel_ifadeler/cebirsel_ifadeleri_carpanlara_ayirma_lab.html", tur: "lab" },
+          { ad: "Özdeşlikler Etkinliği", dosya: "matematik/8_sinif/6_cebirsel_ifadeler/özdeslikler_lab.html", tur: "lab" }
         ]
       },
       {
         uniteAdi: "7. Bir Bilinmeyenli Denklemler",
         araclar: [
-          { ad: "Rasyonel Denklemler Etkinliği", dosya: "8_sinif/7_bir_bilinmeyenli_denklemler/rasyonel_denklemler.html" }
+          { ad: "Rasyonel Denklemler Etkinliği", dosya: "matematik/8_sinif/7_bir_bilinmeyenli_denklemler/rasyonel_denklemler_lab.html", tur: "lab" }
         ]
       }
     ]
