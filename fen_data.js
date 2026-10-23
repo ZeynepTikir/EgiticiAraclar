@@ -5,7 +5,11 @@ const fenVerileri = {
       {
         uniteAdi: "Deneme",
         araclar: [
-          { ad: "Örnek Araç 1", dosya: "5_sinif/dogal_sayilar/arac1.html" }
+          { 
+            ad: "Örnek Araç 1", 
+            dosya: "fen/5_sinif/dogal_sayilar/arac1.html",
+            tur: "lab" // 'lab', 'atolye' veya 'afis'
+          }
         ]
       }
     ]
@@ -16,7 +20,11 @@ const fenVerileri = {
       {
         uniteAdi: "Deneme",
         araclar: [
-          { ad: "Örnek Araç 1", dosya: "6_sinif/dogal_sayilar/arac1.html" }
+          { 
+            ad: "Örnek Araç 1", 
+            dosya: "fen/6_sinif/dogal_sayilar/arac1.html",
+            tur: "atolye"
+          }
         ]
       }
     ]
@@ -27,7 +35,11 @@ const fenVerileri = {
       {
         uniteAdi: "Deneme",
         araclar: [
-          { ad: "Örnek Araç 1", dosya: "7_sinif/dogal_sayilar/arac1.html" }
+          { 
+            ad: "Örnek Araç 1", 
+            dosya: "fen/7_sinif/dogal_sayilar/arac1.html",
+            tur: "afis"
+          }
         ]
       }
     ]
@@ -38,15 +50,31 @@ const fenVerileri = {
       {
         uniteAdi: "1. Mevsimler ve İklim",
         araclar: [
-          { ad: "Mevsimler ve İklim Etkinliği", dosya: "fen/8_sinif/1_mevsimler_iklim/mevsimler_iklim.html" }
+          { 
+            ad: "Mevsimler ve İklim Simülasyonu", 
+            dosya: "fen/8_sinif/1_mevsimler_iklim/mevsimler_iklim.html",
+            tur: "lab"
+          }
         ]
       },
       {
         uniteAdi: "2. DNA ve Genetik Kod",
         araclar: [
-          { ad: "DNA'nın Yapısı", dosya: "fen/8_sinif/2_dna_genetik/dna_yapisi.html" },
-          { ad: "DNA'nın Eşlenmesi", dosya: "fen/8_sinif/2_dna_genetik/dna_esleme.html" },
-          { ad: "Kalıtım, Modifikasyon, Mutasyon, Adaptasyon, Biyoteknoloji", dosya: "fen/8_sinif/2_dna_genetik/kalitim_modi_muta_adap.html" }
+          { 
+            ad: "DNA'nın Yapısı Afişi", 
+            dosya: "fen/8_sinif/2_dna_genetik/dna_yapisi.html",
+            tur: "afis"
+          },
+          { 
+            ad: "DNA'nın Eşlenmesi Atölyesi", 
+            dosya: "fen/8_sinif/2_dna_genetik/dna_esleme.html",
+            tur: "atolye"
+          },
+          { 
+            ad: "Kalıtım, Modifikasyon, Mutasyon, Adaptasyon, Biyoteknoloji", 
+            dosya: "fen/8_sinif/2_dna_genetik/kalitim_modi_muta_adap.html",
+            tur: "lab"
+          }
         ]
       }
     ]
