@@ -4,73 +4,188 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Eğitici Araçlar Portalı</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        :root { 
-            --primary: #0284c7; 
-            --bg: #f8fafc; 
-            --card: #ffffff; 
-            --text: #0f172a; 
-            --accent: #9333ea; 
-            --success: #059669; 
-            --game: #d97706; 
-            --workshop: #0284c7;
+        :root {
+            --primary: #2563eb;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --shadow: 0 10px 15px -3px rgba(0,0,0,0.05), 0 4px 6px -4px rgba(0,0,0,0.02);
+            --shadow-hover: 0 20px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.04);
         }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
-        body { background-color: var(--bg); color: var(--text); padding: 50px 20px; text-align: center; }
-        h1 { color: var(--primary); font-size: 2.3rem; margin-bottom: 10px; }
-        p { color: #64748b; margin-bottom: 40px; font-size: 1.1rem; }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
         
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; max-width: 1050px; margin: 0 auto; }
-        .card { background: var(--card); padding: 35px 20px; border-radius: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); text-decoration: none; color: var(--text); font-weight: bold; font-size: 1.25rem; transition: all 0.2s; border: 1px solid #e2e8f0; display: flex; flex-direction: column; align-items: center; gap: 15px; }
-        .card:hover { transform: translateY(-5px); border-color: var(--primary); background: #f0f9ff; color: var(--primary); }
+        body { 
+            background-color: var(--bg); 
+            color: var(--text-main); 
+            min-height: 100vh;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .header {
+            text-align: center;
+            max-width: 600px;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 2.25rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .header p {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            line-height: 1.6;
+        }
+
+        .section-title {
+            width: 100%;
+            max-width: 1000px;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+            gap: 20px; 
+            width: 100%;
+            max-width: 1000px; 
+            margin-bottom: 35px;
+        }
+
+        .card { 
+            background: var(--card-bg); 
+            padding: 24px; 
+            border-radius: 16px; 
+            box-shadow: var(--shadow); 
+            text-decoration: none; 
+            color: var(--text-main); 
+            transition: all 0.25s ease; 
+            border: 1px solid var(--border); 
+            display: flex; 
+            align-items: center; 
+            gap: 18px; 
+        }
+
+        .card:hover { 
+            transform: translateY(-4px); 
+            box-shadow: var(--shadow-hover);
+            border-color: var(--primary);
+        }
+
+        .icon-box {
+            width: 56px;
+            height: 56px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            flex-shrink: 0;
+        }
+
+        .card-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-info h3 {
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .card-info span {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* Renk Temaları */
+        .lab { background: #f0fdf4; color: #166534; }
+        .workshop { background: #eff6ff; color: #1e40af; }
+        .poster { background: #faf5ff; color: #6b21a8; }
         
-        .card.lab-generator { border-color: #d8b4fe; background: #faf5ff; color: var(--accent); }
-        .card.lab-generator:hover { border-color: var(--accent); background: #f3e8ff; color: var(--accent); }
+        .mat { background: #f0f9ff; color: #0369a1; }
+        .fen { background: #ecfdf5; color: #047857; }
 
-        .card.game-generator { border-color: #fde68a; background: #fffbeb; color: var(--game); }
-        .card.game-generator:hover { border-color: var(--game); background: #fef3c7; color: var(--game); }
-
-        .card.workshop-generator { border-color: #bae6fd; background: #f0f9ff; color: var(--workshop); }
-        .card.workshop-generator:hover { border-color: var(--workshop); background: #e0f2fe; color: var(--workshop); }
-
-        .card.fen-bilimleri { border-color: #a7f3d0; background: #f0fdf4; color: var(--success); }
-        .card.fen-bilimleri:hover { border-color: var(--success); background: #ecfdf5; color: var(--success); }
+        @media (max-width: 640px) {
+            body { padding: 24px 16px; }
+            .header h1 { font-size: 1.75rem; }
+            .grid { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
 
-    <h1>🎓 Eğitici Araçlar Portalı</h1>
-    <p>Lütfen bir üreteç veya ders seçiniz</p>
+    <div class="header">
+        <h1>🎓 Eğitici Araçlar Portalı</h1>
+        <p>Lab, atölye ve afiş araçlarınızı oluşturun veya sınıflara göre ders içeriklerine ulaşın.</p>
+    </div>
 
+    <!-- ÜRETEÇLER -->
+    <div class="section-title">İçerik Üreteçleri</div>
     <div class="grid">
-        <!-- Lab Üreteci -->
-        <a href="lab_ureteci.html" class="card lab-generator">
-            <span style="font-size: 2.5rem;">🧪</span>
-            <span>Lab Üreteci</span>
+        <a href="lab_ureteci.html" class="card">
+            <div class="icon-box lab">🧪</div>
+            <div class="card-info">
+                <h3>Lab Üreteci</h3>
+                <span>Sanal Deney ve Simülasyonlar</span>
+            </div>
         </a>
 
-        <!-- Oyun Üreteci -->
-        <a href="oyun_ureteci.html" class="card game-generator">
-            <span style="font-size: 2.5rem;">🎮</span>
-            <span>Oyun Üreteci</span>
+        <a href="atolye_ureteci.html" class="card">
+            <div class="icon-box workshop">🛠️</div>
+            <div class="card-info">
+                <h3>Atölye Üreteci</h3>
+                <span>Etkileşimli Atölye Çalışmaları</span>
+            </div>
         </a>
 
-        <!-- Atölye Üreteci -->
-        <a href="atolye_ureteci.html" class="card workshop-generator">
-            <span style="font-size: 2.5rem;">🛠️</span>
-            <span>Atölye Üreteci</span>
+        <a href="afis_ureteci.html" class="card">
+            <div class="icon-box poster">🖼️</div>
+            <div class="card-info">
+                <h3>Afiş Üreteci</h3>
+                <span>Konu Özetleri ve Görsel Afişler</span>
+            </div>
         </a>
+    </div>
 
-        <!-- Matematik -->
+    <!-- DERSLER -->
+    <div class="section-title">Dersler & Müfredat</div>
+    <div class="grid">
         <a href="sinif.html?ders=mat" class="card">
-            <span style="font-size: 2.5rem;">📐</span>
-            <span>Matematik</span>
+            <div class="icon-box mat">📐</div>
+            <div class="card-info">
+                <h3>Matematik</h3>
+                <span>5, 6, 7 ve 8. Sınıf Konuları</span>
+            </div>
         </a>
 
-        <!-- Fen Bilimleri -->
-        <a href="sinif.html?ders=fen" class="card fen-bilimleri">
-            <span style="font-size: 2.5rem;">⚗️</span>
-            <span>Fen Bilimleri</span>
+        <a href="sinif.html?ders=fen" class="card">
+            <div class="icon-box fen">⚗️</div>
+            <div class="card-info">
+                <h3>Fen Bilimleri</h3>
+                <span>5, 6, 7 ve 8. Sınıf Konuları</span>
+            </div>
         </a>
     </div>
 
