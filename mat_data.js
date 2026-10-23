@@ -46,12 +46,10 @@ const matVerileri = {
         araclar: [
           // Lab Etkinlikleri
           { ad: "Çarpanlar + Asal Çarpanlar Etkinliği", dosya: "matematik/8_sinif/1_carpanlar_katlar/carpanlar_asal_carpanlar_lab.html", tur: "lab" },
+          { ad: "Çarpanlar Atölyesi", dosya: "matematik/8_sinif/1_carpanlar_katlar/carpanlar_atolye.html", tur: "atolye" },
+          { ad: "Asal Çarpanlar Atölyesi", dosya: "matematik/8_sinif/1_carpanlar_katlar/asal_carpanlar_atolye.html", tur: "atolye" },
           { ad: "Aralarında Asal Sayılar Etkinliği", dosya: "matematik/8_sinif/1_carpanlar_katlar/aralarinda_asal_sayilar_lab.html", tur: "lab" },
           { ad: "EBOB EKOK Etkinliği", dosya: "matematik/8_sinif/1_carpanlar_katlar/ebob_ekok_lab.html", tur: "lab" },
-          
-          // Yeni Eklenen Atölye Çalışmaları
-          { ad: "Asal Çarpanlar Atölyesi", dosya: "matematik/8_sinif/1_carpanlar_katlar/asal_carpanlar_atolye.html", tur: "atolye" },
-          { ad: "Çarpanlar Atölyesi", dosya: "matematik/8_sinif/1_carpanlar_katlar/carpanlar_atolye.html", tur: "atolye" },
           { ad: "EBOB Çevre Atölyesi", dosya: "matematik/8_sinif/1_carpanlar_katlar/ebob_cevre_atolye.html", tur: "atolye" },
           { ad: "EBOB Depo Atölyesi", dosya: "matematik/8_sinif/1_carpanlar_katlar/ebob_depo_atolye.html", tur: "atolye" },
           { ad: "EBOB Fayans Atölyesi", dosya: "matematik/8_sinif/1_carpanlar_katlar/ebob_fayans_atolye.html", tur: "atolye" },
@@ -83,12 +81,19 @@ const matVerileri = {
         araclar: [
           { ad: "Tam Kare Sayılar ve Karekök Etkinliği", dosya: "matematik/8_sinif/3_karekoklu_ifadeler/tam_kare_sayilar_ve_karekok_lab.html", tur: "lab" },
           { ad: "Tam Kare Olmayan Sayıların Karekökleri Etkinliği", dosya: "matematik/8_sinif/3_karekoklu_ifadeler/tam_kare_olmayan_sayilarin_karekokleri_lab.html", tur: "lab" },
+          { ad: "Kök Yaklaşık Değer Tahmin Atölyesi", dosya: "matematik/8_sinif/3_karekoklu_ifadeler/kok_yaklasik_deger_tahmin_atolye.html", tur: "atolye" },
           { ad: "Kök İçine Alma ve Sıralama Etkinliği", dosya: "matematik/8_sinif/3_karekoklu_ifadeler/karekokleri_kok_icine_alma_sıralama_lab.html", tur: "lab" },
+          { ad: "a√b Atölyesi", dosya: "matematik/8_sinif/3_karekoklu_ifadeler/a_kok_b_atolye.html", tur: "atolye" },
+          { ad: "Kök İçine Alma Atölyesi", dosya: "matematik/8_sinif/3_karekoklu_ifadeler/kok_icine_alma_atolye.html", tur: "atolye" },
+          { ad: "Kök İçine Alma 2 Atölyesi", dosya: "matematik/8_sinif/3_karekoklu_ifadeler/kok_icine_alma_2_atolye.html", tur: "atolye" },
           { ad: "Ondalık Kesirlerin Karekökleri Etkinliği", dosya: "matematik/8_sinif/3_karekoklu_ifadeler/ondalikların_karekokleri_lab.html", tur: "lab" },
           { ad: "Kareköklü İfadeleri Sıralama Etkinliği", dosya: "matematik/8_sinif/3_karekoklu_ifadeler/karekoklerde_siralama_lab.html", tur: "lab" },
           { ad: "Kareköklü ifadelerle Çarpma ve Bölme Etkinliği", dosya: "matematik/8_sinif/3_karekoklu_ifadeler/karekoklerde_carpma_bolme_lab.html", tur: "lab" },
           { ad: "Kareköklü İfadelerle Toplama ve Çıkarma Etkinliği", dosya: "matematik/8_sinif/3_karekoklu_ifadeler/karekoklerde_toplama_cikarma_lab.html", tur: "lab" },
           { ad: "Gerçek Sayılar Etkinliği", dosya: "matematik/8_sinif/3_karekoklu_ifadeler/gercek_sayilar_lab.html", tur: "lab" }
+
+          
+          
         ]
       },
       {
