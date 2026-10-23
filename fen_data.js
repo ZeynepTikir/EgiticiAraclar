@@ -52,7 +52,7 @@ const fenVerileri = {
         araclar: [
           { 
             ad: "Mevsimler ve İklim Simülasyonu", 
-            dosya: "fen/8_sinif/1_mevsimler_iklim/mevsimler_iklim.html",
+            dosya: "fen/8_sinif/1_mevsimler_iklim/mevsimler_iklim_lab.html",
             tur: "lab"
           }
         ]
@@ -63,12 +63,12 @@ const fenVerileri = {
           { 
             ad: "DNA'nın Yapısı Afişi", 
             dosya: "fen/8_sinif/2_dna_genetik/dna_yapisi.html",
-            tur: "afis"
+            tur: "lab"
           },
           { 
             ad: "DNA'nın Eşlenmesi Atölyesi", 
-            dosya: "fen/8_sinif/2_dna_genetik/dna_esleme.html",
-            tur: "atolye"
+            dosya: "fen/8_sinif/2_dna_genetik/dna_esleme_lab.html",
+            tur: "lab"
           },
           { 
             ad: "Kalıtım, Modifikasyon, Mutasyon, Adaptasyon, Biyoteknoloji", 
