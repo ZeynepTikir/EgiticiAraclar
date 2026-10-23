@@ -62,7 +62,7 @@ const fenVerileri = {
         araclar: [
           { 
             ad: "DNA'nın Yapısı Afişi", 
-            dosya: "fen/8_sinif/2_dna_genetik/dna_yapisi.html",
+            dosya: "fen/8_sinif/2_dna_genetik/dna_yapisi_lab.html",
             tur: "lab"
           },
           { 
@@ -72,7 +72,7 @@ const fenVerileri = {
           },
           { 
             ad: "Kalıtım, Modifikasyon, Mutasyon, Adaptasyon, Biyoteknoloji", 
-            dosya: "fen/8_sinif/2_dna_genetik/kalitim_modi_muta_adap.html",
+            dosya: "fen/8_sinif/2_dna_genetik/kalitim_modi_muta_adap_lab.html",
             tur: "lab"
           }
         ]
