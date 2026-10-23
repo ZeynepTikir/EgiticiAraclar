@@ -44,9 +44,25 @@ const matVerileri = {
       {
         uniteAdi: "1. Çarpanlar ve Katlar",
         araclar: [
+          // Lab Etkinlikleri
           { ad: "Çarpanlar + Asal Çarpanlar Etkinliği", dosya: "matematik/8_sinif/1_carpanlar_katlar/carpanlar_asal_carpanlar_lab.html", tur: "lab" },
           { ad: "Aralarında Asal Sayılar Etkinliği", dosya: "matematik/8_sinif/1_carpanlar_katlar/aralarinda_asal_sayilar_lab.html", tur: "lab" },
-          { ad: "EBOB EKOK Etkinliği", dosya: "matematik/8_sinif/1_carpanlar_katlar/ebob_ekok_lab.html", tur: "lab" }
+          { ad: "EBOB EKOK Etkinliği", dosya: "matematik/8_sinif/1_carpanlar_katlar/ebob_ekok_lab.html", tur: "lab" },
+          
+          // Yeni Eklenen Atölye Çalışmaları
+          { ad: "Asal Çarpanlar Atölyesi", dosya: "matematik/8_sinif/1_carpanlar_katlar/asal_carpanlar_atolye.html", tur: "atolye" },
+          { ad: "Çarpanlar Atölyesi", dosya: "matematik/8_sinif/1_carpanlar_katlar/carpanlar_atolye.html", tur: "atolye" },
+          { ad: "EBOB Çevre Atölyesi", dosya: "matematik/8_sinif/1_carpanlar_katlar/ebob_cevre_atolye.html", tur: "atolye" },
+          { ad: "EBOB Depo Atölyesi", dosya: "matematik/8_sinif/1_carpanlar_katlar/ebob_depo_atolye.html", tur: "atolye" },
+          { ad: "EBOB Fayans Atölyesi", dosya: "matematik/8_sinif/1_carpanlar_katlar/ebob_fayans_atolye.html", tur: "atolye" },
+          { ad: "EBOB Kesme Atölyesi", dosya: "matematik/8_sinif/1_carpanlar_katlar/ebob_kesme_atolye.html", tur: "atolye" },
+          { ad: "EBOB Malzeme Atölyesi", dosya: "matematik/8_sinif/1_carpanlar_katlar/ebob_malzeme_atolye.html", tur: "atolye" },
+          { ad: "EBOB Otel Atölyesi", dosya: "matematik/8_sinif/1_carpanlar_katlar/ebob_otel_atolye.html", tur: "atolye" },
+          { ad: "EBOB Paket Atölyesi", dosya: "matematik/8_sinif/1_carpanlar_katlar/ebob_paket_atolye.html", tur: "atolye" },
+          { ad: "EBOB Şişe Atölyesi", dosya: "matematik/8_sinif/1_carpanlar_katlar/ebob_sise_atolye.html", tur: "atolye" },
+          { ad: "EBOB Tahta Atölyesi", dosya: "matematik/8_sinif/1_carpanlar_katlar/ebob_tahta_atolye.html", tur: "atolye" },
+          { ad: "EKOK Otobüs Atölyesi", dosya: "matematik/8_sinif/1_carpanlar_katlar/ekok_otobus_atolye.html", tur: "atolye" },
+          { ad: "EKOK Süre Atölyesi", dosya: "matematik/8_sinif/1_carpanlar_katlar/ekok_sure_atolye.html", tur: "atolye" }
         ]
       },
       {
