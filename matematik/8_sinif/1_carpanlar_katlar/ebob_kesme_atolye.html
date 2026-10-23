@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EBOB Atölye Simülasyonu - 8. Sınıf Matematik</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #0f172a;
+            --accent: #f59e0b;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #334155;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+            --radius: 12px;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background: var(--secondary);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .reset-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+            font-size: 0.9rem;
+        }
+
+        .reset-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .tabs {
+            display: flex;
+            background: #e2e8f0;
+            padding: 10px 20px 0 20px;
+            gap: 10px;
+        }
+
+        .tab-btn {
+            background: #cbd5e1;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px 8px 0 0;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--text-light);
+            transition: all 0.2s;
+        }
+
+        .tab-btn.active {
+            background: var(--card-bg);
+            color: var(--primary);
+        }
+
+        .tab-content {
+            display: none;
+            padding: 25px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .workshop-nav {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .ws-btn {
+            background: #f1f5f9;
+            border: 2px solid var(--border);
+            padding: 12px;
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--text-light);
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .ws-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .workshop-panel {
+            display: none;
+        }
+
+        .workshop-panel.active {
+            display: block;
+        }
+
+        .simulation-area {
+            border: 2px dashed var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            background: #fafafa;
+            min-height: 280px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            margin-bottom: 20px;
+            overflow-x: auto;
+        }
+
+        .stage-info {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: var(--secondary);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .material-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            margin-top: 25px;
+        }
+
+        .material-row {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .material-label {
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .pieces-wrapper {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            align-items: center;
+            width: 100%;
+        }
+
+        /* GÖRSEL NESNE STİLLERİ */
+
+        /* 1. Kumaş Kesimi */
+        .fabric-item {
+            background: repeating-linear-gradient(45deg, #e0f2fe, #e0f2fe 10px, #bae6fd 10px, #bae6fd 20px);
+            border: 2px solid #0284c7;
+            border-radius: 6px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            color: #0369a1;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            height: 45px;
+            font-size: 0.75rem;
+        }
+        .fabric-item.second-mat {
+            background: repeating-linear-gradient(45deg, #fef08a, #fef08a 10px, #fde047 10px, #fde047 20px);
+            border-color: #ca8a04;
+            color: #854d0e;
+        }
+        .fabric-item.warning-mat {
+            opacity: 0.85;
+            filter: saturate(0.7);
+        }
+
+        /* 2. İp Bölme */
+        .rope-item {
+            background: linear-gradient(90deg, #f97316, #fb923c, #f97316);
+            border-radius: 10px;
+            height: 24px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        .rope-node {
+            width: 6px;
+            height: 16px;
+            background: #c2410c;
+            border-radius: 3px;
+        }
+        .rope-item.second-mat {
+            background: linear-gradient(90deg, #10b981, #34d399, #10b981);
+        }
+        .rope-item.second-mat .rope-node {
+            background: #047857;
+        }
+        .rope-item.warning-mat {
+            opacity: 0.85;
+            filter: saturate(0.7);
+        }
+
+        /* 3. Tel Kesme */
+        .wire-item {
+            background: linear-gradient(90deg, #64748b, #94a3b8, #64748b);
+            border-radius: 4px;
+            height: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        .wire-node {
+            position: absolute;
+            top: -4px;
+            width: 4px;
+            height: 20px;
+            background: #334155;
+            border-radius: 1px;
+        }
+        .wire-item.second-mat {
+            background: linear-gradient(90deg, #8b5cf6, #a78bfa, #8b5cf6);
+        }
+        .wire-item.second-mat .wire-node {
+            background: #5b21b6;
+        }
+        .wire-item.warning-mat {
+            opacity: 0.85;
+            filter: saturate(0.7);
+        }
+
+        /* 4. Tahta Kesme */
+        .wood-item {
+            background: #d97706;
+            background-image: linear-gradient(90deg, rgba(255,255,255,0.15) 1px, transparent 1px);
+            background-size: 20px 100%;
+            border: 2px solid #b45309;
+            border-radius: 4px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            height: 38px;
+            font-size: 0.75rem;
+        }
+        .wood-item.second-mat {
+            background-color: #b45309;
+            border-color: #78350f;
+        }
+        .wood-item.warning-mat {
+            opacity: 0.85;
+            filter: saturate(0.7);
+        }
+
+        .controls-area {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            background: #f1f5f9;
+            padding: 20px;
+            border-radius: var(--radius);
+        }
+
+        .task-description {
+            font-size: 1.05rem;
+            font-weight: 500;
+            color: var(--secondary);
+            line-height: 1.5;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .input-group input {
+            padding: 10px 15px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            width: 150px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .input-group input:focus {
+            border-color: var(--primary);
+        }
+
+        .action-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .action-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .feedback-box {
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: 600;
+            margin-top: 15px;
+            display: none;
+        }
+
+        .feedback-box.success {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #a7f3d0;
+            display: block;
+        }
+
+        .feedback-box.warning {
+            background: #fef3c7;
+            color: #92400e;
+            border: 1px solid #fde68a;
+            display: block;
+        }
+
+        .feedback-box.error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+            display: block;
+        }
+
+        .guide-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .guide-card h3 {
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .guide-card p {
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            .workshop-nav {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>EBOB Atölye Simülasyonu</h1>
+            <button class="reset-btn" onclick="resetCurrentSimulation()">🔄 Yeniden Başlat</button>
+        </header>
+
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab(0)">Atölye Tezgâhı</button>
+            <button class="tab-btn" onclick="switchTab(1)">Pratik Bilgiler & Taktikler</button>
+        </div>
+
+        <!-- TAB 1: ATÖLYE -->
+        <div class="tab-content active" id="tab-workshop">
+            <div class="workshop-nav">
+                <button class="ws-btn active" onclick="switchWorkshop(0)">Kumaş Kesme</button>
+                <button class="ws-btn" onclick="switchWorkshop(1)">İp Bölme</button>
+                <button class="ws-btn" onclick="switchWorkshop(2)">Tel Kesme</button>
+                <button class="ws-btn" onclick="switchWorkshop(3)">Tahta Kesme</button>
+            </div>
+
+            <!-- WORKSHOP 0: KUMAŞ -->
+            <div class="workshop-panel active" id="ws-0">
+                <div class="simulation-area">
+                    <div class="stage-info" id="stage-info-0">Aşama: 1 / 4</div>
+                    <div class="material-container" id="material-container-0">
+                        <div style="color: var(--text-light); font-style: italic;">Tahmininizi girip kontrol edin...</div>
+                    </div>
+                </div>
+                <div class="controls-area">
+                    <div class="task-description" id="task-desc-0">Yükleniyor...</div>
+                    <div class="input-group">
+                        <input type="number" id="user-input-0" placeholder="Tahmininiz...">
+                        <button class="action-btn" onclick="checkAnswer(0)">Kontrol Et</button>
+                    </div>
+                    <div class="feedback-box" id="feedback-0"></div>
+                </div>
+            </div>
+
+            <!-- WORKSHOP 1: İP -->
+            <div class="workshop-panel" id="ws-1">
+                <div class="simulation-area">
+                    <div class="stage-info" id="stage-info-1">Aşama: 1 / 4</div>
+                    <div class="material-container" id="material-container-1">
+                        <div style="color: var(--text-light); font-style: italic;">Tahmininizi girip kontrol edin...</div>
+                    </div>
+                </div>
+                <div class="controls-area">
+                    <div class="task-description" id="task-desc-1">Yükleniyor...</div>
+                    <div class="input-group">
+                        <input type="number" id="user-input-1" placeholder="Tahmininiz...">
+                        <button class="action-btn" onclick="checkAnswer(1)">Kontrol Et</button>
+                    </div>
+                    <div class="feedback-box" id="feedback-1"></div>
+                </div>
+            </div>
+
+            <!-- WORKSHOP 2: TEL -->
+            <div class="workshop-panel" id="ws-2">
+                <div class="simulation-area">
+                    <div class="stage-info" id="stage-info-2">Aşama: 1 / 4</div>
+                    <div class="material-container" id="material-container-2">
+                        <div style="color: var(--text-light); font-style: italic;">Tahmininizi girip kontrol edin...</div>
+                    </div>
+                </div>
+                <div class="controls-area">
+                    <div class="task-description" id="task-desc-2">Yükleniyor...</div>
+                    <div class="input-group">
+                        <input type="number" id="user-input-2" placeholder="Tahmininiz...">
+                        <button class="action-btn" onclick="checkAnswer(2)">Kontrol Et</button>
+                    </div>
+                    <div class="feedback-box" id="feedback-2"></div>
+                </div>
+            </div>
+
+            <!-- WORKSHOP 3: TAHTA -->
+            <div class="workshop-panel" id="ws-3">
+                <div class="simulation-area">
+                    <div class="stage-info" id="stage-info-3">Aşama: 1 / 4</div>
+                    <div class="material-container" id="material-container-3">
+                        <div style="color: var(--text-light); font-style: italic;">Tahmininizi girip kontrol edin...</div>
+                    </div>
+                </div>
+                <div class="controls-area">
+                    <div class="task-description" id="task-desc-3">Yükleniyor...</div>
+                    <div class="input-group">
+                        <input type="number" id="user-input-3" placeholder="Tahmininiz...">
+                        <button class="action-btn" onclick="checkAnswer(3)">Kontrol Et</button>
+                    </div>
+                    <div class="feedback-box" id="feedback-3"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 2: REHBER -->
+        <div class="tab-content" id="tab-guide">
+            <div class="guide-card">
+                <h3>EBOB Nedir?</h3>
+                <p>İki veya daha fazla doğal sayının ortak bölenlerinin en büyüğüne o sayıların <strong>En Büyük Ortak Böleni (EBOB)</strong> denir. Atölyemizde büyük parçaları eşit ve hiç artmayacak şekilde daha küçük parçalara ayırırken EBOB kullanırız.</p>
+            </div>
+            <div class="guide-card">
+                <h3>Kumaş ve Tahta Kesme Taktikleri</h3>
+                <p>Elindeki farklı uzunluktaki kumaş veya tahtaları, hiç artmayacak şekilde eşit uzunlukta parçalara ayırmak istiyorsan, uzunlukların ortak bölenlerini bulmalısın. En büyük parçayı elde etmek için <strong>EBOB</strong> hesaplanır.</p>
+            </div>
+            <div class="guide-card">
+                <h3>İp ve Tel Bölme Taktikleri</h3>
+                <p>Farklı uzunluktaki ipleri veya telleri eşit boylarda kesmek için yine sayıların bölenlerinden yararlanılır. Küçük bölenler de işi görür (parçaya ayırır) ancak en büyük parçayı (EBOB) bulmak her zaman en verimli yöntemdir.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const workshops = [
+            {
+                name: "Kumaş Kesme",
+                unit: "cm",
+                type: "fabric",
+                stages: [
+                    { val1: 24, val2: 36, desc: "Elimizde 24 cm ve 36 cm uzunluğunda iki parça kumaş var. Bu kumaşları hiç artmayacak şekilde eşit uzunlukta en büyük parçalara ayırmak istiyoruz. Bir parçanın uzunluğu kaç cm olmalıdır?" },
+                    { val1: 30, val2: 45, desc: "Atölyemize gelen 30 cm ve 45 cm'lik kumaşlar var. Eşit ve en büyük boyutta kesilmek isteniyor. Parçaların uzunluğu ne olmalıdır?" },
+                    { val1: 40, val2: 60, desc: "40 cm ve 60 cm'lik kumaş topları hiç artmayacak şekilde eşit ve en büyük parçalara bölünecektir. Parça boyu kaç cm'dir?" },
+                    { val1: 48, val2: 72, desc: "48 cm ve 72 cm'lik kumaşlar eşit parçalara ayrılacaktır. En büyük parça uzunluğu için tahmininizi girin." }
+                ]
+            },
+            {
+                name: "İp Bölme",
+                unit: "m",
+                type: "rope",
+                stages: [
+                    { val1: 18, val2: 30, desc: "18 metre ve 30 metre uzunluğundaki iki farklı ip, eşit uzunlukta ve en büyük parçalara bölünecektir. Bir ip parçasının uzunluğu kaç metre olmalıdır?" },
+                    { val1: 20, val2: 32, desc: "20 m ve 32 m'lik ipler hiç artmayacak şekilde eşit parçalara ayrılacaktır. En büyük boy kaç metredir?" },
+                    { val1: 28, val2: 42, desc: "28 m ve 42 m uzunluğundaki ipler eşit parçalara bölünecektir. Parça boyu ne olmalıdır?" },
+                    { val1: 36, val2: 54, desc: "36 m ve 54 m'lik ipler en büyük ortak boyutta kesilecektir. Tahmininizi yazınız." }
+                ]
+            },
+            {
+                name: "Tel Kesme",
+                unit: "cm",
+                type: "wire",
+                stages: [
+                    { val1: 16, val2: 24, desc: "16 cm ve 24 cm uzunluğundaki metaller eşit boylarda ve en büyük şekilde kesilecektir. Kesilecek tel parçası kaç cm olmalıdır?" },
+                    { val1: 25, val2: 35, desc: "25 cm ve 35 cm'lik teller hiç artmayacak şekilde eşit parçalara bölünecektir. Parça uzunluğu kaç cm olmalıdır?" },
+                    { val1: 32, val2: 48, desc: "32 cm ve 48 cm uzunluğundaki teller eşit parçalara ayrılacaktır. En büyük boyu bulunuz." },
+                    { val1: 45, val2: 75, desc: "45 cm ve 75 cm'lik teller en büyük ortak parçalara bölünecektir. Tahmininizi girin." }
+                ]
+            },
+            {
+                name: "Tahta Kesme",
+                unit: "cm",
+                type: "wood",
+                stages: [
+                    { val1: 40, val2: 56, desc: "40 cm ve 56 cm uzunluğundaki tahta çıtalar hiç artmayacak şekilde eşit ve en büyük boylarda kesilecektir. Bir tahta parçasının uzunluğu kaç cm olmalıdır?" },
+                    { val1: 36, val2: 60, desc: "36 cm ve 60 cm'lik tahtalar eşit parçalara ayrılacaktır. En büyük parça uzunluğu kaç cm'dir?" },
+                    { val1: 50, val2: 75, desc: "50 cm ve 75 cm uzunluğundaki tahtalar eşit parçalara bölünecektir. Tahmininizi girin." },
+                    { val1: 54, val2: 90, desc: "54 cm ve 90 cm'lik tahtalar en büyük ortak boylarda kesilecektir. Parça uzunluğu ne olmalıdır?" }
+                ]
+            }
+        ];
+
+        let currentWsIndex = 0;
+        let currentStageIndices = [0, 0, 0, 0];
+
+        function gcd(a, b) {
+            return b === 0 ? a : gcd(b, a % b);
+        }
+
+        function switchTab(tabIndex) {
+            const tabs = document.querySelectorAll('.tab-btn');
+            const contents = document.querySelectorAll('.tab-content');
+            
+            tabs.forEach((t, i) => {
+                t.classList.toggle('active', i === tabIndex);
+            });
+            contents.forEach((c, i) => {
+                c.classList.toggle('active', i === tabIndex);
+            });
+        }
+
+        function switchWorkshop(wsIndex) {
+            currentWsIndex = wsIndex;
+            const wsBtns = document.querySelectorAll('.ws-btn');
+            const wsPanels = document.querySelectorAll('.workshop-panel');
+
+            wsBtns.forEach((b, i) => {
+                b.classList.toggle('active', i === wsIndex);
+            });
+            wsPanels.forEach((p, i) => {
+                p.classList.toggle('active', i === wsIndex);
+            });
+
+            loadStage(wsIndex);
+        }
+
+        function loadStage(wsIndex) {
+            const stageIdx = currentStageIndices[wsIndex];
+            const stage = workshops[wsIndex].stages[stageIdx];
+            
+            document.getElementById(`stage-info-${wsIndex}`).innerText = `Aşama: ${stageIdx + 1} / 4`;
+            document.getElementById(`task-desc-${wsIndex}`).innerText = stage.desc;
+            document.getElementById(`user-input-${wsIndex}`).value = '';
+            
+            const feedbackBox = document.getElementById(`feedback-${wsIndex}`);
+            feedbackBox.className = 'feedback-box';
+            feedbackBox.innerText = '';
+
+            const container = document.getElementById(`material-container-${wsIndex}`);
+            container.innerHTML = `<div style="color: var(--text-light); font-style: italic;">Tahmininizi girip kontrol edin...</div>`;
+        }
+
+        function resetCurrentSimulation() {
+            currentStageIndices[currentWsIndex] = 0;
+            loadStage(currentWsIndex);
+        }
+
+        function checkAnswer(wsIndex) {
+            const stageIdx = currentStageIndices[wsIndex];
+            const stage = workshops[wsIndex].stages[stageIdx];
+            const inputVal = parseInt(document.getElementById(`user-input-${wsIndex}`).value);
+            const feedbackBox = document.getElementById(`feedback-${wsIndex}`);
+            const container = document.getElementById(`material-container-${wsIndex}`);
+
+            if (isNaN(inputVal) || inputVal <= 0) {
+                feedbackBox.className = 'feedback-box error';
+                feedbackBox.innerText = 'Lütfen geçerli bir sayı giriniz!';
+                container.innerHTML = `<div style="color: var(--text-light); font-style: italic;">Tahmininizi girip kontrol edin...</div>`;
+                return;
+            }
+
+            const trueGcd = gcd(stage.val1, stage.val2);
+
+            if (stage.val1 % inputVal !== 0 || stage.val2 % inputVal !== 0) {
+                feedbackBox.className = 'feedback-box error';
+                feedbackBox.innerText = 'Hatalı! Bu sayı her iki ölçüyü de tam bölmez. Sahne boş kaldı.';
+                container.innerHTML = `<div style="color: var(--text-light); font-style: italic;">Sahne boş</div>`;
+                return;
+            }
+
+            if (inputVal === trueGcd) {
+                feedbackBox.className = 'feedback-box success';
+                feedbackBox.innerText = 'Harika! Doğru EBOB değerini buldun. Malzemeler gerçekçi görsellerle eşit şekilde kesildi.';
+                renderVisuals(wsIndex, stage.val1, stage.val2, inputVal, true);
+
+                setTimeout(() => {
+                    if (currentStageIndices[wsIndex] < 3) {
+                        currentStageIndices[wsIndex]++;
+                        loadStage(wsIndex);
+                    } else {
+                        feedbackBox.innerText += ' Tebrikler, bu atölyedeki tüm aşamaları tamamladınız!';
+                    }
+                }, 4000);
+
+            } else if (trueGcd % inputVal === 0) {
+                feedbackBox.className = 'feedback-box warning';
+                feedbackBox.innerText = `İşi görür fakat daha büyük bir ortak bölen (EBOB) vardır! (Girdiğiniz: ${inputVal})`;
+                renderVisuals(wsIndex, stage.val1, stage.val2, inputVal, false);
+            }
+        }
+
+        function renderVisuals(wsIndex, val1, val2, partSize, isBest) {
+            const container = document.getElementById(`material-container-${wsIndex}`);
+            container.innerHTML = '';
+
+            const count1 = val1 / partSize;
+            const count2 = val2 / partSize;
+            const ws = workshops[wsIndex];
+            const matType = ws.type;
+            const warningClass = isBest ? '' : ' warning-mat';
+
+            function getSinglePieceHTML(isSecond) {
+                const secondClass = isSecond ? ' second-mat' : '';
+                if (matType === 'fabric') {
+                    const w = Math.max(35, partSize * 3);
+                    return `<div class="fabric-item${secondClass}${warningClass}" style="width:${w}px;">${partSize}${ws.unit}</div>`;
+                } else if (matType === 'rope') {
+                    const w = Math.max(65, partSize * 4);
+                    return `<div class="rope-item${secondClass}${warningClass}" style="width:${w}px;"><div class="rope-node"></div><span>${partSize}${ws.unit}</span><div class="rope-node"></div></div>`;
+                } else if (matType === 'wire') {
+                    const w = Math.max(65, partSize * 4);
+                    return `<div class="wire-item${secondClass}${warningClass}" style="width:${w}px;"><div class="wire-node" style="left:0;"></div><div class="wire-node" style="right:0;"></div></div>`;
+                } else if (matType === 'wood') {
+                    const w = Math.max(35, partSize * 3);
+                    return `<div class="wood-item${secondClass}${warningClass}" style="width:${w}px;">${partSize}${ws.unit}</div>`;
+                }
+            }
+
+            let html = `
+                <div class="material-row">
+                    <div class="material-label">1. Malzeme Parçaları (${val1} ${ws.unit} / Her biri ${partSize} ${ws.unit} = ${count1} adet):</div>
+                    <div class="pieces-wrapper">
+            `;
+            for(let i = 0; i < count1; i++) {
+                html += getSinglePieceHTML(false);
+            }
+            html += `</div></div>`;
+
+            html += `
+                <div class="material-row">
+                    <div class="material-label">2. Malzeme Parçaları (${val2} ${ws.unit} / Her biri ${partSize} ${ws.unit} = ${count2} adet):</div>
+                    <div class="pieces-wrapper">
+            `;
+            for(let i = 0; i < count2; i++) {
+                html += getSinglePieceHTML(true);
+            }
+            html += `</div></div>`;
+
+            container.innerHTML = html;
+        }
+
+        window.onload = function() {
+            loadStage(0);
+        };
+    </script>
+</body>
+</html>

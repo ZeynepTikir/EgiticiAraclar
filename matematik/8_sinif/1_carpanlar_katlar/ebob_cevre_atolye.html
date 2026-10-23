@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EBOB Atölyesi - 8. Sınıf Matematik Simülasyonu</title>
+    <style>
+        :root {
+            --primary: #2e7d32;
+            --primary-light: #4caf50;
+            --accent: #ff9800;
+            --bg-color: #f1f8e9;
+            --panel-bg: #ffffff;
+            --text-main: #1b5e20;
+            --text-sub: #33691e;
+            --border: #c8e6c9;
+            --shadow: rgba(46, 125, 50, 0.15);
+            --danger: #d32f2f;
+            --success: #388e3c;
+            --warning: #b7950b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 950px;
+            background: var(--panel-bg);
+            border-radius: 16px;
+            box-shadow: 0 8px 24px var(--shadow);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background: var(--primary);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+
+        header p {
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+
+        .tabs {
+            display: flex;
+            background: #e8f5e9;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            background: transparent;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-sub);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn.active {
+            background: var(--panel-bg);
+            color: var(--primary);
+            border-bottom: 4px solid var(--primary);
+        }
+
+        .tab-content {
+            display: none;
+            padding: 25px;
+            min-height: 450px;
+        }
+
+        .tab-content.active {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .sub-tabs {
+            display: flex;
+            gap: 10px;
+            background: #f1f8e9;
+            padding: 8px;
+            border-radius: 10px;
+        }
+
+        .sub-tab-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            background: transparent;
+            font-weight: 600;
+            color: var(--text-sub);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .sub-tab-btn.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .workshop-panel {
+            display: none;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .workshop-panel.active {
+            display: flex;
+        }
+
+        .mission-box {
+            background: #f9fbe7;
+            border-left: 5px solid var(--accent);
+            padding: 15px;
+            border-radius: 0 8px 8px 0;
+            font-size: 1.05rem;
+            line-height: 1.5;
+        }
+
+        .sim-area {
+            background: #fafafa;
+            border: 2px dashed var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        /* Temsili Çevre Görsel Alanları */
+        .visual-container {
+            width: 100%;
+            height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            position: relative;
+            margin-bottom: 15px;
+            border: 2px solid var(--border);
+            overflow: hidden;
+            background-color: #e8f5e9;
+        }
+
+        /* 1. Tarla Sahneleri */
+        .scene-field {
+            width: 75%;
+            height: 150px;
+            background: #8d6e63; /* Toprak rengi */
+            border: 4px dashed #5d4037;
+            border-radius: 8px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* 2. Ev Sahneleri */
+        .scene-house {
+            width: 75%;
+            height: 150px;
+            background: #c8e6c9; /* Çim bahçe */
+            border: 4px solid #81c784;
+            border-radius: 8px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .house-icon {
+            font-size: 3rem;
+        }
+
+        /* 3. Kaldırım / Cadde Sahneleri */
+        .scene-street {
+            width: 90%;
+            height: 140px;
+            background: #37474f; /* Asfalt */
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border-radius: 8px;
+        }
+
+        .pavement-line {
+            height: 24px;
+            background: #cfd8dc; /* Gri kaldırım */
+            width: 100%;
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .road-marks {
+            height: 4px;
+            background: repeating-linear-gradient(90deg, #fff, #fff 20px, transparent 20px, transparent 40px);
+            width: 100%;
+            margin: auto 0;
+        }
+
+        .field-label {
+            font-size: 0.9rem;
+            font-weight: bold;
+            color: #ffffff;
+            background: rgba(0,0,0,0.5);
+            padding: 4px 10px;
+            border-radius: 6px;
+        }
+
+        .placed-item {
+            position: absolute;
+            font-size: 1.4rem;
+            transform: translate(-50%, -50%);
+            z-index: 5;
+            filter: drop-shadow(0 2px 3px rgba(0,0,0,0.3));
+            animation: popIn 0.3s ease-out;
+        }
+
+        @keyframes popIn {
+            from { transform: translate(-50%, -50%) scale(0); }
+            to { transform: translate(-50%, -50%) scale(1); }
+        }
+
+        .control-panel {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        input[type="number"] {
+            padding: 10px 15px;
+            font-size: 1.1rem;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            width: 130px;
+            text-align: center;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input[type="number"]:focus {
+            border-color: var(--primary);
+        }
+
+        button.action-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        button.action-btn:hover {
+            background: var(--primary-light);
+        }
+
+        .reset-btn-container {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: auto;
+        }
+
+        button.reset-btn {
+            background: transparent;
+            border: 2px solid var(--danger);
+            color: var(--danger);
+            padding: 8px 15px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        button.reset-btn:hover {
+            background: var(--danger);
+            color: white;
+        }
+
+        .feedback {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+            display: none;
+            width: 100%;
+        }
+
+        .feedback.success {
+            background: #d4edda;
+            color: var(--success);
+            border: 1px solid #c3e6cb;
+            display: block;
+        }
+
+        .feedback.warning {
+            background: #fef9e7;
+            color: var(--warning);
+            border: 1px solid #f9e79f;
+            display: block;
+        }
+
+        .feedback.error {
+            background: #f8d7da;
+            color: var(--danger);
+            border: 1px solid #f5c6cb;
+            display: block;
+        }
+
+        .guide-card {
+            background: #f9fbe7;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+
+        .guide-card h3 {
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .guide-card p {
+            line-height: 1.6;
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>EBOB Atölyesi</h1>
+        <p>Ağaç Dikimi, Çit Çevirme ve Aydınlatma Direkleri Yerleştirme Simülasyonu</p>
+    </header>
+
+    <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab(0)">Atölye / Tezgâh Alanı</button>
+        <button class="tab-btn" onclick="switchTab(1)">Pratik Bilgiler & Taktikler</button>
+    </div>
+
+    <!-- SEKME 1: ATÖLYE -->
+    <div id="tab-workshop" class="tab-content active">
+        <div class="sub-tabs">
+            <button class="sub-tab-btn active" onclick="switchSubTab(0)">1. Tarla (Ağaç Dikimi)</button>
+            <button class="sub-tab-btn" onclick="switchSubTab(1)">2. Ev (Çit Çevirme)</button>
+            <button class="sub-tab-btn" onclick="switchSubTab(2)">3. Kaldırım (Direk Dikme)</button>
+        </div>
+
+        <!-- ATÖLYE 1: AĞAÇ -->
+        <div id="sub-workshop-0" class="workshop-panel active">
+            <div class="mission-box" id="mission-text-0"></div>
+            <div class="sim-area">
+                <div class="visual-container" id="visual-0"></div>
+                <div class="control-panel">
+                    <label>Aralık (metre): </label>
+                    <input type="number" id="input-0" placeholder="Örn: 5">
+                    <button class="action-btn" onclick="checkAnswer(0)">Kontrol Et</button>
+                </div>
+                <div class="feedback" id="feedback-0"></div>
+            </div>
+            <div class="reset-btn-container">
+                <button class="reset-btn" onclick="resetWorkshop(0)">🔄 Yeniden Başlat</button>
+            </div>
+        </div>
+
+        <!-- ATÖLYE 2: ÇİT -->
+        <div id="sub-workshop-1" class="workshop-panel">
+            <div class="mission-box" id="mission-text-1"></div>
+            <div class="sim-area">
+                <div class="visual-container" id="visual-1"></div>
+                <div class="control-panel">
+                    <label>Çit Boyu (metre): </label>
+                    <input type="number" id="input-1" placeholder="Örn: 3">
+                    <button class="action-btn" onclick="checkAnswer(1)">Kontrol Et</button>
+                </div>
+                <div class="feedback" id="feedback-1"></div>
+            </div>
+            <div class="reset-btn-container">
+                <button class="reset-btn" onclick="resetWorkshop(1)">🔄 Yeniden Başlat</button>
+            </div>
+        </div>
+
+        <!-- ATÖLYE 3: DİREK -->
+        <div id="sub-workshop-2" class="workshop-panel">
+            <div class="mission-box" id="mission-text-2"></div>
+            <div class="sim-area">
+                <div class="visual-container" id="visual-2"></div>
+                <div class="control-panel">
+                    <label>Direk Aralığı (metre): </label>
+                    <input type="number" id="input-2" placeholder="Örn: 10">
+                    <button class="action-btn" onclick="checkAnswer(2)">Kontrol Et</button>
+                </div>
+                <div class="feedback" id="feedback-2"></div>
+            </div>
+            <div class="reset-btn-container">
+                <button class="reset-btn" onclick="resetWorkshop(2)">🔄 Yeniden Başlat</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SEKME 2: PRATİK BİLGİLER -->
+    <div id="tab-guide" class="tab-content">
+        <div class="guide-card">
+            <h3>🌳 Ağaç, Çit ve Direk Problemlerinde EBOB</h3>
+            <p>Büyük bir bütünü (tarlanın çevresi, cadde kenarı vb.) <strong>eşit ve en büyük parçalara</strong> ayırmak istediğimizde <strong>EBOB (En Büyük Ortak Bölen)</strong> kullanırız.</p>
+            <p>• Verilen boyutların ortak bölenleri bulunarak nesneler arasındaki aralık belirlenir.</p>
+            <p>• "En büyük" ifadesi geçtiği için daha küçük bir ortak bölen yazıldığında sistem seni uyaracaktır.</p>
+        </div>
+        <div class="guide-card">
+            <h3>💡 Altın İpuçları</h3>
+            <p>1. <strong>Köşelere Dikkat:</strong> Çit veya ağaç problemlerinde köşelere mutlaka nesne gelmesi istendiğinden, kenar uzunlukları seçilen aralığa kalansız bölünmelidir.</p>
+            <p>2. <strong>Çevre Mantığı:</strong> Toplam nesne sayısı sorulduğunda, tarlanın tüm çevresi EBOB değerine bölünür.</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    const stagesData = [
+        // AĞAÇ SİMÜLASYONU (4 Aşama - Eşit Zorlukta)
+        [
+            { w: 24, h: 36, ans: 12, text: "Aşama 1/4: Kenar uzunlukları 24 metre ve 36 metre olan dikdörtgen şeklindeki tarlanın çevresine eşit aralıklarla ağaç dikilecektir. Köşelere de ağaç dikmek şartıyla, ağaçlar arasındaki mesafe en fazla kaç metre olmalıdır?" },
+            { w: 30, h: 45, ans: 15, text: "Aşama 2/4: Kenar uzunlukları 30 metre ve 45 metre olan tarlanın çevresine eşit aralıklarla ağaç dikilecektir. Köşeler dahil ağaçlar arası mesafe en fazla kaç metre olur?" },
+            { w: 36, h: 60, ans: 12, text: "Aşama 3/4: Boyutları 36 m ve 60 m olan tarlanın etrafına en büyük eşit aralıklarla ağaç dikilecektir. Mesafe kaç metredir?" },
+            { w: 40, h: 60, ans: 20, text: "Aşama 4/4: 40 m ve 60 m kenarlı tarlanın çevresine köşelerde de olacak şekilde en büyük aralıklarla kaç metrede bir ağaç dikilir?" }
+        ],
+        // ÇİT SİMÜLASYONU (4 Aşama)
+        [
+            { w: 20, h: 50, ans: 10, text: "Aşama 1/4: Boyutları 20 metre ve 50 metre olan bahçenin etrafına eşit uzunlukta çit panelleri yerleştirilecektir. Köşelerde tam panel denk gelmesi koşuluyla, çit parçasının uzunluğu en fazla kaç metre olabilir?" },
+            { w: 24, h: 40, ans: 8, text: "Aşama 2/4: 24 m ve 40 m ölçülerindeki bahçenin etrafına eşit boyda çitler döşenecektir. En büyük çit uzunluğu kaç metredir?" },
+            { w: 28, h: 42, ans: 14, text: "Aşama 3/4: 28 metre ve 42 metre kenarlara sahip ev bahçesi için en büyük eşit çit panel boyu kaç metredir?" },
+            { w: 32, h: 48, ans: 16, text: "Aşama 4/4: 32 m ve 48 m kenarlı evin etrafını çevirmek için kullanılacak en büyük eşit çit uzunluğunu hesaplayınız." }
+        ],
+        // DİREK SİMÜLASYONU (4 Aşama)
+        [
+            { w: 40, h: 60, ans: 20, text: "Aşama 1/4: Uzunlukları 40 metre ve 60 metre olan iki farklı cadde kenarına eşit aralıklarla aydınlatma direkleri dikilecektir. Başlangıç ve bitiş noktalarına da direk dikileceğine göre, direkler arası mesafe en fazla kaç metre olmalıdır?" },
+            { w: 45, h: 75, ans: 15, text: "Aşama 2/4: 45 m ve 75 m uzunluğundaki cadde kenarlarına en büyük eşit aralıklarla direk dikilecektir. Mesafe kaç metredir?" },
+            { w: 50, h: 80, ans: 10, text: "Aşama 3/4: 50 m ve 80 m hatlar üzerine dikilecek direkler için en büyük aralık değerini yazınız." },
+            { w: 54, h: 90, ans: 18, text: "Aşama 4/4: 54 metre ve 90 metre uzunluğundaki yollara dikilecek direkler arası maksimum eşit mesafe kaç metredir?" }
+        ]
+    ];
+
+    let currentMainTab = 0;
+    let currentSubTab = 0;
+    let currentStages = [0, 0, 0];
+
+    function switchTab(index) {
+        currentMainTab = index;
+        const tabs = document.querySelectorAll('.tab-btn');
+        const contents = document.querySelectorAll('.tab-content');
+
+        tabs.forEach((t, i) => t.classList.toggle('active', i === index));
+        contents.forEach((c, i) => c.classList.toggle('active', i === index));
+    }
+
+    function switchSubTab(index) {
+        currentSubTab = index;
+        const subBtns = document.querySelectorAll('.sub-tab-btn');
+        const panels = document.querySelectorAll('.workshop-panel');
+
+        subBtns.forEach((b, i) => b.classList.toggle('active', i === index));
+        panels.forEach((p, i) => p.classList.toggle('active', i === index));
+        
+        loadStage(index);
+    }
+
+    // Aşamayı yükle (Cevabı önceden göstermemek için nesneler olmadan sadece sahne çizilir)
+    function loadStage(simIndex) {
+        const stageIdx = currentStages[simIndex];
+        const data = stagesData[simIndex][stageIdx];
+        
+        document.getElementById(`mission-text-${simIndex}`).innerText = data.text;
+        document.getElementById(`input-${simIndex}`).value = '';
+        
+        const feedback = document.getElementById(`feedback-${simIndex}`);
+        feedback.className = 'feedback';
+        feedback.style.display = 'none';
+
+        drawBlankScene(simIndex, data);
+    }
+
+    // Nesnesiz Temiz Sahne Çizimi
+    function drawBlankScene(simIndex, data) {
+        const visual = document.getElementById(`visual-${simIndex}`);
+        let html = '';
+
+        if (simIndex === 0) {
+            // Tarla Sahnesi
+            html = `<div class="scene-field">
+                <div class="field-label">Tarla (${data.w}m × ${data.h}m)</div>
+            </div>`;
+        } else if (simIndex === 1) {
+            // Ev Bahçesi Sahnesi
+            html = `<div class="scene-house">
+                <span class="house-icon">🏠</span>
+                <div class="field-label" style="position:absolute; bottom:5px;">Bahçe (${data.w}m × ${data.h}m)</div>
+            </div>`;
+        } else {
+            // Cadde / Kaldırım Sahnesi
+            html = `<div class="scene-street">
+                <div class="pavement-line" id="pavement-top-${simIndex}">
+                    <span style="font-size:0.75rem; color:#455a64; font-weight:bold; margin-left:10px;">1. Cadde (${data.w}m)</span>
+                </div>
+                <div class="road-marks"></div>
+                <div class="pavement-line" id="pavement-bottom-${simIndex}">
+                    <span style="font-size:0.75rem; color:#455a64; font-weight:bold; margin-left:10px;">2. Cadde (${data.h}m)</span>
+                </div>
+            </div>`;
+        }
+
+        visual.innerHTML = html;
+    }
+
+    // Kullanıcı Kontrol Ettiğinde Nesneleri Sahneye Yerleştir
+    function drawPlacedObjects(simIndex, data, interval) {
+        let icon = '🌳';
+        if (simIndex === 1) icon = '🧱';
+        if (simIndex === 2) icon = '💡';
+
+        if (simIndex === 0 || simIndex === 1) {
+            // Dikdörtgen çevreye dizilim
+            const visual = document.getElementById(`visual-${simIndex}`);
+            const sceneClass = simIndex === 0 ? 'scene-field' : 'scene-house';
+            const centerContent = simIndex === 0 ? `<div class="field-label">Tarla (${data.w}m × ${data.h}m)</div>` : `<span class="house-icon">🏠</span>`;
+
+            let html = `<div class="${sceneClass}">${centerContent}`;
+
+            let topCount = Math.round(data.w / interval);
+            for (let i = 0; i <= topCount; i++) {
+                html += `<div class="placed-item" style="top:0%; left:${(i/topCount)*100}%;">${icon}</div>`;
+            }
+            for (let i = 0; i <= topCount; i++) {
+                html += `<div class="placed-item" style="top:100%; left:${(i/topCount)*100}%;">${icon}</div>`;
+            }
+            let sideCount = Math.round(data.h / interval);
+            for (let i = 1; i < sideCount; i++) {
+                html += `<div class="placed-item" style="top:${(i/sideCount)*100}%; left:0%;">${icon}</div>`;
+                html += `<div class="placed-item" style="top:${(i/sideCount)*100}%; left:100%;">${icon}</div>`;
+            }
+            html += `</div>`;
+            visual.innerHTML = html;
+
+        } else {
+            // Cadde kaldırımlarına dizilim
+            const visual = document.getElementById(`visual-${simIndex}`);
+            let html = `<div class="scene-street">
+                <div class="pavement-line">`;
+            
+            let count1 = Math.round(data.w / interval);
+            for (let i = 0; i <= count1; i++) {
+                html += `<div class="placed-item" style="top:50%; left:${(i/count1)*100}%;">${icon}</div>`;
+            }
+
+            html += `</div><div class="road-marks"></div><div class="pavement-line">`;
+
+            let count2 = Math.round(data.h / interval);
+            for (let i = 0; i <= count2; i++) {
+                html += `<div class="placed-item" style="top:50%; left:${(i/count2)*100}%;">${icon}</div>`;
+            }
+
+            html += `</div></div>`;
+            visual.innerHTML = html;
+        }
+    }
+
+    // Cevap Kontrolü
+    function checkAnswer(simIndex) {
+        const stageIdx = currentStages[simIndex];
+        const data = stagesData[simIndex][stageIdx];
+        const userVal = parseInt(document.getElementById(`input-${simIndex}`).value);
+        const feedback = document.getElementById(`feedback-${simIndex}`);
+
+        feedback.style.display = 'block';
+
+        if (isNaN(userVal) || userVal <= 0) {
+            feedback.className = 'feedback error';
+            feedback.innerText = 'Lütfen geçerli bir pozitif sayı giriniz!';
+            drawBlankScene(simIndex, data);
+            return;
+        }
+
+        const gcd = data.ans;
+
+        if (userVal === gcd) {
+            // DOĞRU (EBOB)
+            drawPlacedObjects(simIndex, data, userVal);
+            feedback.className = 'feedback success';
+            feedback.innerHTML = `🎉 Harika! ${data.w} ve ${data.h} sayılarının En Büyük Ortak Böleni (EBOB) <strong>${gcd}</strong>'dir. Nesneler eşit aralıklarla mükemmel yerleşti!`;
+
+            setTimeout(() => {
+                if (currentStages[simIndex] < 3) {
+                    currentStages[simIndex]++;
+                    loadStage(simIndex);
+                } else {
+                    feedback.innerHTML += ` 🏆 Bu kategorideki tüm aşamaları başarıyla tamamladın!`;
+                }
+            }, 2500);
+
+        } else if (data.w % userVal === 0 && data.h % userVal === 0) {
+            // ORTAK BÖLEN AMA EBOB DEĞİL
+            drawPlacedObjects(simIndex, data, userVal);
+            feedback.className = 'feedback warning';
+            feedback.innerHTML = `⚠️ Girdiğin ${userVal} metre aralık kenarları tam böler ve işi görür, ancak <strong>daha büyük bir ortak bölen (EBOB)</strong> vardır! Lütfen en büyüğünü dene.`;
+
+        } else {
+            // YANLIŞ CEVAP
+            drawBlankScene(simIndex, data);
+            feedback.className = 'feedback error';
+            feedback.innerHTML = `❌ Girdiğin ${userVal} değeri verilen ${data.w}m ve ${data.h}m boyutlarını eşit ve kalansız bölmez! Tekrar dene.`;
+        }
+    }
+
+    function resetWorkshop(simIndex) {
+        currentStages[simIndex] = 0;
+        loadStage(simIndex);
+    }
+
+    window.onload = function() {
+        loadStage(0);
+        loadStage(1);
+        loadStage(2);
+    };
+</script>
+
+</body>
+</html>

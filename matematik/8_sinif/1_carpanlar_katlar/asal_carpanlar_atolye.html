@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kraliçe'nin Mücevher Atölyesi - Asal Çarpanlar Simülasyonu</title>
+    <style>
+        :root {
+            --primary: #4A154B;
+            --primary-light: #6C286D;
+            --secondary: #D4AF37; /* Altın Sarısı / Kraliçe teması */
+            --secondary-hover: #F4C430;
+            --bg-color: #F8F4E6;
+            --card-bg: #FFFFFF;
+            --text-main: #2C2C2C;
+            --text-light: #666666;
+            --success: #2E7D32;
+            --danger: #C62828;
+            --border-radius: 16px;
+            --shadow: 0 8px 24px rgba(74, 21, 75, 0.12);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            user-select: none;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+            border: 2px solid var(--secondary);
+        }
+
+        /* Üst HUD Alanı */
+        .hud {
+            background: var(--primary);
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 4px solid var(--secondary);
+        }
+
+        .hud-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .hud-title h1 {
+            font-size: 1.4rem;
+            color: var(--secondary);
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .hud-stats {
+            display: flex;
+            gap: 25px;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .stat-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 6px 14px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .controls-hud {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            background: var(--secondary);
+            color: var(--primary);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .btn:hover {
+            background: var(--secondary-hover);
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #D32F2F;
+        }
+
+        /* Sekme Navigasyonu */
+        .tabs {
+            display: flex;
+            background: #F0E6D2;
+            border-bottom: 2px solid #E0D0B0;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 14px;
+            text-align: center;
+            background: transparent;
+            border: none;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--primary);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .tab-btn.active {
+            background: var(--card-bg);
+            border-bottom: 4px solid var(--secondary);
+            color: var(--primary-light);
+        }
+
+        /* Sekme İçerikleri */
+        .tab-content {
+            display: none;
+            padding: 30px;
+            min-height: 520px;
+        }
+
+        .tab-content.active {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* ATÖLYE ALANI (SEKME 1) */
+        .workshop-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            height: 100%;
+        }
+
+        .section-box {
+            background: #FCF9F2;
+            border: 2px dashed #D4AF37;
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Müşteri / Kraliçe Alanı (Sağ) */
+        .queen-target-card {
+            background: var(--primary);
+            color: white;
+            width: 100%;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border: 2px solid var(--secondary);
+            margin-bottom: 15px;
+        }
+
+        .queen-target-card h2 {
+            font-size: 1.3rem;
+            color: var(--secondary);
+            margin-bottom: 5px;
+        }
+
+        .target-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #FFF;
+            margin: 10px 0;
+            letter-spacing: 2px;
+        }
+
+        /* Taşların Dizileceği Alan */
+        .workbench-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            align-content: flex-start;
+            width: 100%;
+            min-height: 180px;
+            background: #FFF;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #E0D0B0;
+        }
+
+        .empty-workbench-text {
+            color: var(--text-light);
+            font-style: italic;
+            margin-top: 50px;
+        }
+
+        /* Hammadde Alanı (Sol - Asal Sayı Taşları) */
+        .raw-materials-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            width: 100%;
+            justify-items: center;
+        }
+
+        .stone {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--secondary), #AA7C11);
+            color: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 3px solid #FFF;
+            position: relative;
+        }
+
+        .stone:hover {
+            transform: scale(1.08);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.25);
+        }
+
+        .stone:active {
+            transform: scale(0.95);
+        }
+
+        .stone-val {
+            font-size: 1.8rem;
+            line-height: 1;
+        }
+
+        .stone-label {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 2px;
+            background: rgba(74, 21, 75, 0.15);
+            padding: 1px 6px;
+            border-radius: 4px;
+            color: var(--primary);
+        }
+
+        .workbench-stone {
+            width: 65px;
+            height: 65px;
+            background: var(--primary);
+            color: var(--secondary);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            border: 2px solid var(--secondary);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            animation: popIn 0.3s ease;
+            position: relative;
+        }
+
+        .workbench-stone .remove-btn {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--danger);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            border: 1px solid white;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0); opacity: 0; }
+            80% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); }
+        }
+
+        .action-panel {
+            grid-column: span 2;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .btn-large {
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-large:hover {
+            background: #1B5E20;
+        }
+
+        /* PRATİK BİLGİLER (SEKME 2) */
+        .info-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .info-card {
+            background: #FCF9F2;
+            border-left: 5px solid var(--secondary);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .info-card h3 {
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-card p {
+            color: var(--text-main);
+            line-height: 1.5;
+            font-size: 0.95rem;
+        }
+
+        .math-highlight {
+            background: #E8DCC4;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        /* DURDURMA PERDESİ (OVERLAY) */
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(74, 21, 75, 0.85);
+            backdrop-filter: blur(5px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            color: white;
+            transition: opacity 0.3s ease;
+        }
+
+        .overlay.hidden {
+            display: none;
+        }
+
+        .overlay h2 {
+            font-size: 2.5rem;
+            color: var(--secondary);
+            margin-bottom: 15px;
+        }
+
+        .overlay p {
+            font-size: 1.1rem;
+            margin-bottom: 25px;
+            color: #E0D0B0;
+        }
+
+        /* GERİ BİLDİRİM MESAJLARI */
+        .feedback-toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--primary);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 30px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+            border: 2px solid var(--secondary);
+            font-weight: bold;
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+
+        .feedback-toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .feedback-toast.success { background: var(--success); }
+        .feedback-toast.error { background: var(--danger); }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Üst HUD -->
+        <div class="hud">
+            <div class="hud-title">
+                <span>👑</span>
+                <h1>Kraliçe'nin Mücevher Atölyesi</h1>
+            </div>
+            <div class="hud-stats">
+                <div class="stat-item">🏆 Puan: <span id="scoreVal">0</span></div>
+                <div class="stat-item">❤️ Haklar: <span id="livesVal">3</span></div>
+            </div>
+            <div class="controls-hud">
+                <button class="btn" id="pauseBtn" onclick="togglePause()">⏸️ Durdur</button>
+            </div>
+        </div>
+
+        <!-- Sekme Butonları -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab(1)">🛠️ Atölye Tezgâhı</button>
+            <button class="tab-btn" onclick="switchTab(2)">📜 Pratik Bilgiler & Taktikler</button>
+        </div>
+
+        <!-- SEKME 1: ATÖLYE -->
+        <div id="tab1" class="tab-content active">
+            <div class="workshop-layout">
+                
+                <!-- Sol Taraf: Hammadde (Asal Sayı Taşları) -->
+                <div class="section-box">
+                    <div class="section-title">💎 Saf Asal Madenler</div>
+                    <p style="font-size: 0.85rem; color: var(--text-light); margin-bottom: 15px; text-align: center;">
+                        Kraliçe'nin istediği değere ulaşmak için uygun asal taşlara tıkla.
+                    </p>
+                    <div class="raw-materials-grid">
+                        <div class="stone" onclick="selectPrime(2)">
+                            <span class="stone-val">2</span>
+                            <span class="stone-label">Asal</span>
+                        </div>
+                        <div class="stone" onclick="selectPrime(3)">
+                            <span class="stone-val">3</span>
+                            <span class="stone-label">Asal</span>
+                        </div>
+                        <div class="stone" onclick="selectPrime(5)">
+                            <span class="stone-val">5</span>
+                            <span class="stone-label">Asal</span>
+                        </div>
+                        <div class="stone" onclick="selectPrime(7)">
+                            <span class="stone-val">7</span>
+                            <span class="stone-label">Asal</span>
+                        </div>
+                        <div class="stone" onclick="selectPrime(11)">
+                            <span class="stone-val">11</span>
+                            <span class="stone-label">Asal</span>
+                        </div>
+                        <div class="stone" onclick="selectPrime(13)">
+                            <span class="stone-val">13</span>
+                            <span class="stone-label">Asal</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sağ Taraf: Kraliçe'nin Talebi ve Tezgâh -->
+                <div class="section-box">
+                    <div class="queen-target-card">
+                        <h2>Kraliçe'nin Siparişi</h2>
+                        <div class="target-number" id="targetNumber">24</div>
+                        <p style="font-size: 0.85rem; color: #F0E6D2;">Bu sayıyı elde etmek için asal taşları çarp!</p>
+                    </div>
+
+                    <div class="section-title" style="margin-bottom: 8px;">Tezgâh Üstü (Çarpanlar)</div>
+                    <div class="workbench-grid" id="workbenchGrid">
+                        <span class="empty-workbench-text">Henüz taş seçilmedi...</span>
+                    </div>
+                </div>
+
+                <!-- İşlem Butonları -->
+                <div class="action-panel">
+                    <button class="btn btn-large" onclick="checkProduct()">Siparişi Kraliçe'ye Sun ✨</button>
+                    <button class="btn btn-danger" onclick="resetWorkbench()">Tezgâhı Temizle 🗑️</button>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- SEKME 2: PRATİK BİLGİLER -->
+        <div id="tab2" class="tab-content">
+            <div class="info-container">
+                <div class="info-card">
+                    <h3>👑 Asal Sayı Nedir?</h3>
+                    <p>Sadece 1'e ve kendisinden başka hiçbir pozitif tam sayıya kalansız bölünmeyen, 1'den büyük doğal sayılara <span class="math-highlight">asal sayı</span> denir. <br><br>En küçük ve çift olan tek asal sayı <span class="math-highlight">2</span>'dir.</p>
+                </div>
+                <div class="info-card">
+                    <h3>💎 Asal Çarpanlara Ayırma</h3>
+                    <p>Bir sayıyı asal sayıların çarpımı şeklinde yazma işlemine <span class="math-highlight">asal çarpanlarına ayırma</span> denir. <br><br>Örneğin; <strong>12</strong> sayısı, <span class="math-highlight">2 x 2 x 3</span> (yani 2² x 3) asal çarpanlarının çarpımıyla elde edilir.</p>
+                </div>
+                <div class="info-card">
+                    <h3>⚡ Atölye İpucu</h3>
+                    <p>Kraliçe'nin siparişini hazırlarken sürekli olarak en küçük asal sayıyla (2'den başlayarak) bölme işlemi yapmayı düşünmek seni sonuca en kısa yoldan ulaştırır! Çarpanların çarpımı hedef sayıya eşit olmalıdır.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Durdurma Perdesi (Overlay) -->
+        <div id="pauseOverlay" class="overlay hidden">
+            <h2>Simülasyon Durduruldu</h2>
+            <p>Atölyede çay molası! Kaldığın yerden devam edebilirsin.</p>
+            <button class="btn btn-large" onclick="togglePause()">▶️ Devam Et</button>
+        </div>
+    </div>
+
+    <!-- Geri Bildirim Toast -->
+    <div id="feedbackToast" class="feedback-toast">Tebrikler Kraliçe memnun kaldı!</div>
+
+    <script>
+        // Oyun Durumu
+        let score = 0;
+        let lives = 3;
+        let isPaused = false;
+        let currentTarget = 24;
+        let selectedStones = [];
+
+        // Hedef havuzu (8. Sınıf müfredatına uygun asal çarpanları kolay bulunabilen sayılar)
+        const targetPool = [12, 18, 20, 24, 30, 36, 40, 45, 50, 60, 72];
+
+        function initGame() {
+            generateNewTarget();
+            updateHUD();
+        }
+
+        function generateNewTarget() {
+            const randomIndex = Math.floor(Math.random() * targetPool.length);
+            currentTarget = targetPool[randomIndex];
+            document.getElementById('targetNumber').innerText = currentTarget;
+            resetWorkbench();
+        }
+
+        function updateHUD() {
+            document.getElementById('scoreVal').innerText = score;
+            document.getElementById('livesVal').innerText = lives;
+        }
+
+        function switchTab(tabNumber) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+            document.querySelectorAll('.tab-btn')[tabNumber - 1].classList.add('active');
+            document.getElementById(`tab${tabNumber}`).classList.add('active');
+        }
+
+        function togglePause() {
+            isPaused = !isPaused;
+            const overlay = document.getElementById('pauseOverlay');
+            const pauseBtn = document.getElementById('pauseBtn');
+
+            if (isPaused) {
+                overlay.classList.remove('hidden');
+                pauseBtn.innerText = "▶️ Devam Et";
+            } else {
+                overlay.classList.add('hidden');
+                pauseBtn.innerText = "⏸️ Durdur";
+            }
+        }
+
+        function selectPrime(val) {
+            if (isPaused) return;
+            selectedStones.push(val);
+            renderWorkbench();
+        }
+
+        function removeStone(index) {
+            if (isPaused) return;
+            selectedStones.splice(index, 1);
+            renderWorkbench();
+        }
+
+        function resetWorkbench() {
+            selectedStones = [];
+            renderWorkbench();
+        }
+
+        function renderWorkbench() {
+            const grid = document.getElementById('workbenchGrid');
+            grid.innerHTML = '';
+
+            if (selectedStones.length === 0) {
+                grid.innerHTML = '<span class="empty-workbench-text">Henüz taş seçilmedi...</span>';
+                return;
+            }
+
+            selectedStones.forEach((stone, index) => {
+                const stoneEl = document.createElement('div');
+                stoneEl.className = 'workbench-stone';
+                stoneEl.innerHTML = `
+                    ${stone}
+                    <div class="remove-btn" onclick="removeStone(${index})">×</div>
+                `;
+                grid.appendChild(stoneEl);
+            });
+        }
+
+        function checkProduct() {
+            if (isPaused) return;
+
+            if (selectedStones.length === 0) {
+                showToast("Lütfen tezgâha asal taşlar ekle!", "error");
+                return;
+            }
+
+            // Seçilen taşların çarpımını hesapla
+            let product = selectedStones.reduce((acc, curr) => acc * curr, 1);
+
+            if (product === currentTarget) {
+                score += 15;
+                showToast("Mükemmel! Kraliçe bu mücevherlere bayıldı! 👑✨", "success");
+                updateHUD();
+                setTimeout(() => {
+                    generateNewTarget();
+                }, 1500);
+            } else {
+                lives--;
+                updateHUD();
+                if (lives <= 0) {
+                    showToast("Hakların bitti! Atölye yenileniyor...", "error");
+                    setTimeout(() => {
+                        lives = 3;
+                        score = 0;
+                        updateHUD();
+                        generateNewTarget();
+                    }, 2000);
+                } else {
+                    showToast(`Yanlış çarpım! Mevcut çarpım: ${product}. Hedef: ${currentTarget}`, "error");
+                }
+            }
+        }
+
+        function showToast(message, type) {
+            const toast = document.getElementById('feedbackToast');
+            toast.innerText = message;
+            toast.className = `feedback-toast ${type} show`;
+
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Oyunu başlat
+        window.onload = initGame;
+    </script>
+</body>
+</html>

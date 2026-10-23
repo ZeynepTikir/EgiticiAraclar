@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EBOB Depo ve Koli İstifleme Atölyesi</title>
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --secondary: #0ea5e9;
+            --accent: #f59e0b;
+            --success: #10b981;
+            --danger: #ef4444;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --card-bg: #ffffff;
+            --border: #e2e8f0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            user-select: none;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background: var(--card-bg);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-area h1 {
+            font-size: 1.25rem;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .hud {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .hud-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+            font-size: 1.1rem;
+            background: var(--light);
+            padding: 0.5rem 1rem;
+            border-radius: 99px;
+            border: 1px solid var(--border);
+        }
+
+        .controls {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        button {
+            cursor: pointer;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: var(--primary-hover); }
+        .btn-danger { background: var(--danger); color: white; }
+        .btn-secondary { background: var(--secondary); color: white; }
+
+        .tabs {
+            display: flex;
+            background: var(--card-bg);
+            padding: 0 2rem;
+            border-bottom: 1px solid var(--border);
+            gap: 1rem;
+        }
+
+        .tab-btn {
+            background: transparent;
+            padding: 1rem 1.5rem;
+            border-bottom: 3px solid transparent;
+            border-radius: 0;
+            color: #64748b;
+            font-weight: 600;
+        }
+
+        .tab-btn.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        main {
+            flex: 1;
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Atölye Düzeni */
+        .workshop-grid {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        .panel {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
+        }
+
+        .panel h2 {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+            border-bottom: 2px solid var(--light);
+            padding-bottom: 0.5rem;
+        }
+
+        /* Depo İstifleme Alanı */
+        .depot-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .mission-card {
+            background: linear-gradient(135deg, #e0e7ff 0%, #f0fdf4 100%);
+            border: 1px solid #c7d2fe;
+            border-radius: 12px;
+            padding: 1.25rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .mission-info h3 {
+            color: var(--primary);
+            font-size: 1.2rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .mission-info p {
+            color: #475569;
+            font-size: 0.95rem;
+        }
+
+        .work-area {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .shelf, .pallet {
+            background: var(--light);
+            border: 2px dashed var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .shelf-title {
+            position: absolute;
+            top: 10px;
+            left: 15px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #94a3b8;
+            text-transform: uppercase;
+        }
+
+        .box-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            align-items: center;
+            margin-top: 1.5rem;
+        }
+
+        /* İnteraktif Koli Öğeleri */
+        .box {
+            background: var(--accent);
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .box:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        .box.selected {
+            outline: 3px solid var(--primary);
+            transform: scale(0.95);
+        }
+
+        .pallet-target {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-content: flex-start;
+            margin-top: 1.5rem;
+        }
+
+        .placed-box {
+            background: var(--success);
+            color: white;
+            padding: 0.75rem;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0); }
+            100% { transform: scale(1); }
+        }
+
+        /* Kontrol Paneli Araçları */
+        .controls-group {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .input-group label {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #475569;
+        }
+
+        .input-group input {
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .input-group input:focus {
+            border-color: var(--primary);
+        }
+
+        /* Pratik Bilgiler Sekmesi */
+        .theory-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .theory-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .theory-card h3 {
+            color: var(--primary);
+            margin-bottom: 0.75rem;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .theory-card p {
+            color: #475569;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .formula-box {
+            background: var(--light);
+            border-left: 4px solid var(--secondary);
+            padding: 1rem;
+            border-radius: 0 8px 8px 0;
+            font-family: monospace;
+            font-size: 1.1rem;
+            color: var(--dark);
+        }
+
+        /* Modal / Bildirim */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 16px;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            transform: scale(0.9);
+            transition: transform 0.3s;
+        }
+
+        .modal-overlay.active .modal {
+            transform: scale(1);
+        }
+
+        .modal h2 { margin-bottom: 1rem; color: var(--primary); }
+        .modal p { color: #475569; margin-bottom: 1.5rem; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-area">
+            <h1>📦 EBOB Depo ve Koli İstifleme Atölyesi</h1>
+        </div>
+        <div class="hud">
+            <div class="hud-item">🏆 <span id="score">0</span> Puan</div>
+            <div class="hud-item">❤️ <span id="lives">3</span> Hak</div>
+            <div class="controls">
+                <button class="btn-primary" id="start-btn" onclick="toggleSim()">Başlat</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab(0)">Atölye Simülasyonu</button>
+        <button class="tab-btn" onclick="switchTab(1)">Pratik Bilgiler & Formüller</button>
+    </div>
+
+    <main>
+        <!-- SEKME 1: ATÖLYE SİMÜLASYONU -->
+        <div class="tab-content active" id="tab-workshop">
+            <div class="workshop-grid">
+                <!-- Sol Panel: Görev ve Kontroller -->
+                <div class="panel">
+                    <h2>Depo Yönetim Paneli</h2>
+                    <div class="controls-group">
+                        <div class="mission-card" style="margin-bottom: 1rem; flex-direction: column; align-items: flex-start; gap: 0.5rem;">
+                            <h3 id="mission-title">Görev Yükleniyor...</h3>
+                            <p id="mission-desc">Simülasyonu başlatarak ilk görevi alın.</p>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label id="input-label">Eşit Boyutta En Büyük Koliyi Belirle:</label>
+                            <input type="number" id="user-ebob-input" placeholder="Örn: 5" disabled>
+                        </div>
+
+                        <button class="btn-primary" id="check-btn" onclick="checkAnswer()" disabled>Kolileri Böl ve Yerleştir</button>
+                        <button class="btn-secondary" onclick="nextMission()" id="next-btn" style="display:none;">Sonraki Görev</button>
+                    </div>
+                </div>
+
+                <!-- Sağ Panel: Görsel İstifleme Alanı -->
+                <div class="panel depot-container">
+                    <h2>Canlı Depo Koridoru</h2>
+                    <div class="work-area">
+                        <!-- Hammadde Rafı -->
+                        <div class="shelf">
+                            <span class="shelf-title">Gelen Malzeme (Kütük / Kumaş / Boru)</span>
+                            <div class="box-container" id="source-shelf">
+                                <p style="color: #94a3b8; font-size: 0.9rem;">Simülasyon bekleniyor...</p>
+                            </div>
+                        </div>
+
+                        <!-- Palet Alanı -->
+                        <div class="pallet">
+                            <span class="shelf-title">İstiflenen Eşit Koliler / Parçalar</span>
+                            <div class="pallet-target" id="pallet-area">
+                                <p style="color: #94a3b8; font-size: 0.9rem;">Parçalar buraya yerleşecek.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SEKME 2: PRATİK BİLGİLER -->
+        <div class="tab-content" id="tab-theory">
+            <div class="theory-grid">
+                <div class="theory-card">
+                    <h3>🏢 EBOB Nedir?</h3>
+                    <p>İki veya daha fazla doğal sayının ortak bölenlerinin en büyüğüne o sayıların <strong>En Büyük Ortak Böleni (EBOB)</strong> denir.</p>
+                    <div class="formula-box">
+                        EBOB(a, b) = En Büyük Ortak Bölen
+                    </div>
+                </div>
+
+                <div class="theory-card">
+                    <h3>📦 Depo ve İstifleme Senaryoları</h3>
+                    <p>Farklı uzunluktaki malzemeler (tahtalar, demir çubuklar, kumaş topları) hiç artmayacak şekilde **eşit büyüklükte** parçalara bölünmek istendiğinde EBOB kullanılır.</p>
+                    <div class="formula-box">
+                        Parça Boyutu = EBOB(Malzeme 1, Malzeme 2)
+                    </div>
+                </div>
+
+                <div class="theory-card">
+                    <h3>⚙️ Nasıl Hesaplanır?</h3>
+                    <p>Sayılar asal çarpanlarına ayrılır. Ortak olan asal çarpanlardan üssü küçük olanlar çarpılarak EBOB bulunur.</p>
+                    <div class="formula-box">
+                        Örn: EBOB(24, 36) = 12
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Bildirim Modalı -->
+    <div class="modal-overlay" id="modal">
+        <div class="modal">
+            <h2 id="modal-title">Tebrikler!</h2>
+            <p id="modal-desc">Görevi başarıyla tamamladın.</p>
+            <button class="btn-primary" onclick="closeModal()">Devam Et</button>
+        </div>
+    </div>
+
+    <script>
+        let score = 0;
+        let lives = 3;
+        let isRunning = false;
+        let currentMissionIndex = 0;
+        let currentEbob = 0;
+
+        const missions = [
+            {
+                title: "Görev 1: Tahta Çubukları Bölme",
+                desc: "Depomuzda 24 metre ve 36 metre uzunluğunda iki tahta var. Bu tahtalar hiç artmayacak şekilde eşit ve en büyük boyutta kesilecektir.",
+                val1: 24,
+                val2: 36,
+                unit: "metre",
+                ebob: 12
+            },
+            {
+                title: "Görev 2: Kumaş Toplarını Ayırma",
+                desc: "Atölyemize gelen 40 metre ve 60 metre uzunluğundaki iki kumaş topu eşit parçalara bölünecektir.",
+                val1: 40,
+                val2: 60,
+                unit: "metre",
+                ebob: 20
+            },
+            {
+                title: "Görev 3: Boru İstifleme",
+                desc: "El depomuzda 45 cm ve 75 cm uzunluğunda iki demir boru bulunuyor. Eşit uzunlukta parçalara ayrılacaklar.",
+                val1: 45,
+                val2: 75,
+                unit: "cm",
+                ebob: 15
+            }
+        ];
+
+        function switchTab(index) {
+            const tabs = document.querySelectorAll('.tab-btn');
+            const contents = document.querySelectorAll('.tab-content');
+            
+            tabs.forEach((t, i) => {
+                t.classList.toggle('active', i === index);
+                contents[i].classList.toggle('active', i === index);
+            });
+        }
+
+        function toggleSim() {
+            const btn = document.getElementById('start-btn');
+            if (!isRunning) {
+                isRunning = true;
+                btn.textContent = "Durdur";
+                btn.className = "btn-danger";
+                document.getElementById('user-ebob-input').disabled = false;
+                document.getElementById('check-btn').disabled = false;
+                loadMission();
+            } else {
+                isRunning = false;
+                btn.textContent = "Başlat";
+                btn.className = "btn-primary";
+                document.getElementById('user-ebob-input').disabled = true;
+                document.getElementById('check-btn').disabled = true;
+            }
+        }
+
+        function loadMission() {
+            if (currentMissionIndex >= missions.length) {
+                currentMissionIndex = 0; // Döngüsel tekrar
+            }
+            
+            const m = missions[currentMissionIndex];
+            currentEbob = m.ebob;
+
+            document.getElementById('mission-title').textContent = m.title;
+            document.getElementById('mission-desc').textContent = m.desc;
+            document.getElementById('input-label').textContent = `Eşit Boyutta En Büyük Parça (${m.unit}):`;
+            document.getElementById('user-ebob-input').value = '';
+            document.getElementById('next-btn').style.display = 'none';
+            document.getElementById('check-btn').style.display = 'block';
+
+            // Görsel materyalleri yerleştir
+            const sourceShelf = document.getElementById('source-shelf');
+            sourceShelf.innerHTML = `
+                <div class="box" style="background: var(--primary);">
+                    <span>Parça A</span>
+                    <span>${m.val1} ${m.unit}</span>
+                </div>
+                <div class="box" style="background: var(--secondary);">
+                    <span>Parça B</span>
+                    <span>${m.val2} ${m.unit}</span>
+                </div>
+            `;
+
+            document.getElementById('pallet-area').innerHTML = `<p style="color: #94a3b8; font-size: 0.9rem;">Doğru boyutu girip butona bas.</p>`;
+        }
+
+        function checkAnswer() {
+            if (!isRunning) return;
+
+            const userVal = parseInt(document.getElementById('user-ebob-input').value);
+            const m = missions[currentMissionIndex];
+            const palletArea = document.getElementById('pallet-area');
+
+            if (userVal === currentEbob) {
+                score += 25;
+                document.getElementById('score').textContent = score;
+                
+                // Palete parçaları dök
+                palletArea.innerHTML = '';
+                let countA = m.val1 / currentEbob;
+                let countB = m.val2 / currentEbob;
+
+                for(let i=0; i<countA; i++) {
+                    palletArea.innerHTML += `<div class="placed-box">${currentEbob} ${m.unit} (A)</div>`;
+                }
+                for(let i=0; i<countB; i++) {
+                    palletArea.innerHTML += `<div class="placed-box" style="background: var(--secondary);">${currentEbob} ${m.unit} (B)</div>`;
+                }
+
+                showModal("Harika İş!", `Doğru! En büyük ortak parça ${currentEbob} ${m.unit} olarak kesildi ve istiflendi.`);
+                document.getElementById('check-btn').style.display = 'none';
+                document.getElementById('next-btn').style.display = 'block';
+            } else {
+                lives--;
+                document.getElementById('lives').textContent = lives;
+                if (lives <= 0) {
+                    showModal("Oyun Bitti", "Hakların tükendi. Simülasyon yeniden başlatılıyor.");
+                    score = 0;
+                    lives = 3;
+                    document.getElementById('score').textContent = score;
+                    document.getElementById('lives').textContent = lives;
+                    currentMissionIndex = 0;
+                } else {
+                    showModal("Yanlış Cevap!", "Tekrar dene. Ortak bölenleri ve en büyüğünü kontrol et.");
+                }
+            }
+        }
+
+        function nextMission() {
+            currentMissionIndex++;
+            loadMission();
+        }
+
+        function showModal(title, desc) {
+            document.getElementById('modal-title').textContent = title;
+            document.getElementById('modal-desc').textContent = desc;
+            document.getElementById('modal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.remove('active');
+        }
+    </script>
+</body>
+</html>

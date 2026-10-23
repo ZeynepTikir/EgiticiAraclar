@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EBOB Atölyesi - 8. Sınıf Matematik Simülasyonu</title>
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --secondary: #06b6d4;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --background: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --radius: 16px;
+            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid var(--border);
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 24px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 1.75rem;
+            margin-bottom: 8px;
+        }
+
+        header p {
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+
+        .nav-tabs {
+            display: flex;
+            background: #f1f5f9;
+            border-bottom: 1px solid var(--border);
+            padding: 10px 20px 0 20px;
+            gap: 10px;
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .tab-btn.active {
+            background: var(--card-bg);
+            color: var(--primary);
+            border-top: 3px solid var(--primary);
+            border-left: 1px solid var(--border);
+            border-right: 1px solid var(--border);
+            border-bottom: 1px solid var(--card-bg);
+            margin-bottom: -1px;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 30px;
+            min-height: 550px;
+        }
+
+        .tab-content.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sub-nav {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 15px;
+        }
+
+        .sub-btn {
+            background: #e2e8f0;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .sub-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .sim-container {
+            display: none;
+            flex-direction: column;
+            gap: 20px;
+            flex: 1;
+        }
+
+        .sim-container.active {
+            display: flex;
+        }
+
+        .stage-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f8fafc;
+            padding: 15px 20px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .stage-title {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 1.1rem;
+        }
+
+        .stage-dots {
+            display: flex;
+            gap: 8px;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--border);
+        }
+
+        .dot.active {
+            background: var(--primary);
+        }
+
+        .dot.completed {
+            background: var(--success);
+        }
+
+        .workspace {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            flex: 1;
+        }
+
+        @media (max-width: 768px) {
+            .workspace {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .panel {
+            background: #f8fafc;
+            border: 2px dashed var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 250px;
+            position: relative;
+        }
+
+        .panel-title {
+            position: absolute;
+            top: 15px;
+            left: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .item-pool {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            margin-top: 30px;
+        }
+
+        .item-box {
+            background: white;
+            border: 2px solid var(--primary);
+            border-radius: 8px;
+            padding: 8px 12px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            max-width: 260px;
+            min-height: 55px;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+        }
+
+        .dynamic-icon {
+            font-size: 18px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 26px;
+            height: 26px;
+            background: #f1f5f9;
+            border-radius: 6px;
+        }
+
+        .control-area {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            background: #f1f5f9;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .input-group input {
+            padding: 12px 16px;
+            font-size: 1.1rem;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            width: 180px;
+            text-align: center;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .input-group input:focus {
+            border-color: var(--primary);
+        }
+
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+        }
+
+        .btn:hover {
+            background: var(--primary-hover);
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-restart {
+            background: var(--text-muted);
+        }
+        .btn-restart:hover {
+            background: var(--text-main);
+        }
+
+        .message-box {
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-align: center;
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .message-box.success {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #34d399;
+            display: block;
+        }
+
+        .message-box.warning {
+            background: #fef3c7;
+            color: #92400e;
+            border: 1px solid #fbbf24;
+            display: block;
+        }
+
+        .message-box.error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #f87171;
+            display: block;
+        }
+
+        .theory-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .theory-card {
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .theory-card h3 {
+            color: var(--primary);
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .theory-card p {
+            color: var(--text-muted);
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        .highlight-box {
+            background: #e0e7ff;
+            color: var(--primary);
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>EBOB Atölyesi & Bölme Laboratuvarı</h1>
+            <p>En Büyük Ortak Bölen kavramını gerçek dünya senaryolarıyla keşfedin.</p>
+        </header>
+
+        <div class="nav-tabs">
+            <button class="tab-btn active" onclick="switchTab('sim')">Atölye Simülasyonu</button>
+            <button class="tab-btn" onclick="switchTab('theory')">Pratik Bilgiler & Taktikler</button>
+        </div>
+
+        <!-- TAB 1: SİMÜLASYON -->
+        <div id="sim-tab" class="tab-content active">
+            <div class="sub-nav">
+                <button class="sub-btn active" onclick="switchSubSim('pack')">Konsept 1: Hediye Paketleme</button>
+                <button class="sub-btn" onclick="switchSubSim('book')">Konsept 2: Kitap Okuma Planı</button>
+            </div>
+
+            <!-- KONSEPT 1: PAKETLEME -->
+            <div id="pack-sim" class="sim-container active">
+                <div class="stage-info">
+                    <span class="stage-title" id="pack-stage-title">Aşama 1 / 4</span>
+                    <div class="stage-dots" id="pack-dots">
+                        <div class="dot active"></div>
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                    </div>
+                </div>
+
+                <div class="workspace">
+                    <div class="panel">
+                        <span class="panel-title">Hammadde Alanı (Gelen Ürünler)</span>
+                        <div id="pack-raw" class="item-pool"></div>
+                    </div>
+                    <div class="panel">
+                        <span class="panel-title">Ayrı Paketleme Alanı (Karıştırılmadan)</span>
+                        <div id="pack-target" class="item-pool">
+                            <span style="color:var(--text-muted); font-size:0.9rem;">(Doğru değer girildiğinde kutular ayrı ayrı gösterilecektir)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="control-area">
+                    <div class="input-group">
+                        <label for="pack-input" style="font-weight: 600; font-size: 0.95rem;">Kutu Başına Düşen Nesne Sayısı (Tahmininiz):</label>
+                        <input type="number" id="pack-input" placeholder="Sayı girin">
+                        <button class="btn" onclick="checkPackAnswer()">Kontrol Et</button>
+                        <button class="btn btn-restart" onclick="resetPackSim()">🔄 Yeniden Başlat</button>
+                    </div>
+                    <div id="pack-msg" class="message-box"></div>
+                </div>
+            </div>
+
+            <!-- KONSEPT 2: KİTAP -->
+            <div id="book-sim" class="sim-container">
+                <div class="stage-info">
+                    <span class="stage-title" id="book-stage-title">Aşama 1 / 4</span>
+                    <div class="stage-dots" id="book-dots">
+                        <div class="dot active"></div>
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                    </div>
+                </div>
+
+                <div class="workspace">
+                    <div class="panel">
+                        <span class="panel-title">Okunacak Kitap Sayfaları</span>
+                        <div id="book-raw" class="item-pool"></div>
+                    </div>
+                    <div class="panel">
+                        <span class="panel-title">Günlük Planlanan Sayfa Dağılımı</span>
+                        <div id="book-target" class="item-pool">
+                            <span style="color:var(--text-muted); font-size:0.9rem;">(Doğru değer girildiğinde günlük plan gösterilecektir)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="control-area">
+                    <div class="input-group">
+                        <label for="book-input" style="font-weight: 600; font-size: 0.95rem;">Her Gün Okunacak Sayfa Sayısı (Tahmininiz):</label>
+                        <input type="number" id="book-input" placeholder="Sayı girin">
+                        <button class="btn" onclick="checkBookAnswer()">Kontrol Et</button>
+                        <button class="btn btn-restart" onclick="resetBookSim()">🔄 Yeniden Başlat</button>
+                    </div>
+                    <div id="book-msg" class="message-box"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 2: TEORİ -->
+        <div id="theory-tab" class="tab-content">
+            <div class="theory-grid">
+                <div class="theory-card">
+                    <h3>🎁 EBOB Nedir?</h3>
+                    <p>İki veya daha fazla doğal sayının ortak bölenlerinin en büyüğüne o sayıların <strong>En Büyük Ortak Böleni (EBOB)</strong> denir.</p>
+                    <div class="highlight-box">Atölye Kuralı: Nesneler kesinlikle birbirine karıştırılmaz; her tür kendi içinde eşit paketlere ayrılır.</div>
+                </div>
+                <div class="theory-card">
+                    <h3>📦 Hangi Durumlarda Kullanılır?</h3>
+                    <p>• Çeşitli malzemeler birbirine karıştırılmadan eşit büyüklükte kutulara/paketlere konulacaksa,<br>• Tarlaların etrafına eşit aralıklarla direk dikilecekse,<br>• Farklı uzunluktaki tahtalar hiç artmayacak şekilde eşit parçalara bölünecekse EBOB kullanılır.</p>
+                </div>
+                <div class="theory-card">
+                    <h3>💡 Pratik Taktikler</h3>
+                    <p>1. Ortak bölenleri bulurken küçük sayının bölenlerinden başlamak işinizi hızlandırır.<br>2. Bulduğunuz sayı her iki miktarı da tam bölmelidir (kalan sıfır olmalı).<br>3. "İşi görür ama daha büyüğü var" uyarısı alıyorsanız, bulduğunuz sayı bir ortak börendir ancak <em>en büyüğü</em> değildir.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+            if (tabId === 'sim') {
+                document.querySelector('.tab-btn:nth-child(1)').classList.add('active');
+                document.getElementById('sim-tab').classList.add('active');
+            } else {
+                document.querySelector('.tab-btn:nth-child(2)').classList.add('active');
+                document.getElementById('theory-tab').classList.add('active');
+            }
+        }
+
+        function switchSubSim(subId) {
+            document.querySelectorAll('.sub-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.sim-container').forEach(sim => sim.classList.remove('active'));
+
+            if (subId === 'pack') {
+                document.querySelectorAll('.sub-btn')[0].classList.add('active');
+                document.getElementById('pack-sim').classList.add('active');
+            } else {
+                document.querySelectorAll('.sub-btn')[1].classList.add('active');
+                document.getElementById('book-sim').classList.add('active');
+            }
+        }
+
+        function calculateGCD(a, b) {
+            while (b !== 0) {
+                let temp = b;
+                b = a % b;
+                a = temp;
+            }
+            return a;
+        }
+
+        // --- KONSEPT 1: HEDİYE PAKETLEME (NESNELER KARIŞTIRILMAZ) ---
+        const packStages = [
+            { item1: 12, item2: 18, name1: "Kırmızı Kalem", name2: "Mavi Kalem", icon1: "🖍️", icon2: "🖊️" },
+            { item1: 24, item2: 30, name1: "Futbol Oyuncağı", name2: "Basket Oyuncağı", icon1: "⚽", icon2: "🏀" },
+            { item1: 20, item2: 35, name1: "Tükenmez Kalem", name2: "Kurşun Kalem", icon1: "✒️", icon2: "✏️" },
+            { item1: 24, item2: 40, name1: "Robot Oyuncak", name2: "Araba Oyuncak", icon1: "🤖", icon2: "🚗" }
+        ];
+
+        let currentPackStage = 0;
+
+        function initPackStage() {
+            const stage = packStages[currentPackStage];
+            document.getElementById('pack-stage-title').innerText = `Aşama ${currentPackStage + 1} / 4`;
+            
+            const dotsContainer = document.getElementById('pack-dots');
+            dotsContainer.innerHTML = '';
+            for(let i=0; i<4; i++) {
+                let d = document.createElement('div');
+                d.className = `dot ${i < currentPackStage ? 'completed' : (i === currentPackStage ? 'active' : '')}`;
+                dotsContainer.appendChild(d);
+            }
+
+            const rawArea = document.getElementById('pack-raw');
+            rawArea.innerHTML = `
+                <div style="text-align:center; width:100%; font-weight:600; color:var(--text-muted)">
+                    Gelen Hammadde:
+                </div>
+                <div style="display:flex; gap:15px; margin-top:10px; flex-wrap:wrap; justify-content:center;">
+                    <div style="background:white; padding:10px 14px; border-radius:8px; border:1px solid var(--border); display:flex; align-items:center; gap:8px;">
+                        <span style="font-size:20px;">${stage.icon1}</span> <b>${stage.item1}</b> x ${stage.name1}
+                    </div>
+                    <div style="background:white; padding:10px 14px; border-radius:8px; border:1px solid var(--border); display:flex; align-items:center; gap:8px;">
+                        <span style="font-size:20px;">${stage.icon2}</span> <b>${stage.item2}</b> x ${stage.name2}
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('pack-target').innerHTML = '<span style="color:var(--text-muted); font-size:0.9rem;">(Doğru EBOB değeri girildiğinde ayrı kutular gösterilecektir)</span>';
+            document.getElementById('pack-input').value = '';
+            const msgBox = document.getElementById('pack-msg');
+            msgBox.style.display = 'none';
+            msgBox.className = 'message-box';
+        }
+
+        function checkPackAnswer() {
+            const inputVal = parseInt(document.getElementById('pack-input').value);
+            const stage = packStages[currentPackStage];
+            const correctGCD = calculateGCD(stage.item1, stage.item2);
+            const msgBox = document.getElementById('pack-msg');
+            const targetArea = document.getElementById('pack-target');
+
+            if (isNaN(inputVal) || inputVal <= 0) {
+                msgBox.className = 'message-box error';
+                msgBox.innerText = "Lütfen geçerli bir sayı giriniz!";
+                msgBox.style.display = 'block';
+                return;
+            }
+
+            // 1. Durum: Ortak bölen DEĞİL (Hata)
+            if (stage.item1 % inputVal !== 0 || stage.item2 % inputVal !== 0) {
+                targetArea.innerHTML = '<span style="color:var(--text-muted); font-size:0.9rem;">(Doğru EBOB değeri girildiğinde ayrı kutular gösterilecektir)</span>';
+                msgBox.className = 'message-box error';
+                msgBox.innerText = `❌ Hatalı! ${inputVal} sayısı her iki ürünü de tam bölmez. Nesneler artar veya tam paylaşılmaz!`;
+                msgBox.style.display = 'block';
+                return;
+            }
+
+            // 2. Durum: Doğru EBOB
+            if (inputVal === correctGCD) {
+                msgBox.className = 'message-box success';
+                msgBox.innerText = `🎉 Harika! ${inputVal} doğru EBOB değeridir. Ürünler birbirine karıştırılmadan kendi içinde en büyük eşit kutulara ayrıldı!`;
+                msgBox.style.display = 'block';
+                renderPackSuccess(inputVal, stage);
+                
+                setTimeout(() => {
+                    currentPackStage++;
+                    if (currentPackStage < packStages.length) {
+                        initPackStage();
+                    } else {
+                        msgBox.innerText += " 🏆 Tüm aşamaları başarıyla tamamladınız!";
+                    }
+                }, 3500);
+
+            } 
+            // 3. Durum: Ortak bölen ancak EBOB değil (Uyarı)
+            else if (inputVal < correctGCD) {
+                msgBox.className = 'message-box warning';
+                msgBox.innerText = `⚠️ İşi görür (${inputVal}şerli kutular yapılabilir) ancak daha büyük bir ortak bölen (EBOB: ${correctGCD}) vardır!`;
+                msgBox.style.display = 'block';
+                renderPackSuccess(inputVal, stage);
+            }
+        }
+
+        function renderPackSuccess(divisor, stage) {
+            const targetArea = document.getElementById('pack-target');
+            targetArea.innerHTML = '';
+            
+            let boxes1 = stage.item1 / divisor;
+            let boxes2 = stage.item2 / divisor;
+
+            let containerDiv = document.createElement('div');
+            containerDiv.style.cssText = "display:flex; flex-direction:column; gap:10px; width:100%; align-items:center; max-height:300px; overflow-y:auto; padding:5px;";
+
+            // 1. Ürün Kutu Grubu
+            let title1 = document.createElement('div');
+            title1.style.cssText = "font-weight:600; font-size:0.8rem; color:var(--primary); align-self:flex-start;";
+            title1.innerText = `📦 ${stage.name1} Kutuları (${boxes1} kutu, her birinde ${divisor} adet):`;
+            containerDiv.appendChild(title1);
+
+            let row1 = document.createElement('div');
+            row1.style.cssText = "display:flex; flex-wrap:wrap; gap:8px; width:100%; justify-content:center;";
+            for(let i=0; i<boxes1; i++) {
+                let box = document.createElement('div');
+                box.className = 'item-box';
+                box.innerHTML = `<span style="font-size:9px; font-weight:bold; width:100%; text-align:center; color:var(--primary)">${stage.name1} #${i+1}</span>`;
+                for(let p=0; p<divisor; p++) {
+                    let pEl = document.createElement('div');
+                    pEl.className = 'dynamic-icon';
+                    pEl.innerText = stage.icon1;
+                    box.appendChild(pEl);
+                }
+                row1.appendChild(box);
+            }
+            containerDiv.appendChild(row1);
+
+            // 2. Ürün Kutu Grubu (Ayrı ve karıştırılmadan)
+            let title2 = document.createElement('div');
+            title2.style.cssText = "font-weight:600; font-size:0.8rem; color:var(--secondary); align-self:flex-start; margin-top:5px;";
+            title2.innerText = `📦 ${stage.name2} Kutuları (${boxes2} kutu, her birinde ${divisor} adet):`;
+            containerDiv.appendChild(title2);
+
+            let row2 = document.createElement('div');
+            row2.style.cssText = "display:flex; flex-wrap:wrap; gap:8px; width:100%; justify-content:center;";
+            for(let i=0; i<boxes2; i++) {
+                let box = document.createElement('div');
+                box.className = 'item-box';
+                box.style.borderColor = 'var(--secondary)';
+                box.innerHTML = `<span style="font-size:9px; font-weight:bold; width:100%; text-align:center; color:var(--secondary)">${stage.name2} #${i+1}</span>`;
+                for(let t=0; t<divisor; t++) {
+                    let tEl = document.createElement('div');
+                    tEl.className = 'dynamic-icon';
+                    tEl.innerText = stage.icon2;
+                    box.appendChild(tEl);
+                }
+                row2.appendChild(box);
+            }
+            containerDiv.appendChild(row2);
+
+            targetArea.appendChild(containerDiv);
+        }
+
+        function resetPackSim() {
+            currentPackStage = 0;
+            initPackStage();
+        }
+
+
+        // --- KONSEPT 2: KİTAP OKUMA PLANI ---
+        const bookStages = [
+            { book1: 18, book2: 24, name1: "Matematik Kitabı", name2: "Fen Kitabı", icon1: "📖", icon2: "📘" },
+            { book1: 20, book2: 30, name1: "Hikaye Kitabı", name2: "Roman Kitabı", icon1: "📙", icon2: "📚" },
+            { book1: 28, book2: 42, name1: "Sosyal Kitabı", name2: "Türkçe Kitabı", icon1: "📓", icon2: "📔" },
+            { book1: 36, book2: 48, name1: "Bilim Dergisi", name2: "Tarih Dergisi", icon1: "📰", icon2: "📜" }
+        ];
+
+        let currentBookStage = 0;
+
+        function initBookStage() {
+            const stage = bookStages[currentBookStage];
+            document.getElementById('book-stage-title').innerText = `Aşama ${currentBookStage + 1} / 4`;
+            
+            const dotsContainer = document.getElementById('book-dots');
+            dotsContainer.innerHTML = '';
+            for(let i=0; i<4; i++) {
+                let d = document.createElement('div');
+                d.className = `dot ${i < currentBookStage ? 'completed' : (i === currentBookStage ? 'active' : '')}`;
+                dotsContainer.appendChild(d);
+            }
+
+            const rawArea = document.getElementById('book-raw');
+            rawArea.innerHTML = `
+                <div style="text-align:center; width:100%; font-weight:600; color:var(--text-muted)">
+                    Hedef Kitaplar:
+                </div>
+                <div style="display:flex; gap:15px; margin-top:10px; flex-wrap:wrap; justify-content:center;">
+                    <div style="background:white; padding:10px 14px; border-radius:8px; border:1px solid var(--border); display:flex; align-items:center; gap:8px;">
+                        <span style="font-size:20px;">${stage.icon1}</span> <b>${stage.name1}</b> (${stage.book1} sf)
+                    </div>
+                    <div style="background:white; padding:10px 14px; border-radius:8px; border:1px solid var(--border); display:flex; align-items:center; gap:8px;">
+                        <span style="font-size:20px;">${stage.icon2}</span> <b>${stage.name2}</b> (${stage.book2} sf)
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('book-target').innerHTML = '<span style="color:var(--text-muted); font-size:0.9rem;">(Doğru değer girildiğinde günlük plan gösterilecektir)</span>';
+            document.getElementById('book-input').value = '';
+            const msgBox = document.getElementById('book-msg');
+            msgBox.style.display = 'none';
+            msgBox.className = 'message-box';
+        }
+
+        function checkBookAnswer() {
+            const inputVal = parseInt(document.getElementById('book-input').value);
+            const stage = bookStages[currentBookStage];
+            const correctGCD = calculateGCD(stage.book1, stage.book2);
+            const msgBox = document.getElementById('book-msg');
+            const targetArea = document.getElementById('book-target');
+
+            if (isNaN(inputVal) || inputVal <= 0) {
+                msgBox.className = 'message-box error';
+                msgBox.innerText = "Lütfen geçerli bir sayı giriniz!";
+                msgBox.style.display = 'block';
+                return;
+            }
+
+            if (stage.book1 % inputVal !== 0 || stage.book2 % inputVal !== 0) {
+                targetArea.innerHTML = '<span style="color:var(--text-muted); font-size:0.9rem;">(Doğru değer girildiğinde günlük plan gösterilecektir)</span>';
+                msgBox.className = 'message-box error';
+                msgBox.innerText = `❌ Hatalı! Her gün ${inputVal} sayfa okunursa kitaplar tam günde bitmez, artan sayfalar kalır.`;
+                msgBox.style.display = 'block';
+                return;
+            }
+
+            if (inputVal === correctGCD) {
+                msgBox.className = 'message-box success';
+                msgBox.innerText = `🎉 Harika! ${inputVal} doğru EBOB değeridir. İki kitap da tam günde eşit sayfalarla biter!`;
+                msgBox.style.display = 'block';
+                renderBookSuccess(inputVal, stage);
+                
+                setTimeout(() => {
+                    currentBookStage++;
+                    if (currentBookStage < bookStages.length) {
+                        initBookStage();
+                    } else {
+                        msgBox.innerText += " 🏆 Tüm aşamaları başarıyla tamamladınız!";
+                    }
+                }, 3500);
+
+            } else if (inputVal < correctGCD) {
+                msgBox.className = 'message-box warning';
+                msgBox.innerText = `⚠️ İşi görür (her gün ${inputVal} sayfa okunabilir) fakat daha büyük ortak bölen (EBOB: ${correctGCD}) vardır!`;
+                msgBox.style.display = 'block';
+                renderBookSuccess(inputVal, stage);
+            }
+        }
+
+        function renderBookSuccess(dailyPages, stage) {
+            const targetArea = document.getElementById('book-target');
+            targetArea.innerHTML = '';
+            
+            let days1 = stage.book1 / dailyPages;
+            let days2 = stage.book2 / dailyPages;
+
+            targetArea.innerHTML = `
+                <div style="display:flex; flex-direction:column; gap:10px; width:100%; align-items:center;">
+                    <div style="background:white; padding:10px 14px; border-radius:8px; border:1px solid var(--border); width:100%; text-align:center; font-size:0.9rem;">
+                        📅 Her gün <b>${dailyPages} sayfa</b> okunursa:
+                    </div>
+                    <div style="display:flex; gap:12px; flex-wrap:wrap; justify-content:center;">
+                        <div style="background:#e0e7ff; color:var(--primary); padding:8px 12px; border-radius:6px; font-weight:600; display:flex; align-items:center; gap:6px; font-size:0.9rem;">
+                            <span>${stage.icon1}</span> ${stage.name1}: ${days1} günde biter.
+                        </div>
+                        <div style="background:#cffafe; color:#0e7490; padding:8px 12px; border-radius:6px; font-weight:600; display:flex; align-items:center; gap:6px; font-size:0.9rem;">
+                            <span>${stage.icon2}</span> ${stage.name2}: ${days2} günde biter.
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function resetBookSim() {
+            currentBookStage = 0;
+            initBookStage();
+        }
+
+        window.onload = function() {
+            initPackStage();
+            initBookStage();
+        };
+    </script>
+</body>
+</html>

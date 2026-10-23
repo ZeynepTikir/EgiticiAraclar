@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EBOB Atölyesi - Çarpanlar ve Katlar</title>
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-dark: #3a0ca3;
+            --secondary: #4cc9f0;
+            --accent: #f72585;
+            --success: #4ade80;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --dark: #1e1b4b;
+            --light: #f8fafc;
+            --card-bg: #ffffff;
+            --border-radius: 16px;
+            --box-shadow: 0 10px 25px -5px rgba(67, 97, 238, 0.15), 0 8px 10px -6px rgba(67, 97, 238, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            user-select: none;
+        }
+
+        body {
+            background-color: #f0f4f8;
+            color: var(--dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            border: 2px solid rgba(76, 201, 240, 0.2);
+        }
+
+        /* ÜST HUD */
+        .hud {
+            background: linear-gradient(135deg, var(--dark), var(--primary-dark));
+            color: white;
+            padding: 15px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            border-bottom: 4px solid var(--secondary);
+        }
+
+        .hud-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+
+        .hud-stats {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .stat-badge {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .hud-controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.1);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-warning { background: var(--warning); color: var(--dark); }
+        .btn-success { background: var(--success); color: var(--dark); }
+        .btn-danger { background: var(--danger); }
+
+        /* SEKMELER */
+        .tabs {
+            display: flex;
+            background: #e2e8f0;
+            padding: 10px 20px 0 20px;
+            gap: 10px;
+        }
+
+        .tab-btn {
+            padding: 12px 25px;
+            border: none;
+            background: #cbd5e1;
+            color: #64748b;
+            font-weight: 700;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .tab-btn.active {
+            background: var(--card-bg);
+            color: var(--primary);
+            box-shadow: 0 -4px 10px rgba(0,0,0,0.05);
+        }
+
+        /* İÇERİK ALANLARI */
+        .tab-content {
+            display: none;
+            padding: 25px;
+            min-height: 500px;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .tab-content.active {
+            display: flex;
+        }
+
+        /* ATÖLYE (SEKME 1) */
+        .workshop-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            flex: 1;
+        }
+
+        @media (max-width: 768px) {
+            .workshop-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .panel {
+            background: var(--light);
+            border-radius: 12px;
+            padding: 20px;
+            border: 2px dashed #cbd5e1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        .panel-title {
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            text-align: center;
+        }
+
+        /* Müşteri İstek Kartı */
+        .customer-card {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            width: 100%;
+            text-align: center;
+            margin-bottom: 15px;
+            border-left: 5px solid var(--accent);
+        }
+
+        /* Tahta/Çerçeve Kesim Alanı */
+        .cutting-board {
+            width: 100%;
+            height: 220px;
+            background: #fff;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid #e2e8f0;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .wood-plank {
+            background: linear-gradient(90deg, #deb887, #d2b48c, #bc8f8f);
+            border: 2px solid #8b4513;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #4a2f00;
+            transition: all 0.3s ease;
+            position: relative;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .wood-grid-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: linear-gradient(rgba(0,0,0,0.1) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(0,0,0,0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        /* Kontrol Panelleri */
+        .controls-box {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        .input-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid #cbd5e1;
+        }
+
+        .input-group label {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .input-group input {
+            width: 70px;
+            padding: 5px;
+            border: 1px solid #94a3b8;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1rem;
+        }
+
+        /* REHBER (SEKME 2) */
+        .guide-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+        }
+
+        .guide-card {
+            background: var(--light);
+            border-radius: 12px;
+            padding: 20px;
+            border-top: 5px solid var(--primary);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .guide-card h3 {
+            color: var(--primary-dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .guide-card p, .guide-card li {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #334155;
+        }
+
+        .guide-card ul {
+            padding-left: 20px;
+        }
+
+        .formula-box {
+            background: white;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #cbd5e1;
+            font-family: monospace;
+            font-weight: bold;
+            color: var(--accent);
+            text-align: center;
+            font-size: 1.1rem;
+        }
+
+        /* Modal / Geri Bildirim */
+        .feedback-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .feedback-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .feedback-modal {
+            background: white;
+            padding: 30px;
+            border-radius: var(--border-radius);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.2);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .feedback-overlay.show .feedback-modal {
+            transform: scale(1);
+        }
+
+        .feedback-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .feedback-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .feedback-desc {
+            color: #64748b;
+            margin-bottom: 20px;
+        }
+
+        /* Durduruldu Ekranı */
+        .pause-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(30, 27, 75, 0.85);
+            backdrop-filter: blur(5px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            color: white;
+            gap: 15px;
+            transition: opacity 0.3s;
+        }
+
+        .pause-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- ÜST HUD -->
+        <div class="hud">
+            <div class="hud-title">
+                <span>🪵</span> EBOB Atölyesi (Ortak Bölenlerin En Büyüğü)
+            </div>
+            <div class="hud-stats">
+                <div class="stat-badge">
+                    <span>🏆</span> Puan: <span id="scoreVal">0</span>
+                </div>
+                <div class="stat-badge">
+                    <span>❤️</span> Hak: <span id="livesVal">3</span>
+                </div>
+            </div>
+            <div class="hud-controls">
+                <button class="btn btn-warning" id="pauseBtn" onclick="togglePause()">Durdur</button>
+                <button class="btn btn-danger" onclick="resetGame()">Yeniden Başla</button>
+            </div>
+        </div>
+
+        <!-- SEKMELER -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab(0)">Atölye Simülasyonu</button>
+            <button class="tab-btn" onclick="switchTab(1)">Pratik Bilgiler & Formüller</button>
+        </div>
+
+        <!-- SEKME 1: ATÖLYE -->
+        <div class="tab-content active" id="tab0" style="position: relative;">
+            
+            <!-- Durduruldu Perdesi -->
+            <div class="pause-overlay hidden" id="pauseOverlay">
+                <h2>Simülasyon Durduruldu</h2>
+                <p>Dinlenebilir veya bilgileri gözden geçirebilirsin. Hakların ve puanın güvende!</p>
+                <button class="btn btn-success" onclick="togglePause()">Devam Et</button>
+            </div>
+
+            <div class="customer-card" id="customerRequest">
+                <h3 id="questTitle">Sipariş Yükleniyor...</h3>
+                <p id="questDesc">Müşterinin talebini okuyun ve tahtaları hiç artmayacak şekilde en büyük eşit parçalara ayırın.</p>
+            </div>
+
+            <div class="workshop-layout">
+                <!-- Sol Panel: Hammadde -->
+                <div class="panel">
+                    <div class="panel-title">1. Hammadde (Tahta Parçaları)</div>
+                    <div class="cutting-board" id="rawBoardArea">
+                        <div class="wood-grid-overlay"></div>
+                        <div id="visualWood" class="wood-plank">AÇIKLAMA</div>
+                    </div>
+                    <div style="margin-top: 10px; font-size: 0.85rem; color: #64748b; text-align: center;">
+                        Farklı uzunluktaki bu tahtaları hiç parça artmayacak şekilde eş boyutta kesmeliyiz.
+                    </div>
+                </div>
+
+                <!-- Sağ Panel: Kesim İşlemi & Kontrol -->
+                <div class="panel">
+                    <div class="panel-title">2. Kesim ve Eşleştirme Alanı</div>
+                    
+                    <div class="cutting-board" id="cutResultArea" style="background: #e2e8f0; border-style: dashed;">
+                        <span id="resultPlaceholder" style="color: #94a3b8; font-weight: 600; text-align: center; padding: 10px;">
+                            Parça boyunu aşağıdan ayarlayıp "Kes ve Teslim Et" butonuna bas.
+                        </span>
+                    </div>
+
+                    <div class="controls-box">
+                        <div class="input-group">
+                            <label>Parça Boyu (cm):</label>
+                            <div>
+                                <button class="btn" style="padding: 2px 8px;" onclick="adjustSize(-1)">-</button>
+                                <input type="number" id="pieceSizeInput" value="1" min="1" max="100" onchange="validateInput()">
+                                <button class="btn" style="padding: 2px 8px;" onclick="adjustSize(1)">+</button>
+                            </div>
+                        </div>
+                        <button class="btn btn-success" style="width: 100%; padding: 12px;" onclick="checkSolution()">Kes ve Müşteriye Teslim Et ✂️</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SEKME 2: REHBER -->
+        <div class="tab-content" id="tab1">
+            <div class="guide-grid">
+                <div class="guide-card">
+                    <h3><span>🔍</span> EBOB Nedir?</h3>
+                    <p>İki veya daha fazla doğal sayının ortak bölenlerinin en büyüğüne o sayıların <b>En Büyük Ortak Böleni (EBOB)</b> denir.</p>
+                    <div class="formula-box">EBOB(A, B)</div>
+                </div>
+
+                <div class="guide-card">
+                    <h3><span>✂️</span> Hangi Durumlarda Kullanılır?</h3>
+                    <p>Günlük hayatta şu tip problemlerde EBOB kullanılır:</p>
+                    <ul>
+                        <li>Çuvallardaki malzemeler (pirinç, un vb.) eşit poşetlere hiç artmayacak şekilde doldurulacaksa,</li>
+                        <li>Farklı uzunluktaki tahtalar, demir çubuklar eşit boylarda kesilecekse,</li>
+                        <li>Tarlaların etrafına eşit aralıklarla ağaç dikilecekse.</li>
+                    </ul>
+                </div>
+
+                <div class="guide-card">
+                    <h3><span>💡</span> Nasıl Bulunur?</h3>
+                    <p>Sayıların ortak bölenleri listelenir veya asal çarpanlarına ayrılarak ortak olanların en küçüğe sahip olanları çarpılır.</p>
+                    <div class="formula-box">Asal Çarpanların Ortakları Çarpımı</div>
+                </div>
+
+                <div class="guide-card">
+                    <h3><span>⚠️</span> Atölye İpuçları</h3>
+                    <p>Bu simülasyonda başarılı olmak için:</p>
+                    <ul>
+                        <li>Seçtiğin parça boyu, verilen tahta uzunluklarını tam bölmelidir (Kalan = 0).</li>
+                        <li>En büyük boyu bulmalısın (EBOB). Daha küçük ortak bölenler de kesim sağlar ancak puanı düşürür veya görevi eksik bırakır!</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- GERİ BİLDİRİM MODALI -->
+    <div class="feedback-overlay" id="feedbackOverlay">
+        <div class="feedback-modal">
+            <div class="feedback-icon" id="fbIcon">🎉</div>
+            <div class="feedback-title" id="fbTitle">Tebrikler!</div>
+            <div class="feedback-desc" id="fbDesc">Doğru kesim yaptın.</div>
+            <button class="btn" onclick="nextLevel()">Sonraki Sipariş 🚀</button>
+        </div>
+    </div>
+
+    <script>
+        // Oyun Durum Değişkenleri
+        let score = 0;
+        let lives = 3;
+        let isPaused = false;
+        let currentWoodA = 24;
+        let currentWoodB = 36;
+        let currentEBOB = 12;
+
+        // Sekme Değiştirme
+        function switchTab(index) {
+            const contents = document.querySelectorAll('.tab-content');
+            const buttons = document.querySelectorAll('.tab-btn');
+            
+            contents.forEach((c, i) => {
+                c.classList.toggle('active', i === index);
+            });
+            buttons.forEach((b, i) => {
+                b.classList.toggle('active', i === index);
+            });
+        }
+
+        // Durdur / Devam Et
+        function togglePause() {
+            isPaused = !isPaused;
+            const overlay = document.getElementById('pauseOverlay');
+            const pauseBtn = document.getElementById('pauseBtn');
+            
+            if (isPaused) {
+                overlay.classList.remove('hidden');
+                pauseBtn.textContent = "Devam Et";
+                pauseBtn.classList.remove('btn-warning');
+                pauseBtn.classList.add('btn-success');
+            } else {
+                overlay.classList.add('hidden');
+                pauseBtn.textContent = "Durdur";
+                pauseBtn.classList.remove('btn-success');
+                pauseBtn.classList.add('btn-warning');
+            }
+        }
+
+        // EBOB Hesaplama Yardımı (Asal Çarpanların Ortakları veya Euclidean Algoritması)
+        function calculateGCD(a, b) {
+            while (b) {
+                let t = b;
+                b = a % b;
+                a = t;
+            }
+            return a;
+        }
+
+        // Yeni Seviye / Görev Üret
+        function generateNewQuest() {
+            // Rastgele çarpanlar seçerek anlamlı EBOB senaryoları üretelim
+            // Örn: k * x ve k * y
+            const commonFactors = [2, 3, 4, 5, 6];
+            const k = commonFactors[Math.floor(Math.random() * commonFactors.length)];
+            
+            const multipliers = [[2, 3], [3, 4], [2, 5], [3, 5], [4, 5], [2, 7]];
+            const pair = multipliers[Math.floor(Math.random() * multipliers.length)];
+            
+            // Çarpımların aralarında asal olmasına dikkat edelim ki EBOB tam k olsun veya çarpanı net olsun
+            currentWoodA = k * pair[0] * (Math.random() > 0.5 ? 1 : 2);
+            currentWoodB = k * pair[1] * (Math.random() > 0.5 ? 1 : 2);
+            
+            // Gerçek EBOB
+            currentEBOB = calculateGCD(currentWoodA, currentWoodB);
+
+            // Arayüzü Güncelle
+            document.getElementById('questTitle').textContent = `Müşteri İsteği: Ahşap Paneller`;
+            document.getElementById('questDesc').textContent = `Elimizde ${currentWoodA} cm ve ${currentWoodB} cm uzunluğunda iki tahta var. Bu tahtalar hiç artmayacak şekilde EŞİT ve EN BÜYÜK boylarda kesilmelidir. Parça boyu kaç cm olmalıdır?`;
+
+            // Görsel Tahtayı Ayarla
+            const visualWood = document.getElementById('visualWood');
+            visualWood.style.width = '80%';
+            visualWood.style.height = '60px';
+            visualWood.innerHTML = `Tahta 1: ${currentWoodA} cm | Tahta 2: ${currentWoodB} cm`;
+
+            // Sonuç alanını sıfırla
+            document.getElementById('cutResultArea').innerHTML = `
+                <span id="resultPlaceholder" style="color: #94a3b8; font-weight: 600; text-align: center; padding: 10px;">
+                    Parça boyunu aşağıdan ayarlayıp "Kes ve Teslim Et" butonuna bas.
+                </span>`;
+            
+            document.getElementById('pieceSizeInput').value = 1;
+        }
+
+        function adjustSize(amount) {
+            if (isPaused) return;
+            const input = document.getElementById('pieceSizeInput');
+            let val = parseInt(input.value) + amount;
+            if (val < 1) val = 1;
+            input.value = val;
+        }
+
+        function validateInput() {
+            const input = document.getElementById('pieceSizeInput');
+            if (input.value < 1) input.value = 1;
+        }
+
+        // Çözümü Kontrol Et
+        function checkSolution() {
+            if (isPaused) return;
+
+            const userGuess = parseInt(document.getElementById('pieceSizeInput').value);
+            const resultArea = document.getElementById('cutResultArea');
+            
+            // Kontroller:
+            // 1. Her iki tahta da bu boya tam bölünüyor mu?
+            const dividesA = (currentWoodA % userGuess === 0);
+            const dividesB = (currentWoodB % userGuess === 0);
+
+            let icon = "❌";
+            let title = "Hatalı Kesim!";
+            let desc = "";
+
+            if (!dividesA || !dividesB) {
+                lives--;
+                title = "Parçalar Artıyor!";
+                desc = `${userGuess} cm boyunda kesim yapamazsın çünkü tahtalardan biri veya ikisi tam bölünmüyor ve parça artıyor!`;
+                icon = "🪵⚠️";
+            } else if (userGuess < currentEBOB) {
+                // Bölünüyor ama en büyük değil
+                lives--;
+                title = "Daha Büyük Kesebilirsin!";
+                desc = `${userGuess} cm ortak bir bölen evet, tahtalar tam bölünüyor. ANCAK müşteri *en büyük* eşit boyu istiyor. Daha büyük bir parça seçmelisin! (EBOB'u bul)`;
+                icon = "📏💡";
+            } else if (userGuess === currentEBOB) {
+                // Mükemmel!
+                score += 20;
+                title = "Harika İş, Mükemmel EBOB!";
+                desc = `Tebrikler! ${currentWoodA} cm ve ${currentWoodB} cm tahtaları hiç artmayacak şekilde tam ${currentEBOB} cm'lik parçalara ayırdın.`;
+                icon = "🎉🏆";
+            } else {
+                // EBOB'dan büyük girmiş (zaten bölünmezdi ama güvenlik amaçlı)
+                lives--;
+                title = "Çok Büyük Seçim!";
+                desc = `${userGuess} cm boyu, tahtaların uzunluğundan büyük olamaz!`;
+                icon = "❌";
+            }
+
+            // HUD Güncelle
+            document.getElementById('scoreVal').textContent = score;
+            document.getElementById('livesVal').textContent = lives;
+
+            // Görsel Kesim Animasyon Simülasyonu
+            if (dividesA && dividesB && userGuess === currentEBOB) {
+                let piecesA = currentWoodA / userGuess;
+                let piecesB = currentWoodB / userGuess;
+                resultArea.innerHTML = `
+                    <div style="display:flex; flex-direction:column; gap:5px; width:100%; align-items:center;">
+                        <div style="font-size:0.85rem; color:#166534; font-weight:bold;">1. Tahta: ${piecesA} adet ${userGuess}cm'lik parça</div>
+                        <div style="display:flex; gap:2px; width:100%; justify-content:center; overflow-x:auto;">
+                            ${'<div style="background:#4ade80; height:25px; flex:1; border:1px solid #166534; border-radius:4px;"></div>'.repeat(piecesA)}
+                        </div>
+                        <div style="font-size:0.85rem; color:#166534; font-weight:bold; margin-top:5px;">2. Tahta: ${piecesB} adet ${userGuess}cm'lik parça</div>
+                        <div style="display:flex; gap:2px; width:100%; justify-content:center; overflow-x:auto;">
+                            ${'<div style="background:#4ade80; height:25px; flex:1; border:1px solid #166534; border-radius:4px;"></div>'.repeat(piecesB)}
+                        </div>
+                    </div>
+                `;
+            } else {
+                resultArea.innerHTML = `<span style="color: var(--danger); font-weight: bold;">Kesim Başarısız! Tekrar Dene.</span>`;
+            }
+
+            // Modal Göster
+            showFeedback(icon, title, desc, userGuess === currentEBOB);
+
+            if (lives <= 0) {
+                setTimeout(() => {
+                    alert("Hakların bitti! Skorun sıfırlanıyor ancak öğrenmeye devam edebilirsin.");
+                    resetGame();
+                }, 500);
+            }
+        }
+
+        function showFeedback(icon, title, desc, isSuccess) {
+            const overlay = document.getElementById('feedbackOverlay');
+            document.getElementById('fbIcon').textContent = icon;
+            document.getElementById('fbTitle').textContent = title;
+            document.getElementById('fbDesc').textContent = desc;
+            
+            // Eğer başarısızsa butonu "Tekrar Dene" yapalım
+            const nextBtn = overlay.querySelector('button');
+            if(isSuccess) {
+                nextBtn.textContent = "Sonraki Sipariş 🚀";
+                nextBtn.onclick = () => { closeFeedback(); generateNewQuest(); };
+            } else {
+                nextBtn.textContent = "Tekrar Dene 🔄";
+                nextBtn.onclick = () => { closeFeedback(); };
+            }
+
+            overlay.classList.add('show');
+        }
+
+        function closeFeedback() {
+            document.getElementById('feedbackOverlay').classList.remove('show');
+        }
+
+        function resetGame() {
+            score = 0;
+            lives = 3;
+            document.getElementById('scoreVal').textContent = score;
+            document.getElementById('livesVal').textContent = lives;
+            closeFeedback();
+            generateNewQuest();
+        }
+
+        // Başlangıç
+        window.onload = function() {
+            generateNewQuest();
+        };
+    </script>
+</body>
+</html>

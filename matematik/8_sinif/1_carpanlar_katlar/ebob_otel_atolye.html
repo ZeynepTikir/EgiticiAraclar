@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>8. Sınıf Matematik EBOB Atölyesi - Otel Oda Yerleşimi Simülasyonu</title>
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-light: #4895ef;
+            --secondary: #3f37c9;
+            --success: #4cc9f0;
+            --success-dark: #2b9348;
+            --warning: #f77f00;
+            --danger: #d90429;
+            --dark: #212529;
+            --light: #f8f9fa;
+            --card-bg: #ffffff;
+            --border-radius: 16px;
+            --box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f0f4f8;
+            color: var(--dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ÜST BİLGİ VE KONTROL ALANI */
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-title h1 {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-title p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .controls-top {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .btn-restart {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-restart:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* SEKME YAPISI */
+        .tabs-nav {
+            display: flex;
+            background: #e9ecef;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            background: transparent;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #6c757d;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .tab-btn.active {
+            background: white;
+            color: var(--primary);
+            border-bottom: 3px solid var(--primary);
+        }
+
+        .tab-content {
+            display: none;
+            padding: 30px;
+            min-height: 500px;
+        }
+
+        .tab-content.active {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        /* İÇ SEKMELER (Oteller / Senaryolar) */
+        .sub-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .sub-tab-btn {
+            padding: 8px 16px;
+            border: 2px solid var(--primary-light);
+            background: white;
+            color: var(--primary);
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .sub-tab-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .sub-content {
+            display: none;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .sub-content.active {
+            display: flex;
+        }
+
+        /* AŞAMA GÖSTERGESİ VE SENARYO KARTI */
+        .scenario-card {
+            background: #f8f9fa;
+            border-left: 5px solid var(--primary);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+        }
+
+        .scenario-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .stage-indicators {
+            display: flex;
+            gap: 8px;
+        }
+
+        .stage-dot {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #dee2e6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.85rem;
+            color: #6c757d;
+        }
+
+        .stage-dot.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .stage-dot.completed {
+            background: var(--success-dark);
+            color: white;
+        }
+
+        /* GÖRSEL ÇALIŞMA ALANI */
+        .workspace {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            background: #ffffff;
+            border: 2px dashed #cbd5e1;
+            border-radius: 12px;
+            padding: 20px;
+            min-height: 250px;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .empty-workspace-text {
+            color: #94a3b8;
+            font-size: 1.1rem;
+            text-align: center;
+            font-style: italic;
+        }
+
+        .visual-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .room-group {
+            background: #f1f5f9;
+            border: 2px solid #cbd5e1;
+            border-radius: 10px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            min-width: 150px;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .room-title {
+            font-weight: bold;
+            font-size: 0.9rem;
+            color: var(--secondary);
+            border-bottom: 1px solid #cbd5e1;
+            padding-bottom: 4px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .person-icons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            justify-content: center;
+            max-width: 190px;
+        }
+
+        /* ÖZELLEŞTİRİLMİŞ NESNE / İKON STİLLERİ */
+        .person-icon {
+            width: 36px;
+            height: 36px;
+            background: var(--primary-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .person-icon.alt-group {
+            background: var(--warning);
+        }
+
+        /* ETKİLEŞİM VE GİRİŞ ALANI */
+        .input-section {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            justify-content: center;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .input-section label {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .input-section input {
+            padding: 10px 15px;
+            border: 2px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            width: 120px;
+            text-align: center;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .input-section input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.15);
+        }
+
+        .btn-check {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-check:hover {
+            background: var(--secondary);
+        }
+
+        /* GERİ BİLDİRİM MESAJLARI */
+        .feedback-box {
+            padding: 15px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-align: center;
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .feedback-success {
+            background: #d1e7dd;
+            color: #0f5132;
+            border: 1px solid #badbcc;
+            display: block;
+        }
+
+        .feedback-warning {
+            background: #fff3cd;
+            color: #664d03;
+            border: 1px solid #ffecb5;
+            display: block;
+        }
+
+        .feedback-error {
+            background: #f8d7da;
+            color: #842029;
+            border: 1px solid #f5c2c7;
+            display: block;
+        }
+
+        /* PRATİK BİLGİLER SEKMESİ */
+        .guide-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .guide-card {
+            background: #f8f9fa;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .guide-card h3 {
+            color: var(--primary);
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .guide-card p {
+            line-height: 1.6;
+            color: #495057;
+            font-size: 0.95rem;
+        }
+
+        .highlight-formula {
+            background: #eef2ff;
+            color: var(--primary);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-weight: bold;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- ÜST BAR -->
+    <header>
+        <div class="header-title">
+            <h1>🏨 Otel Oda Yerleşimi Atölyesi</h1>
+            <p>8. Sınıf Matematik • EBOB (En Büyük Ortak Bölen) Uygulamaları</p>
+        </div>
+        <div class="controls-top">
+            <button class="btn-restart" onclick="resetApp()">🔄 Yeniden Başlat</button>
+        </div>
+    </header>
+
+    <!-- SEKME BUTONLARI -->
+    <div class="tabs-nav">
+        <button class="tab-btn active" onclick="switchTab(0)">🛠️ Atölye Tezgâhı</button>
+        <button class="tab-btn" onclick="switchTab(1)">📖 Pratik Bilgiler & Taktikler</button>
+    </div>
+
+    <!-- SEKME 1: ATÖLYE TEZGÂHI -->
+    <div class="tab-content active" id="tab-workshop">
+        
+        <!-- OTELLER ARASI GEÇİŞ SEKMELERİ -->
+        <div class="sub-tabs">
+            <button class="sub-tab-btn active" onclick="switchSubTab(0)">Otel A (Gruplar)</button>
+            <button class="sub-tab-btn" onclick="switchSubTab(1)">Otel B (Kategoriler)</button>
+            <button class="sub-tab-btn" onclick="switchSubTab(2)">Otel C (Kat Yerleşimi)</button>
+            <button class="sub-tab-btn" onclick="switchSubTab(3)">Otel D (Büyük Zirve)</button>
+        </div>
+
+        <!-- SENARYO ALANI VE AŞAMALAR -->
+        <div class="scenario-card">
+            <div class="scenario-header">
+                <h3 id="scenario-title">Otel A - 1. Aşama: Temel Oda Dağılımı</h3>
+                <div class="stage-indicators" id="stage-indicators">
+                    <div class="stage-dot active" id="dot-0">1</div>
+                    <div class="stage-dot" id="dot-1">2</div>
+                    <div class="stage-dot" id="dot-2">3</div>
+                    <div class="stage-dot" id="dot-3">4</div>
+                </div>
+            </div>
+            <p id="scenario-desc">Senaryo yükleniyor...</p>
+        </div>
+
+        <!-- GÖRSEL ÇALIŞMA ALANI -->
+        <div class="workspace" id="workspace">
+            <div class="empty-workspace-text" id="empty-text">Henüz tahmin yapılmadı. Doğru odayı bulmak için aşağıya tahminini yaz ve kontrol et!</div>
+            <div class="visual-grid" id="visual-grid" style="display: none;"></div>
+        </div>
+
+        <!-- CEVAP GİRİŞ VE KONTROL -->
+        <div class="input-section">
+            <label for="user-input" id="input-label">Bir odada kaç öğrenci kalmalı?</label>
+            <input type="number" id="user-input" placeholder="Sayı gir">
+            <button class="btn-check" onclick="checkAnswer()">Kontrol Et</button>
+        </div>
+
+        <!-- GERİ BİLDİRİM -->
+        <div class="feedback-box" id="feedback-box"></div>
+
+    </div>
+
+    <!-- SEKME 2: PRATİK BİLGİLER -->
+    <div class="tab-content" id="tab-guide">
+        <div class="guide-grid">
+            <div class="guide-card">
+                <h3>🏨 EBOB Nedir?</h3>
+                <p>İki veya daha fazla doğal sayının ortak bölenlerinin en büyüğüne o sayıların <strong>En Büyük Ortak Böleni (EBOB)</strong> denir.</p>
+                <p>Otel odası yerleşimlerinde grupları eşit ve hiç artmayacak şekilde en büyük kapasiteli odalara yerleştirmek için EBOB kullanılır.</p>
+            </div>
+            <div class="guide-card">
+                <h3>🔍 Ne Zaman EBOB Kullanılır?</h3>
+                <p>• Büyük parçalardan küçük eşit parçalar elde ediliyorsa,</p>
+                <p>• Farklı gruplardaki nesneler / öğrenciler birbirine karıştırılmadan eşit büyüklükte gruplara veya odalara ayrılacaksa,</p>
+                <p>• <span class="highlight-formula">"En büyük", "Eşit sayıda", "Parçalara ayırma"</span> gibi ifadeler geçiyorsa.</p>
+            </div>
+            <div class="guide-card">
+                <h3>⚠️ Ortak Bölenler ve EBOB</h3>
+                <p>Küçük ortak bölenler işinizi görebilir (örneğin 2şerli odalar). Ancak otel kapasitesini en verimli kullanmak ve en az sayıda oda (veya en büyük kapasite) için <span class="highlight-formula">EBOB (En Büyük Ortak Bölen)</span> tercih edilmelidir.</p>
+            </div>
+            <div class="guide-card">
+                <h3>💡 Pratik Taktik</h3>
+                <p>Asal çarpan algoritmasını kullanarak sayıların ortak bölenlerini bulabilirsiniz. Ortak asal çarpanların çarpımı size doğrudan EBOB değerini verecektir.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const hotelsData = [
+        {
+            name: "Otel A",
+            stages: [
+                {
+                    desc: "Otelimize 24 8. sınıf kız ve 36 8. sınıf erkek öğrenci geldi. Farklı sınıflardan öğrenciler her odada eşit sayıda ve birbirine karışmadan kalacaktır. Odalar en çok kaç kişiliktir?",
+                    nums: [24, 36],
+                    ebobs: 12,
+                    unitName: "Öğrenci",
+                    icon: "👤",
+                    icon2: "👤"
+                },
+                {
+                    desc: "Birinci kat için 40 kişilik A grubu ve 60 kişilik B grubu yerleştirilecektir. Gruplar birbirine karışmadan eşit kapasiteli odalara yerleştirilecektir. Bir oda en çok kaç kişi alabilir?",
+                    nums: [40, 60],
+                    ebobs: 20,
+                    unitName: "Öğrenci",
+                    icon: "🧑‍🎓",
+                    icon2: "🧑‍🎓"
+                },
+                {
+                    desc: "Yemekhane salonu için 48 sandalyelik mavi masa grubu ve 72 sandalyelik gri masa grubu kurulacaktır. Masalar eşit sayıda sandalye içerecek şekilde düzenlenecektir. Bir masada en çok kaç sandalye olmalıdır?",
+                    nums: [48, 72],
+                    ebobs: 24,
+                    unitName: "Sandalye",
+                    icon: "🪑",
+                    icon2: "🪑"
+                },
+                {
+                    desc: "Otel bahçesindeki yürüyüş yolu için 54 metre uzunluğunda ahşap blok ve 90 metre uzunluğunda demir blok eşit uzunlukta parçalara bölünecektir. Parçalar en fazla kaç metre olmalıdır?",
+                    nums: [54, 90],
+                    ebobs: 18,
+                    unitName: "Metre",
+                    icon: "🪵",
+                    icon2: "🧱"
+                }
+            ]
+        },
+        {
+            name: "Otel B",
+            stages: [
+                {
+                    desc: "VIP katı için 30 yerli misafir ve 45 yabancı misafir odalara yerleştirilecektir. Her odada eşit sayıda aynı gruptan misafir kalacaktır. Oda kapasitesi en çok kaç olmalıdır?",
+                    nums: [30, 45],
+                    ebobs: 15,
+                    unitName: "Misafir",
+                    icon: "🤵",
+                    icon2: "💼"
+                },
+                {
+                    desc: "Spor salonu için 50 adet futbol topu ve 75 adet basketbol topu raflara eşit şekilde ve türleri karışmadan dizilecektir. Bir rafta en fazla kaç top olmalıdır?",
+                    nums: [50, 75],
+                    ebobs: 25,
+                    unitName: "Top",
+                    icon: "⚽",
+                    icon2: "🏀"
+                },
+                {
+                    desc: "Konferans salonu için 42 adet kırmızı defter ve 56 adet mavi kalem eşit paketlere konulacaktır. Paketlerde en fazla kaç ürün bulunabilir?",
+                    nums: [42, 56],
+                    ebobs: 14,
+                    unitName: "Ürün",
+                    icon: "📔",
+                    icon2: "✏️"
+                },
+                {
+                    desc: "Otel kütüphanesi için 64 tarih kitabı ve 80 bilim kitabı raflara eşit sayıda yerleştirilecektir. Bir rafta en çok kaç kitap bulunmalıdır?",
+                    nums: [64, 80],
+                    ebobs: 16,
+                    unitName: "Kitap",
+                    icon: "📜",
+                    icon2: "🔬"
+                }
+            ]
+        },
+        {
+            name: "Otel C",
+            stages: [
+                {
+                    desc: "Teras katı için 36 kg elma reçeli ve 54 kg çilek reçeli birbirine karıştırılmadan eşit büyüklükteki kavanozlara doldurulacaktır. Bir kavanoz en çok kaç kg alabilir?",
+                    nums: [36, 54],
+                    ebobs: 18,
+                    unitName: "Kilogram",
+                    icon: "🍏",
+                    icon2: "🍓"
+                },
+                {
+                    desc: "Mutfak deposu için 45 litre zeytinyağı ve 75 litre ayçiçek yağı eşit hacimli bidonlara konulacaktır. Bir bidon en fazla kaç litre olmalıdır?",
+                    nums: [45, 75],
+                    ebobs: 15,
+                    unitName: "Litre",
+                    icon: "🫒",
+                    icon2: "🌻"
+                },
+                {
+                    desc: "Temizlik servisi için 28 adet sabun ve 70 adet şampuan eşit setler halinde hazırlanacaktır. Bir sette en çok kaç ürün yer almalıdır?",
+                    nums: [28, 70],
+                    ebobs: 14,
+                    unitName: "Ürün",
+                    icon: "🧼",
+                    icon2: "🧴"
+                },
+                {
+                    desc: "Bahçe sulama sistemi için 60 metre hortum ve 84 metre kablo eşit uzunlukta parçalara ayrılacaktır. Parçaların uzunluğu en fazla kaç metre olmalıdır?",
+                    nums: [60, 84],
+                    ebobs: 12,
+                    unitName: "Metre",
+                    icon: "🔌",
+                    icon2: "🔋"
+                }
+            ]
+        },
+        {
+            name: "Otel D",
+            stages: [
+                {
+                    desc: "Ana bina girişi için 72 adet beyaz lale ve 108 adet kırmızı gül eşit buketler yapılacaktır. Bir buket en çok kaç çiçek içerebilir?",
+                    nums: [72, 108],
+                    ebobs: 36,
+                    unitName: "Çiçek",
+                    icon: "🌷",
+                    icon2: "🌹"
+                },
+                {
+                    desc: "Eğlence salonu için 56 adet çikolatalı kek ve 84 adet meyveli tart eşit tabaklara dizilecektir. Bir tabakta en çok kaç tatlı olmalıdır?",
+                    nums: [56, 84],
+                    ebobs: 28,
+                    unitName: "Tatlı",
+                    icon: "🧁",
+                    icon2: "🥧"
+                },
+                {
+                    desc: "Çocuk kulübü için 40 adet oyuncak araba ve 64 adet yapboz kutusu eşit paketlenecektir. Bir pakette en çok kaç oyuncak olmalıdır?",
+                    nums: [40, 64],
+                    ebobs: 8,
+                    unitName: "Oyuncak",
+                    icon: "🏎️",
+                    icon2: "🧩"
+                },
+                {
+                    desc: "Büyük balo salonu için 96 adet sandalye ve 120 adet masa süsü eşit gruplara ayrılacaktır. Her grupta en çok kaç malzeme olmalıdır?",
+                    nums: [96, 120],
+                    ebobs: 24,
+                    unitName: "Malzeme",
+                    icon: "🛋️",
+                    icon2: "✨"
+                }
+            ]
+        }
+    ];
+
+    let currentHotelIndex = 0;
+    let currentStageIndex = 0;
+
+    function switchTab(index) {
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabBtns.forEach((btn, i) => {
+            if (i === index) btn.classList.add('active');
+            else btn.classList.remove('active');
+        });
+
+        tabContents.forEach((content, i) => {
+            if (i === index) content.classList.add('active');
+            else content.classList.remove('active');
+        });
+    }
+
+    function switchSubTab(index) {
+        currentHotelIndex = index;
+        currentStageIndex = 0;
+
+        const subBtns = document.querySelectorAll('.sub-tab-btn');
+        subBtns.forEach((btn, i) => {
+            if (i === index) btn.classList.add('active');
+            else btn.classList.remove('active');
+        });
+
+        loadStage();
+    }
+
+    function loadStage() {
+        const stageData = hotelsData[currentHotelIndex].stages[currentStageIndex];
+        
+        document.getElementById('scenario-title').innerText = `${hotelsData[currentHotelIndex].name} - ${currentStageIndex + 1}. Aşama`;
+        document.getElementById('scenario-desc').innerText = stageData.desc;
+        document.getElementById('input-label').innerText = `Her bir grupta / pakette kaç ${stageData.unitName.toLowerCase()} olmalı?`;
+        
+        for (let i = 0; i < 4; i++) {
+            const dot = document.getElementById(`dot-${i}`);
+            dot.className = "stage-dot";
+            if (i < currentStageIndex) dot.classList.add('completed');
+            else if (i === currentStageIndex) dot.classList.add('active');
+        }
+
+        document.getElementById('empty-text').style.display = 'block';
+        const visualGrid = document.getElementById('visual-grid');
+        visualGrid.style.display = 'none';
+        visualGrid.innerHTML = '';
+        
+        document.getElementById('user-input').value = '';
+        hideFeedback();
+    }
+
+    function checkAnswer() {
+        const inputVal = parseInt(document.getElementById('user-input').value);
+        const stageData = hotelsData[currentHotelIndex].stages[currentStageIndex];
+
+        if (isNaN(inputVal) || inputVal <= 0) {
+            showFeedback('Lütfen geçerli bir sayı giriniz!', 'error');
+            return;
+        }
+
+        const num1 = stageData.nums[0];
+        const num2 = stageData.nums[1];
+        const trueEbob = stageData.ebobs;
+
+        if (num1 % inputVal === 0 && num2 % inputVal === 0) {
+            if (inputVal === trueEbob) {
+                renderVisuals(inputVal, num1, num2, stageData);
+                showFeedback(`🎉 Harika! ${inputVal} doğru cevap (EBOB). Nesneler tam olarak eşit şekilde yerleşti!`, 'success');
+                
+                setTimeout(() => {
+                    if (currentStageIndex < 3) {
+                        currentStageIndex++;
+                        loadStage();
+                    } else {
+                        showFeedback(`🏆 Tebrikler! ${hotelsData[currentHotelIndex].name} için tüm aşamaları başarıyla tamamladınız!`, 'success');
+                    }
+                }, 3500);
+
+            } else if (trueEbob % inputVal === 0) {
+                renderVisuals(inputVal, num1, num2, stageData);
+                showFeedback(`⚠️ İşi görür fakat daha büyük bir ortak bölen (EBOB) vardır! Daha büyük bir değer deneyebilirsin.`, 'warning');
+            } else {
+                clearVisuals();
+                showFeedback(`❌ Bu sayı her iki grubu da eşit bölmez. Gruplar birbirine karışır veya açıkta kalır!`, 'error');
+            }
+        } else {
+            clearVisuals();
+            showFeedback(`❌ Yanlış cevap! Sahne boş kaldı, tekrar deneyin.`, 'error');
+        }
+    }
+
+    function renderVisuals(perGroup, total1, total2, stageData) {
+        document.getElementById('empty-text').style.display = 'none';
+        const visualGrid = document.getElementById('visual-grid');
+        visualGrid.style.display = 'flex';
+        visualGrid.innerHTML = '';
+
+        const groups1 = total1 / perGroup;
+        const groups2 = total2 / perGroup;
+
+        // 1. Grup Paketleri/Grupları
+        for (let i = 0; i < groups1; i++) {
+            let roomDiv = document.createElement('div');
+            roomDiv.className = 'room-group';
+            roomDiv.innerHTML = `<div class="room-title">1. Grup - Paket ${i+1}</div><div class="person-icons"></div>`;
+            visualGrid.appendChild(roomDiv);
+
+            let iconsContainer = roomDiv.querySelector('.person-icons');
+            for (let p = 0; p < perGroup; p++) {
+                let pIcon = document.createElement('div');
+                pIcon.className = 'person-icon';
+                pIcon.innerText = stageData.icon;
+                iconsContainer.appendChild(pIcon);
+            }
+        }
+
+        // 2. Grup Paketleri/Grupları
+        for (let i = 0; i < groups2; i++) {
+            let roomDiv = document.createElement('div');
+            roomDiv.className = 'room-group';
+            roomDiv.innerHTML = `<div class="room-title">2. Grup - Paket ${i+1}</div><div class="person-icons"></div>`;
+            visualGrid.appendChild(roomDiv);
+
+            let iconsContainer = roomDiv.querySelector('.person-icons');
+            for (let p = 0; p < perGroup; p++) {
+                let pIcon = document.createElement('div');
+                pIcon.className = 'person-icon alt-group';
+                pIcon.innerText = stageData.icon2;
+                iconsContainer.appendChild(pIcon);
+            }
+        }
+    }
+
+    function clearVisuals() {
+        document.getElementById('empty-text').style.display = 'block';
+        const visualGrid = document.getElementById('visual-grid');
+        visualGrid.style.display = 'none';
+        visualGrid.innerHTML = '';
+    }
+
+    function showFeedback(message, type) {
+        const feedbackBox = document.getElementById('feedback-box');
+        feedbackBox.innerText = message;
+        feedbackBox.className = 'feedback-box';
+        if (type === 'success') feedbackBox.classList.add('feedback-success');
+        else if (type === 'warning') feedbackBox.classList.add('feedback-warning');
+        else if (type === 'error') feedbackBox.classList.add('feedback-error');
+    }
+
+    function hideFeedback() {
+        const feedbackBox = document.getElementById('feedback-box');
+        feedbackBox.style.display = 'none';
+        feedbackBox.className = 'feedback-box';
+    }
+
+    function resetApp() {
+        loadStage();
+    }
+
+    window.onload = function() {
+        loadStage();
+    };
+</script>
+
+</body>
+</html>

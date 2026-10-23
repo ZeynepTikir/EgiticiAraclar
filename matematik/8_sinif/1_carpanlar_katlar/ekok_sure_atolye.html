@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>8. Sınıf Matematik - EKOK Atölyesi</title>
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --success: #10b981;
+            --success-light: #d1fae5;
+            --warning: #f59e0b;
+            --warning-light: #fef3c7;
+            --danger: #ef4444;
+            --danger-light: #fee2e2;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --radius: 12px;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background: var(--primary);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .restart-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: background 0.2s;
+        }
+
+        .restart-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .tabs {
+            display: flex;
+            background: #e0e7ff;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            background: transparent;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .tab-btn.active {
+            background: var(--card-bg);
+            color: var(--primary);
+            border-bottom: 3px solid var(--primary);
+        }
+
+        .tab-content {
+            display: none;
+            padding: 30px;
+            min-height: 500px;
+        }
+
+        .tab-content.active {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .sub-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .sub-tab-btn {
+            padding: 8px 16px;
+            border: 1px solid var(--border);
+            background: var(--bg-color);
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--text-muted);
+            transition: all 0.2s;
+        }
+
+        .sub-tab-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .scenario-container {
+            display: none;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .scenario-container.active {
+            display: flex;
+        }
+
+        .progress-bar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .step-dot {
+            flex: 1;
+            height: 8px;
+            background: var(--border);
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+
+        .step-dot.active {
+            background: var(--primary);
+        }
+
+        .step-dot.completed {
+            background: var(--success);
+        }
+
+        .instruction-card {
+            background: #eff6ff;
+            border-left: 4px solid var(--primary);
+            padding: 15px 20px;
+            border-radius: 0 var(--radius) var(--radius) 0;
+            font-size: 1.05rem;
+            line-height: 1.5;
+        }
+
+        .simulation-stage {
+            border: 2px dashed var(--border);
+            border-radius: var(--radius);
+            padding: 25px;
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            background: #fafaf9;
+            position: relative;
+        }
+
+        .visual-workspace {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+            align-items: center;
+        }
+
+        .timeline-track {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 12px 18px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .track-header {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .steps-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .concept-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: #f1f5f9;
+            border: 1px solid var(--border);
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--text-main);
+            animation: popIn 0.3s ease-out;
+        }
+
+        .concept-item.meeting {
+            background: var(--success-light);
+            border-color: var(--success);
+            color: #065f46;
+            box-shadow: 0 2px 6px rgba(16, 185, 129, 0.2);
+        }
+
+        .input-section {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .input-section input {
+            flex: 1;
+            padding: 12px 16px;
+            font-size: 1.1rem;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            text-align: center;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .input-section input:focus {
+            border-color: var(--primary);
+        }
+
+        .action-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .action-btn:hover {
+            background: var(--primary-hover);
+        }
+
+        .feedback-box {
+            width: 100%;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-align: center;
+            display: none;
+        }
+
+        .feedback-box.success {
+            display: block;
+            background: var(--success-light);
+            color: #065f46;
+            border: 1px solid var(--success);
+        }
+
+        .feedback-box.warning {
+            display: block;
+            background: var(--warning-light);
+            color: #92400e;
+            border: 1px solid var(--warning);
+        }
+
+        .feedback-box.error {
+            display: block;
+            background: var(--danger-light);
+            color: #991b1b;
+            border: 1px solid var(--danger);
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0); opacity: 0; }
+            80% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .info-card {
+            background: var(--bg-color);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .info-card h3 {
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-card p {
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>⚙️ EKOK Atölyesi Simülasyonu</h1>
+            <button class="restart-btn" onclick="resetAll()">🔄 Yeniden Başlat</button>
+        </header>
+
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab(0)">Atölye Tezgâhları</button>
+            <button class="tab-btn" onclick="switchTab(1)">Pratik Bilgiler & Taktikler</button>
+        </div>
+
+        <!-- SEKME 1: ATÖLYE -->
+        <div class="tab-content active" id="tab-workshop">
+            <div class="sub-tabs">
+                <button class="sub-tab-btn active" onclick="switchScenario(0)">1. Konsept: Nöbet</button>
+                <button class="sub-tab-btn" onclick="switchScenario(1)">2. Konsept: Zil</button>
+                <button class="sub-tab-btn" onclick="switchScenario(2)">3. Konsept: Otobüs</button>
+            </div>
+
+            <!-- SENARYO 1: NÖBET -->
+            <div class="scenario-container active" id="scenario-0">
+                <div class="progress-bar" id="progress-0">
+                    <div class="step-dot active"></div>
+                    <div class="step-dot"></div>
+                    <div class="step-dot"></div>
+                    <div class="step-dot"></div>
+                </div>
+                <div class="instruction-card" id="instruction-0">Yükleniyor...</div>
+                <div class="simulation-stage">
+                    <div class="visual-workspace" id="workspace-0">
+                        <div style="color: var(--text-muted); font-style: italic;">Sahne boş. Tahmininizi girip kontrol edin.</div>
+                    </div>
+                    <div class="input-section">
+                        <input type="number" id="input-0" placeholder="Tahmininiz...">
+                        <button class="action-btn" onclick="checkAnswer(0)">Kontrol Et</button>
+                    </div>
+                    <div class="feedback-box" id="feedback-0"></div>
+                </div>
+            </div>
+
+            <!-- SENARYO 2: ZİL -->
+            <div class="scenario-container" id="scenario-1">
+                <div class="progress-bar" id="progress-1">
+                    <div class="step-dot active"></div>
+                    <div class="step-dot"></div>
+                    <div class="step-dot"></div>
+                    <div class="step-dot"></div>
+                </div>
+                <div class="instruction-card" id="instruction-1">Yükleniyor...</div>
+                <div class="simulation-stage">
+                    <div class="visual-workspace" id="workspace-1">
+                        <div style="color: var(--text-muted); font-style: italic;">Sahne boş. Tahmininizi girip kontrol edin.</div>
+                    </div>
+                    <div class="input-section">
+                        <input type="number" id="input-1" placeholder="Tahmininiz...">
+                        <button class="action-btn" onclick="checkAnswer(1)">Kontrol Et</button>
+                    </div>
+                    <div class="feedback-box" id="feedback-1"></div>
+                </div>
+            </div>
+
+            <!-- SENARYO 3: OTOBÜS -->
+            <div class="scenario-container" id="scenario-2">
+                <div class="progress-bar" id="progress-2">
+                    <div class="step-dot active"></div>
+                    <div class="step-dot"></div>
+                    <div class="step-dot"></div>
+                    <div class="step-dot"></div>
+                </div>
+                <div class="instruction-card" id="instruction-2">Yükleniyor...</div>
+                <div class="simulation-stage">
+                    <div class="visual-workspace" id="workspace-2">
+                        <div style="color: var(--text-muted); font-style: italic;">Sahne boş. Tahmininizi girip kontrol edin.</div>
+                    </div>
+                    <div class="input-section">
+                        <input type="number" id="input-2" placeholder="Tahmininiz...">
+                        <button class="action-btn" onclick="checkAnswer(2)">Kontrol Et</button>
+                    </div>
+                    <div class="feedback-box" id="feedback-2"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SEKME 2: BİLGİ -->
+        <div class="tab-content" id="tab-info">
+            <div class="info-grid">
+                <div class="info-card">
+                    <h3>🛡️ Nöbet Problemleri</h3>
+                    <p>İki kişi belirli gün aralıklarıyla nöbet tutmaktadır. İkisi birlikte ilk kez nöbet tuttuktan sonra tekrar <strong>ilk kez</strong> birlikte ne zaman nöbet tutarlar sorusu EKOK ile çözülür.</p>
+                </div>
+                <div class="info-card">
+                    <h3>🔔 Zil / Saat</h3>
+                    <p>Farklı aralıklarla çalan zillerin veya saatlerin tekrar <strong>aynı anda</strong> ne zaman uyarı vereceğini bulmak için zaman aralıklarının EKOK değeri hesaplanır.</p>
+                </div>
+                <div class="info-card">
+                    <h3>🚌 Otobüs Seferleri</h3>
+                    <p>Aynı duraktan farklı sürelerle hareket eden otobüslerin tekrar birlikte hareket edeceği dakikayı bulmak, hareket periyotlarının EKOK'unu gerektirir.</p>
+                </div>
+                <div class="info-card">
+                    <h3>💡 Altın Taktik</h3>
+                    <p>Eğer bir soruda "tekrar buluşma, aynı anda gerçekleşme" vurgulanıyorsa, orada kesinlikle <strong>EKOK (En Küçük Ortak Kat)</strong> vardır.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const scenarios = [
+            {
+                name: "Nöbet",
+                stages: [
+                    { t1: 3, t2: 4, ekok: 12, text: "Ahmet 3 günde bir, Mehmet 4 günde bir nöbet tutmaktadır. İkisi birlikte ilk nöbetlerini tuttuktan kaç gün sonra tekrar birlikte nöbet tutarlar?" },
+                    { t1: 5, t2: 6, ekok: 30, text: "Can 5 günde bir, Cem 6 günde bir nöbet tutmaktadır. İkisi birlikte ilk nöbetlerini tuttuktan kaç gün sonra tekrar birlikte nöbet tutarlar?" },
+                    { t1: 2, t2: 7, ekok: 14, text: "Ayşe 2 günde bir, Fatma 7 günde bir nöbet tutmaktadır. İkisi birlikte ilk nöbetlerini tuttuktan kaç gün sonra tekrar birlikte nöbet tutarlar?" },
+                    { t1: 4, t2: 9, ekok: 36, text: "Ali 4 günde bir, Veli 9 günde bir nöbet tutmaktadır. İkisi birlikte ilk nöbetlerini tuttuktan kaç gün sonra tekrar birlikte nöbet tutarlar?" }
+                ],
+                icon: "🛡️",
+                label1: "Ahmet'in Nöbetleri",
+                label2: "Mehmet'in Nöbetleri"
+            },
+            {
+                name: "Zil",
+                stages: [
+                    { t1: 10, t2: 15, ekok: 30, text: "Bir okulda birinci zil 10 dakikada bir, ikinci zil 15 dakikada bir çalmaktadır. İki zil birlikte çaldıktan kaç dakika sonra tekrar birlikte çalar?" },
+                    { t1: 12, t2: 18, ekok: 36, text: "İki saatten biri 12 dakikada bir, diğeri 18 dakikada bir alarm vermektedir. İkisi aynı anda çaldıktan kaç dakika sonra tekrar birlikte çalarlar?" },
+                    { t1: 20, t2: 25, ekok: 100, text: "İki zil sırasıyla 20 ve 25 dakikalık periyotlarla çalmaktadır. Birlikte çaldıktan kaç dakika sonra tekrar birlikte çalarlar?" },
+                    { t1: 8, t2: 12, ekok: 24, text: "Okul zillerinden biri 8 dakikada, diğeri 12 dakikada bir çalmaktadır. Birlikte çaldıktan kaç dakika sonra tekrar aynı anda çalar?" }
+                ],
+                icon: "🔔",
+                label1: "1. Zil / Saat",
+                label2: "2. Zil / Saat"
+            },
+            {
+                name: "Otobüs",
+                stages: [
+                    { t1: 15, t2: 20, ekok: 60, text: "A otobüsü 15 dakikada bir, B otobüsü 20 dakikada bir hareket etmektedir. Aynı anda kalkan bu iki otobüs kaç dakika sonra tekrar birlikte hareket eder?" },
+                    { t1: 30, t2: 45, ekok: 90, text: "30 dakikada bir ve 45 dakikada bir kalkan iki otobüs aynı anda kalktıktan kaç dakika sonra tekrar birlikte kalkarlar?" },
+                    { t1: 10, t2: 14, ekok: 70, text: "İki otobüs sırasıyla 10 ve 14 dakikalık periyotlarla sefer yapmaktadır. Kaç dakika sonra ilk kez tekrar birlikte hareket ederler?" },
+                    { t1: 18, t2: 24, ekok: 72, text: "18 ve 24 dakikada bir sefer düzenleyen iki otobüs aynı anda hareket etmiştir. En erken kaç dakika sonra tekrar aynı anda hareket ederler?" }
+                ],
+                icon: "🚌",
+                label1: "1. Otobüs",
+                label2: "2. Otobüs"
+            }
+        ];
+
+        let currentScenarioIndex = 0;
+        let currentStageIndices = [0, 0, 0];
+
+        function switchTab(index) {
+            const tabs = document.querySelectorAll('.tab-btn');
+            const contents = document.querySelectorAll('.tab-content');
+            
+            tabs.forEach((tab, i) => {
+                tab.classList.toggle('active', i === index);
+                contents[i].classList.toggle('active', i === index);
+            });
+        }
+
+        function switchScenario(index) {
+            currentScenarioIndex = index;
+            const subBtns = document.querySelectorAll('.sub-tab-btn');
+            const containers = document.querySelectorAll('.scenario-container');
+
+            subBtns.forEach((btn, i) => {
+                btn.classList.toggle('active', i === index);
+                containers[i].classList.toggle('active', i === index);
+            });
+
+            loadStage(index);
+        }
+
+        function loadStage(sIndex) {
+            const stageIdx = currentStageIndices[sIndex];
+            const stageData = scenarios[sIndex].stages[stageIdx];
+            
+            document.getElementById(`instruction-${sIndex}`).innerHTML = `<strong>Aşama ${stageIdx + 1}/4:</strong> ${stageData.text}`;
+            document.getElementById(`workspace-${sIndex}`).innerHTML = `<div style="color: var(--text-muted); font-style: italic;">Sahne boş. Tahmininizi girip kontrol edin.</div>`;
+            document.getElementById(`input-${sIndex}`).value = '';
+            
+            const fb = document.getElementById(`feedback-${sIndex}`);
+            fb.className = 'feedback-box';
+            fb.innerHTML = '';
+
+            updateProgressBar(sIndex);
+        }
+
+        function updateProgressBar(sIndex) {
+            const dots = document.querySelectorAll(`#progress-${sIndex} .step-dot`);
+            const current = currentStageIndices[sIndex];
+            dots.forEach((dot, i) => {
+                dot.className = 'step-dot';
+                if (i < current) dot.classList.add('completed');
+                if (i === current) dot.classList.add('active');
+            });
+        }
+
+        function checkAnswer(sIndex) {
+            const stageIdx = currentStageIndices[sIndex];
+            const stageData = scenarios[sIndex].stages[stageIdx];
+            const inputVal = parseInt(document.getElementById(`input-${sIndex}`).value);
+            const fb = document.getElementById(`feedback-${sIndex}`);
+            const workspace = document.getElementById(`workspace-${sIndex}`);
+
+            if (isNaN(inputVal)) {
+                fb.className = 'feedback-box error';
+                fb.innerHTML = "Lütfen geçerli bir sayı giriniz!";
+                return;
+            }
+
+            if (inputVal <= 0 || inputVal < stageData.t1 || inputVal < stageData.t2) {
+                workspace.innerHTML = `<div style="color: var(--danger); font-weight: bold;">Sahne Boş</div>`;
+                fb.className = 'feedback-box error';
+                fb.innerHTML = "❌ Hatalı! Girdiğiniz değer periyotlardan küçük olamaz.";
+                return;
+            }
+
+            // 1. Durum: Tam EKOK değeri (Doğru ve En Küçük Ortak Kat)
+            if (inputVal === stageData.ekok) {
+                renderConceptTimeline(sIndex, inputVal, stageData);
+                fb.className = 'feedback-box success';
+                fb.innerHTML = `🎉 Harika! En küçük ortak kat ${inputVal}. birimdir ve nesneler tam buluştu!`;
+
+                setTimeout(() => {
+                    if (currentStageIndices[sIndex] < 3) {
+                        currentStageIndices[sIndex]++;
+                        loadStage(sIndex);
+                    } else {
+                        fb.innerHTML += " 🏆 Tebrikler! Bu konseptin tüm aşamalarını tamamladınız!";
+                    }
+                }, 3500);
+
+            } 
+            // 2. Durum: Ortak kat ancak EKOK'tan büyük
+            else if (inputVal % stageData.t1 === 0 && inputVal % stageData.t2 === 0) {
+                renderConceptTimeline(sIndex, inputVal, stageData);
+                fb.className = 'feedback-box warning';
+                fb.innerHTML = `⚠️ En küçük nokta burası değil! Daha küçük bir ortak kat vardır.`;
+            } 
+            // 3. Durum: Ortak kat değil (Hata - Sahne boş kalır)
+            else {
+                workspace.innerHTML = `<div style="color: var(--danger); font-weight: bold;">Sahne Boş</div>`;
+                fb.className = 'feedback-box error';
+                fb.innerHTML = `❌ Yanlış! Bu sayı her iki periyodun ortak katı değildir. Sahne boş kaldı.`;
+            }
+        }
+
+        // Konsepte göre nesne ve zaman çizelgesi çizen fonksiyon
+        function renderConceptTimeline(sIndex, limitVal, data) {
+            const workspace = document.getElementById(`workspace-${sIndex}`);
+            workspace.innerHTML = '';
+            
+            const config = scenarios[sIndex];
+            let symbol = config.icon;
+
+            // 1. Periyot Katları
+            let multiples1 = [];
+            for (let m = data.t1; m <= limitVal; m += data.t1) multiples1.push(m);
+
+            // 2. Periyot Katları
+            let multiples2 = [];
+            for (let m = data.t2; m <= limitVal; m += data.t2) multiples2.push(m);
+
+            // Şerit 1
+            let track1 = document.createElement('div');
+            track1.className = 'timeline-track';
+            track1.innerHTML = `<div class="track-header">${symbol} ${config.label1} (${data.t1}'in katları):</div>`;
+            let row1 = document.createElement('div');
+            row1.className = 'steps-row';
+            multiples1.forEach(num => {
+                let badge = document.createElement('div');
+                badge.className = 'concept-item';
+                if (num === data.ekok) badge.classList.add('meeting');
+                badge.innerHTML = `${symbol} ${num}. birim`;
+                row1.appendChild(badge);
+            });
+            track1.appendChild(row1);
+            workspace.appendChild(track1);
+
+            // Şerit 2
+            let track2 = document.createElement('div');
+            track2.className = 'timeline-track';
+            track2.innerHTML = `<div class="track-header">${symbol} ${config.label2} (${data.t2}'in katları):</div>`;
+            let row2 = document.createElement('div');
+            row2.className = 'steps-row';
+            multiples2.forEach(num => {
+                let badge = document.createElement('div');
+                badge.className = 'concept-item';
+                if (num === data.ekok) badge.classList.add('meeting');
+                badge.innerHTML = `${symbol} ${num}. birim`;
+                row2.appendChild(badge);
+            });
+            track2.appendChild(row2);
+            workspace.appendChild(track2);
+        }
+
+        function resetAll() {
+            currentStageIndices = [0, 0, 0];
+            loadStage(0);
+            loadStage(1);
+            loadStage(2);
+            switchScenario(0);
+        }
+
+        window.onload = function() {
+            loadStage(0);
+            loadStage(1);
+            loadStage(2);
+        };
+    </script>
+</body>
+</html>

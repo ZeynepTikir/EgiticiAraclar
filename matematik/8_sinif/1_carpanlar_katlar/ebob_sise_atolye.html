@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EBOB Paylaştırma Atölyesi - 8. Sınıf Matematik Simülasyonu</title>
+    <style>
+        :root {
+            --primary: #2C3E50;
+            --secondary: #16A085;
+            --accent: #E67E22;
+            --background: #ECF0F1;
+            --card-bg: #FFFFFF;
+            --text-main: #2C3E50;
+            --text-light: #7F8C8D;
+            --success: #27AE60;
+            --error: #C0392B;
+            --border-radius: 12px;
+            --box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .btn-reset {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-reset:hover {
+            opacity: 0.9;
+            transform: scale(1.02);
+        }
+
+        .tabs {
+            display: flex;
+            background-color: #34495E;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 15px;
+            background: none;
+            border: none;
+            color: #BDC3C7;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .tab-btn.active {
+            background-color: var(--card-bg);
+            color: var(--primary);
+            border-bottom: 4px solid var(--secondary);
+        }
+
+        .tab-content {
+            display: none;
+            padding: 30px;
+            min-height: 500px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .sub-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            border-bottom: 2px solid var(--background);
+            padding-bottom: 10px;
+        }
+
+        .sub-tab-btn {
+            padding: 10px 20px;
+            background-color: #EAEDED;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--text-light);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .sub-tab-btn.active {
+            background-color: var(--secondary);
+            color: white;
+        }
+
+        .sub-content {
+            display: none;
+        }
+
+        .sub-content.active {
+            display: block;
+        }
+
+        .workshop-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            align-items: start;
+        }
+
+        @media (max-width: 768px) {
+            .workshop-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .visual-panel {
+            background-color: #F8F9F9;
+            border: 2px dashed #BDC3C7;
+            border-radius: var(--border-radius);
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 300px;
+            position: relative;
+        }
+
+        .control-panel {
+            background-color: white;
+            border: 1px solid #E5E7E9;
+            border-radius: var(--border-radius);
+            padding: 25px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+        }
+
+        .scenario-desc {
+            font-size: 1.05rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            color: var(--text-main);
+        }
+
+        .scenario-desc strong {
+            color: var(--secondary);
+        }
+
+        .item-container {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .item-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            border: 2px solid #EAEDED;
+        }
+
+        .item-label {
+            margin-top: 8px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #BDC3C7;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            transition: var(--transition);
+        }
+
+        .input-group input:focus {
+            border-color: var(--secondary);
+            outline: none;
+        }
+
+        .btn-action {
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-action:hover {
+            opacity: 0.9;
+        }
+
+        .feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: 600;
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .feedback.success {
+            background-color: #D4EFDF;
+            color: var(--success);
+            border: 1px solid #A9DFBF;
+        }
+
+        .feedback.error {
+            background-color: #FADBD8;
+            color: var(--error);
+            border: 1px solid #F5B7B1;
+        }
+
+        .feedback.warning {
+            background-color: #FCF3CF;
+            color: #B7950B;
+            border: 1px solid #F9E79F;
+        }
+
+        .stage-indicator {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .stage-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #BDC3C7;
+        }
+
+        .stage-dot.active {
+            background-color: var(--secondary);
+            transform: scale(1.2);
+        }
+
+        .stage-dot.completed {
+            background-color: var(--success);
+        }
+
+        .guide-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .guide-card {
+            background: #F8F9F9;
+            border-left: 5px solid var(--secondary);
+            padding: 20px;
+            border-radius: 0 var(--border-radius) var(--border-radius) 0;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+        }
+
+        .guide-card h3 {
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .guide-card p {
+            color: var(--text-light);
+            line-height: 1.5;
+            font-size: 0.95rem;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1><span>📦</span> EBOB Paylaştırma Atölyesi</h1>
+        <div class="header-actions">
+            <button class="btn-reset" onclick="resetCurrentSimulation()">🔄 Yeniden Başlat</button>
+        </div>
+    </header>
+
+    <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab(0)">Atölye Tezgâhı</button>
+        <button class="tab-btn" onclick="switchTab(1)">Pratik Bilgiler & Taktikler</button>
+    </div>
+
+    <div class="tab-content active" id="tab-workshop">
+        <div class="sub-tabs">
+            <button class="sub-tab-btn active" onclick="switchSubTab(0)"><span>🌾</span> Çuvallar (Un)</button>
+            <button class="sub-tab-btn" onclick="switchSubTab(1)"><span>🧴</span> Bidonlar (Kolonya)</button>
+            <button class="sub-tab-btn" onclick="switchSubTab(2)"><span>🫒</span> Şişeler (Yağ)</button>
+        </div>
+
+        <!-- 1. ÇUVALLAR SİMÜLASYONU -->
+        <div class="sub-content active" id="sub-sim-0">
+            <div class="stage-indicator" id="stages-0">
+                <div class="stage-dot active"></div>
+                <div class="stage-dot"></div>
+                <div class="stage-dot"></div>
+                <div class="stage-dot"></div>
+            </div>
+            <div class="workshop-grid">
+                <div class="visual-panel">
+                    <div class="item-container" id="visual-sack-container"></div>
+                    <p style="text-align: center; color: var(--text-light); font-size: 0.9rem;">Mısır ve buğday unları birbirine karıştırılmadan eşit büyüklükte torbalara doldurulacaktır.</p>
+                </div>
+                <div class="control-panel">
+                    <div class="scenario-desc" id="sack-scenario-text"></div>
+                    <div class="input-group">
+                        <label for="input-sack">Torba Kapasitesi Tahmininiz (kg):</label>
+                        <input type="number" id="input-sack" placeholder="Örn: 5">
+                    </div>
+                    <button class="btn-action" onclick="checkAnswer(0)">Kontrol Et</button>
+                    <div class="feedback" id="feedback-0"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. BİDONLAR SİMÜLASYONU -->
+        <div class="sub-content" id="sub-sim-1">
+            <div class="stage-indicator" id="stages-1">
+                <div class="stage-dot active"></div>
+                <div class="stage-dot"></div>
+                <div class="stage-dot"></div>
+                <div class="stage-dot"></div>
+            </div>
+            <div class="workshop-grid">
+                <div class="visual-panel">
+                    <div class="item-container" id="visual-barrel-container"></div>
+                    <p style="text-align: center; color: var(--text-light); font-size: 0.9rem;">Lavanta ve limon kolonyaları eşit hacimli şişelere paylaştırılacaktır.</p>
+                </div>
+                <div class="control-panel">
+                    <div class="scenario-desc" id="barrel-scenario-text"></div>
+                    <div class="input-group">
+                        <label for="input-barrel">Şişe Hacmi Tahmininiz (litre):</label>
+                        <input type="number" id="input-barrel" placeholder="Örn: 3">
+                    </div>
+                    <button class="btn-action" onclick="checkAnswer(1)">Kontrol Et</button>
+                    <div class="feedback" id="feedback-1"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. ŞİŞELER SİMÜLASYONU -->
+        <div class="sub-content" id="sub-sim-2">
+            <div class="stage-indicator" id="stages-2">
+                <div class="stage-dot active"></div>
+                <div class="stage-dot"></div>
+                <div class="stage-dot"></div>
+                <div class="stage-dot"></div>
+            </div>
+            <div class="workshop-grid">
+                <div class="visual-panel">
+                    <div class="item-container" id="visual-bottle-container"></div>
+                    <p style="text-align: center; color: var(--text-light); font-size: 0.9rem;">Zeytinyağı ve ayçiçek yağları eşit kapasiteli tenekelere paylaştırılacaktır.</p>
+                </div>
+                <div class="control-panel">
+                    <div class="scenario-desc" id="bottle-scenario-text"></div>
+                    <div class="input-group">
+                        <label for="input-bottle">Teneke Hacmi Tahmininiz (litre):</label>
+                        <input type="number" id="input-bottle" placeholder="Örn: 10">
+                    </div>
+                    <button class="btn-action" onclick="checkAnswer(2)">Kontrol Et</button>
+                    <div class="feedback" id="feedback-2"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sekme 2: Pratik Bilgiler & Taktikler -->
+    <div class="tab-content" id="tab-guide">
+        <div class="guide-grid">
+            <div class="guide-card">
+                <h3>📦 Paylaştırma Problemleri Neden EBOB'dur?</h3>
+                <p>Elindeki bütün malzemeleri daha küçük ve eşit parçalara ayırıp paylaştırıyorsan, bu parçaların boyutu ana miktarları tam bölmelidir. Ortak bölenlerin en büyüğünü (EBOB) arıyoruz çünkü en büyük parçaları bulmak isteriz.</p>
+            </div>
+            <div class="guide-card">
+                <h3>🔍 Ortak Bölen Kontrolü</h3>
+                <p>Eğer bulduğun sayı iki miktarı da tam bölüyor ancak daha büyük bir ortak bölen varsa, simülasyonumuz seni uyaracaktır. "En büyük" kelimesi EBOB'un ta kendisidir; olası tüm ortak bölenlerin en yükseğini seçmelisin.</p>
+            </div>
+            <div class="guide-card">
+                <h3>💡 Pratik Taktik: Algoritma</h3>
+                <p>İki sayının EBOB'unu bulurken asal çarpan algoritmasını kullanabilirsin. Her iki sayıyı da aynı anda bölen asal sayıların çarpımı sana doğrudan doğru cevabı verecektir.</p>
+            </div>
+            <div class="guide-card">
+                <h3>⚠️ Yaygın Hatalar</h3>
+                <p>Büyük parçadan küçük parça elde ederken toplama veya çıkarma yapılmaz. Tamamen bölme ve ortak bölen mantığı (EBOB) yürütülür.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const sackStages = [
+        { val1: 60, val2: 72, ebob: 12, text: "Depomuzda <strong>60 kg mısır unu</strong> ve <strong>72 kg buğday unu</strong> bulunmaktadır. Bu unlar birbirine karıştırılmadan, hiç artmayacak ve eşit büyüklükteki torbalara doldurulacaktır. <strong>Bu iş için kullanılacak en büyük torbanın kapasitesi kaç kg olmalıdır?</strong>", name1: "Mısır Unu (60 kg)", name2: "Buğday Unu (72 kg)" },
+        { val1: 48, val2: 80, ebob: 16, text: "Çuvallarda <strong>48 kg mısır unu</strong> ve <strong>80 kg buğday unu</strong> mevcuttur. Eşit büyüklükte torbalara, hiç artmayacak şekilde doldurulacaktır. En büyük torba kaç kg olur?", name1: "Mısır Unu (48 kg)", name2: "Buğday Unu (80 kg)" },
+        { val1: 54, val2: 90, ebob: 18, text: "Atölyemize gelen <strong>54 kg mısır unu</strong> ile <strong>90 kg buğday unu</strong> eşit torbalara paylaştırılacaktır. Artma olmayacağına göre torba kapasitesi en fazla kaç kg'dır?", name1: "Mısır Unu (54 kg)", name2: "Buğday Unu (90 kg)" },
+        { val1: 75, val2: 105, ebob: 15, text: "Fabrikadan gelen <strong>75 kg mısır unu</strong> ve <strong>105 kg buğday unu</strong> birbirine karıştırılmadan eşit çuvallara doldurulacaktır. Çuval başına düşen en büyük ağırlık kaç kg'dır?", name1: "Mısır Unu (75 kg)", name2: "Buğday Unu (105 kg)" }
+    ];
+
+    const barrelStages = [
+        { val1: 45, val2: 75, ebob: 15, text: "Atölyemizde <strong>45 litre lavanta kolonyası</strong> ve <strong>75 litre limon kolonyası</strong> vardır. Kolonyalar birbirine karıştırılmadan, eşit hacimli şişelere hiç artmayacak şekilde doldurulacaktır. Kullanılabilecek en büyük şişenin hacmi kaç litre olmalıdır?", name1: "Lavanta (45 L)", name2: "Limon (75 L)" },
+        { val1: 36, val2: 60, ebob: 12, text: "Elimizde <strong>36 litre lavanta kolonyası</strong> ve <strong>60 litre limon kolonyası</strong> var. Eşit hacimli bidonlara hiç artmayacak şekilde paylaştırılacaktır. Bidon hacmi en fazla kaç litre olabilir?", name1: "Lavanta (36 L)", name2: "Limon (60 L)" },
+        { val1: 56, val2: 84, ebob: 28, text: "Depoda bulunan <strong>56 litre lavanta kolonyası</strong> ile <strong>84 litre limon kolonyası</strong> eşit kapasiteli bidonlara doldurulacaktır. Bir bidonun hacmi en çok kaç litre olmalıdır?", name1: "Lavanta (56 L)", name2: "Limon (84 L)" },
+        { val1: 40, val2: 64, ebob: 8, text: "Üretim alanındaki <strong>40 litre lavanta kolonyası</strong> ve <strong>64 litre limon kolonyası</strong> eşit hacimlerde şişelenecektir. En büyük şişe hacmi kaç litredir?", name1: "Lavanta (40 L)", name2: "Limon (64 L)" }
+    ];
+
+    const bottleStages = [
+        { val1: 80, val2: 120, ebob: 40, text: "Üretim hattımızda <strong>80 litre zeytinyağı</strong> ve <strong>120 litre ayçiçek yağı</strong> bulunmaktadır. Bu yağlar birbirine karıştırılmadan eşit hacimli tenekelere hiç artmayacak şekilde doldurulacaktır. Bu iş için seçilebilecek en büyük tenekenin hacmi kaç litre olmalıdır?", name1: "Zeytinyağı (80 L)", name2: "Ayçiçek (120 L)" },
+        { val1: 50, val2: 75, ebob: 25, text: "Tesisimizde <strong>50 litre zeytinyağı</strong> ve <strong>75 litre ayçiçek yağı</strong> mevcuttur. Eşit hacimli şişelere artmayacak şekilde paylaştırılacaktır. Şişe hacmi en fazla kaç litre olmalıdır?", name1: "Zeytinyağı (50 L)", name2: "Ayçiçek (75 L)" },
+        { val1: 64, val2: 96, ebob: 32, text: "Depodaki <strong>64 litre zeytinyağı</strong> ve <strong>96 litre ayçiçek yağı</strong> eşit şişelere doldurulacaktır. En büyük şişe kapasitesi kaç litredir?", name1: "Zeytinyağı (64 L)", name2: "Ayçiçek (96 L)" },
+        { val1: 72, val2: 108, ebob: 36, text: "Atölyemizde yer alan <strong>72 litre zeytinyağı</strong> ve <strong>108 litre ayçiçek yağı</strong> birbirine karıştırılmadan eşit kaplara konulacaktır. Kapların hacmi en çok kaç litre olabilir?", name1: "Zeytinyağı (72 L)", name2: "Ayçiçek (108 L)" }
+    ];
+
+    let currentSubTab = 0;
+    let currentStages = [0, 0, 0];
+
+    function renderVisuals(type, val1, val2, name1, name2) {
+        let containerId = type === 0 ? 'visual-sack-container' : (type === 1 ? 'visual-barrel-container' : 'visual-bottle-container');
+        let container = document.getElementById(containerId);
+        let svg1 = '', svg2 = '';
+
+        if (type === 0) {
+            svg1 = `<svg width="70" height="90" viewBox="0 0 100 120"><path d="M30 10 Q50 0 70 10 L85 40 Q95 80 80 110 Q50 120 20 110 Q5 80 15 40 Z" fill="#D4AC0D"/><path d="M35 10 L65 10 L60 25 L40 25 Z" fill="#F4D03F"/><text x="50" y="70" font-size="16" fill="#fff" font-weight="bold" text-anchor="middle">${val1}kg</text></svg>`;
+            svg2 = `<svg width="70" height="90" viewBox="0 0 100 120"><path d="M30 10 Q50 0 70 10 L85 40 Q95 80 80 110 Q50 120 20 110 Q5 80 15 40 Z" fill="#B9770E"/><path d="M35 10 L65 10 L60 25 L40 25 Z" fill="#D68910"/><text x="50" y="70" font-size="16" fill="#fff" font-weight="bold" text-anchor="middle">${val2}kg</text></svg>`;
+        } else if (type === 1) {
+            svg1 = `<svg width="70" height="90" viewBox="0 0 100 120"><rect x="35" y="10" width="30" height="15" rx="5" fill="#8E44AD"/><rect x="20" y="25" width="60" height="85" rx="10" fill="#9B59B6"/><text x="50" y="70" font-size="16" fill="#fff" font-weight="bold" text-anchor="middle">${val1}L</text></svg>`;
+            svg2 = `<svg width="70" height="90" viewBox="0 0 100 120"><rect x="35" y="10" width="30" height="15" rx="5" fill="#27AE60"/><rect x="20" y="25" width="60" height="85" rx="10" fill="#2ECC71"/><text x="50" y="70" font-size="16" fill="#fff" font-weight="bold" text-anchor="middle">${val2}L</text></svg>`;
+        } else {
+            svg1 = `<svg width="70" height="90" viewBox="0 0 100 120"><rect x="40" y="5" width="20" height="15" fill="#D35400"/><path d="M35 20 L65 20 L75 35 L75 110 L25 110 L25 35 Z" fill="#E67E22"/><text x="50" y="75" font-size="16" fill="#fff" font-weight="bold" text-anchor="middle">${val1}L</text></svg>`;
+            svg2 = `<svg width="70" height="90" viewBox="0 0 100 120"><rect x="40" y="5" width="20" height="15" fill="#F1C40F"/><path d="M35 20 L65 20 L75 35 L75 110 L25 110 L25 35 Z" fill="#F39C12"/><text x="50" y="75" font-size="16" fill="#fff" font-weight="bold" text-anchor="middle">${val2}L</text></svg>`;
+        }
+
+        container.innerHTML = `
+            <div class="item-box">${svg1}<div class="item-label">${name1}</div></div>
+            <div class="item-box">${svg2}<div class="item-label">${name2}</div></div>
+        `;
+    }
+
+    function switchTab(index) {
+        document.querySelectorAll('.tab-btn').forEach((t, i) => t.classList.toggle('active', i === index));
+        document.querySelectorAll('.tab-content').forEach((c, i) => c.classList.toggle('active', i === index));
+    }
+
+    function switchSubTab(index) {
+        currentSubTab = index;
+        document.querySelectorAll('.sub-tab-btn').forEach((t, i) => t.classList.toggle('active', i === index));
+        document.querySelectorAll('.sub-content').forEach((c, i) => c.classList.toggle('active', i === index));
+        loadStageData(index);
+    }
+
+    function loadStageData(type) {
+        let stageIndex = currentStages[type];
+        let data = type === 0 ? sackStages[stageIndex] : (type === 1 ? barrelStages[stageIndex] : bottleStages[stageIndex]);
+        let scenarioEl = document.getElementById(type === 0 ? 'sack-scenario-text' : (type === 1 ? 'barrel-scenario-text' : 'bottle-scenario-text'));
+        let textId = type === 0 ? 'input-sack' : (type === 1 ? 'input-barrel' : 'input-bottle');
+
+        scenarioEl.innerHTML = data.text;
+        document.getElementById(textId).value = '';
+        
+        let feedbackEl = document.getElementById(`feedback-${type}`);
+        feedbackEl.style.display = 'none';
+
+        renderVisuals(type, data.val1, data.val2, data.name1, data.name2);
+        updateStageDots(type, stageIndex);
+    }
+
+    function updateStageDots(type, activeIndex) {
+        const dots = document.getElementById(`stages-${type}`).children;
+        for (let i = 0; i < dots.length; i++) {
+            dots[i].className = 'stage-dot';
+            if (i < activeIndex) dots[i].classList.add('completed');
+            else if (i === activeIndex) dots[i].classList.add('active');
+        }
+    }
+
+    function checkAnswer(type) {
+        let stageIndex = currentStages[type];
+        let data = type === 0 ? sackStages[stageIndex] : (type === 1 ? barrelStages[stageIndex] : bottleStages[stageIndex]);
+        let inputId = type === 0 ? 'input-sack' : (type === 1 ? 'input-barrel' : 'input-bottle');
+        let feedbackEl = document.getElementById(`feedback-${type}`);
+        let userVal = parseInt(document.getElementById(inputId).value);
+
+        // Görünürlüğü açıyoruz
+        feedbackEl.style.display = 'block';
+
+        if (isNaN(userVal)) {
+            feedbackEl.className = 'feedback error';
+            feedbackEl.innerHTML = 'Lütfen geçerli bir sayı giriniz!';
+            return;
+        }
+
+        if (userVal === data.ebob) {
+            // Tam olarak EBOB girildiğinde (Doğru Cevap)
+            feedbackEl.className = 'feedback success';
+            feedbackEl.innerHTML = `🎉 Tebrikler! ${data.val1} ve ${data.val2} değerlerinin En Büyük Ortak Böleni (EBOB) <strong>${data.ebob}</strong>'dir. Başarıyla tamamladın!`;
+            
+            setTimeout(() => {
+                if (currentStages[type] < 3) {
+                    currentStages[type]++;
+                    loadStageData(type);
+                } else {
+                    feedbackEl.innerHTML += ` 🏆 Bu kategorideki tüm aşamaları bitirdin!`;
+                }
+            }, 2500);
+
+        } else if (data.val1 % userVal === 0 && data.val2 % userVal === 0) {
+            // Ortak bölen girilmiş ancak EBOB değil
+            feedbackEl.className = 'feedback warning';
+            feedbackEl.innerHTML = `⚠️ Girdiğin ${userVal} sayısı iki miktarı da tam böler, ancak <strong>daha büyük bir ortak bölen (EBOB)</strong> vardır! Lütfen en büyüğünü bulmayı dene.`;
+
+        } else {
+            // Tam bölmeyen hatalı bir sayı girildiğinde
+            feedbackEl.className = 'feedback error';
+            feedbackEl.innerHTML = `❌ Girdiğin ${userVal} sayısı verilen miktarları eşit ve hiç artmayacak şekilde tam bölmez! Tekrar dene.`;
+        }
+    }
+
+    function resetCurrentSimulation() {
+        currentStages[currentSubTab] = 0;
+        loadStageData(currentSubTab);
+    }
+
+    window.onload = function() {
+        loadStageData(0);
+        loadStageData(1);
+        loadStageData(2);
+    };
+</script>
+
+</body>
+</html>

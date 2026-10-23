@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>8. Sınıf Matematik - EKOK Otobüs Atölyesi</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #f59e0b;
+            --success: #10b981;
+            --danger: #ef4444;
+            --background: #f8fafc;
+            --surface: #ffffff;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+            --radius: 12px;
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            user-select: none;
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--text);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 900px;
+            height: 95vh;
+            max-height: 700px;
+            background: var(--surface);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        /* Üst HUD Alanı */
+        .hud-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 25px;
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .hud-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .hud-stats {
+            display: flex;
+            gap: 20px;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--background);
+            padding: 6px 14px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+        }
+
+        /* Sekme Navigasyonu */
+        .tab-nav {
+            display: flex;
+            background: var(--background);
+            border-bottom: 1px solid var(--border);
+            padding: 0 20px;
+        }
+
+        .tab-btn {
+            padding: 12px 24px;
+            background: none;
+            border: none;
+            font-weight: 600;
+            color: var(--text-light);
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .tab-btn.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+            background: var(--surface);
+        }
+
+        /* İçerik Alanları */
+        .tab-content {
+            flex: 1;
+            display: none;
+            flex-direction: column;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .tab-content.active {
+            display: flex;
+        }
+
+        /* Otobüs Atölyesi (Sekme 1) */
+        .workshop-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            flex: 1;
+            height: 100%;
+        }
+
+        .left-panel {
+            padding: 20px;
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            background: #f8fafc;
+        }
+
+        .right-panel {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            background: var(--surface);
+        }
+
+        .instruction-box {
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            padding: 12px 16px;
+            border-radius: var(--radius);
+            font-size: 0.95rem;
+            color: #1e40af;
+            line-height: 1.4;
+        }
+
+        .bus-station-visual {
+            background: var(--surface);
+            border: 2px dashed var(--border);
+            border-radius: var(--radius);
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+            justify-content: center;
+            min-height: 220px;
+            position: relative;
+        }
+
+        .bus-line {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            background: var(--background);
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .bus-icon {
+            font-size: 1.5rem;
+        }
+
+        .bus-info {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .terminal-clock {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--secondary);
+            background: #fffbeb;
+            border: 1px solid #fde68a;
+            padding: 10px 20px;
+            border-radius: 8px;
+            letter-spacing: 2px;
+        }
+
+        .control-panel-atelier {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .atelier-input {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .atelier-input:focus {
+            border-color: var(--primary);
+        }
+
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+        }
+
+        .btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-secondary {
+            background: var(--text-light);
+        }
+        .btn-secondary:hover {
+            background: var(--text);
+        }
+
+        .simulation-log {
+            flex: 1;
+            background: var(--background);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 15px;
+            overflow-y: auto;
+            font-size: 0.9rem;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            max-height: 200px;
+        }
+
+        .log-item {
+            padding: 8px 12px;
+            border-radius: 6px;
+            background: var(--surface);
+            border-left: 4px solid var(--primary);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .log-item.success {
+            border-left-color: var(--success);
+            background: #ecfdf5;
+            color: #065f46;
+        }
+
+        .log-item.error {
+            border-left-color: var(--danger);
+            background: #fef2f2;
+            color: #991b1b;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Pratik Bilgiler (Sekme 2) */
+        .theory-container {
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .theory-card {
+            background: var(--background);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+        }
+
+        .theory-card h3 {
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .theory-card p {
+            line-height: 1.5;
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        .highlight-box {
+            background: #eff6ff;
+            border-left: 4px solid var(--primary);
+            padding: 12px;
+            margin-top: 10px;
+            border-radius: 0 8px 8px 0;
+            color: var(--text);
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <!-- Üst HUD -->
+    <header class="hud-header">
+        <div class="hud-title">
+            <span>🚌</span> Otobüs Terminali EKOK Atölyesi
+        </div>
+        <div class="hud-stats">
+            <div class="stat-item">
+                <span>🏆</span> Skor: <span id="scoreDisplay">0</span>
+            </div>
+            <div class="stat-item">
+                <span>❤️</span> Hak: <span id="livesDisplay">3</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Sekme Butonları -->
+    <nav class="tab-nav">
+        <button class="tab-btn active" onclick="switchTab(1)">Atölye Tezgâhı</button>
+        <button class="tab-btn" onclick="switchTab(2)">Pratik Bilgiler & Taktikler</button>
+    </nav>
+
+    <!-- SEKME 1: ATÖLYE / TEZGÂH ALANI -->
+    <div id="tab1" class="tab-content active">
+        <div class="workshop-layout">
+            <!-- Sol Panel: Senaryo ve Görselleştirme -->
+            <div class="left-panel">
+                <div class="instruction-box" id="scenarioText">
+                    Garajdan aynı anda hareket eden iki otobüsten biri her <b>12 dakikada bir</b>, diğeri ise her <b>18 dakikada bir</b> seferini tekrarlamaktadır. Bu iki otobüsün tekrar <b>ilk kez aynı anda</b> terminalde buluşacağı dakikayı hesaplayıp aşağıya yazın.
+                </div>
+
+                <div class="bus-station-visual">
+                    <div class="bus-line">
+                        <span class="bus-icon">🚍</span>
+                        <div class="bus-info">Hat A: Her <span id="bus1Interval">12</span> dakikada bir kalkıyor.</div>
+                    </div>
+                    <div class="bus-line">
+                        <span class="bus-icon">🚎</span>
+                        <div class="bus-info">Hat B: Her <span id="bus2Interval">18</span> dakikada bir kalkıyor.</div>
+                    </div>
+                    <div class="terminal-clock" id="clockDisplay">00:00</div>
+                </div>
+
+                <button class="btn btn-secondary" onclick="resetAtelier()">🔄 Yeni Senaryo / Yeniden Başlat</button>
+            </div>
+
+            <!-- Sağ Panel: Hesaplama ve Etkileşim -->
+            <div class="right-panel">
+                <div class="simulation-log" id="simulationLog">
+                    <div class="log-item">Atölye hazır. Otobüslerin kalkış sürelerini inceleyin ve ortak buluşma dakikasını hesaplayarak sisteme girin.</div>
+                </div>
+
+                <div class="control-panel-atelier">
+                    <div class="input-group">
+                        <input type="number" id="userAnswerInput" class="atelier-input" placeholder="Ortak dakikayı girin..." min="1">
+                        <button class="btn" onclick="checkAnswer()">Sisteme İşle</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SEKME 2: PRATİK BİLGİLER & TAKTİKLER -->
+    <div id="tab2" class="tab-content">
+        <div class="theory-container">
+            <div class="theory-card">
+                <h3>EKOK (En Küçük Ortak Kat) Nedir?</h3>
+                <p>İki veya daha fazla doğal sayının ortak katlarından en küçüğüne o sayıların En Küçük Ortak Katı, kısaca <b>EKOK</b> denir.</p>
+                <div class="highlight-box">
+                    💡 İpucu: Otobüslerin birlikte hareket etmesi, zillerin aynı anda çalması, nöbet tutan askerlerin tekrar birlikte nöbete gelmesi gibi <b>"tekrar eden ve ileriye doğru birlikte gerçekleşen"</b> olaylar EKOK ile çözülür.
+                </div>
+            </div>
+
+            <div class="theory-card">
+                <h3>Atölyede Nasıl Düşünmelisin?</h3>
+                <p>Bu simülasyonda otobüslerin kalkış zamanlarının katlarını düşünmelisin:</p>
+                <p>• 1. Otobüs: 12, 24, 36, 48, 60...</p>
+                <p>• 2. Otobüs: 18, 36, 54, 72...</p>
+                <p>Her iki listenin de kesiştiği (ortak olduğu) <b>en küçük pozitif değer</b> senin aradığın cevaptır.</p>
+                <div class="highlight-box">
+                    ⚠️ Dikkat: Soru metninde belirtildiği gibi yalnızca en küçük ortak kat (EKOK) geçerlidir; diğer ortak katlar (örn. 72, 108 vb.) kabul edilmez!
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let score = 0;
+    let lives = 3;
+    let currentBus1 = 12;
+    let currentBus2 = 18;
+    let correctEkok = 36;
+
+    function switchTab(tabNumber) {
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+
+        document.getElementById(`tab${tabNumber}`).classList.add('active');
+        document.querySelectorAll('.tab-btn')[tabNumber - 1].classList.add('active');
+    }
+
+    function gcd(a, b) {
+        return b === 0 ? a : gcd(b, a % b);
+    }
+
+    function ekok(a, b) {
+        return (a * b) / gcd(a, b);
+    }
+
+    function generateNewProblem() {
+        // Rastgele iki sayı seçelim (örn: 6-15 arası)
+        const options1 = [8, 10, 12, 15, 14, 16];
+        const options2 = [10, 12, 15, 18, 20, 21];
+        
+        currentBus1 = options1[Math.floor(Math.random() * options1.length)];
+        currentBus2 = options2[Math.floor(Math.random() * options2.length)];
+        
+        // Aynı olmasınlar
+        if(currentBus1 === currentBus2) currentBus2 += 3;
+
+        correctEkok = ekok(currentBus1, currentBus2);
+
+        // Arayüzü güncelle
+        document.getElementById('bus1Interval').innerText = currentBus1;
+        document.getElementById('bus2Interval').innerText = currentBus2;
+        document.getElementById('scenarioText').innerHTML = `Garajdan aynı anda hareket eden iki otobüsten biri her <b>${currentBus1} dakikada bir</b>, diğeri ise her <b>${currentBus2} dakikada bir</b> seferini tekrarlamaktadır. Bu iki otobüsün tekrar <b>ilk kez aynı anda</b> terminalde buluşacağı dakikayı hesaplayıp aşağıya yazın.`;
+        document.getElementById('clockDisplay').innerText = "00:00";
+        document.getElementById('userAnswerInput').value = "";
+    }
+
+    function addLog(message, type = '') {
+        const logContainer = document.getElementById('simulationLog');
+        const item = document.createElement('div');
+        item.className = `log-item ${type}`;
+        item.innerText = message;
+        logContainer.prepend(item);
+    }
+
+    function checkAnswer() {
+        const inputVal = parseInt(document.getElementById('userAnswerInput').value);
+
+        if (isNaN(inputVal)) {
+            addLog("Lütfen geçerli bir sayı girin.", "error");
+            return;
+        }
+
+        if (inputVal === correctEkok) {
+            score += 10;
+            document.getElementById('scoreDisplay').innerText = score;
+            document.getElementById('clockDisplay').innerText = `${inputVal}. DAKİKA`;
+            addLog(`Tebrikler! ${currentBus1} ve ${currentBus2} dakikalık seferlerin EKOK'u doğru bulundu: ${inputVal}. Otobüsler terminalde buluştu!`, "success");
+            
+            setTimeout(() => {
+                generateNewProblem();
+                addLog("Yeni otobüs tarifesi yüklendi. Hesaplamaya devam edin.");
+            }, 2500);
+
+        } else {
+            lives--;
+            document.getElementById('livesDisplay').innerText = lives;
+            addLog(`Hatalı giriş! ${inputVal} dakikası bu iki otobüsün ilk ortak buluşma noktası değil. (İpucu: Sadece EKOK değeri kabul edilir).`, "error");
+
+            if (lives <= 0) {
+                addLog("Haklarınız tükendi! Atölye sıfırlanıyor...", "error");
+                setTimeout(() => {
+                    score = 0;
+                    lives = 3;
+                    document.getElementById('scoreDisplay').innerText = score;
+                    document.getElementById('livesDisplay').innerText = lives;
+                    generateNewProblem();
+                }, 2000);
+            }
+        }
+    }
+
+    function resetAtelier() {
+        generateNewProblem();
+        addLog("Atölye tezgâhı sıfırlandı. Yeni senaryo aktif.");
+    }
+
+    // Başlangıç
+    generateNewProblem();
+</script>
+
+</body>
+</html>
