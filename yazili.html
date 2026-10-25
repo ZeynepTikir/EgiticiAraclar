@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yazılıya Hazırlık Portalı</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #ea580c;
+            --primary-light: #ffedd5;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { background-color: var(--bg); color: var(--text-main); padding: 40px 20px; max-width: 900px; margin: 0 auto; }
+        
+        .nav-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
+        .back-btn { 
+            display: inline-flex; 
+            align-items: center; 
+            gap: 8px; 
+            color: var(--primary); 
+            text-decoration: none; 
+            font-weight: 600; 
+            padding: 8px 14px; 
+            border-radius: 8px; 
+            background: var(--primary-light);
+            transition: all 0.2s;
+        }
+        .back-btn:hover { opacity: 0.85; }
+
+        h1 { font-size: 1.8rem; margin-bottom: 24px; color: var(--text-main); text-align: center; }
+
+        /* Sınıf Kartları Grid */
+        .sinif-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-top: 20px; }
+        .sinif-card { 
+            background: var(--card-bg); 
+            border: 1px solid var(--border); 
+            padding: 30px 20px; 
+            border-radius: 16px; 
+            text-align: center; 
+            text-decoration: none; 
+            color: var(--text-main); 
+            font-weight: 700; 
+            font-size: 1.2rem; 
+            transition: all 0.2s; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            gap: 12px; 
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+        .sinif-card:hover { border-color: var(--primary); color: var(--primary); transform: translateY(-3px); }
+
+        /* Kategori / Dönem Kutuları */
+        .unit-box { background: var(--card-bg); border-radius: 16px; padding: 24px; margin-bottom: 20px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); border: 1px solid var(--border); }
+        .unit-box h3 { font-size: 1.15rem; margin-bottom: 16px; color: var(--text-main); border-bottom: 1px solid var(--border); padding-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+        
+        /* Dosya Listesi */
+        .tool-list { display: flex; flex-direction: column; gap: 10px; }
+        .tool-item { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 14px 18px; 
+            background: #f8fafc; 
+            border: 1px solid var(--border); 
+            border-radius: 12px; 
+            text-decoration: none; 
+            color: var(--text-main); 
+            font-weight: 500; 
+            transition: all 0.2s; 
+        }
+        .tool-item:hover { background: #fff7ed; border-color: var(--primary); color: var(--primary); }
+
+        .badge {
+            font-size: 0.75rem;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-weight: 600;
+            margin-right: 8px;
+            text-transform: uppercase;
+        }
+        .badge-yazili { background: #ffedd5; color: #c2410c; }
+        .badge-calisma { background: #f3e8ff; color: #7e22ce; }
+        .badge-varsayilan { background: #e2e8f0; color: #475569; }
+    </style>
+</head>
+<body>
+
+    <div class="nav-bar">
+        <a href="index.html" class="back-btn" id="geriBtn">← Ana Sayfa</a>
+    </div>
+
+    <h1 id="baslik">Yazılıya Hazırlık</h1>
+    <div id="icerikContainer"></div>
+
+    <!-- Veri Dosyası -->
+    <script src="yazili_data.js"></script>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const sinifKey = urlParams.get('sinif');
+
+        function getBadgeHtml(tur) {
+            if (!tur) return `<span class="badge badge-varsayilan">📄 Belge</span>`;
+            switch(tur.toLowerCase()) {
+                case 'yazili': return `<span class="badge badge-yazili">📝 Sınav</span>`;
+                case 'calisma': return `<span class="badge badge-calisma">📋 Çalışma Kağıdı</span>`;
+                default: return `<span class="badge badge-varsayilan">📄 ${tur}</span>`;
+            }
+        }
+
+        function yukleIcerik() {
+            const container = document.getElementById('icerikContainer');
+            const baslikEl = document.getElementById('baslik');
+            const geriBtn = document.getElementById('geriBtn');
+
+            if (typeof yaziliVerileri === 'undefined') {
+                baslikEl.innerText = "Veri Dosyası Bulunamadı";
+                container.innerHTML = "<p style='text-align:center; color:#64748b;'>yazili_data.js dosyası yüklenemedi.</p>";
+                return;
+            }
+
+            // DURUM 1: Sınıf Seçilmemişse -> 5, 6, 7, 8. Sınıf Seçim Kartları
+            if (!sinifKey) {
+                baslikEl.innerText = "Yazılıya Hazırlık - Sınıf Seçiniz";
+                geriBtn.href = "index.html";
+                geriBtn.innerText = "← Ana Sayfa";
+
+                let html = '<div class="sinif-grid">';
+                for (const [key, sData] of Object.entries(yaziliVerileri)) {
+                    html += `
+                        <a href="yazili.html?sinif=${key}" class="sinif-card">
+                            <span style="font-size: 2.5rem;">📝</span>
+                            <span>${sData.baslik}</span>
+                        </a>
+                    `;
+                }
+                html += '</div>';
+                container.innerHTML = html;
+            } 
+            // DURUM 2: Sınıf Seçilmişse -> Dönemler ve Yazılı Dosyaları Listele
+            else if (yaziliVerileri[sinifKey]) {
+                const sinifData = yaziliVerileri[sinifKey];
+                document.title = sinifData.baslik;
+                baslikEl.innerText = sinifData.baslik;
+                geriBtn.href = "yazili.html";
+                geriBtn.innerText = "← Sınıf Seçimine Dön";
+
+                let contentHtml = "";
+                sinifData.donemler.forEach(donem => {
+                    let toolsHtml = "";
+                    if (donem.dosyalar && donem.dosyalar.length > 0) {
+                        toolsHtml = donem.dosyalar.map(dosya => `
+                            <a href="${dosya.dosya}" class="tool-item" target="_blank">
+                                <div>
+                                    ${getBadgeHtml(dosya.tur)}
+                                    <span>${dosya.ad}</span>
+                                </div>
+                                <span style="font-size:0.9rem; font-weight:600;">İncele / İndir →</span>
+                            </a>
+                        `).join('');
+                    } else {
+                        toolsHtml = `<p style="color: #94a3b8; font-size: 0.9rem; padding: 5px;">Bu başlık altında henüz dosya bulunmuyor.</p>`;
+                    }
+
+                    contentHtml += `
+                        <div class="unit-box">
+                            <h3>📌 ${donem.donemAdi}</h3>
+                            <div class="tool-list">${toolsHtml}</div>
+                        </div>
+                    `;
+                });
+                container.innerHTML = contentHtml;
+            } else {
+                baslikEl.innerText = "Sınıf Bulunamadı";
+            }
+        }
+
+        // Sayfa Yüklendiğinde Çalıştır
+        window.onload = yukleIcerik;
+    </script>
+</body>
+</html>
