@@ -118,7 +118,7 @@
             flex: 1;
             display: none;
             flex-direction: column;
-            overflow-y: auto;
+            overflow: hidden;
             position: relative;
         }
 
@@ -132,6 +132,7 @@
             grid-template-columns: 1fr 1fr;
             flex: 1;
             height: 100%;
+            overflow: hidden;
         }
 
         .left-panel {
@@ -141,6 +142,7 @@
             flex-direction: column;
             gap: 15px;
             background: #f8fafc;
+            overflow-y: auto;
         }
 
         .right-panel {
@@ -149,6 +151,8 @@
             flex-direction: column;
             justify-content: space-between;
             background: var(--surface);
+            height: 100%;
+            overflow: hidden;
         }
 
         .instruction-box {
@@ -210,6 +214,7 @@
             display: flex;
             flex-direction: column;
             gap: 10px;
+            margin-top: 15px;
         }
 
         .input-group {
@@ -268,7 +273,7 @@
             display: flex;
             flex-direction: column;
             gap: 8px;
-            max-height: 200px;
+            width: 100%;
         }
 
         .log-item {
@@ -302,6 +307,8 @@
             display: flex;
             flex-direction: column;
             gap: 20px;
+            overflow-y: auto;
+            flex: 1;
         }
 
         .theory-card {
@@ -447,19 +454,16 @@
     }
 
     function generateNewProblem() {
-        // Rastgele iki sayı seçelim (örn: 6-15 arası)
         const options1 = [8, 10, 12, 15, 14, 16];
         const options2 = [10, 12, 15, 18, 20, 21];
         
         currentBus1 = options1[Math.floor(Math.random() * options1.length)];
         currentBus2 = options2[Math.floor(Math.random() * options2.length)];
         
-        // Aynı olmasınlar
         if(currentBus1 === currentBus2) currentBus2 += 3;
 
         correctEkok = ekok(currentBus1, currentBus2);
 
-        // Arayüzü güncelle
         document.getElementById('bus1Interval').innerText = currentBus1;
         document.getElementById('bus2Interval').innerText = currentBus2;
         document.getElementById('scenarioText').innerHTML = `Garajdan aynı anda hareket eden iki otobüsten biri her <b>${currentBus1} dakikada bir</b>, diğeri ise her <b>${currentBus2} dakikada bir</b> seferini tekrarlamaktadır. Bu iki otobüsün tekrar <b>ilk kez aynı anda</b> terminalde buluşacağı dakikayı hesaplayıp aşağıya yazın.`;
@@ -517,7 +521,6 @@
         addLog("Atölye tezgâhı sıfırlandı. Yeni senaryo aktif.");
     }
 
-    // Başlangıç
     generateNewProblem();
 </script>
 
