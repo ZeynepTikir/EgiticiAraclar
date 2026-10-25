@@ -68,32 +68,32 @@ const yaziliVerileri = {
         dosyalar: [
           { 
             ad: "100 Soruda Yazılıya Hazırlık", 
-            dosya: "yazili/8_sinif/matematik_100_soruda_1d1y_hazirlik_fasikulu.pdf", 
+            dosya: "yazili/8_sinif/8_matematik_100_soruda_1d1y_hazirlik_fasikulu.pdf", 
             tur: "fasikul" 
           },
           { 
             ad: "Yazılı Çalışma Soruları", 
-            dosya: "yazili/8_sinif/matematik_1d1y_hazirlik.pdf", 
+            dosya: "yazili/8_sinif/8_matematik_1d1y_hazirlik.pdf", 
             tur: "calisma" 
           },
           { 
             ad: "Örnek Senaryo 1", 
-            dosya: "yazili/8_sinif/matematik_1d1y_senaryo_1.pdf", 
+            dosya: "yazili/8_sinif/8_matematik_1d1y_senaryo_1.pdf", 
             tur: "yazili" 
           },
           { 
             ad: "Örnek Senaryo 2", 
-            dosya: "yazili/8_sinif/matematik_1d1y_senaryo_2.pdf", 
+            dosya: "yazili/8_sinif/8_matematik_1d1y_senaryo_2.pdf", 
             tur: "yazili" 
           },
           { 
             ad: "Örnek Senaryo 3", 
-            dosya: "yazili/8_sinif/matematik_1d1y_senaryo_3.pdf", 
+            dosya: "yazili/8_sinif/8_matematik_1d1y_senaryo_3.pdf", 
             tur: "yazili" 
           },
           { 
             ad: "Örnek Senaryo 4", 
-            dosya: "yazili/8_sinif/matematik_1d1y_senaryo_4.pdf", 
+            dosya: "yazili/8_sinif/8_matematik_1d1y_senaryo_4.pdf", 
             tur: "yazili" 
           },
         ]
