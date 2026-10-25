@@ -110,10 +110,12 @@
         function getBadgeHtml(tur) {
             if (!tur) return `<span class="badge badge-varsayilan">📄 Belge</span>`;
             switch(tur.toLowerCase()) {
-                case 'yazili': return `<span class="badge badge-yazili">📝 Sınav</span>`;
+                case 'fasikul': return `<span class="badge badge-fasikul">📖 Fasikül</span>`;
                 case 'calisma': return `<span class="badge badge-calisma">📋 Çalışma Kağıdı</span>`;
+                case 'yazili': return `<span class="badge badge-yazili">📝 Sınav / Senaryo</span>`;
                 default: return `<span class="badge badge-varsayilan">📄 ${tur}</span>`;
             }
+        }
         }
 
         function yukleIcerik() {
