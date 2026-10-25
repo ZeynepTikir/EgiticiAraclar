@@ -104,7 +104,7 @@
         const sinifKey = urlParams.get('sinif');
 
         const script = document.createElement('script');
-        script.src = dersKey === 'fen' ? 'fen_data.js' : 'mat_data.js';
+        script.src = dersKey === 'fen' ? 'data/fen_data.js' : 'data/mat_data.js';
 
         script.onload = function() { yukleIcerik(); };
         script.onerror = function() {

@@ -1,13 +1,13 @@
 const yaziliVerileri = {
   "5_sinif": {
-    baslik: "5. Sınıf Yazılıya Hazırlık",
+    baslik: "5. Sınıf Matematik Yazılıya Hazırlık",
     donemler: [
       {
         donemAdi: "1. Dönem 1. Yazılı",
         dosyalar: [
           { 
             ad: "Yazılı Çalışma Soruları", 
-            dosya: "yazili/5_sinif/5_matematik_1d1y_hazirlik.pdf", 
+            dosya: "yazili/matematik/5_sinif/5_matematik_1d1y_hazirlik.pdf", 
             tur: "calisma" 
           },
         ]
@@ -19,7 +19,7 @@ const yaziliVerileri = {
     ]
   },
   "6_sinif": {
-    baslik: "6. Sınıf Yazılıya Hazırlık",
+    baslik: "6. Sınıf Matematik Yazılıya Hazırlık",
     donemler: [
       {
         donemAdi: "1. Dönem 1. Yazılı",
@@ -32,24 +32,24 @@ const yaziliVerileri = {
     ]
   },
   "7_sinif": {
-    baslik: "7. Sınıf Yazılıya Hazırlık",
+    baslik: "7. Sınıf Matematik Yazılıya Hazırlık",
     donemler: [
       {
         donemAdi: "1. Dönem 1. Yazılı",
         dosyalar: [
           { 
             ad: "100 Soruda Yazılıya Hazırlık", 
-            dosya: "yazili/7_sinif/7_matematik_100_soruda_1d1y_hazirlik_fasikulu.pdf", 
+            dosya: "yazili/matematik/7_sinif/7_matematik_100_soruda_1d1y_hazirlik_fasikulu.pdf", 
             tur: "fasikul" 
           },
           { 
             ad: "Yazılı Çalışma Soruları", 
-            dosya: "yazili/7_sinif/7_matematik_1d1y_hazirlik.pdf", 
+            dosya: "yazili/matematik/7_sinif/7_matematik_1d1y_hazirlik.pdf", 
             tur: "calisma" 
           },
           { 
             ad: "Örnek Senaryolar", 
-            dosya: "yazili/7_sinif/7_matematik_1d1y_senaryolar.pdf", 
+            dosya: "yazili/matematik/7_sinif/7_matematik_1d1y_senaryolar.pdf", 
             tur: "yazili" 
           }
         ]
@@ -61,39 +61,39 @@ const yaziliVerileri = {
     ]
   },
   "8_sinif": {
-    baslik: "8. Sınıf Yazılıya Hazırlık",
+    baslik: "8. Sınıf Matematik Yazılıya Hazırlık",
     donemler: [
       {
         donemAdi: "1. Dönem 1. Yazılı",
         dosyalar: [
           { 
             ad: "100 Soruda Yazılıya Hazırlık", 
-            dosya: "yazili/8_sinif/8_matematik_100_soruda_1d1y_hazirlik_fasikulu.pdf", 
+            dosya: "yazili/matematik/8_sinif/8_matematik_100_soruda_1d1y_hazirlik_fasikulu.pdf", 
             tur: "fasikul" 
           },
           { 
             ad: "Yazılı Çalışma Soruları", 
-            dosya: "yazili/8_sinif/8_matematik_1d1y_hazirlik.pdf", 
+            dosya: "yazili/matematik/8_sinif/8_matematik_1d1y_hazirlik.pdf", 
             tur: "calisma" 
           },
           { 
             ad: "Örnek Senaryo 1", 
-            dosya: "yazili/8_sinif/8_matematik_1d1y_senaryo_1.pdf", 
+            dosya: "yazili/matematik/8_sinif/8_matematik_1d1y_senaryo_1.pdf", 
             tur: "yazili" 
           },
           { 
             ad: "Örnek Senaryo 2", 
-            dosya: "yazili/8_sinif/8_matematik_1d1y_senaryo_2.pdf", 
+            dosya: "yazili/matematik/8_sinif/8_matematik_1d1y_senaryo_2.pdf", 
             tur: "yazili" 
           },
           { 
             ad: "Örnek Senaryo 3", 
-            dosya: "yazili/8_sinif/8_matematik_1d1y_senaryo_3.pdf", 
+            dosya: "yazili/matematik/8_sinif/8_matematik_1d1y_senaryo_3.pdf", 
             tur: "yazili" 
           },
           { 
             ad: "Örnek Senaryo 4", 
-            dosya: "yazili/8_sinif/8_matematik_1d1y_senaryo_4.pdf", 
+            dosya: "yazili/matematik/8_sinif/8_matematik_1d1y_senaryo_4.pdf", 
             tur: "yazili" 
           },
         ]
