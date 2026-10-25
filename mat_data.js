@@ -60,9 +60,9 @@ const matVerileri = {
           { ad: "EBOB Şişe Atölyesi", dosya: "matematik/8_sinif/1_carpanlar_katlar/ebob_sise_atolye.html", tur: "atolye" },
           { ad: "EKOK Etkinliği", dosya: "matematik/8_sinif/1_carpanlar_katlar/ekok_lab.html", tur: "lab" },
           { ad: "EKOK Otobüs Atölyesi", dosya: "matematik/8_sinif/1_carpanlar_katlar/ekok_otobus_atolye.html", tur: "atolye" },
-          { ad: "EKOK Süre Atölyesi", dosya: "matematik/8_sinif/1_carpanlar_katlar/ekok_sure_atolye.html", tur: "atolye" }
-          { ad: "EKOK Süre Atölyesi 2", dosya: "matematik/8_sinif/1_carpanlar_katlar/ekok_zaman_orta_atolye.html", tur: "atolye" }
-          { ad: "EKOK Süre Atölyesi Zor", dosya: "matematik/8_sinif/1_carpanlar_katlar/ekok_zaman_zor_atolye.html", tur: "atolye" }
+          { ad: "EKOK Süre Atölyesi", dosya: "matematik/8_sinif/1_carpanlar_katlar/ekok_sure_atolye.html", tur: "atolye" },
+          { ad: "EKOK Süre Atölyesi 2", dosya: "matematik/8_sinif/1_carpanlar_katlar/ekok_zaman_orta_atolye.html", tur: "atolye" },
+          { ad: "EKOK Süre Atölyesi Zor", dosya: "matematik/8_sinif/1_carpanlar_katlar/ekok_zaman_zor_atolye.html", tur: "atolye" },
           { ad: "EKOK Dikim Atölyesi Zor", dosya: "matematik/8_sinif/1_carpanlar_katlar/ekok_dikim_zor_atolye.html", tur: "atolye" }
         ]
       },
