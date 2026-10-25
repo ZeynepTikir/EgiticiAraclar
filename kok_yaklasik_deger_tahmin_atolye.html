@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Karekök Denizaltı Atölyesi - 8. Sınıf Matematik</title>
+    <style>
+        :root {
+            --primary: #0284c7;
+            --primary-dark: #0369a1;
+            --secondary: #38bdf8;
+            --accent: #f59e0b;
+            --accent-glow: rgba(245, 158, 11, 0.4);
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --bg-element: #334155;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --success: #10b981;
+            --danger: #ef4444;
+            --font-main: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            --border-radius: 16px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        header {
+            background-color: var(--bg-card);
+            border-bottom: 2px solid var(--primary-dark);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+            z-index: 10;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-icon {
+            font-size: 2rem;
+            animation: swim 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes swim {
+            0% { transform: translateY(0) rotate(0deg); }
+            100% { transform: translateY(-5px) rotate(-5deg); }
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            color: var(--secondary);
+            font-weight: 700;
+        }
+
+        .hud {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .hud-item {
+            background: var(--bg-element);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .controls-group {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: var(--bg-element);
+        }
+        .btn-secondary:hover {
+            background: #475569;
+        }
+
+        .tabs {
+            display: flex;
+            background: var(--bg-card);
+            padding: 0 2rem;
+            gap: 1rem;
+            border-bottom: 1px solid var(--bg-element);
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            padding: 1rem 1.5rem;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .tab-btn.active {
+            color: var(--secondary);
+            border-bottom-color: var(--secondary);
+        }
+
+        main {
+            flex: 1;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            position: relative;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .workshop-grid {
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        @media (max-width: 900px) {
+            .workshop-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .workbench {
+            background: var(--bg-card);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            border: 1px solid rgba(255,255,255,0.05);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+            min-height: 500px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ocean-bg {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(180deg, #0c4a6e 0%, #0369a1 100%);
+            opacity: 0.3;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .workbench > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .target-display {
+            text-align: center;
+            background: rgba(15, 23, 42, 0.6);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 2px dashed var(--secondary);
+            margin-bottom: 2rem;
+        }
+
+        .target-title {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+
+        .target-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--accent);
+            text-shadow: 0 0 15px var(--accent-glow);
+        }
+
+        .target-desc {
+            font-size: 0.95rem;
+            color: var(--text-main);
+            margin-top: 0.5rem;
+        }
+
+        .scale-container {
+            margin: 2rem 0;
+            padding: 1rem;
+            background: rgba(15, 23, 42, 0.8);
+            border-radius: 12px;
+        }
+
+        .number-line {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            height: 60px;
+            align-items: center;
+            border-bottom: 4px solid var(--secondary);
+            margin: 0 1rem;
+        }
+
+        .number-node {
+            position: absolute;
+            transform: translateX(-50%);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .number-node .node-circle {
+            width: 32px;
+            height: 32px;
+            background: var(--bg-element);
+            border: 3px solid var(--secondary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin: 0 auto 5px auto;
+            transition: all 0.2s;
+        }
+
+        .number-node:hover .node-circle, .number-node.selected .node-circle {
+            background: var(--accent);
+            border-color: white;
+            transform: scale(1.15);
+            box-shadow: 0 0 10px var(--accent);
+        }
+
+        .number-node .node-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .proximity-area {
+            background: rgba(15, 23, 42, 0.8);
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .proximity-title {
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            color: var(--secondary);
+        }
+
+        .fish-tank {
+            height: 80px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 8px;
+            position: relative;
+            margin-bottom: 1rem;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .fish {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2.5rem;
+            transition: left 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            filter: drop-shadow(0 0 5px rgba(255,255,255,0.5));
+        }
+
+        .tank-markers {
+            display: flex;
+            justify-content: space-between;
+            padding: 0 10px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .slider-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        input[type="range"] {
+            flex: 1;
+            accent-color: var(--accent);
+            height: 8px;
+            border-radius: 4px;
+            background: var(--bg-element);
+            outline: none;
+        }
+
+        .storage-panel {
+            background: var(--bg-card);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            border: 1px solid rgba(255,255,255,0.05);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .panel-title {
+            font-size: 1.1rem;
+            color: var(--secondary);
+            border-bottom: 1px solid var(--bg-element);
+            padding-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .mission-log {
+            background: rgba(15, 23, 42, 0.6);
+            padding: 1rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: var(--text-muted);
+            border-left: 4px solid var(--accent);
+        }
+
+        .inventory-items {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.8rem;
+        }
+
+        .item-card {
+            background: var(--bg-element);
+            border: 2px solid transparent;
+            border-radius: 8px;
+            padding: 0.8rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .item-card:hover {
+            border-color: var(--secondary);
+            transform: translateY(-2px);
+            background: rgba(56, 189, 248, 0.1);
+        }
+
+        .item-card.active {
+            border-color: var(--accent);
+            background: rgba(245, 158, 11, 0.1);
+        }
+
+        .item-icon {
+            font-size: 1.8rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .item-name {
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        /* Guide container */
+        .guide-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .guide-card {
+            background: var(--bg-card);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            border: 1px solid rgba(255,255,255,0.05);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+        }
+
+        .guide-card h3 {
+            color: var(--secondary);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .guide-card p {
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .example-box {
+            background: rgba(15, 23, 42, 0.6);
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 3px solid var(--primary);
+            font-family: monospace;
+            font-size: 0.95rem;
+            color: var(--text-main);
+        }
+
+        /* Modal Overlay */
+        .overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(5px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal {
+            background: var(--bg-card);
+            border: 1px solid var(--primary);
+            padding: 2.5rem;
+            border-radius: var(--border-radius);
+            text-align: center;
+            max-width: 480px;
+            width: 90%;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .overlay.active .modal {
+            transform: scale(1);
+        }
+
+        .modal h2 {
+            color: var(--secondary);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .modal p {
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+            text-align: left;
+        }
+
+        /* Feedback Toast */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--bg-card);
+            border: 2px solid var(--secondary);
+            padding: 1rem 2rem;
+            border-radius: 30px;
+            font-weight: bold;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 90;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .toast.success { border-color: var(--success); color: var(--success); }
+        .toast.error { border-color: var(--danger); color: var(--danger); }
+        .toast.info { border-color: var(--secondary); color: var(--secondary); }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-area">
+            <span class="logo-icon">⚓</span>
+            <div>
+                <h1>Karekök Denizaltı Atölyesi</h1>
+                <div style="font-size: 0.8rem; color: var(--text-muted);">8. Sınıf Matematik İnteraktif Simülasyonu</div>
+            </div>
+        </div>
+        <div class="hud">
+            <div class="hud-item">
+                <span>🏆</span> Puan: <span id="scoreVal">0</span>
+            </div>
+            <div class="hud-item">
+                <span>❤️</span> Haklar: <span id="livesVal">3</span>
+            </div>
+            <div class="controls-group">
+                <button class="btn" id="startBtn" onclick="toggleSimulation(true)">▶️ Başlat</button>
+                <button class="btn btn-secondary" id="pauseBtn" onclick="toggleSimulation(false)">⏸️ Durdur</button>
+            </div>
+        </div>
+    </header>
+
+    <nav class="tabs">
+        <button class="tab-btn active" onclick="switchTab(0)">🛠️ Atölye / Tezgâh Alanı</button>
+        <button class="tab-btn" onclick="switchTab(1)">📖 Pratik Bilgiler & Taktikler</button>
+    </nav>
+
+    <main>
+        <!-- SEKME 1: ATÖLYE ALANI -->
+        <div id="tab0" class="tab-content active">
+            <div class="workshop-grid">
+                
+                <!-- SOL: İNTERAKTİF TEZGAH -->
+                <div class="workbench">
+                    <div class="ocean-bg"></div>
+                    
+                    <div class="target-display">
+                        <div class="target-title">Derinlik Hedefi (Tam Kare Olmayan Sayı)</div>
+                        <div class="target-number" id="targetNumber">√??</div>
+                        <div class="target-desc" id="targetDesc">Denizaltıyı tam sayı istasyonları arasına yerleştir ve kime daha yakın olduğunu keşfet!</div>
+                    </div>
+
+                    <!-- Sayı Doğrusu Ölçeği -->
+                    <div class="scale-container">
+                        <div class="number-line" id="numberLine"></div>
+                    </div>
+
+                    <!-- Yakınlık / Slider Alanı -->
+                    <div class="proximity-area">
+                        <div class="proximity-title">Denizaltı Yakınlık Ayarı (Hangi Tam Sayıya Daha Yakın?)</div>
+                        <div class="fish-tank">
+                            <div class="fish" id="subFish" style="left: 50%;">🛥️</div>
+                        </div>
+                        <div class="tank-markers">
+                            <span id="leftMarkerLabel">0</span>
+                            <span id="middleMarkerLabel">Tam Ortalama</span>
+                            <span id="rightMarkerLabel">0</span>
+                        </div>
+                        <div class="slider-controls" style="margin-top: 1rem;">
+                            <input type="range" id="proximitySlider" min="0" max="100" value="50" oninput="updateProximity(this.value)">
+                            <button class="btn" onclick="checkAnswer()">⚓ Konumu Onayla</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SAĞ: BİLGİ VE GÖREV PANELI -->
+                <div class="storage-panel">
+                    <div class="panel-title">🧭 Görev Rehberi</div>
+                    <div class="mission-log" id="missionLog">
+                        Kaptan! Denizaltımızı derinliklerdeki kareköklü sayıların tam aralığına yerleştirmeliyiz. Ekipmanları incelemek için üzerlerine tıklayabilirsin!
+                    </div>
+
+                    <div class="panel-title">🧰 Donanım Ekipmanları</div>
+                    <div class="inventory-items">
+                        <div class="item-card active" onclick="useEquipment(0)">
+                            <div class="item-icon">🔭</div>
+                            <div class="item-name">Kareköklü Ayna</div>
+                        </div>
+                        <div class="item-card active" onclick="useEquipment(1)">
+                            <div class="item-icon">🗺️</div>
+                            <div class="item-name">Tam Kare Haritası</div>
+                        </div>
+                        <div class="item-card active" onclick="useEquipment(2)">
+                            <div class="item-icon">🧭</div>
+                            <div class="item-name">Yakınlık Pusulası</div>
+                        </div>
+                        <div class="item-card active" onclick="useEquipment(3)">
+                            <div class="item-icon">⚙️</div>
+                            <div class="item-name">Derinlik Çarkı</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- SEKME 2: PRATİK BİLGİLER -->
+        <div id="tab1" class="tab-content">
+            <div class="guide-container">
+                <div class="guide-card">
+                    <h3>📌 Hangi İki Tam Sayı Arasında?</h3>
+                    <p>Tam kare olmayan bir pozitif kareköklü ifadenin hangi iki ardışık tam sayı arasında olduğunu bulmak için, verilen sayının hemen küçük ve hemen büyük olan <strong>tam kare</strong> sayıları buluruz.</p>
+                    <div class="example-box">
+                        Örn: √45 için;<br>
+                        En yakın küçük tam kare: 36 (√36 = 6)<br>
+                        En yakın büyük tam kare: 49 (√49 = 7)<br>
+                        Sonuç: 6 < √45 < 7
+                    </div>
+                </div>
+
+                <div class="guide-card">
+                    <h3>🎯 Kime Daha Yakın? (Yakınlık Analizi)</h3>
+                    <p>Hangi tam sayıya daha yakın olduğunu bulmak için, sayının karekökü içindeki değerin tam kare sayıların içindeki mesafelerine bakarız. Aradaki fark kime azsa, denizaltı oraya daha yakındır!</p>
+                    <div class="example-box">
+                        √45 için mesafeler:<br>
+                        45 - 36 = 9 birim (6'ya mesafe)<br>
+                        49 - 45 = 4 birim (7'ye mesafe)<br>
+                        4 < 9 olduğu için 7'ye daha yakındır!
+                    </div>
+                </div>
+
+                <div class="guide-card">
+                    <h3>💡 Altın İpuçları</h3>
+                    <p>Atölyede her zaman tam kare sayıları (1, 4, 9, 16, 25, 36, 49, 64, 81, 100, 121, 144...) akılda tutmak en büyük silahındır.</p>
+                    <div class="example-box">
+                        √10 > √9 olduğu için 3'ten büyüktür.<br>
+                        √10, 9'a çok yakın olduğundan 3'e çok yakındır.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Ekipman / Bilgi Modalı -->
+    <div class="overlay" id="equipmentOverlay" onclick="closeEquipmentModal()">
+        <div class="modal" onclick="event.stopPropagation()">
+            <h2 id="modalTitle">Ekipman Raporu</h2>
+            <p id="modalBody">Ekipman bilgisi burada yer alacak.</p>
+            <button class="btn" onclick="closeEquipmentModal()" style="width: 100%; justify-content: center;">Kapat / Tamam</button>
+        </div>
+    </div>
+
+    <!-- Durdurma Perdesi / Overlay -->
+    <div class="overlay" id="pauseOverlay">
+        <div class="modal">
+            <h2>Simülasyon Durduruldu</h2>
+            <p style="text-align: center;">Atölye tezgâhı molada. Kaldığın yerden güvenle devam edebilirsin, tüm skor ve ilerlemen koruma altındadır!</p>
+            <button class="btn" onclick="toggleSimulation(true)" style="width: 100%; justify-content: center;">▶️ Devam Et</button>
+        </div>
+    </div>
+
+    <!-- Feedback Toast -->
+    <div class="toast" id="toastBox">
+        <span id="toastIcon">✨</span>
+        <span id="toastMsg">Tebrikler! Doğru konumlandırma.</span>
+    </div>
+
+    <script>
+        let score = 0;
+        let lives = 3;
+        let isPaused = false;
+
+        let currentTarget = {
+            val: 0,
+            lower: 0,
+            upper: 0
+        };
+
+        const nonSquarePool = [
+            {val: 5, lower: 2, upper: 3},
+            {val: 8, lower: 2, upper: 3},
+            {val: 10, lower: 3, upper: 4},
+            {val: 12, lower: 3, upper: 4},
+            {val: 14, lower: 3, upper: 4},
+            {val: 17, lower: 4, upper: 5},
+            {val: 20, lower: 4, upper: 5},
+            {val: 24, lower: 4, upper: 5},
+            {val: 27, lower: 5, upper: 6},
+            {val: 30, lower: 5, upper: 6},
+            {val: 35, lower: 5, upper: 6},
+            {val: 40, lower: 6, upper: 7},
+            {val: 45, lower: 6, upper: 7},
+            {val: 52, lower: 7, upper: 8},
+            {val: 60, lower: 7, upper: 8},
+            {val: 70, lower: 8, upper: 9},
+            {val: 80, lower: 8, upper: 9},
+            {val: 90, lower: 9, upper: 10},
+        ];
+
+        function initSimulation() {
+            generateNewProblem();
+        }
+
+        function generateNewProblem() {
+            const randomIndex = Math.floor(Math.random() * nonSquarePool.length);
+            const item = nonSquarePool[randomIndex];
+            
+            currentTarget.val = item.val;
+            currentTarget.lower = item.lower;
+            currentTarget.upper = item.upper;
+
+            document.getElementById('targetNumber').innerText = `√${item.val}`;
+            document.getElementById('leftMarkerLabel').innerText = `${item.lower} (√${item.lower * item.lower})`;
+            document.getElementById('rightMarkerLabel').innerText = `${item.upper} (√${item.upper * item.upper})`;
+            document.getElementById('middleMarkerLabel').innerText = `${(item.lower + item.upper)/2} (Orta Nokta)`;
+
+            renderNumberLine(item.lower, item.upper);
+
+            document.getElementById('proximitySlider').value = 50;
+            updateProximity(50);
+        }
+
+        function renderNumberLine(lower, upper) {
+            const line = document.getElementById('numberLine');
+            line.innerHTML = `
+                <div class="number-node" style="left: 0%;">
+                    <div class="node-circle">${lower}</div>
+                    <div class="node-label">√${lower*lower}</div>
+                </div>
+                <div class="number-node" style="left: 100%;">
+                    <div class="node-circle">${upper}</div>
+                    <div class="node-label">√${upper*upper}</div>
+                </div>
+            `;
+        }
+
+        function updateProximity(val) {
+            const fish = document.getElementById('subFish');
+            const pos = 5 + (val / 100) * 90;
+            fish.style.left = `${pos}%`;
+
+            if (val < 50) {
+                fish.style.transform = "translateY(-50%) scaleX(-1)";
+            } else {
+                fish.style.transform = "translateY(-50%) scaleX(1)";
+            }
+        }
+
+        // --- Ekipman İşlevleri (Butonlar) ---
+        function useEquipment(type) {
+            const overlay = document.getElementById('equipmentOverlay');
+            const titleEl = document.getElementById('modalTitle');
+            const bodyEl = document.getElementById('modalBody');
+
+            if (type === 0) {
+                // Kareköklü Ayna (Anlık Soru Analizi)
+                titleEl.innerText = "🔭 Kareköklü Ayna Analizi";
+                bodyEl.innerHTML = `Mevcut Hedef: <strong>√${currentTarget.val}</strong><br><br>` +
+                                   `• Bu sayı <strong>${currentTarget.lower * currentTarget.lower}</strong> (√${currentTarget.lower * currentTarget.lower} = ${currentTarget.lower}) ile ` +
+                                   `<strong>${currentTarget.upper * currentTarget.upper}</strong> (√${currentTarget.upper * currentTarget.upper} = ${currentTarget.upper}) arasındadır.<br><br>` +
+                                   `Kaptan, denizaltıyı bu iki tam sayı arasında doğru noktaya konumlandır!`;
+            } else if (type === 1) {
+                // Tam Kare Haritası (Referans Tablosu)
+                titleEl.innerText = "🗺️ Tam Kare Haritası (Kılavuz)";
+                bodyEl.innerHTML = `8. Sınıf Tam Kare Sayılar Referans Listesi:<br><br>` +
+                                   `• 1² = 1 (√1 = 1) &nbsp;|&nbsp; 7² = 49 (√49 = 7)<br>` +
+                                   `• 2² = 4 (√4 = 2) &nbsp;|&nbsp; 8² = 64 (√64 = 8)<br>` +
+                                   `• 3² = 9 (√9 = 3) &nbsp;|&nbsp; 9² = 81 (√81 = 9)<br>` +
+                                   `• 4² = 16 (√16 = 4) &nbsp;|&nbsp; 10² = 100 (√100 = 10)<br>` +
+                                   `• 5² = 25 (√25 = 5) &nbsp;|&nbsp; 11² = 121 (√121 = 11)<br>` +
+                                   `• 6² = 36 (√36 = 6) &nbsp;|&nbsp; 12² = 144 (√144 = 12)`;
+            } else if (type === 2) {
+                // Yakınlık Pusulası
+                titleEl.innerText = "🧭 Yakınlık Pusulası İpucu";
+                bodyEl.innerHTML = `Kime daha yakın olduğunu anlamak için karekök içindeki sayıları çıkar:<br><br>` +
+                                   `• Küçük tam kareye olan uzaklık: |Hedef - Küçük Kare|<br>` +
+                                   `• Büyük tam kareye olan uzaklık: |Büyük Kare - Hedef|<br>` +
+                                   `Hangi fark daha küçükse, denizaltı o tam sayıya daha yakın olmalıdır!`;
+            } else if (type === 3) {
+                // Derinlik Çarkı
+                titleEl.innerText = "⚙️ Derinlik Çarkı Taktikleri";
+                bodyEl.innerHTML = `Ekipman Durumu: Mükemmel çalışıyor!<br><br>` +
+                                   `• Eğer hedef sayı iki tam karenin tam ortasındaki değerden küçükse (Örn: √40 için orta nokta √42.5), küçük tam sayıya daha yakındır.<br>` +
+                                   `• Slider üzerindeki denizaltı ikonunu yakınlık yönüne doğru kaydırmayı unutma!`;
+            }
+
+            overlay.classList.add('active');
+        }
+
+        function closeEquipmentModal() {
+            document.getElementById('equipmentOverlay').classList.remove('active');
+        }
+
+        function checkAnswer() {
+            if (isPaused) return;
+
+            const sliderVal = parseInt(document.getElementById('proximitySlider').value);
+            
+            const lowerSquare = currentTarget.lower * currentTarget.lower;
+            const upperSquare = currentTarget.upper * currentTarget.upper;
+            
+            const distToLower = currentTarget.val - lowerSquare;
+            const distToUpper = upperSquare - currentTarget.val;
+
+            let expectedSide = distToLower < distToUpper ? 'lower' : 'upper';
+            if (distToLower === distToUpper) expectedSide = 'middle';
+
+            let isCorrect = false;
+            if (expectedSide === 'lower' && sliderVal < 50) isCorrect = true;
+            else if (expectedSide === 'upper' && sliderVal > 50) isCorrect = true;
+            else if (expectedSide === 'middle' && sliderVal >= 45 && sliderVal <= 55) isCorrect = true;
+            else if (Math.abs(distToLower - distToUpper) <= 1 && sliderVal >= 40 && sliderVal <= 60) {
+                isCorrect = true;
+            }
+
+            if (isCorrect) {
+                score += 15;
+                document.getElementById('scoreVal').innerText = score;
+                showToast("Harika Kaptan! Denizaltıyı mükemmel konumlandırdın. +15 Puan", "success");
+                setTimeout(generateNewProblem, 1500);
+            } else {
+                lives--;
+                document.getElementById('livesVal').innerText = lives;
+                if (lives <= 0) {
+                    showToast("Canlar tükendi! Yeni rota oluşturuluyor...", "error");
+                    lives = 3;
+                    document.getElementById('livesVal').innerText = lives;
+                } else {
+                    showToast(`Yanlış konum! √${currentTarget.val}, ${currentTarget.lower} ile ${currentTarget.upper} arasında ve ${(distToLower < distToUpper) ? currentTarget.lower + "'e" : currentTarget.upper + "'e"} daha yakın!`, "error");
+                }
+            }
+        }
+
+        function toggleSimulation(resume) {
+            isPaused = !resume;
+            const overlay = document.getElementById('pauseOverlay');
+            if (isPaused) {
+                overlay.classList.add('active');
+            } else {
+                overlay.classList.remove('active');
+            }
+        }
+
+        function switchTab(tabIndex) {
+            const tabs = document.querySelectorAll('.tab-content');
+            const buttons = document.querySelectorAll('.tab-btn');
+
+            tabs.forEach((tab, idx) => {
+                tab.classList.toggle('active', idx === tabIndex);
+                buttons[idx].classList.toggle('active', idx === tabIndex);
+            });
+        }
+
+        function showToast(msg, type) {
+            const toast = document.getElementById('toastBox');
+            const msgEl = document.getElementById('toastMsg');
+            const iconEl = document.getElementById('toastIcon');
+
+            msgEl.innerText = msg;
+            toast.className = `toast show ${type}`;
+            iconEl.innerText = type === 'success' ? '⚓' : (type === 'error' ? '⚠️' : 'ℹ️');
+
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3500);
+        }
+
+        window.onload = initSimulation;
+    </script>
+</body>
+</html>

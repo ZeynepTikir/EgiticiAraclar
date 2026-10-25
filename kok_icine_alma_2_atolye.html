@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Akıllı Balık Havuzu Atölyesi - Tam Kare Olmayan Sayılar</title>
+    <style>
+        :root {
+            --primary: #0284c7;
+            --primary-dark: #0369a1;
+            --secondary: #38bdf8;
+            --accent: #f59e0b;
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --success: #22c55e;
+            --danger: #ef4444;
+            --border-radius: 16px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            user-select: none;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        header {
+            background-color: var(--card-bg);
+            border-bottom: 2px solid #334155;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            font-size: 2rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo-title h1 {
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .logo-title p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .hud-container {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .hud-badge {
+            background: #0f172a;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            border: 1px solid #334155;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .controls-top {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 4px 6px -1px rgba(2, 132, 199, 0.3);
+        }
+
+        .btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-pause {
+            background: #475569;
+        }
+        .btn-pause:hover {
+            background: #334155;
+        }
+
+        .nav-tabs {
+            display: flex;
+            background: var(--card-bg);
+            padding: 0.5rem 2rem 0 2rem;
+            gap: 1rem;
+            border-bottom: 1px solid #334155;
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: var(--transition);
+        }
+
+        .tab-btn.active {
+            color: var(--secondary);
+            border-bottom-color: var(--secondary);
+        }
+
+        main {
+            flex: 1;
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.4s ease forwards;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ATÖLYE YERLEŞİMİ */
+        .workshop-grid {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 2rem;
+            min-height: 550px;
+        }
+
+        .panel {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            border: 1px solid #334155;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+        }
+
+        .panel h2 {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            color: var(--secondary);
+            border-bottom: 1px solid #334155;
+            padding-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Hammadde Alanı (Sol) */
+        .source-pool {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            overflow-y: auto;
+            max-height: 450px;
+            padding-right: 5px;
+        }
+
+        .source-card {
+            background: #0f172a;
+            border: 2px solid #334155;
+            border-radius: 12px;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: grab;
+            transition: var(--transition);
+        }
+
+        .source-card:active {
+            cursor: grabbing;
+        }
+
+        .source-card:hover {
+            border-color: var(--primary);
+            transform: translateX(4px);
+        }
+
+        .fish-preview {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .fish-icon {
+            font-size: 1.8rem;
+        }
+
+        /* Hedef Alanı / Havuz (Sağ) */
+        .target-pool-area {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .aquarium-container {
+            flex: 1;
+            background: radial-gradient(circle at center, #1e3a8a 0%, #0f172a 100%);
+            border: 3px dashed var(--primary);
+            border-radius: var(--border-radius);
+            min-height: 350px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 2rem;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .aquarium-container.drag-over {
+            border-color: var(--success);
+            background: radial-gradient(circle at center, #166534 0%, #0f172a 100%);
+        }
+
+        .water-surface {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 10px;
+            background: rgba(56, 189, 248, 0.4);
+            box-shadow: 0 0 15px var(--secondary);
+        }
+
+        .target-slot-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            background: rgba(15, 23, 42, 0.75);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid #334155;
+            backdrop-filter: blur(5px);
+            z-index: 2;
+        }
+
+        .target-expression {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--accent);
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            letter-spacing: 1px;
+        }
+
+        .dropped-fishes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            min-height: 50px;
+            width: 100%;
+        }
+
+        .swimming-fish {
+            background: rgba(2, 132, 199, 0.2);
+            border: 1px solid var(--primary);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            animation: floatFish 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes floatFish {
+            0% { transform: translateY(0px) rotate(0deg); }
+            100% { transform: translateY(-6px) rotate(2deg); }
+        }
+
+        /* Açıklama Kutusu / Talimat */
+        .instruction-banner {
+            background: rgba(56, 189, 248, 0.1);
+            border-left: 4px solid var(--secondary);
+            padding: 1rem;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* PRATİK BİLGİLER SEKMESİ */
+        .theory-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .theory-card {
+            background: var(--card-bg);
+            border: 1px solid #334155;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
+
+        .theory-card h3 {
+            color: var(--secondary);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .theory-card p {
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .math-example {
+            background: #0f172a;
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 3px solid var(--accent);
+            font-family: monospace;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            color: var(--text-main);
+        }
+
+        /* OVERLAY / DURDURMA PERDESİ */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(8px);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 1.5rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .overlay h2 {
+            font-size: 2.5rem;
+            color: var(--secondary);
+        }
+
+        .overlay p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        /* GERİ BİLDİRİM BALONU */
+        .feedback-toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--card-bg);
+            border: 2px solid var(--primary);
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transform: translateY(150px);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 50;
+        }
+
+        .feedback-toast.show {
+            transform: translateY(0);
+        }
+
+        .feedback-toast.success { border-color: var(--success); }
+        .feedback-toast.error { border-color: var(--danger); }
+
+        /* Responsive */
+        @media(max-width: 900px) {
+            .workshop-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ÜST HUD VE KONTROLLER -->
+    <header>
+        <div class="logo-area">
+            <span class="logo-icon">🐠</span>
+            <div class="logo-title">
+                <h1>Akıllı Balık Havuzu Atölyesi</h1>
+                <p>8. Sınıf Matematik | Katsayıyı İçeri Alma Simülasyonu</p>
+            </div>
+        </div>
+        <div class="hud-container">
+            <div class="hud-badge">
+                <span>🏆 Puan:</span>
+                <span id="scoreVal">0</span>
+            </div>
+            <div class="hud-badge">
+                <span>❤️ Haklar:</span>
+                <span id="livesVal">3</span>
+            </div>
+            <div class="controls-top">
+                <button class="btn btn-pause" id="pauseBtn" onclick="togglePause()">⏸️ Durdur</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- İKİ SEKMELİ YAPI NAVİGASYON -->
+    <nav class="nav-tabs">
+        <button class="tab-btn active" onclick="switchTab(event, 'workshopTab')">🌊 Atölye Tezgâhı</button>
+        <button class="tab-btn" onclick="switchTab(event, 'theoryTab')">📖 Pratik Bilgiler & Taktikler</button>
+    </nav>
+
+    <!-- ANA İÇERİK -->
+    <main>
+        <!-- SEKME 1: ATÖLYE / TEZGÂH ALANI -->
+        <div id="workshopTab" class="tab-content active">
+            <div class="instruction-banner">
+                <strong>Atölye Görevi:</strong> Sol taraftaki akvaryum ağında bekleyen balıkların üzerindeki katsayıları, karekök içine alarak doğru değerlere dönüştür ve sağdaki ana akvaryuma bırak! Doğru eşleştirme havuzu zenginleştirecektir.
+            </div>
+
+            <div class="workshop-grid">
+                <!-- Sol Panel: Hammadde / Balık Ağları -->
+                <div class="panel">
+                    <h2>🎣 Ağdaki Balıklar (Katsayılılar)</h2>
+                    <div class="source-pool" id="sourcePool">
+                        <!-- Dinamik olarak doldurulacak -->
+                    </div>
+                </div>
+
+                <!-- Sağ Panel: Hedef Akvaryum Alanı -->
+                <div class="panel">
+                    <h2>🎯 Hedef Akvaryum (İçeri Alınmış Hâl)</h2>
+                    <div class="aquarium-container" id="aquariumContainer" ondragover="allowDrop(event)" ondragleave="dragLeave(event)" ondrop="dropFish(event)">
+                        <div class="water-surface"></div>
+                        <div class="target-slot-container">
+                            <span style="font-size: 0.9rem; color: var(--text-muted);">Sıradaki Hedef Değer:</span>
+                            <div class="target-expression" id="targetExpression">√?</div>
+                            <div class="dropped-fishes" id="droppedFishes">
+                                <!-- Doğru yerleştirilenler buraya yüzer -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SEKME 2: PRATİK BİLGİLER & TAKTİKLER -->
+        <div id="theoryTab" class="tab-content">
+            <div class="theory-grid">
+                <div class="theory-card">
+                    <h3>💡 Katsayıyı İçeri Alma Kuralı</h3>
+                    <p>Karekök dışındaki bir katsayı kök içine alınırken, karesi alınarak kök içindeki sayı ile çarpılır.</p>
+                    <div class="math-example">
+                        a√b = √(a² · b)
+                    </div>
+                </div>
+
+                <div class="theory-card">
+                    <h3>⚠️ Dikkat Edilecekler</h3>
+                    <p>İçeri girerken sayı sadece kendisiyle değil, kendisinin kendisiyle (karesiyle) çarpılarak içeri girer. İşaretler (eksi varsa) genellikle dışarıda bırakılır veya dikkatlice incelenir.</p>
+                    <div class="math-example">
+                        3√5 = √(3² · 5) = √(9 · 5) = √45
+                    </div>
+                </div>
+
+                <div class="theory-card">
+                    <h3>🎯 Atölye Taktikleri</h3>
+                    <p>Önce katsayının karesini zihninizde hesaplayın (Örn: 4 ün karesi 16). Ardından içerideki sayı ile çarpın (16 x 3 = 48) ve sonuca ulaşın: √48!</p>
+                    <div class="math-example">
+                        4√3 = √16 · √3 = √48
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- DURDURMA OVERLAY PERDESİ -->
+    <div class="overlay" id="pauseOverlay">
+        <h2>Simülasyon Durduruldu</h2>
+        <p>Soluklanmak en doğal hakkın. Hazır hissettiğinde devam et!</p>
+        <button class="btn" onclick="togglePause()">▶️ Devam Et</button>
+    </div>
+
+    <!-- GERİ BİLDİRİM BİLDİRİMİ -->
+    <div class="feedback-toast" id="feedbackToast">
+        <span id="feedbackIcon" style="font-size: 1.5rem;">🎉</span>
+        <div>
+            <h4 id="feedbackTitle" style="font-weight: 700;">Harika İş!</h4>
+            <p id="feedbackDesc" style="font-size: 0.85rem; color: var(--text-muted);">Doğru balığı akvaryuma yerleştirdin.</p>
+        </div>
+    </div>
+
+    <script>
+        // SİMÜLASYON VERİLERİ VE DURUMU
+        let score = 0;
+        let lives = 3;
+        let isPaused = false;
+
+        // Problem Havuzu (a√b formatı ve karşılığı √(a²*b))
+        const problems = [
+            { id: 1, display: "2√3", outer: 2, inner: 3, result: "√12", explanation: "2 içeri 2² = 4 olarak girer; √(4 · 3) = √12" },
+            { id: 2, display: "3√2", outer: 3, inner: 2, result: "√18", explanation: "3 içeri 3² = 9 olarak girer; √(9 · 2) = √18" },
+            { id: 3, display: "5√2", outer: 5, inner: 2, result: "√50", explanation: "5 içeri 5² = 25 olarak girer; √(25 · 2) = √50" },
+            { id: 4, display: "4√3", outer: 4, inner: 3, result: "√48", explanation: "4 içeri 4² = 16 olarak girer; √(16 · 3) = √48" },
+            { id: 5, display: "2√5", outer: 2, inner: 5, result: "√20", explanation: "2 içeri 2² = 4 olarak girer; √(4 · 5) = √20" },
+            { id: 6, display: "6√2", outer: 6, inner: 2, result: "√72", explanation: "6 içeri 6² = 36 olarak girer; √(36 · 2) = √72" },
+            { id: 7, display: "3√5", outer: 3, inner: 5, result: "√45", explanation: "3 içeri 3² = 9 olarak girer; √(9 · 5) = √45" },
+            { id: 8, display: "10√2", outer: 10, inner: 2, result: "√200", explanation: "10 içeri 10² = 100 olarak girer; √(100 · 2) = √200" }
+        ];
+
+        let currentActiveProblem = null;
+        let availableProblems = [...problems];
+
+        // SEKME YÖNETİMİ
+        function switchTab(evt, tabId) {
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            
+            document.getElementById(tabId).classList.add('active');
+            evt.currentTarget.classList.add('active');
+        }
+
+        // DURDURMA / DEVAM ETTİRME
+        function togglePause() {
+            isPaused = !isPaused;
+            const overlay = document.getElementById('pauseOverlay');
+            const pauseBtn = document.getElementById('pauseBtn');
+
+            if (isPaused) {
+                overlay.classList.add('active');
+                pauseBtn.innerHTML = "▶️ Devam Et";
+            } else {
+                overlay.classList.remove('active');
+                pauseBtn.innerHTML = "⏸️ Durdur";
+            }
+        }
+
+        // OYUNU BAŞLAT / YENİ TUR
+        function initRound() {
+            if (availableProblems.length === 0) {
+                showFeedback("🏆 Tebrikler!", "Tüm balıkları başarıyla akvaryuma yerleştirdin!", "success");
+                availableProblems = [...problems]; // Başa sar
+            }
+
+            // Rastgele bir hedef seç
+            const randomIndex = Math.floor(Math.random() * availableProblems.length);
+            currentActiveProblem = availableProblems[randomIndex];
+            
+            // Hedef ekranda gösterilir
+            document.getElementById('targetExpression').innerText = currentActiveProblem.result;
+
+            // Sol havuzu doldur (Karıştırılmış kartlar)
+            renderSourcePool();
+        }
+
+        function renderSourcePool() {
+            const pool = document.getElementById('sourcePool');
+            pool.innerHTML = '';
+
+            // Mevcut problemi ve birkaç yanlış problemi havuza koyalım
+            let poolItems = [currentActiveProblem];
+            
+            // Yanlış alternatifler üretelim
+            let distractors = problems.filter(p => p.id !== currentActiveProblem.id);
+            distractors.sort(() => Math.random() - 0.5);
+            poolItems.push(distractors[0]);
+            if(distractors[1]) poolItems.push(distractors[1]);
+
+            poolItems.sort(() => Math.random() - 0.5);
+
+            poolItems.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'source-card';
+                card.draggable = true;
+                card.innerHTML = `
+                    <div class="fish-preview">
+                        <span class="fish-icon">🐠</span>
+                        <span>${item.display}</span>
+                    </div>
+                    <span style="color: var(--text-muted); font-size: 0.8rem;">Sürükle ➡️</span>
+                `;
+
+                card.addEventListener('dragstart', (e) => {
+                    e.dataTransfer.setData('text/plain', item.id);
+                });
+
+                pool.appendChild(card);
+            });
+        }
+
+        // DRAG & DROP FONKSİYONLARI
+        function allowDrop(ev) {
+            ev.preventDefault();
+            document.getElementById('aquariumContainer').classList.add('drag-over');
+        }
+
+        function dragLeave(ev) {
+            document.getElementById('aquariumContainer').classList.remove('drag-over');
+        }
+
+        function dropFish(ev) {
+            ev.preventDefault();
+            document.getElementById('aquariumContainer').classList.remove('drag-over');
+            
+            const draggedId = parseInt(ev.dataTransfer.getData('text/plain'));
+
+            if (draggedId === currentActiveProblem.id) {
+                // DOĞRU
+                score += 10;
+                document.getElementById('scoreVal').innerText = score;
+                showFeedback("Harika!", currentActiveProblem.explanation, "success");
+
+                // Akvaryuma yüzen balık ekle
+                const fishedContainer = document.getElementById('droppedFishes');
+                const fishElem = document.createElement('div');
+                fishElem.className = 'swimming-fish';
+                fishElem.innerHTML = `🐟 ${currentActiveProblem.display} = ${currentActiveProblem.result}`;
+                fishedContainer.appendChild(fishElem);
+
+                // Bu problemi listeden çıkar
+                availableProblems = availableProblems.filter(p => p.id !== currentActiveProblem.id);
+
+                // Kısa bir gecikmeyle yeni tura geç
+                setTimeout(initRound, 1500);
+
+            } else {
+                // YANLIŞ
+                lives -= 1;
+                document.getElementById('livesVal').innerText = lives;
+                showFeedback("Yanlış Balık!", "Katsayının karesini alıp içerideki sayı ile çarpmayı unutma!", "error");
+
+                if (lives <= 0) {
+                    showFeedback("Oyun Bitti!", "Hakların tükendi. Puanın: " + score, "error");
+                    setTimeout(() => {
+                        score = 0;
+                        lives = 3;
+                        document.getElementById('scoreVal').innerText = score;
+                        document.getElementById('livesVal').innerText = lives;
+                        document.getElementById('droppedFishes').innerHTML = '';
+                        availableProblems = [...problems];
+                        initRound();
+                    }, 3000);
+                }
+            }
+        }
+
+        // BİLDİRİM (TOAST) GÖSTERME
+        function showFeedback(title, desc, type) {
+            const toast = document.getElementById('feedbackToast');
+            const titleElem = document.getElementById('feedbackTitle');
+            const descElem = document.getElementById('feedbackDesc');
+            const iconElem = document.getElementById('feedbackIcon');
+
+            titleElem.innerText = title;
+            descElem.innerText = desc;
+            toast.className = `feedback-toast show ${type}`;
+            
+            if(type === 'success') {
+                iconElem.innerText = "🎉";
+            } else {
+                iconElem.innerText = "⚠️";
+            }
+
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // UYGULAMAYI BAŞLAT
+        window.onload = () => {
+            initRound();
+        };
+    </script>
+</body>
+</html>

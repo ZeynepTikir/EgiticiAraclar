@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kareköklü İfadeler: a√b Fabrikası</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0284c7;
+            --primary-light: #e0f2fe;
+            --accent-green: #16a34a;
+            --accent-green-light: #dcfce7;
+            --accent-red: #dc2626;
+            --accent-red-light: #fee2e2;
+            --accent-purple: #9333ea;
+            --accent-purple-light: #f3e8ff;
+            --accent-amber: #d97706;
+            --accent-amber-light: #fef3c7;
+            --bg-color: #f8fafc;
+            --text-color: #1e293b;
+            --card-border: 3px solid #e2e8f0;
+            --card-radius: 24px;
+            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(#cbd5e1 1.5px, transparent 1.5px);
+            background-size: 24px 24px;
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        h1, h2, h3, .font-fredoka {
+            font-family: 'Fredoka', cursive;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background: white;
+            border: var(--card-border);
+            border-radius: var(--card-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+        }
+
+        /* HEADER & TABS */
+        header {
+            background: #ffffff;
+            padding: 20px 30px;
+            border-bottom: var(--card-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .robot-avatar {
+            width: 50px;
+            height: 50px;
+            background: var(--primary-light);
+            border: 2px solid var(--primary);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .robot-antenna {
+            position: absolute;
+            top: -10px;
+            width: 4px;
+            height: 12px;
+            background: var(--primary);
+        }
+
+        .robot-antenna::after {
+            content: '';
+            position: absolute;
+            top: -6px;
+            left: -4px;
+            width: 12px;
+            height: 6px;
+            background: var(--accent-amber);
+            border-radius: 4px;
+            animation: blink 1s alternate infinite;
+        }
+
+        .robot-eyes {
+            display: flex;
+            gap: 8px;
+        }
+
+        .eye {
+            width: 8px;
+            height: 8px;
+            background: var(--primary);
+            border-radius: 50%;
+            transition: 0.3s;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+            background: var(--bg-color);
+            padding: 6px;
+            border-radius: 16px;
+            border: 2px solid #e2e8f0;
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: none;
+            padding: 10px 20px;
+            font-family: 'Fredoka', cursive;
+            font-size: 1rem;
+            color: #64748b;
+            cursor: pointer;
+            border-radius: 12px;
+            transition: all 0.2s;
+        }
+
+        .tab-btn.active {
+            background: white;
+            color: var(--primary);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        /* CONTROL BAR (Start/Stop & HUD) */
+        .control-hud-bar {
+            background: var(--primary-light);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: var(--card-border);
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .control-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            font-family: 'Fredoka', cursive;
+            padding: 10px 20px;
+            border-radius: 14px;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: transform 0.1s, filter 0.2s;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.1);
+        }
+
+        .btn:active {
+            transform: translateY(4px);
+            box-shadow: none;
+        }
+
+        .btn-start { background: var(--accent-green); color: white; }
+        .btn-stop { background: var(--accent-red); color: white; }
+        .btn-primary { background: var(--primary); color: white; }
+
+        .hud-stats {
+            display: flex;
+            gap: 20px;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .hud-item {
+            background: white;
+            padding: 8px 16px;
+            border-radius: 12px;
+            border: 2px solid #cbd5e1;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* TAB CONTENTS */
+        .tab-content {
+            display: none;
+            padding: 30px;
+            min-height: 450px;
+            position: relative;
+        }
+
+        .tab-content.active {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* GAME AREA (TAB 1) */
+        .game-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(5px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+            text-align: center;
+            gap: 20px;
+        }
+
+        .factory-machine {
+            background: #f1f5f9;
+            border: 4px dashed #94a3b8;
+            border-radius: 20px;
+            padding: 30px;
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .target-number {
+            font-size: 3.5rem;
+            color: var(--primary);
+            margin: 10px 0;
+        }
+
+        .robot-dialogue {
+            background: var(--accent-purple-light);
+            border: 2px solid var(--accent-purple);
+            color: var(--accent-purple);
+            padding: 10px 20px;
+            border-radius: 16px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .option-card {
+            background: white;
+            border: var(--card-border);
+            padding: 20px;
+            border-radius: 16px;
+            font-size: 1.8rem;
+            font-family: 'Fredoka', cursive;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+        }
+
+        .option-card:hover:not(:disabled) {
+            border-color: var(--primary);
+            background: var(--primary-light);
+            transform: translateY(-3px);
+        }
+
+        .option-card.correct {
+            background: var(--accent-green-light) !important;
+            border-color: var(--accent-green) !important;
+            color: var(--accent-green);
+        }
+
+        .option-card.wrong {
+            background: var(--accent-red-light) !important;
+            border-color: var(--accent-red) !important;
+            color: var(--accent-red);
+        }
+
+        /* PRACTICE AREA (TAB 2) */
+        .theory-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+            width: 100%;
+        }
+
+        .theory-card {
+            background: white;
+            border: var(--card-border);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+        }
+
+        .theory-card h3 {
+            color: var(--primary);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1.3rem;
+        }
+
+        .theory-card p, .theory-card ul {
+            color: #475569;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .theory-card ul {
+            padding-left: 20px;
+            margin-top: 10px;
+        }
+
+        .math-badge {
+            background: var(--primary-light);
+            color: var(--primary);
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-family: 'Fredoka', cursive;
+            font-size: 1.1rem;
+            display: inline-block;
+            margin: 8px 0;
+            border: 1px dashed var(--primary);
+        }
+
+        /* MODAL */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .modal-card {
+            background: white;
+            border: 4px solid var(--primary);
+            border-radius: 30px;
+            padding: 40px;
+            width: 90%;
+            max-width: 450px;
+            text-align: center;
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .modal-card h2 {
+            font-size: 2.2rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .modal-card p {
+            font-size: 1.2rem;
+            margin-bottom: 25px;
+            color: #475569;
+        }
+
+        /* ANIMATIONS */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+
+        @keyframes blink {
+            0% { opacity: 0.3; }
+            100% { opacity: 1; }
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        @media (max-width: 600px) {
+            .options-grid { grid-template-columns: 1fr; }
+            header { flex-direction: column; align-items: stretch; }
+            .nav-tabs { justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- HEADER -->
+        <header>
+            <div class="logo-area">
+                <div class="robot-avatar">
+                    <div class="robot-antenna"></div>
+                    <div class="robot-eyes">
+                        <div class="eye" id="leftEye"></div>
+                        <div class="eye" id="rightEye"></div>
+                    </div>
+                </div>
+                <div>
+                    <h1 style="color: var(--primary); font-size: 1.5rem;">RoboKök Fabrikası</h1>
+                    <p style="font-size: 0.9rem; color: #64748b;">Kareköklü İfadeleri a√b Şekline Getirme</p>
+                </div>
+            </div>
+
+            <!-- TABS -->
+            <div class="nav-tabs">
+                <button class="tab-btn active" onclick="switchTab(1)">🎮 Oyun Alanı</button>
+                <button class="tab-btn" onclick="switchTab(2)">💡 Pratik Taktikler</button>
+            </div>
+        </header>
+
+        <!-- CONTROL & HUD BAR -->
+        <div class="control-hud-bar">
+            <div class="control-buttons">
+                <button class="btn btn-start" onclick="startGame()">▶️ Başlat</button>
+                <button class="btn btn-stop" onclick="stopGame()">⏸️ Durdur</button>
+            </div>
+            <div class="hud-stats">
+                <div class="hud-item">🏆 <span id="scoreDisplay">0</span> Puan</div>
+                <div class="hud-item">❤️ <span id="livesDisplay">3</span> Hak</div>
+            </div>
+        </div>
+
+        <!-- TAB 1: GAME AREA -->
+        <div id="tab1" class="tab-content active">
+            <div id="gameOverlay" class="game-overlay">
+                <h2 style="font-size: 2.5rem; color: var(--primary);">Fabrikaya Hoş Geldin!</h2>
+                <p style="font-size: 1.2rem; max-width: 400px; color: #475569;">Kareköklü sayıları <strong>a√b</strong> biçimine dönüştürerek robotun enerji akışını sağla.</p>
+                <button class="btn btn-primary" style="font-size: 1.2rem; padding: 15px 30px;" onclick="startGame()">Oyunu Başlat</button>
+            </div>
+
+            <div class="robot-dialogue" id="robotDialogue">🤖 "Sayıyı tam kare çarpanına ayır ve dışarı çıkar!"</div>
+
+            <div class="factory-machine">
+                <p style="color: #64748b; font-weight: 600;">İşlenecek Girdi Karekök:</p>
+                <div class="target-number font-fredoka" id="targetNumber">√--</div>
+            </div>
+
+            <div class="options-grid" id="optionsGrid">
+                <!-- Dinamik Seçenekler -->
+            </div>
+        </div>
+
+        <!-- TAB 2: THEORY / PRACTICE AREA -->
+        <div id="tab2" class="tab-content">
+            <div class="theory-grid">
+                <div class="theory-card">
+                    <h3>⚙️ Temel Kural (a√b)</h3>
+                    <p>Kök içindeki sayıyı bir tam kare sayı ile diğer bir çarpanın çarpımı şeklinde yazarak tam kare olan sayı dışarı çıkarılır.</p>
+                    <div class="math-badge">√(a² · b) = a√b</div>
+                </div>
+
+                <div class="theory-card">
+                    <h3>💡 1. Yol: Tam Kare Çarpan</h3>
+                    <p>Sayıyı en büyük tam kare çarpanına ayır:</p>
+                    <p style="margin-top: 8px;"><strong>Örnek:</strong> √75 = √(25 · 3) = <strong>5√3</strong></p>
+                </div>
+
+                <div class="theory-card">
+                    <h3>🛠️ 2. Yol: Asal Çarpan Algoritması</h3>
+                    <p>Sayıyı asal çarpanlarına ayır, aynı olanlardan ikili grup yapıp dışarı bir tane çıkar:</p>
+                    <ul>
+                        <li>72 | 2</li>
+                        <li>36 | 2 ➔ İki tane '2'den biri dışarı!</li>
+                        <li>... Sonuç: <strong>6√2</strong></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL -->
+    <div id="resultModal" class="modal-overlay">
+        <div class="modal-card">
+            <h2 id="modalTitle">Tebrikler!</h2>
+            <p id="modalText">Fabrikayı başarıyla çalıştırdın.</p>
+            <button class="btn btn-primary" style="width: 100%; justify-content: center; font-size: 1.2rem;" onclick="resetGame()">Tekrar Oyna</button>
+        </div>
+    </div>
+
+    <script>
+        let isRunning = false;
+        let score = 0;
+        let lives = 3;
+        let currentQuestion = null;
+
+        const questions = [
+            { num: 50, correct: "5√2", options: ["5√2", "2√5", "25√2", "5√5"] },
+            { num: 75, correct: "5√3", options: ["3√5", "5√3", "25√3", "15√3"] },
+            { num: 32, correct: "4√2", options: ["2√4", "8√2", "4√2", "16√2"] },
+            { num: 48, correct: "4√3", options: ["6√2", "4√3", "8√3", "3√4"] },
+            { num: 27, correct: "3√3", options: ["9√3", "3√9", "3√3", "2√3"] },
+            { num: 80, correct: "4√5", options: ["5√4", "16√5", "4√5", "8√10"] },
+            { num: 12, correct: "2√3", options: ["4√3", "2√6", "2√3", "3√2"] },
+            { num: 98, correct: "7√2", options: ["49√2", "7√2", "2√7", "14√2"] }
+        ];
+
+        function switchTab(tabIndex) {
+            document.querySelectorAll('.tab-btn').forEach((btn, idx) => {
+                btn.classList.toggle('active', idx + 1 === tabIndex);
+            });
+            document.querySelectorAll('.tab-content').forEach((content, idx) => {
+                content.classList.toggle('active', idx + 1 === tabIndex);
+            });
+        }
+
+        function startGame() {
+            isRunning = true;
+            document.getElementById('gameOverlay').style.display = 'none';
+            setRobotMood('happy');
+            if (!currentQuestion) {
+                nextQuestion();
+            }
+        }
+
+        function stopGame() {
+            isRunning = false;
+            document.getElementById('gameOverlay').style.display = 'flex';
+            document.getElementById('gameOverlay').innerHTML = `
+                <h2 style="font-size: 2.5rem; color: var(--accent-amber);">Oyun Durduruldu</h2>
+                <p style="font-size: 1.2rem; color: #475569;">Kaldığın yerden devam etmek için Başlat'a bas.</p>
+                <button class="btn btn-start" style="font-size: 1.2rem; padding: 15px 30px;" onclick="startGame()">Devam Et</button>
+            `;
+            setRobotMood('neutral');
+        }
+
+        function updateHUD() {
+            document.getElementById('scoreDisplay').innerText = score;
+            document.getElementById('livesDisplay').innerText = lives;
+        }
+
+        function nextQuestion() {
+            if (!isRunning) return;
+            
+            const randomIndex = Math.floor(Math.random() * questions.length);
+            currentQuestion = questions[randomIndex];
+
+            document.getElementById('targetNumber').innerText = `√${currentQuestion.num}`;
+            
+            let shuffledOptions = [...currentQuestion.options].sort(() => Math.random() - 0.5);
+            
+            const optionsGrid = document.getElementById('optionsGrid');
+            optionsGrid.innerHTML = '';
+
+            shuffledOptions.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = 'option-card';
+                btn.innerText = opt;
+                btn.onclick = () => checkAnswer(opt, btn);
+                optionsGrid.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(selectedOpt, btnElement) {
+            if (!isRunning) return;
+
+            const allButtons = document.querySelectorAll('.option-card');
+            allButtons.forEach(b => b.disabled = true);
+
+            if (selectedOpt === currentQuestion.correct) {
+                btnElement.classList.add('correct');
+                score += 10;
+                setRobotMood('happy');
+                document.getElementById('robotDialogue').innerText = '🤖 "Harika! Enerji üretimi başarılı (+10 Puan)"';
+                updateHUD();
+
+                setTimeout(() => {
+                    if (isRunning) nextQuestion();
+                }, 1000);
+            } else {
+                btnElement.classList.add('wrong');
+                allButtons.forEach(b => {
+                    if (b.innerText === currentQuestion.correct) b.classList.add('correct');
+                });
+                
+                lives--;
+                setRobotMood('sad');
+                document.getElementById('robotDialogue').innerText = `🤖 "Eyvah! Doğru cevap ${currentQuestion.correct} olmalıydı."`;
+                updateHUD();
+
+                if (lives <= 0) {
+                    setTimeout(endGame, 1200);
+                } else {
+                    setTimeout(() => {
+                        if (isRunning) nextQuestion();
+                    }, 1500);
+                }
+            }
+        }
+
+        function setRobotMood(mood) {
+            const leftEye = document.getElementById('leftEye');
+            const rightEye = document.getElementById('rightEye');
+            if (mood === 'happy') {
+                leftEye.style.background = 'var(--accent-green)';
+                rightEye.style.background = 'var(--accent-green)';
+            } else if (mood === 'sad') {
+                leftEye.style.background = 'var(--accent-red)';
+                rightEye.style.background = 'var(--accent-red)';
+            } else {
+                leftEye.style.background = 'var(--primary)';
+                rightEye.style.background = 'var(--primary)';
+            }
+        }
+
+        function endGame() {
+            isRunning = false;
+            document.getElementById('modalTitle').innerText = "Oyun Bitti!";
+            document.getElementById('modalText').innerText = `Toplam Skorun: ${score}. Fabrikayı test etmeyi başardın!`;
+            document.getElementById('resultModal').style.display = 'flex';
+        }
+
+        function resetGame() {
+            score = 0;
+            lives = 3;
+            currentQuestion = null;
+            updateHUD();
+            document.getElementById('resultModal').style.display = 'none';
+            startGame();
+        }
+    </script>
+</body>
+</html>
