@@ -50,6 +50,7 @@ const matVerileri = {
           { ad: "Asal Çarpanlar Atölyesi", dosya: "matematik/8_sinif/1_carpanlar_katlar/asal_carpanlar_atolye.html", tur: "atolye" },
           { ad: "Aralarında Asal Sayılar Etkinliği", dosya: "matematik/8_sinif/1_carpanlar_katlar/aralarinda_asal_sayilar_lab.html", tur: "lab" },
           { ad: "EBOB EKOK Etkinliği", dosya: "matematik/8_sinif/1_carpanlar_katlar/ebob_ekok_lab.html", tur: "lab" },
+          { ad: "EBOB Etkinliği", dosya: "matematik/8_sinif/1_carpanlar_katlar/ebob_lab.html", tur: "lab" },
           { ad: "EBOB Çevre Atölyesi", dosya: "matematik/8_sinif/1_carpanlar_katlar/ebob_cevre_atolye.html", tur: "atolye" },
           { ad: "EBOB Depo Atölyesi", dosya: "matematik/8_sinif/1_carpanlar_katlar/ebob_depo_atolye.html", tur: "atolye" },
           { ad: "EBOB Fayans Atölyesi", dosya: "matematik/8_sinif/1_carpanlar_katlar/ebob_fayans_atolye.html", tur: "atolye" },
@@ -57,6 +58,7 @@ const matVerileri = {
           { ad: "EBOB Malzeme Atölyesi", dosya: "matematik/8_sinif/1_carpanlar_katlar/ebob_malzeme_atolye.html", tur: "atolye" },
           { ad: "EBOB Otel Atölyesi", dosya: "matematik/8_sinif/1_carpanlar_katlar/ebob_otel_atolye.html", tur: "atolye" },
           { ad: "EBOB Şişe Atölyesi", dosya: "matematik/8_sinif/1_carpanlar_katlar/ebob_sise_atolye.html", tur: "atolye" },
+          { ad: "EKOK Etkinliği", dosya: "matematik/8_sinif/1_carpanlar_katlar/ekok_lab.html", tur: "lab" },
           { ad: "EKOK Otobüs Atölyesi", dosya: "matematik/8_sinif/1_carpanlar_katlar/ekok_otobus_atolye.html", tur: "atolye" },
           { ad: "EKOK Süre Atölyesi", dosya: "matematik/8_sinif/1_carpanlar_katlar/ekok_sure_atolye.html", tur: "atolye" }
           { ad: "EKOK Süre Atölyesi 2", dosya: "matematik/8_sinif/1_carpanlar_katlar/ekok_zaman_orta_atolye.html", tur: "atolye" }
