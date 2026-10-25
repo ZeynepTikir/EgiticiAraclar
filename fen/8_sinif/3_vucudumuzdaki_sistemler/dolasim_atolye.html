@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dolaşım Sistemi Atölyesi - 8. Sınıf Fen Bilimleri</title>
+    <style>
+        :root {
+            --primary: #e63946;
+            --secondary: #1d3557;
+            --accent: #457b9d;
+            --light: #f1faee;
+            --dark: #1f2937;
+            --success: #2a9d8f;
+            --danger: #e76f51;
+            --card-bg: #ffffff;
+            --border-radius: 16px;
+            --shadow: 0 10px 25px rgba(0,0,0,0.08);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            user-select: none;
+        }
+
+        body {
+            background-color: #f8fafc;
+            color: var(--dark);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 1000px;
+            background: var(--light);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #e2e8f0;
+        }
+
+        /* Üst HUD Alanı */
+        .hud-header {
+            background: var(--secondary);
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 4px solid var(--primary);
+        }
+
+        .hud-title h1 {
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .hud-stats {
+            display: flex;
+            gap: 20px;
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+
+        .stat-badge {
+            background: rgba(255,255,255,0.15);
+            padding: 6px 14px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Sekme Navigasyonu */
+        .tab-nav {
+            display: flex;
+            background: #e2e8f0;
+            border-bottom: 1px solid #cbd5e1;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 15px;
+            background: none;
+            border: none;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #64748b;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .tab-btn.active {
+            background: var(--card-bg);
+            color: var(--primary);
+            border-bottom: 3px solid var(--primary);
+        }
+
+        /* Sekme İçerikleri */
+        .tab-content {
+            display: none;
+            padding: 25px;
+            min-height: 500px;
+            background: var(--card-bg);
+        }
+
+        .tab-content.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Atölye Düzeni (Sekme 1) */
+        .workshop-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            flex: 1;
+        }
+
+        .panel {
+            background: #f8fafc;
+            border: 2px dashed #cbd5e1;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        .panel h3 {
+            margin-bottom: 15px;
+            color: var(--secondary);
+            font-size: 1.1rem;
+            text-align: center;
+        }
+
+        /* Hammadde / Öğe Alanı (Sol) */
+        .items-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 100%;
+            overflow-y: auto;
+            max-height: 380px;
+            padding-right: 5px;
+        }
+
+        .item-card {
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            border: 2px solid #e2e8f0;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .item-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.05);
+        }
+
+        .item-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .item-icon {
+            font-size: 1.8rem;
+        }
+
+        .item-name {
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 0.95rem;
+        }
+
+        .item-desc {
+            font-size: 0.8rem;
+            color: #64748b;
+        }
+
+        /* Hedef Tezgâh Alanı (Sağ) */
+        .target-dropzone {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            min-height: 350px;
+            border: 3px dashed var(--accent);
+            border-radius: var(--border-radius);
+            background: #f0f4f8;
+            position: relative;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .target-instructions {
+            font-size: 1rem;
+            color: var(--secondary);
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .model-visual {
+            width: 180px;
+            height: 220px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            border: 2px solid #cbd5e1;
+            transition: var(--transition);
+        }
+
+        .model-visual.success-glow {
+            border-color: var(--success);
+            box-shadow: 0 0 20px rgba(42, 157, 143, 0.4);
+        }
+
+        .organ-slot {
+            width: 120px;
+            height: 120px;
+            border: 2px dashed #94a3b8;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            background: #f8fafc;
+            transition: var(--transition);
+        }
+
+        .organ-slot.filled {
+            border-style: solid;
+            border-color: var(--success);
+            background: #e6fcf5;
+        }
+
+        .model-label {
+            margin-top: 15px;
+            font-weight: bold;
+            color: var(--secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Aksiyon Butonları */
+        .action-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        /* Geri bildirim mesajı */
+        .feedback-banner {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.95rem;
+            display: none;
+        }
+
+        .feedback-banner.success {
+            background: #d1fae5;
+            color: #065f46;
+            display: block;
+        }
+
+        .feedback-banner.error {
+            background: #fee2e2;
+            color: #991b1b;
+            display: block;
+        }
+
+        /* Pratik Bilgiler (Sekme 2) */
+        .guides-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            overflow-y: auto;
+            max-height: 420px;
+            padding-right: 5px;
+        }
+
+        .guide-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .guide-card h4 {
+            color: var(--primary);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1.1rem;
+        }
+
+        .guide-card p {
+            font-size: 0.9rem;
+            color: #475569;
+            line-height: 1.5;
+        }
+
+        /* Modal / Bitiş Ekranı */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            display: none;
+        }
+
+        .modal {
+            background: white;
+            padding: 35px;
+            border-radius: var(--border-radius);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: var(--shadow);
+            animation: popUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes popUp {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .modal h2 {
+            color: var(--secondary);
+            margin-bottom: 15px;
+        }
+
+        .modal p {
+            color: #64748b;
+            margin-bottom: 25px;
+            font-size: 0.95rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <!-- Üst HUD -->
+    <header class="hud-header">
+        <div class="hud-title">
+            <h1>❤️ Dolaşım Sistemi Atölyesi</h1>
+        </div>
+        <div class="hud-stats">
+            <div class="stat-badge">🏆 <span id="score">0</span> Puan</div>
+            <div class="stat-badge">❤️ <span id="lives">3</span> Hak</div>
+        </div>
+    </header>
+
+    <!-- Sekme Butonları -->
+    <nav class="tab-nav">
+        <button class="tab-btn active" onclick="switchTab(1)">🛠️ Atölye Tezgâhı</button>
+        <button class="tab-btn" onclick="switchTab(2)">📚 Pratik Bilgiler & Taktikler</button>
+    </nav>
+
+    <!-- SEKME 1: Atölye Tezgâhı -->
+    <div id="tab1" class="tab-content active">
+        <div class="workshop-layout">
+            <!-- Sol Panel: Hammaddeler / Parçalar -->
+            <div class="panel">
+                <h3>Ham Bileşenler & Yapılar</h3>
+                <div class="items-container" id="itemsContainer">
+                    <!-- Dinamik olarak JS ile doldurulacak -->
+                </div>
+            </div>
+
+            <!-- Sağ Panel: Hedef Model Tezgâhı -->
+            <div class="panel">
+                <div class="target-instructions" id="targetInstructions">Sipariş Yükleniyor...</div>
+                <div class="target-dropzone">
+                    <div class="model-visual" id="modelVisual">
+                        <div class="organ-slot" id="organSlot">❓</div>
+                        <div class="model-label" id="modelLabel">Tezgâh Boş</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="feedbackBanner" class="feedback-banner"></div>
+
+        <div class="action-bar">
+            <span style="font-size: 0.85rem; color: #64748b;">💡 İpucu: Sol taraftaki doğru bileşene tıklayarak sağdaki modele yerleştir.</span>
+            <button class="btn-primary" onclick="resetWorkshop()">🔄 Yeniden Başlat</button>
+        </div>
+    </div>
+
+    <!-- SEKME 2: Pratik Bilgiler -->
+    <div id="tab2" class="tab-content">
+        <div class="guides-grid">
+            <div class="guide-card">
+                <h4>🫀 Kalbin Yapısı ve Görevi</h4>
+                <p>Kalp, vücuda kan pompalayan kaslı bir organdır. 4 odacıktan oluşur: Üstte sağ ve sol kulakçıklar, altta sağ ve sol karıncıklar bulunur. Sol tarafta temiz (oksijence zengin), sağ tarafta kirli (oksijence fakir) kan taşınır.</p>
+            </div>
+            <div class="guide-card">
+                <h4>🩸 Kan Damarları</h4>
+                <p><strong>Atardamar:</strong> Kalpten kan götürür (genelde temiz kan taşır, akciğer atardamarı hariç).<br><strong>Toplardamar:</strong> Kalbe kan getirir (genelde kirli kan taşır, akciğer toplardamarı hariç).<br><strong>Kılcal Damar:</strong> Madde alışverişini sağlar.</p>
+            </div>
+            <div class="guide-card">
+                <h4>🔄 Büyük ve Küçük Kan Dolaşımı</h4>
+                <p><strong>Küçük Kan Dolaşımı:</strong> Kalbin sağ karıncığı ile akciğerler arasında gerçekleşir. Amaç kanın oksijence zenginleşmesidir (Temizlenme).<br><strong>Büyük Kan Dolaşımı:</strong> Kalbin sol karıncığı ile tüm vücut dokuları arasında gerçekleşir.</p>
+            </div>
+            <div class="guide-card">
+                <h4>⚡ Atölye Taktikleri</h4>
+                <p>Model oluştururken hedef yapının görevini iyi oku! Oksijen taşıyan hücreler alyuvarlar, savunma yapanlar akyuvarlar ve pıhtılaşmayı sağlayanlar kan pulcuklarıdır.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bitiş Modalı -->
+<div class="modal-overlay" id="completionModal">
+    <div class="modal">
+        <h2>🎉 Harika İş Çıkardın!</h2>
+        <p>Tüm dolaşım sistemi modellerini başarıyla kurdun ve atölyeyi tamamladın.</p>
+        <button class="btn-primary" style="width: 100%; justify-content: center;" onclick="resetWorkshop()">Tekrar Oyna</button>
+    </div>
+</div>
+
+<script>
+    // Simülasyon Verileri (Soru formatında değil, interaktif modelleme parçaları)
+    const missions = [
+        {
+            instruction: "Sipariş #1: Vücuda oksijen pompalayan temel motor organı yerleştir.",
+            targetName: "Kalp Modeli",
+            targetIcon: "🫀",
+            correctId: "heart",
+            choices: [
+                { id: "heart", name: "Kalp", desc: "Kanı pompalayan kaslı yapı", icon: "🫀" },
+                { id: "lung", name: "Akciğer", desc: "Solunum yüzeyi", icon: "🫁" },
+                { id: "stomach", name: "Mide", desc: "Sindirim organı", icon: "🥪" }
+            ]
+        },
+        {
+            instruction: "Sipariş #2: Kalpten vücuda oksijenli kan taşıyan ana damarı seç.",
+            targetName: "Atardamar Modeli",
+            targetIcon: "🔴",
+            correctId: "artery",
+            choices: [
+                { id: "vein", name: "Toplardamar", desc: "Kanı kalbe getirir", icon: "🔵" },
+                { id: "artery", name: "Atardamar", desc: "Kalpten kan götürür", icon: "🔴" },
+                { id: "capillary", name: "Kılcal Damar", desc: "Madde alışverişi", icon: "🟣" }
+            ]
+        },
+        {
+            instruction: "Sipariş #3: Kana kırmızı rengini veren ve oksijen taşıyan hücreyi ekle.",
+            targetName: "Alyuvar (Eritrosit) Modeli",
+            targetIcon: "⭕",
+            correctId: "rbc",
+            choices: [
+                { id: "wbc", name: "Akyuvar", desc: "Mikroplarla savaşır", icon: "🛡️" },
+                { id: "platelet", name: "Kan Pulcuğu", desc: "Kanı pıhtılaştırır", icon: "🩹" },
+                { id: "rbc", name: "Alyuvar", desc: "Oksijen taşır", icon: "⭕" }
+            ]
+        },
+        {
+            instruction: "Sipariş #4: Kanın oksijen zenginleşmesini sağlayan solunum organını yerleştir.",
+            targetName: "Akciğer Modeli",
+            targetIcon: "🫁",
+            correctId: "lung_system",
+            choices: [
+                { id: "lung_system", name: "Akciğer", desc: "Gaz değişimi merkezi", icon: "🫁" },
+                { id: "kidney", name: "Böbrek", desc: "Süzme yapar", icon: "🫘" },
+                { id: "liver", name: "Karaciğer", desc: "Metabolizma merkezi", icon: "🟤" }
+            ]
+        }
+    ];
+
+    let currentMissionIndex = 0;
+    let score = 0;
+    let lives = 3;
+
+    // DOM Elementleri
+    const scoreEl = document.getElementById('score');
+    const livesEl = document.getElementById('lives');
+    const itemsContainer = document.getElementById('itemsContainer');
+    const targetInstructions = document.getElementById('targetInstructions');
+    const organSlot = document.getElementById('organSlot');
+    const modelLabel = document.getElementById('modelLabel');
+    const modelVisual = document.getElementById('modelVisual');
+    const feedbackBanner = document.getElementById('feedbackBanner');
+    const completionModal = document.getElementById('completionModal');
+
+    function switchTab(tabNumber) {
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+        document.querySelectorAll('.tab-btn')[tabNumber - 1].classList.add('active');
+        document.getElementById(`tab${tabNumber}`).classList.add('active');
+    }
+
+    function loadMission() {
+        if (currentMissionIndex >= missions.length) {
+            completionModal.style.display = 'flex';
+            return;
+        }
+
+        const mission = missions[currentMissionIndex];
+        targetInstructions.textContent = mission.instruction;
+        modelLabel.textContent = "Boş Tezgâh";
+        organSlot.textContent = "❓";
+        organSlot.classList.remove('filled');
+        modelVisual.classList.remove('success-glow');
+        feedbackBanner.className = "feedback-banner";
+        feedbackBanner.textContent = "";
+
+        // Seçenekleri karıştır ve yükle
+        itemsContainer.innerHTML = "";
+        const shuffledChoices = [...mission.choices].sort(() => Math.random() - 0.5);
+
+        shuffledChoices.forEach(choice => {
+            const card = document.createElement('div');
+            card.className = 'item-card';
+            card.innerHTML = `
+                <div class="item-info">
+                    <span class="item-icon">${choice.icon}</span>
+                    <div>
+                        <div class="item-name">${choice.name}</div>
+                        <div class="item-desc">${choice.desc}</div>
+                    </div>
+                </div>
+            `;
+            card.onclick = () => handleItemClick(choice.id);
+            itemsContainer.appendChild(card);
+        });
+    }
+
+    function handleItemClick(selectedId) {
+        const mission = missions[currentMissionIndex];
+
+        if (selectedId === mission.correctId) {
+            // Doğru Seçim
+            score += 25;
+            scoreEl.textContent = score;
+            organSlot.textContent = mission.targetIcon;
+            organSlot.classList.add('filled');
+            modelLabel.textContent = mission.targetName;
+            modelVisual.classList.add('success-glow');
+
+            feedbackBanner.className = "feedback-banner success";
+            feedbackBanner.textContent = "Harika! Doğru parçayı tezgâha yerleştirdin.";
+
+            currentMissionIndex++;
+
+            setTimeout(() => {
+                loadMission();
+            }, 1500);
+
+        } else {
+            // Yanlış Seçim
+            lives--;
+            livesEl.textContent = lives;
+
+            feedbackBanner.className = "feedback-banner error";
+            feedbackBanner.textContent = "Yanlış parça! Bu model için uygun değil.";
+
+            if (lives <= 0) {
+                alert("Canın bitti! Atölye yeniden başlatılıyor.");
+                resetWorkshop();
+            }
+        }
+    }
+
+    function resetWorkshop() {
+        currentMissionIndex = 0;
+        score = 0;
+        lives = 3;
+        scoreEl.textContent = score;
+        livesEl.textContent = lives;
+        completionModal.style.display = 'none';
+        loadMission();
+    }
+
+    // İlk Yükleme
+    loadMission();
+</script>
+
+</body>
+</html>
