@@ -7,7 +7,7 @@ const yaziliVerileri = {
         dosyalar: [
           { 
             ad: "Yazılı Çalışma Soruları", 
-            dosya: "yazili/5_sinif/matematik_1d1y_hazirlik.pdf", 
+            dosya: "yazili/5_sinif/5_matematik_1d1y_hazirlik.pdf", 
             tur: "calisma" 
           },
         ]
