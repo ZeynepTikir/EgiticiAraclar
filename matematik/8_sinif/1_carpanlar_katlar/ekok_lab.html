@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>8. Sınıf Matematik - EKOK İnteraktif Öğrenme Laboratuvarı</title>
+  <style>
+    :root {
+      --primary: #0284c7;
+      --primary-hover: #0369a1;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #0f172a;
+      --accent-green: #16a34a;
+      --accent-red: #dc2626;
+      --accent-purple: #9333ea;
+      --accent-amber: #d97706;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: var(--card);
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      overflow: hidden;
+      border: 1px solid #e2e8f0;
+    }
+
+    header {
+      background: var(--primary);
+      color: white;
+      padding: 24px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 1.8rem;
+      margin-bottom: 8px;
+    }
+
+    header p {
+      font-size: 0.95rem;
+      opacity: 0.9;
+    }
+
+    .tabs {
+      display: flex;
+      background: #f1f5f9;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 16px;
+      border: none;
+      background: transparent;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #64748b;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-align: center;
+    }
+
+    .tab-btn.active {
+      background: var(--card);
+      color: var(--primary);
+      border-bottom: 3px solid var(--primary);
+    }
+
+    .tab-btn:hover:not(.active) {
+      background: #e2e8f0;
+      color: var(--text);
+    }
+
+    .tab-content {
+      display: none;
+      padding: 24px;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .panel {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .control-group {
+      margin-bottom: 16px;
+    }
+
+    .control-group label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+
+    .control-group input[type="number"] {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .control-group input[type="number"]:focus {
+      border-color: var(--primary);
+    }
+
+    .preset-btn {
+      background: #e0f2fe;
+      color: var(--primary);
+      border: 1px solid #bae6fd;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-right: 8px;
+      margin-bottom: 8px;
+      transition: all 0.2s;
+    }
+
+    .preset-btn:hover {
+      background: var(--primary);
+      color: white;
+    }
+
+    .visual-card {
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 20px;
+      margin-top: 20px;
+    }
+
+    .visual-card h3 {
+      margin-bottom: 12px;
+      color: var(--primary);
+      font-size: 1.2rem;
+    }
+
+    .chip-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .chip {
+      background: #e0f2fe;
+      color: var(--primary);
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .pair-chips {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .pair-chip-box {
+      flex: 1;
+      background: #f1f5f9;
+      padding: 12px;
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    .pair-chip-box span {
+      display: block;
+      font-size: 0.85rem;
+      color: #64748b;
+      margin-bottom: 4px;
+    }
+
+    .pair-chip-box strong {
+      font-size: 1.2rem;
+      color: var(--text);
+    }
+
+    .feedback {
+      margin-top: 16px;
+      padding: 14px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      display: none;
+    }
+
+    .feedback.success {
+      background: #dcfce7;
+      color: var(--accent-green);
+      border: 1px solid #bbf7d0;
+      display: block;
+    }
+
+    .feedback.error {
+      background: #fee2e2;
+      color: var(--accent-red);
+      border: 1px solid #fecaca;
+      display: block;
+    }
+
+    .quiz-card {
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .quiz-card h4 {
+      margin-bottom: 14px;
+      font-size: 1.05rem;
+      color: var(--text);
+    }
+
+    .options-grid {
+      display: grid;
+      gap: 10px;
+    }
+
+    .option-btn {
+      width: 100%;
+      text-align: left;
+      padding: 12px 16px;
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: all 0.2s;
+    }
+
+    .option-btn:hover:not(:disabled) {
+      background: #f1f5f9;
+      border-color: var(--primary);
+    }
+
+    .option-btn.correct {
+      background: #dcfce7 !important;
+      border-color: var(--accent-green) !important;
+      color: var(--accent-green);
+      font-weight: 600;
+    }
+
+    .option-btn.incorrect {
+      background: #fee2e2 !important;
+      border-color: var(--accent-red) !important;
+      color: var(--accent-red);
+    }
+
+    .explanation {
+      margin-top: 12px;
+      padding: 12px;
+      background: #f1f5f9;
+      border-left: 4px solid var(--primary);
+      border-radius: 0 8px 8px 0;
+      font-size: 0.9rem;
+      display: none;
+    }
+
+    .grid-visualizer {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 15px;
+    }
+
+    .timeline-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.9rem;
+    }
+
+    .timeline-bar {
+      height: 24px;
+      background: #e2e8f0;
+      border-radius: 4px;
+      flex-grow: 1;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .timeline-fill {
+      height: 100%;
+      background: var(--primary);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding-right: 8px;
+      color: white;
+      font-size: 0.75rem;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h1>En Küçük Ortak Kat (EKOK) Laboratuvarı</h1>
+      <p>8. Sınıf Matematik İnteraktif Öğrenme ve Uygulama Aracı</p>
+    </header>
+
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab(0)">Simülasyon & Model</button>
+      <button class="tab-btn" onclick="switchTab(1)">Konu Özeti & Kurallar</button>
+      <button class="tab-btn" onclick="switchTab(2)">5 Soruluk Test</button>
+    </div>
+
+    <!-- SEKME 1: SİMÜLASYON -->
+    <div class="tab-content active" id="tab-0">
+      <div class="panel">
+        <h3 style="margin-bottom: 12px; color: var(--primary);">Sayı Çifti Belirleyin</h3>
+        <div style="display: flex; gap: 12px; margin-bottom: 14px;">
+          <div class="control-group" style="flex: 1; margin-bottom: 0;">
+            <label for="num1">1. Sayı:</label>
+            <input type="number" id="num1" value="4" min="2" max="50" oninput="calculateEKOK()">
+          </div>
+          <div class="control-group" style="flex: 1; margin-bottom: 0;">
+            <label for="num2">2. Sayı:</label>
+            <input type="number" id="num2" value="6" min="2" max="50" oninput="calculateEKOK()">
+          </div>
+        </div>
+        
+        <div>
+          <span style="font-size: 0.85rem; color: #64748b; display: block; margin-bottom: 6px;">Hızlı Örnekler:</span>
+          <button class="preset-btn" onclick="setPreset(4, 6)">4 ve 6</button>
+          <button class="preset-btn" onclick="setPreset(8, 12)">8 ve 12</button>
+          <button class="preset-btn" onclick="setPreset(5, 7)">5 ve 7 (Asal)</button>
+          <button class="preset-btn" onclick="setPreset(10, 15)">10 ve 15</button>
+        </div>
+      </div>
+
+      <div class="visual-card">
+        <div class="pair-chips">
+          <div class="pair-chip-box">
+            <span>Seçilen 1. Sayı</span>
+            <strong id="displayNum1">4</strong>
+          </div>
+          <div class="pair-chip-box">
+            <span>Seçilen 2. Sayı</span>
+            <strong id="displayNum2">6</strong>
+          </div>
+          <div class="pair-chip-box" style="background: #e0f2fe; border: 1px solid #bae6fd;">
+            <span style="color: var(--primary);">Bulunan EKOK</span>
+            <strong id="displayEkok" style="color: var(--primary);">12</strong>
+          </div>
+        </div>
+
+        <h3>Katlar Çakışma Modeli (Sayı Doğrusu Görselleştirmesi)</h3>
+        <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 10px;">İki sayının katlarının ilk kez hangi ortak sayıda buluştuğunu inceleyin:</p>
+        
+        <div class="grid-visualizer" id="visualizerContainer">
+          <!-- Dinamik doldurulacak -->
+        </div>
+
+        <div class="feedback success" id="simulationFeedback" style="display: block;">
+          <strong>Sonuç:</strong> <span id="feedbackText">4 ve 6 sayıları ilk olarak 12 sayısında buluşur. EKOK(4, 6) = 12'dir.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SEKME 2: KONU ÖZETİ -->
+    <div class="tab-content" id="tab-1">
+      <div class="panel">
+        <h3 style="color: var(--primary); margin-bottom: 10px;">EKOK Nedir?</h3>
+        <p style="margin-bottom: 12px; font-size: 0.95rem;">
+          İki veya daha fazla doğal sayının ortak katlarından <strong>en küçük olanına</strong> bu sayıların <strong>En Küçük Ortak Katı (EKOK)</strong> denir. EKOK(\(a, b\)) şeklinde gösterilir.
+        </p>
+        <h3 style="color: var(--primary); margin-bottom: 10px; margin-top: 16px;">Nasıl Hesaplanır?</h3>
+        <ul style="margin-left: 20px; font-size: 0.95rem; display: flex; flex-direction: column; gap: 6px;">
+          <li>Sayılar asal çarpanlarına ayrılarak üslü ifadeler şeklinde yazılır.</li>
+          <li>Ortak olan asal çarpanlardan <strong>üssü büyük olanlar</strong> alınır.</li>
+          <li>Ortak olmayan tüm asal çarpanlar da çarpıma dahil edilir.</li>
+          <li>Bölen listesi (algoritma) yöntemiyle, sağdaki tüm asal sayıların çarpımı doğrudan EKOK'u verir.</li>
+        </ul>
+      </div>
+
+      <div class="visual-card">
+        <h3>Önemli Kurallar ve İpuçları</h3>
+        <div style="display: grid; gap: 10px; margin-top: 10px;">
+          <div style="background: #f8fafc; padding: 12px; border-radius: 8px; border-left: 4px solid var(--accent-green);">
+            <strong>Aralarında Asal Sayılar:</strong> Aralarında asal iki sayının EKOK'u, bu iki sayının çarpımına eşittir. Örn: EKOK(5, 7) = 35.
+          </div>
+          <div style="background: #f8fafc; padding: 12px; border-radius: 8px; border-left: 4px solid var(--accent-amber);">
+            <strong>Biri Diğerinin Katı Olan Sayılar:</strong> Büyük olan sayı EKOK'tur. Örn: EKOK(6, 18) = 18.
+          </div>
+          <div style="background: #f8fafc; padding: 12px; border-radius: 8px; border-left: 4px solid var(--accent-purple);">
+            <strong>EBOB - EKOK İlişkisi:</strong> İki doğal sayının çarpımı, bu sayıların EBOB'u ile EKOK'unun çarpımına eşittir. (\(a \times b = \text{EBOB} \times \text{EKOK}\))
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SEKME 3: QUIZ -->
+    <div class="tab-content" id="tab-2">
+      <div id="quizContainer">
+        <!-- Sorular JS ile yüklenecek -->
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // Sekme Geçiş Fonksiyonu
+    function switchTab(index) {
+      const contents = document.querySelectorAll('.tab-content');
+      const buttons = document.querySelectorAll('.tab-btn');
+
+      contents.forEach((content, i) => {
+        content.classList.toggle('active', i === index);
+        buttons[i].classList.toggle('active', i === index);
+      });
+    }
+
+    // EBOB - EKOK Yardımcı Fonksiyonlar
+    function gcd(a, b) {
+      return b === 0 ? a : gcd(b, a % b);
+    }
+
+    function lcm(a, b) {
+      return (a * b) / gcd(a, b);
+    }
+
+    // Simülasyon Mantığı
+    function setPreset(n1, n2) {
+      document.getElementById('num1').value = n1;
+      document.getElementById('num2').value = n2;
+      calculateEKOK();
+    }
+
+    function calculateEKOK() {
+      let n1 = parseInt(document.getElementById('num1').value);
+      let n2 = parseInt(document.getElementById('num2').value);
+
+      if (isNaN(n1) || n1 < 2) n1 = 2;
+      if (isNaN(n2) || n2 < 2) n2 = 2;
+
+      const resEkok = lcm(n1, n2);
+
+      document.getElementById('displayNum1').innerText = n1;
+      document.getElementById('displayNum2').innerText = n2;
+      document.getElementById('displayEkok').innerText = resEkok;
+      document.getElementById('feedbackText').innerText = `${n1} ve ${n2} sayıları ilk olarak ${resEkok} sayısında buluşur. EKOK(${n1}, ${n2}) = ${resEkok}'dir.`;
+
+      // Görselleştirici Güncelleme
+      const container = document.getElementById('visualizerContainer');
+      container.innerHTML = '';
+
+      // n1 Katları
+      let item1 = document.createElement('div');
+      item1.className = 'timeline-item';
+      item1.innerHTML = `<span style="width:50px; font-weight:bold; color:var(--primary);">${n1}'er:</span>`;
+      let bar1 = document.createElement('div');
+      bar1.className = 'timeline-bar';
+      let fill1 = document.createElement('div');
+      fill1.className = 'timeline-fill';
+      let widthPercent1 = Math.min(100, (resEkok / (resEkok * 1.5)) * 100);
+      fill1.style.width = widthPercent1 + '%';
+      fill1.innerText = `${n1}, ${n1*2}, ..., ${resEkok}`;
+      bar1.appendChild(fill1);
+      item1.appendChild(bar1);
+      container.appendChild(item1);
+
+      // n2 Katları
+      let item2 = document.createElement('div');
+      item2.className = 'timeline-item';
+      item2.innerHTML = `<span style="width:50px; font-weight:bold; color:var(--accent-purple);">${n2}'er:</span>`;
+      let bar2 = document.createElement('div');
+      bar2.className = 'timeline-bar';
+      let fill2 = document.createElement('div');
+      fill2.className = 'timeline-fill';
+      let widthPercent2 = Math.min(100, (resEkok / (resEkok * 1.5)) * 100);
+      fill2.style.width = widthPercent2 + '%';
+      fill2.style.background = 'var(--accent-purple)';
+      fill2.innerText = `${n2}, ${n2*2}, ..., ${resEkok}`;
+      bar2.appendChild(fill2);
+      item2.appendChild(bar2);
+      container.appendChild(item2);
+    }
+
+    // 5 Soruluk Quiz Verileri ve Mantığı
+    const quizData = [
+      {
+        id: 1,
+        question: "12 ve 18 sayıları in en küçük ortak katı (EKOK) kaçtır?",
+        options: ["A) 24", "B) 36", "C) 54", "D) 72"],
+        answer: 1, // B
+        explanation: "12'nin katları: 12, 24, 36, 48... \n 18'in katları: 18, 36, 54... \n Ortak katların en küçüğü 36'dır."
+      },
+      {
+        id: 2,
+        question: "Aralarında asal iki sayının EKOK'u aşağıdakilerden hangisine eşittir?",
+        options: ["A) Sayıların farkına", "B) Sayıların toplamına", "C) Sayıların çarpımına", "D) Sayıların EBOB'una"],
+        answer: 2, // C
+        explanation: "Aralarında asal sayıların ortak böleni yalnızca 1 olduğu için, bu sayıların EKOK'u direkt olarak aralarındaki çarpıma eşittir."
+      },
+      {
+        id: 3,
+        question: "Boyutları 6 cm ve 8 cm olan dikdörtgen şeklindeki kartonlar yan yana ve üst üste dizilerek en küçük alanlı bir kare oluşturulacaktır. Oluşan karenin bir kenar uzunluğu kaç cm'dir?",
+        options: ["A) 12 cm", "B) 24 cm", "C) 48 cm", "D) 96 cm"],
+        explanation: "Karenin kenar uzunluğu hem 6'nın hem de 8'in katı olmalıdır. En küçük kareyi bulmak için EKOK(6, 8) hesaplanır. EKOK(6, 8) = 24 cm'dir.",
+        answer: 1
+      },
+      {
+        id: 4,
+        question: "A ve B pozitif iki doğal sayıdır. EBOB(A, B) = 4 ve A × B = 240 olduğuna göre, EKOK(A, B) kaçtır?",
+        options: ["A) 60", "B) 80", "C) 120", "D) 960"],
+        answer: 0, // A
+        explanation: "Kural gereği: A × B = EBOB(A,B) × EKOK(A,B) formülü uygulanır. \n 240 = 4 × EKOK \n EKOK = 240 / 4 = 60 bulunur.",
+      },
+      {
+        id: 5,
+        question: "Biri diğerinin 3 katı olan iki doğal sayının EKOK'u 45 olduğuna göre, bu sayıların toplamı kaçtır?",
+        options: ["A) 45", "B) 48", "C) 60", "D) 90"],
+        answer: 2, // C
+        explanation: "Biri diğerinin katı olan sayılarda büyük olan sayı EKOK'a eşittir. Demek ki büyük sayı 45'tir. Küçük sayı ise 45 / 3 = 15'tir. Toplamları: 45 + 15 = 60'tır.",
+      }
+    ];
+
+    function loadQuiz() {
+      const container = document.getElementById('quizContainer');
+      container.innerHTML = '';
+
+      quizData.forEach((q, index) => {
+        let card = document.createElement('div');
+        card.className = 'quiz-card';
+        
+        let optionsHTML = '';
+        q.options.forEach((opt, optIndex) => {
+          optionsHTML += `<button class="option-btn" onclick="checkQ(${q.id}, ${optIndex}, this)">${opt}</button>`;
+        });
+
+        card.innerHTML = `
+          <h4>Soru ${index + 1}: ${q.question}</h4>
+          <div class="options-grid">${optionsHTML}</div>
+          <div class="explanation" id="exp-${q.id}"><strong>Açıklama:</strong> ${q.explanation}</div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function checkQ(qId, selectedIndex, btnElement) {
+      const q = quizData.find(item => item.id === qId);
+      const card = btnElement.closest('.quiz-card');
+      const buttons = card.querySelectorAll('.option-btn');
+      const explanationDiv = document.getElementById(`exp-${qId}`);
+
+      // Tüm butonları devre dışı bırak
+      buttons.forEach(btn => btn.disabled = true);
+
+      if (selectedIndex === q.answer) {
+        btnElement.classList.add('correct');
+      } else {
+        btnElement.classList.add('incorrect');
+        buttons[q.answer].classList.add('correct');
+      }
+
+      explanationDiv.style.display = 'block';
+    }
+
+    // Sayfa Yüklendiğinde Başlat
+    window.onload = function() {
+      calculateEKOK();
+      loadQuiz();
+    };
+  </script>
+</body>
+</html>

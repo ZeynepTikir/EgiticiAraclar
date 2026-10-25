@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>8. Sınıf Matematik - EBOB İnteraktif Laboratuvarı</title>
+  <style>
+    :root {
+      --primary: #0284c7;
+      --primary-hover: #0369a1;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #0f172a;
+      --accent-green: #16a34a;
+      --accent-red: #dc2626;
+      --accent-purple: #9333ea;
+      --accent-amber: #d97706;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: var(--card);
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+      border: 1px solid #e2e8f0;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+      color: white;
+      padding: 24px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 1.8rem;
+      margin-bottom: 8px;
+    }
+
+    header p {
+      font-size: 0.95rem;
+      opacity: 0.9;
+    }
+
+    .tabs {
+      display: flex;
+      background: #f1f5f9;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 14px;
+      border: none;
+      background: none;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #64748b;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: center;
+    }
+
+    .tab-btn.active {
+      background: var(--card);
+      color: var(--primary);
+      border-bottom: 3px solid var(--primary);
+    }
+
+    .tab-btn:hover {
+      background: #e2e8f0;
+      color: var(--text);
+    }
+
+    .tab-content {
+      display: none;
+      padding: 24px;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .visual-card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .panel {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    @media (max-width: 768px) {
+      .panel {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .control-group {
+      margin-bottom: 16px;
+    }
+
+    .control-group label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 6px;
+      font-size: 0.9rem;
+    }
+
+    .control-group input {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+
+    .preset-btn {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+      width: 100%;
+      margin-top: 8px;
+    }
+
+    .preset-btn:hover {
+      background: var(--primary-hover);
+    }
+
+    .chip {
+      display: inline-block;
+      padding: 6px 12px;
+      background: #e0f2fe;
+      color: var(--primary);
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin: 4px;
+    }
+
+    .pair-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .quiz-card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .quiz-card h3 {
+      font-size: 1.1rem;
+      margin-bottom: 12px;
+      color: var(--text);
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .option-btn {
+      text-align: left;
+      padding: 12px 16px;
+      border: 1px solid #cbd5e1;
+      background: var(--card);
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.95srem;
+      transition: all 0.2s;
+    }
+
+    .option-btn:hover:not(:disabled) {
+      background: #f1f5f9;
+      border-color: var(--primary);
+    }
+
+    .option-btn.correct {
+      background: #dcfce7 !important;
+      border-color: var(--accent-green) !important;
+      color: #166534;
+      font-weight: 600;
+    }
+
+    .option-btn.incorrect {
+      background: #fee2e2 !important;
+      border-color: var(--accent-red) !important;
+      color: #991b1b;
+    }
+
+    .feedback {
+      display: none;
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      margin-top: 10px;
+    }
+
+    .feedback.show {
+      display: block;
+    }
+
+    .feedback.success {
+      background: #dcfce7;
+      color: #166534;
+      border: 1px solid #bbf7d0;
+    }
+
+    .feedback.error {
+      background: #fee2e2;
+      color: #991b1b;
+      border: 1px solid #fecaca;
+    }
+
+    .grid-model {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      max-width: 320px;
+      margin-top: 12px;
+    }
+
+    .grid-item {
+      width: 30px;
+      height: 30px;
+      background: #e2e8f0;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: bold;
+      color: #64748b;
+    }
+
+    .grid-item.common {
+      background: var(--accent-purple);
+      color: white;
+    }
+
+    .info-box {
+      background: #eff6ff;
+      border-left: 4px solid var(--primary);
+      padding: 14px;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 16px;
+      font-size: 0.95rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h1>En Büyük Ortak Bölen (EBOB) Laboratuvarı</h1>
+      <p>8. Sınıf Matematik İnteraktif Öğrenme ve Uygulama Aracı</p>
+    </header>
+
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab(0)">1. EBOB Simülatörü</button>
+      <button class="tab-btn" onclick="switchTab(1)">2. Konu Özeti & Yöntemler</button>
+      <button class="tab-btn" onclick="switchTab(2)">3. 5 Soruluk Test</button>
+    </div>
+
+    <!-- SEKME 1: İNTERAKTİF SİMÜLATÖR -->
+    <div class="tab-content active" id="tab-0">
+      <div class="info-box">
+        İki pozitif tam sayının ortak bölenlerini görselleştirin ve aralarındaki en büyük ortak böleni (EBOB) anında hesaplayın!
+      </div>
+
+      <div class="panel">
+        <div class="visual-card">
+          <h3>Sayı Değerleri</h3>
+          <div class="control-group">
+            <label for="num1">1. Sayı:</label>
+            <input type="number" id="num1" value="24" min="2" max="100" oninput="calculateEBOB()">
+          </div>
+          <div class="control-group">
+            <label for="num2">2. Sayı:</label>
+            <input type="number" id="num2" value="36" min="2" max="100" oninput="calculateEBOB()">
+          </div>
+          <button class="preset-btn" onclick="setRandomNumbers()">Rastgele Sayılar Üret</button>
+        </div>
+
+        <div class="visual-card">
+          <h3>Analiz Sonuçları</h3>
+          <div class="control-group">
+            <label>1. Sayının Bölenleri:</label>
+            <div id="divisors1" class="pair-chips"></div>
+          </div>
+          <div class="control-group">
+            <label>2. Sayının Bölenleri:</label>
+            <div id="divisors2" class="pair-chips"></div>
+          </div>
+          <div class="control-group" style="margin-top: 15px;">
+            <label>Ortak Bölenler (Mor olanlar):</label>
+            <div id="commonDivisors" class="pair-chips"></div>
+          </div>
+          <div style="margin-top: 15px; font-size: 1.1rem; font-weight: bold; color: var(--accent-purple);">
+            EBOB (<span id="lblNum1">24</span>, <span id="lblNum2">36</span>) = <span id="lblEbob">12</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SEKME 2: KONU ÖZETİ -->
+    <div class="tab-content" id="tab-1">
+      <div class="visual-card">
+        <h3>EBOB Nedir?</h3>
+        <p style="margin-top: 8px;">İki veya daha fazla doğal sayının ortak bölenlerinin en büyüğüne o sayıların <strong>En Büyük Ortak Böleni</strong> denir ve kısaca <strong>EBOB</strong> olarak gösterilir.</p>
+      </div>
+
+      <div class="visual-card">
+        <h3>EBOB Bulma Yöntemleri</h3>
+        <ul style="margin-left: 20px; margin-top: 8px; display: flex; flex-direction: column; gap: 8px;">
+          <li><strong>1. Yol (Bölenleri Listeleme):</strong> Her iki sayının pozitif tam sayı bölenleri ayrı ayrı yazılır, ortak olanlar işaretlenir ve en büyüğü seçilir.</li>
+          <li><strong>2. Yol (Asal Çarpan Algoritması):</strong> Sayılar ortak bir asal çarpan listesine alınır. Her iki sayıyı aynı anda bölen (ortak olan) asal sayıların çarpımı EBOB'u verir.</li>
+        </ul>
+      </div>
+
+      <div class="visual-card">
+        <h3>Önemli Kurallar ve Özellikler</h3>
+        <div class="pair-chips" style="margin-top: 8px;">
+          <span class="chip">Asal sayıların EBOB'u 1'dir.</span>
+          <span class="chip">Biri diğerinin katı olan sayıların EBOB'u küçük sayıya eşittir.</span>
+          <span class="chip">Aralarında asal sayıların EBOB'u 1'dir.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SEKME 3: 5 SORULUK TEST -->
+    <div class="tab-content" id="tab-2">
+      <div class="info-box">
+        EBOB bilginizi test edin! Doğru seçeneğe tıkladıktan sonra detaylı çözümü inceleyebilirsiniz.
+      </div>
+
+      <!-- Soru 1 -->
+      <div class="quiz-card" id="q1">
+        <h3>1. 18 ve 24 sayı اینکهnin en büyük ortak böleni (EBOB) kaçtır?</h3>
+        <div class="options">
+          <button class="option-btn" onclick="checkQ(1, this, false)">A) 3</button>
+          <button class="option-btn" onclick="checkQ(1, this, true)">B) 6</button>
+          <button class="option-btn" onclick="checkQ(1, this, false)">C) 9</button>
+          <button class="option-btn" onclick="checkQ(1, this, false)">D) 12</button>
+        </div>
+        <div class="feedback" id="feedback-1"></div>
+      </div>
+
+      <!-- Soru 2 -->
+      <div class="quiz-card" id="q2">
+        <h3>2. Aşağıdaki sayı çiftlerinden hangisinin EBOB'u diğerlerinden farklıdır?</h3>
+        <div class="options">
+          <button class="option-btn" onclick="checkQ(2, this, false)">A) 12 ve 18 (EBOB: 6)</button>
+          <button class="option-btn" onclick="checkQ(2, this, false)">B) 24 ve 30 (EBOB: 6)</button>
+          <button class="option-btn" onclick="checkQ(2, this, true)">C) 15 ve 25 (EBOB: 5)</button>
+          <button class="option-btn" onclick="checkQ(2, this, false)">D) 30 ve 42 (EBOB: 6)</button>
+        </div>
+        <div class="feedback" id="feedback-2"></div>
+      </div>
+
+      <!-- Soru 3 -->
+      <div class="quiz-card" id="q3">
+        <h3>3. Kenar uzunlukları 30 cm ve 42 cm olan dikdörtgen şeklindeki bir karton, hiç artmayacak şekilde eşit büyüklükte kare parsellere ayrılacaktır. Bu karelerin bir kenar uzunluğu en fazla kaç cm olabilir?</h3>
+        <div class="options">
+          <button class="option-btn" onclick="checkQ(3, this, false)">A) 3 cm</button>
+          <button class="option-btn" onclick="checkQ(3, this, false)">B) 4 cm</button>
+          <button class="option-btn" onclick="checkQ(3, this, true)">C) 6 cm</button>
+          <button class="option-btn" onclick="checkQ(3, this, false)">D) 10 cm</button>
+        </div>
+        <div class="feedback" id="feedback-3"></div>
+      </div>
+
+      <!-- Soru 4 -->
+      <div class="quiz-card" id="q4">
+        <h3>4. A ve B aralarında asal iki doğal sayıdır. Buna göre EBOB(A, B) + EKOK(A, B) ifadesi aşağıdakilerden hangisine eşittir? (İpucu: Aralarında asal sayıların EBOB'u 1, EKOK'u sayıların çarpımıdır.)</h3>
+        <div class="options">
+          <button class="option-btn" onclick="checkQ(4, this, false)">A) A + B</button>
+          <button class="option-btn" onclick="checkQ(4, this, true)">B) (A × B) + 1</button>
+          <button class="option-btn" onclick="checkQ(4, this, false)">C) A × B</button>
+          <button class="option-btn" onclick="checkQ(4, this, false)">D) 1</button>
+        </div>
+        <div class="feedback" id="feedback-4"></div>
+      </div>
+
+      <!-- Soru 5 -->
+      <div class="quiz-card" id="q5">
+        <h3>5. 12 ve 72 sayıları için aşağıdakilerden hangisi yanlıştır?</h3>
+        <div class="options">
+          <button class="option-btn" onclick="checkQ(5, this, false)">A) EBOB(12, 72) = 12'dir.</button>
+          <button class="option-btn" onclick="checkQ(5, this, false)">B) 72 sayısı 12'nin bir katıdır.</button>
+          <button class="option-btn" onclick="checkQ(5, this, true)">C) Aralarında asal sayılardır.</button>
+          <button class="option-btn" onclick="checkQ(5, this, false)">D) EKOK(12, 72) = 72'dir.</button>
+        </div>
+        <div class="feedback" id="feedback-5"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Sekme Değiştirme Fonksiyonu
+    function switchTab(index) {
+      const contents = document.querySelectorAll('.tab-content');
+      const buttons = document.querySelectorAll('.tab-btn');
+
+      contents.forEach(content => content.classList.remove('active'));
+      buttons.forEach(btn => btn.classList.remove('active'));
+
+      contents[index].classList.add('active');
+      buttons[index].classList.add('active');
+    }
+
+    // EBOB Hesaplama Mantığı (Simülatör)
+    function getDivisors(num) {
+      let divs = [];
+      for (let i = 1; i <= num; i++) {
+        if (num % i === 0) divs.push(i);
+      }
+      return divs;
+    }
+
+    function calculateGCD(a, b) {
+      while (b !== 0) {
+        let temp = b;
+        b = a % b;
+        a = temp;
+      }
+      return a;
+    }
+
+    function calculateEBOB() {
+      let n1 = parseInt(document.getElementById('num1').value);
+      let n2 = parseInt(document.getElementById('num2').value);
+
+      if (isNaN(n1) || n1 < 1) n1 = 1;
+      if (isNaN(n2) || n2 < 1) n2 = 1;
+
+      document.getElementById('lblNum1').innerText = n1;
+      document.getElementById('lblNum2').innerText = n2;
+
+      let divs1 = getDivisors(n1);
+      let divs2 = getDivisors(n2);
+      let common = divs1.filter(val => divs2.includes(val));
+      let ebob = calculateGCD(n1, n2);
+
+      // DOM Güncelleme - 1. Sayı Bölenleri
+      let d1Container = document.getElementById('divisors1');
+      d1Container.innerHTML = divs1.map(d => `<span class="chip">${d}</span>`).join('');
+
+      // DOM Güncelleme - 2. Sayı Bölenleri
+      let d2Container = document.getElementById('divisors2');
+      d2Container.innerHTML = divs2.map(d => `<span class="chip">${d}</span>`).join('');
+
+      // DOM Güncelleme - Ortak Bölenler
+      let commonContainer = document.getElementById('commonDivisors');
+      commonContainer.innerHTML = common.map(d => `<span class="chip" style="background:${d === ebob ? 'var(--accent-purple); color:white;' : '#e0f2fe'}">${d}</span>`).join('');
+
+      document.getElementById('lblEbob').innerText = ebob;
+    }
+
+    function setRandomNumbers() {
+      let n1 = Math.floor(Math.random() * 40) + 10;
+      let n2 = Math.floor(Math.random() * 40) + 10;
+      document.getElementById('num1').value = n1;
+      document.getElementById('num2').value = n2;
+      calculateEBOB();
+    }
+
+    // Sayfa Yüklendiğinde İlk Hesaplamayı Yap
+    window.onload = function() {
+      calculateEBOB();
+    };
+
+    // Quiz Açıklamaları ve Kontrolü
+    const explanations = {
+      1: "Doğru Cevap: B) 6. 18'in bölenleri (1, 2, 3, 6, 9, 18), 24'ün bölenleri (1, 2, 3, 4, 6, 8, 12, 24). Ortak bölenlerin en büyüğü 6'dır.",
+      2: "Doğru Cevap: C) 15 ve 25. 15 ve 25'in EBOB'u 5'tir. Diğer seçeneklerdeki sayı çiftlerinin EBOB'ları ise 6'dır.",
+      3: "Doğru Cevap: C) 6 cm. Parçalara ayırma (büyükten küçüğe) problemleri EBOB ile çözülür. EBOB(30, 42) = 6 cm'dir.",
+      4: "Doğru Cevap: B) (A × B) + 1. Aralarında asal sayıların EBOB'u daima 1, EKOK'u ise sayıların çarpımına (A × B) eşittir. Toplamları (A × B) + 1 olur.",
+      5: "Doğru Cevap: C) Aralarında asal sayılardır. 12 ve 72 çift sayılardır ve her ikisi de 2'ye (ve başka ortak bölenlere) bölündüğü için aralarında asal olamazlar. Biri diğerinin katı olduğu için EBOB küçük sayı (12) olur."
+    };
+
+    function checkQ(qId, btn, isCorrect) {
+      const card = document.getElementById(`q0${qId}` > 0 ? `q${qId}` : `q${qId}`);
+      const buttons = btn.parentElement.querySelectorAll('.option-btn');
+      const feedback = document.getElementById(`feedback-${qId}`);
+
+      // Tüm butonları devre dışı bırak
+      buttons.forEach(b => {
+        b.disabled = true;
+        if (b === btn) {
+          b.classList.add(isCorrect ? 'correct' : 'incorrect');
+        } else if (b.getAttribute('onclick').includes('true')) {
+          b.classList.add('correct');
+        }
+      });
+
+      // Geri bildirim kutusunu göster
+      feedback.classList.add('show');
+      if (isCorrect) {
+        feedback.className = "feedback show success";
+        feedback.innerHTML = "<strong>Tebrikler! Doğru cevap.</strong><br>" + explanations[qId];
+      } else {
+        feedback.className = "feedback show error";
+        feedback.innerHTML = "<strong>Yanlış cevap.</strong><br>" + explanations[qId];
+      }
+    }
+  </script>
+</body>
+</html>
