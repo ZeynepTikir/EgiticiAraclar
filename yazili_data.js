@@ -4,7 +4,13 @@ const yaziliVerileri = {
     donemler: [
       {
         donemAdi: "1. Dönem 1. Yazılı",
-        dosyalar: []
+        dosyalar: [
+          { 
+            ad: "Yazılı Çalışma Soruları", 
+            dosya: "yazili/5_sinif/matematik_1d1y_hazirlik.pdf", 
+            tur: "calisma" 
+          },
+        ]
       },
       {
         donemAdi: "1. Dönem 2. Yazılı",
