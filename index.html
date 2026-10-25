@@ -120,10 +120,12 @@
         }
 
         /* Renk Temaları */
+        .game { background: #fffbeb; color: #b45309; }
         .lab { background: #f0fdf4; color: #166534; }
         .workshop { background: #eff6ff; color: #1e40af; }
         .poster { background: #faf5ff; color: #6b21a8; }
         .exam { background: #fff7ed; color: #c2410c; }
+        .quiz { background: #fdf2f8; color: #db2777; }
         
         .mat { background: #f0f9ff; color: #0369a1; }
         .fen { background: #ecfdf5; color: #047857; }
@@ -139,12 +141,20 @@
 
     <div class="header">
         <h1>🎓 Eğitici Araçlar Portalı</h1>
-        <p>Lab, atölye ve afiş araçlarınızı oluşturun, ders içeriklerine ulaşın ya da yazılıya hazırlanın.</p>
+        <p>Oyun, lab, atölye, afiş ve quiz üreteçlerinizi kullanın, ders içeriklerine ulaşın ya da sınava hazırlanın.</p>
     </div>
 
     <!-- ÜRETEÇLER -->
     <div class="section-title">İçerik Üreteçleri</div>
     <div class="grid">
+        <a href="oyun_ureteci.html" class="card">
+            <div class="icon-box game">🎮</div>
+            <div class="card-info">
+                <h3>Mini Oyun Üreteci</h3>
+                <span>Eğitici Akıllı Mini Oyunlar</span>
+            </div>
+        </a>
+
         <a href="lab_ureteci.html" class="card">
             <div class="icon-box lab">🧪</div>
             <div class="card-info">
@@ -168,13 +178,21 @@
                 <span>Konu Özetleri ve Görsel Afişler</span>
             </div>
         </a>
+
+        <a href="quiz_ureteci.html" class="card">
+            <div class="icon-box quiz">📝</div>
+            <div class="card-info">
+                <h3>Quiz Üreteci</h3>
+                <span>Detaylı Çözümlü Online Testler</span>
+            </div>
+        </a>
     </div>
 
     <!-- YAZILIYA HAZIRLIK -->
     <div class="section-title">Sınav Hazırlığı</div>
     <div class="grid">
         <a href="yazili.html" class="card">
-            <div class="icon-box exam">📝</div>
+            <div class="icon-box exam">📋</div>
             <div class="card-info">
                 <h3>Yazılıya Hazırlık</h3>
                 <span>Örnek Sınavlar ve Çalışma Kağıtları</span>
