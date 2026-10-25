@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ağaç, Direk ve Çit Atölyesi - EKOK Simülasyonu</title>
+<style>
+:root {
+    --primary: #2C3E50;
+    --secondary: #16A085;
+    --accent: #E67E22;
+    --danger: #C0392B;
+    --bg-color: #ECF0F1;
+    --panel-bg: #FFFFFF;
+    --text-color: #34495E;
+    --border-radius: 12px;
+    --shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+header {
+    background-color: var(--panel-bg);
+    padding: 15px 25px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+h1 {
+    font-size: 1.5rem;
+    color: var(--primary);
+}
+
+.hud {
+    display: flex;
+    gap: 20px;
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.hud-item {
+    background: var(--bg-color);
+    padding: 8px 15px;
+    border-radius: 8px;
+}
+
+.tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.tab-btn {
+    padding: 10px 20px;
+    border: none;
+    background-color: #BDC3C7;
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.tab-btn.active {
+    background-color: var(--secondary);
+}
+
+.tab-content {
+    display: none;
+    background-color: var(--panel-bg);
+    padding: 25px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    flex-grow: 1;
+}
+
+.tab-content.active {
+    display: flex;
+    flex-direction: column;
+}
+
+.workshop-container {
+    display: grid;
+    grid-template-columns: 350px 1fr;
+    gap: 25px;
+    flex-grow: 1;
+}
+
+.control-panel {
+    background: var(--bg-color);
+    padding: 20px;
+    border-radius: var(--border-radius);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.simulation-area {
+    background: #F8F9F9;
+    border: 2px dashed #BDC3C7;
+    border-radius: var(--border-radius);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    min-height: 400px;
+}
+
+.btn {
+    background-color: var(--secondary);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.2s;
+    width: 100%;
+}
+
+.btn:hover {
+    opacity: 0.9;
+}
+
+.btn-danger {
+    background-color: var(--danger);
+}
+
+input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #BDC3C7;
+    border-radius: 8px;
+    font-size: 1rem;
+    text-align: center;
+}
+
+.field-track {
+    width: 100%;
+    height: 120px;
+    background: #D5F5E3;
+    border: 3px solid #27AE60;
+    border-radius: 8px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    overflow-x: auto;
+    padding: 0 20px;
+    margin: 20px 0;
+}
+
+.marker {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: all 0.5s ease;
+}
+
+.marker-icon {
+    font-size: 24px;
+}
+
+.marker-label {
+    font-size: 10px;
+    background: white;
+    padding: 2px 4px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    margin-top: 2px;
+}
+
+.instructions {
+    background: #FCF3CF;
+    border-left: 5px solid var(--accent);
+    padding: 15px;
+    border-radius: 0 8px 8px 0;
+    margin-bottom: 20px;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.modal {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: white;
+    padding: 30px;
+    border-radius: var(--border-radius);
+    text-align: center;
+    max-width: 400px;
+    width: 100%;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+.modal-content h2 {
+    margin-bottom: 15px;
+    color: var(--primary);
+}
+
+.modal-content p {
+    margin-bottom: 20px;
+    color: var(--text-color);
+}
+
+.hidden {
+    display: none !important;
+}
+
+.theory-card {
+    background: #E8F8F5;
+    border-left: 5px solid var(--secondary);
+    padding: 20px;
+    border-radius: 0 8px 8px 0;
+    margin-bottom: 15px;
+}
+
+.theory-card h3 {
+    color: var(--secondary);
+    margin-bottom: 8px;
+}
+
+.log-box {
+    background: #2C3E50;
+    color: #ECF0F1;
+    padding: 15px;
+    border-radius: 8px;
+    font-family: monospace;
+    font-size: 0.9rem;
+    height: 100px;
+    overflow-y: auto;
+    margin-top: 10px;
+}
+</style>
+</head>
+<body>
+
+<header>
+    <h1>🌳 Arsa, Çit ve Direk Yerleştirme Atölyesi</h1>
+    <div class="hud">
+        <div class="hud-item">🏆 Puan: <span id="score">0</span></div>
+        <div class="hud-item">❤️ Hak: <span id="lives">3</span></div>
+    </div>
+</header>
+
+<div class="tabs">
+    <button class="tab-btn active" onclick="switchTab(0)">Atölye Tezgâhı</button>
+    <button class="tab-btn" onclick="switchTab(1)">Pratik Bilgiler & Taktikler</button>
+</div>
+
+<!-- SEKME 1: ATÖLYE -->
+<div class="tab-content active" id="tab-workshop">
+    <div class="instructions" id="scenario-desc">
+        Atölyemize hoş geldiniz! Bu simülasyonda arsa sınırlarına eşit aralıklarla çit direkleri ve ağaçlar dikmeniz gerekmektedir. Aşağıdaki sipariş detaylarını inceleyin ve doğru hesaplamayı yaparak tezgâhı kurun.
+    </div>
+
+    <div class="workshop-container">
+        <div class="control-panel">
+            <h3>Sipariş Paneli</h3>
+            <div id="order-details" style="font-size: 0.95rem; line-height: 1.6;">
+                <!-- Dinamik dolacak -->
+            </div>
+            
+            <hr style="border: 0; border-top: 1px solid #BDC3C7;">
+
+            <div>
+                <label for="user-input" style="display:block; margin-bottom:5px; font-weight:bold;" id="input-label">Hesaplanan Değer:</label>
+                <input type="number" id="user-input" placeholder="Sayı giriniz...">
+            </div>
+
+            <button class="btn" onclick="checkAnswer()">Tezgâhı Kur ve Test Et</button>
+            <button class="btn btn-danger" onclick="resetSimulation()">🔄 Yeniden Başlat</button>
+        </div>
+
+        <div class="simulation-area">
+            <h4 style="color: var(--primary);">Arsa / Yol Simülasyon Görseli</h4>
+            
+            <div class="field-track" id="field-track">
+                <!-- Dinamik nesneler buraya gelecek -->
+            </div>
+
+            <div style="width: 100%;">
+                <strong>İşlem Günlüğü:</strong>
+                <div class="log-box" id="log-box">
+                    Atölye hazır. Sipariş bekleniyor...
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SEKME 2: PRATİK BİLGİLER -->
+<div class="tab-content" id="tab-theory">
+    <h2 style="margin-bottom: 20px; color: var(--primary);">EKOK ve Periyodik Yerleşim Rehberi</h2>
+    
+    <div class="theory-card">
+        <h3>1. Ortak Katların En Küçüğü (EKOK) Nedir?</h3>
+        <p>İki veya daha fazla doğal sayının ortak katlarından en küçük olanına o sayıların EKOK'u denir. Periyodik olarak aynı anda tekrarlanması gereken olaylarda (örn: iki farklı aralıkta dikilen direklerin denk gelmesi) EKOK kullanılır.</p>
+    </div>
+
+    <div class="theory-card">
+        <h3>2. Çit, Direk ve Ağaç Problemlerinin Mantığı</h3>
+        <p>• Eğer bir yola iki farklı boyuttaki nesneler aynı anda başlangıç ve bitiş hizalarında denk getirilecekse, aralıkların ortak bir katında buluşmaları gerekir.<br>
+        • Aralıkların EKOK'u alınarak bu buluşma noktalarının mesafeleri hesaplanır.</p>
+    </div>
+
+    <div class="theory-card">
+        <h3>3. Atölye İpuçları</h3>
+        <p>• Yanlış yaptığınızda hak kaybedersiniz ancak sistem doğrudan ipucu vermez; mantığı tekrar gözden geçirmeniz gerekir.<br>
+        • Her başarılı kurulumdan sonra zorluk seviyesi artar ve yeni bir senaryo yüklenir.</p>
+    </div>
+</div>
+
+<!-- BAŞLANGIÇ MODALI -->
+<div class="modal" id="welcome-modal">
+    <div class="modal-content">
+        <h2>Atölyeye Hoş Geldiniz!</h2>
+        <p>Bu simülasyonda matematiksel modelleme kullanarak arsa düzenleme ve direk dikme projeleri gerçekleştireceksiniz. Hazırsanız başlayalım!</p>
+        <button class="btn" onclick="closeModal()">Simülasyona Başla</button>
+    </div>
+</div>
+
+<script>
+let score = 0;
+let lives = 3;
+let currentScenario = {};
+
+const scenarios = [
+    {
+        type: 'dual_poles',
+        text: 'Bir tarla kenarına hem A tipi direkler (her 12 metrede bir) hem de B tipi direkler (her 18 metrede bir) dikilecektir. Her iki direğin de başlangıç dışında ilk kez tam üst üste denk geldiği metre mesafesi kaçtır?',
+        calc: (a, b) => lcm(12, 18),
+        answer: 36,
+        unit: 'metre',
+        label: 'İlk Denk Gelme Mesafesi (m)'
+    },
+    {
+        type: 'tree_fence',
+        text: 'Uzunluğu 120 metre olan düz bir sokağın başına ve sonuna da konulmak şartıyla, hem her 15 metrede bir çit direği hem de her 20 metrede bir ağaç dikilecektir. Hem direk hem ağacın birlikte dikildiği toplam nokta sayısı kaçtır? (Başlangıç noktası 0. metre dahildir)',
+        calc: () => {
+            let l = 120;
+            let step = lcm(15, 20); // 60
+            let count = 0;
+            for(let i=0; i<=l; i+=step) count++;
+            return count;
+        },
+        answer: 3, // 0, 60, 120
+        unit: 'nokta',
+        label: 'Birlikte Dikilen Nokta Sayısı'
+    },
+    {
+        type: 'dual_poles_hard',
+        text: 'Bir parkurda mavi bayraklar her 15 metrede, kırmızı bayraklar her 25 metrede bir konulmaktadır. Başlangıç çizgisinden sonra bu iki bayrağın 3. kez yan yana geldiği metre mesafesi kaçtır?',
+        calc: () => lcm(15, 25) * 3, // EKOK(15,25)=75 -> 3. kez = 225
+        answer: 225,
+        unit: 'metre',
+        label: '3. Yan Yana Gelme Mesafesi (m)'
+    }
+];
+
+let currentScenarioIndex = 0;
+
+function gcd(a, b) {
+    return b == 0 ? a : gcd(b, a % b);
+}
+
+function lcm(a, b) {
+    return (a * b) / gcd(a, b);
+}
+
+function switchTab(index) {
+    const tabs = document.querySelectorAll('.tab-btn');
+    const contents = document.querySelectorAll('.tab-content');
+    
+    tabs.forEach((t, i) => {
+        t.classList.toggle('active', i === index);
+    });
+    contents.forEach((c, i) => {
+        c.classList.toggle('active', i === index);
+    });
+}
+
+function closeModal() {
+    document.getElementById('welcome-modal').classList.add('hidden');
+    loadScenario();
+}
+
+function loadScenario() {
+    if(currentScenarioIndex >= scenarios.length) {
+        currentScenarioIndex = 0; // döngüye sok veya bitir
+    }
+    currentScenario = scenarios[currentScenarioIndex];
+    
+    document.getElementById('scenario-desc').innerText = currentScenario.text;
+    document.getElementById('order-details').innerHTML = `<strong>Görev:</strong> ${currentScenario.text}`;
+    document.getElementById('input-label').innerText = currentScenario.label + ":";
+    document.getElementById('user-input').value = '';
+    
+    logMessage(`Yeni sipariş yüklendi. Tezgâh kurulmayı bekliyor.`);
+    renderSimulation(false, 0);
+}
+
+function checkAnswer() {
+    const userVal = parseInt(document.getElementById('user-input').value);
+    const correctVal = currentScenario.answer;
+    
+    if(isNaN(userVal)) {
+        alert("Lütfen geçerli bir sayı giriniz.");
+        return;
+    }
+
+    if(userVal === correctVal) {
+        score += 25;
+        document.getElementById('score').innerText = score;
+        logMessage(`BAŞARILI! Doğru hesaplama yaptınız. Kurulum gerçekleştiriliyor...`);
+        renderSimulation(true, correctVal);
+        
+        setTimeout(() => {
+            alert("Tebrikler! Sipariş başarıyla tamamlandı. Sıradaki projeye geçiliyor.");
+            currentScenarioIndex++;
+            loadScenario();
+        }, 1500);
+    } else {
+        lives--;
+        document.getElementById('lives').innerText = lives;
+        logMessage(`HATALI HESAPLAMA! Tezgâh kurulamadı. Kalan hak: ${lives}`);
+        
+        if(lives <= 0) {
+            alert("Haklarınız tükendi! Tezgâh sıfırlanıyor.");
+            resetSimulationFull();
+        }
+    }
+}
+
+function renderSimulation(success, val) {
+    const track = document.getElementById('field-track');
+    track.innerHTML = '';
+    
+    // Görsel simülasyon elemanları ekle
+    let markerCount = success ? 6 : 3;
+    for(let i = 0; i < markerCount; i++) {
+        let m = document.createElement('div');
+        m.className = 'marker';
+        m.style.left = (i * 80 + 30) + 'px';
+        
+        let icon = '🌲';
+        if(currentScenario.type === 'dual_poles') icon = '🗼';
+        if(currentScenario.type === 'dual_poles_hard') icon = '🚩';
+        
+        m.innerHTML = `<div class="marker-icon">${icon}</div><div class="marker-label">${i * (success ? val/(markerCount-1) : 10)}m</div>`;
+        track.appendChild(m);
+    }
+}
+
+function logMessage(msg) {
+    const box = document.getElementById('log-box');
+    box.innerHTML += `> ${msg}<br>`;
+    box.scrollTop = box.scrollHeight;
+}
+
+function resetSimulation() {
+    loadScenario();
+    logMessage("Tezgâh manuel olarak sıfırlandı.");
+}
+
+function resetSimulationFull() {
+    score = 0;
+    lives = 3;
+    currentScenarioIndex = 0;
+    document.getElementById('score').innerText = score;
+    document.getElementById('lives').innerText = lives;
+    loadScenario();
+}
+
+// Sayfa yüklendiğinde modal açık kalır
+window.onload = function() {
+    // Modal başlangıçta açık
+};
+</script>
+
+</body>
+</html>

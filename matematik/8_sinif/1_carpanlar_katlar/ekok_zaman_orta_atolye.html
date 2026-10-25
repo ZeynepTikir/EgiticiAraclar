@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EKOK Zaman Senkronizasyon Atölyesi (Orta-İleri Seviye)</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --accent: #0ea5e9;
+            --bg-light: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --success: #16a34a;
+            --danger: #dc2626;
+            --warning: #d97706;
+            --border: #cbd5e1;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            user-select: none;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background: var(--bg-card);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ÜST HUD */
+        .hud {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 25px;
+            background: #f1f5f9;
+            border-bottom: 1px solid var(--border);
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .hud-group {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .hud-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            background: var(--bg-card);
+            padding: 8px 16px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            color: var(--text-main);
+        }
+
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+
+        /* SEKMELER */
+        .tabs {
+            display: flex;
+            background: #e2e8f0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 14px;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab-btn.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+            background: var(--bg-card);
+        }
+
+        .tab-content {
+            display: none;
+            padding: 25px;
+            min-height: 480px;
+        }
+
+        .tab-content.active {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* PROBLEM ALANI (SEKME 1) */
+        .sim-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            flex: 1;
+        }
+
+        .mission-panel {
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .mission-info h3 {
+            color: var(--primary);
+            font-size: 1.25rem;
+        }
+
+        .mission-info p {
+            color: var(--text-main);
+            font-size: 1.05rem;
+            line-height: 1.6;
+        }
+
+        /* Statik Nesne Görüntüleme Alanı */
+        .clocks-arena {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            background: #f1f5f9;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            padding: 30px;
+            flex-wrap: wrap;
+            gap: 30px;
+            min-height: 180px;
+        }
+
+        .clock-station {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .dynamic-object {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background: var(--bg-card);
+            border: 3px solid var(--primary);
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .clock-label {
+            font-weight: 600;
+            font-size: 1rem;
+            color: var(--text-main);
+            text-align: center;
+        }
+
+        /* Kontrol / Cevap Paneli */
+        .control-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .control-panel label {
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .input-group input {
+            flex: 1;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 10px 15px;
+            border-radius: 8px;
+            color: var(--text-main);
+            font-size: 1.1rem;
+            outline: none;
+        }
+
+        .input-group input:focus {
+            border-color: var(--primary);
+        }
+
+        .feedback-msg {
+            font-weight: 600;
+            min-height: 24px;
+            font-size: 1rem;
+        }
+
+        /* PRATİK BİLGİLER (SEKME 2) */
+        .theory-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+        }
+
+        .theory-card {
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .theory-card h4 {
+            color: var(--primary);
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .theory-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .highlight {
+            color: var(--warning);
+            font-weight: 600;
+        }
+
+        /* Modaller */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 30px;
+            border-radius: 16px;
+            max-width: 450px;
+            width: 90%;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15);
+        }
+
+        .modal h2 {
+            color: var(--primary);
+        }
+
+        .modal p {
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- ÜST HUD -->
+        <div class="hud">
+            <div class="hud-group">
+                <div class="hud-item">🏆 Skor: <span id="scoreVal">0</span></div>
+                <div class="hud-item">❤️ Haklar: <span id="livesVal">3</span></div>
+            </div>
+            <div class="hud-group">
+                <button class="btn" onclick="resetGame()">Yeniden Başlat</button>
+            </div>
+        </div>
+
+        <!-- SEKMELER -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab(0)">Atölye Soru Alanı</button>
+            <button class="tab-btn" onclick="switchTab(1)">Pratik Bilgiler & Formüller</button>
+        </div>
+
+        <!-- SEKME 1: SORU ÇÖZÜM ALANI -->
+        <div class="tab-content active" id="tab0">
+            <div class="sim-container">
+                <div class="mission-panel">
+                    <div class="mission-info">
+                        <h3 id="missionTitle">Görev 1</h3>
+                        <p id="missionDesc">Soru metni yükleniyor...</p>
+                    </div>
+                </div>
+
+                <div class="clocks-arena">
+                    <div class="clock-station">
+                        <div class="dynamic-object" id="object1Container">
+                            <div style="font-size: 2rem;" id="icon1">⏰</div>
+                        </div>
+                        <div class="clock-label" id="labelClock1">1. Sistem</div>
+                    </div>
+
+                    <div class="clock-station">
+                        <div class="dynamic-object" id="object2Container">
+                            <div style="font-size: 2rem;" id="icon2">⏰</div>
+                        </div>
+                        <div class="clock-label" id="labelClock2">2. Sistem</div>
+                    </div>
+                </div>
+
+                <div class="control-panel">
+                    <label for="userAnswer" id="inputLabel">Sorunun doğru cevabını giriniz:</label>
+                    <div class="input-group">
+                        <input type="number" id="userAnswer" placeholder="Cevabınızı yazın...">
+                        <button class="btn" onclick="checkAnswer()">Cevabı Kontrol Et</button>
+                    </div>
+                    <div class="feedback-msg" id="feedbackMsg"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SEKME 2: PRATİK BİLGİLER -->
+        <div class="tab-content" id="tab1">
+            <div class="theory-grid">
+                <div class="theory-card">
+                    <h4>⚙️ EKOK Nedir?</h4>
+                    <p>İki veya daha fazla doğal sayının ortak katlarının en küçüğüne o sayıların <span class="highlight">En Küçük Ortak Katı (EKOK)</span> denir.</p>
+                </div>
+                <div class="theory-card">
+                    <h4>⏱️ Periyot Problemleri</h4>
+                    <p>Farklı zaman aralıklarında tekrarlanan olayların tekrar ne zaman aynı anda gerçekleşeceğini bulmak için <span class="highlight">EKOK</span> hesaplanır.</p>
+                </div>
+                <div class="theory-card">
+                    <h4>📐 Algoritma Yöntemi</h4>
+                    <p>Zihinden bulması zor olan sayılarda asal çarpan algoritması kullanarak ortak katı kolayca hesaplayabilirsin.</p>
+                </div>
+                <div class="theory-card">
+                    <h4>💡 İpucu</h4>
+                    <p>Küçük periyotlardan ortak bir buluşma noktasına ulaşmak istiyorsan <span class="highlight">EKOK</span> kullanmalısın.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- GİRİŞ / BİTİŞ MODALLARI -->
+    <div class="overlay" id="introModal">
+        <div class="modal">
+            <h2>EKOK Atölyesine Hoş Geldin!</h2>
+            <p>Bu atölyede açık temalı tasarım eşliğinde, **sayıları zihinden bulması zorlayıcı (asal çarpan algoritması gerektiren) 4 adet orta-üst seviye görev** seni bekliyor. Kalem ve kâğıdı hazırlayarak soruları çözebilirsin!</p>
+            <button class="btn" onclick="closeIntro()">Atölyeye Başla</button>
+        </div>
+    </div>
+
+    <div class="overlay hidden" id="gameOverModal">
+        <div class="modal">
+            <h2 id="modalTitle">Tebrikler Usta!</h2>
+            <p id="modalDesc">Tüm zorlu EKOK görevlerini başarıyla tamamladın!</p>
+            <button class="btn" onclick="resetGame()">Yeniden Başlat</button>
+        </div>
+    </div>
+
+    <script>
+        let score = 0;
+        let lives = 3;
+        let currentLevelIndex = 0;
+
+        // Sayıları zihinden bulması daha zor, algoritma gerektiren EKOK Soruları
+        const levels = [
+            { 
+                title: "Görev 1: İki Sinyal Cihazı", 
+                desc: "Atölyedeki A sinyal cihazı her 24 saniyede, B sinyal cihazı ise her 36 saniyede bir uyarı sesi vermektedir. Bu iki cihaz aynı anda ilk uyarıyı verdikten **en az kaç saniye sonra** tekrar aynı anda uyarı verirler?", 
+                ans: 72, // EKOK(24, 36) = 72 saniye
+                type: "bell",
+                label1: "A Cihazı: 24 sn",
+                label2: "B Cihazı: 36 sn",
+                icon: "🔔",
+                prompt: "Tekrar birlikte çalacakları saniye değerini gir:"
+            },
+            { 
+                title: "Görev 2: Fabrika Üretim Hatları", 
+                desc: "Bir fabrikadaki 1. bant her 30 dakikada bir, 2. bant ise her 45 dakikada bir otomatik ürün paketlemektedir. İki bant ilk kez saat başı beraber çalıştığına göre, **en az kaç dakika sonra** tekrar aynı anda paketleme yaparlar?", 
+                ans: 90, // EKOK(30, 45) = 90 dakika
+                type: "bus",
+                label1: "1. Bant: 30 dk",
+                label2: "2. Bant: 45 dk",
+                icon: "🏭",
+                prompt: "Tekrar birlikte çalışacakları dakika değerini gir:"
+            },
+            { 
+                title: "Görev 3: Kontrol Ekibi Nöbetleri", 
+                desc: "Bir tesiste denetim yapan iki uzmandan biri her 12 günde bir, diğeri ise her 20 günde bir kontrole gelmektedir. İkisi ilk kez nöbette karşılaştıktan **en az kaç gün sonra** tekrar aynı gün kontrole gelirler?", 
+                ans: 60, // EKOK(12, 20) = 60 gün
+                type: "nurse",
+                label1: "1. Uzman: 12 günde bir",
+                label2: "2. Uzman: 20 günde bir",
+                icon: "👨‍💻",
+                prompt: "Tekrar aynı gün gelecekleri gün sayısını gir:"
+            },
+            { 
+                title: "Görev 4: Otomatik Sulama Sistemi", 
+                desc: "Bahçedeki 1. vanalı sulama sistemi her 18 dakikada bir, 2. sistem ise her 28 dakikada bir su püskürtmektedir. Bu sistemler aynı anda çalıştıktan **en az kaç dakika sonra** tekrar aynı anda su püskürtürler?", 
+                ans: 252, // EKOK(18, 28) = EKOK(2*3^2, 2^2*7) = 4 * 9 * 7 = 252 dakika
+                type: "light",
+                label1: "1. Sistem: 18 dk",
+                label2: "2. Sistem: 28 dk",
+                icon: "💧",
+                prompt: "Tekrar aynı anda çalışacakları dakika değerini gir:"
+            }
+        ];
+
+        function switchTab(index) {
+            const tabs = document.querySelectorAll('.tab-btn');
+            const contents = document.querySelectorAll('.tab-content');
+
+            tabs.forEach((t, i) => {
+                t.classList.toggle('active', i === index);
+            });
+            contents.forEach((c, i) => {
+                c.classList.toggle('active', i === index);
+            });
+        }
+
+        function renderStaticObjects() {
+            const lvl = levels[currentLevelIndex];
+            const obj1Container = document.getElementById('object1Container');
+            const obj2Container = document.getElementById('object2Container');
+
+            obj1Container.innerHTML = `<div style="font-size: 2rem;">${lvl.icon}</div>`;
+            obj2Container.innerHTML = `<div style="font-size: 2rem;">${lvl.icon}</div>`;
+        }
+
+        function loadLevel() {
+            if (currentLevelIndex >= levels.length) {
+                showEndModal(true);
+                return;
+            }
+
+            const lvl = levels[currentLevelIndex];
+            document.getElementById('missionTitle').innerText = lvl.title;
+            document.getElementById('missionDesc').innerText = lvl.desc;
+            document.getElementById('labelClock1').innerText = lvl.label1;
+            document.getElementById('labelClock2').innerText = lvl.label2;
+            document.getElementById('inputLabel').innerText = lvl.prompt;
+            document.getElementById('userAnswer').value = '';
+            document.getElementById('feedbackMsg').innerText = '';
+            document.getElementById('feedbackMsg').style.color = 'var(--text-main)';
+            
+            renderStaticObjects();
+        }
+
+        function checkAnswer() {
+            const userAns = parseInt(document.getElementById('userAnswer').value);
+            const correctAns = levels[currentLevelIndex].ans;
+            const feedback = document.getElementById('feedbackMsg');
+
+            if (isNaN(userAns)) {
+                feedback.innerText = "Lütfen geçerli bir sayı giriniz!";
+                feedback.style.color = 'var(--warning)';
+                return;
+            }
+
+            if (userAns === correctAns) {
+                feedback.innerText = "Mükemmel analiz! Doğru sonucu buldun.";
+                feedback.style.color = 'var(--success)';
+                score += 25;
+                document.getElementById('scoreVal').innerText = score;
+
+                setTimeout(() => {
+                    currentLevelIndex++;
+                    loadLevel();
+                }, 1500);
+            } else {
+                lives--;
+                document.getElementById('livesVal').innerText = lives;
+                feedback.innerText = "Yanlış cevap! Asal çarpan algoritmasını kullanarak EKOK'u tekrar hesapla.";
+                feedback.style.color = 'var(--danger)';
+
+                if (lives <= 0) {
+                    showEndModal(false);
+                }
+            }
+        }
+
+        function closeIntro() {
+            document.getElementById('introModal').classList.add('hidden');
+            loadLevel();
+        }
+
+        function showEndModal(isSuccess) {
+            const modal = document.getElementById('gameOverModal');
+            modal.classList.remove('hidden');
+            if (isSuccess) {
+                document.getElementById('modalTitle').innerText = "Tebrikler Usta!";
+                document.getElementById('modalDesc').innerText = `Tüm görevleri başarıyla tamamladın! Toplam Puanın: ${score}`;
+            } else {
+                document.getElementById('modalTitle').innerText = "Oyun Bitti!";
+                document.getElementById('modalDesc').innerText = "Hakların bitti ama pes etme! Pratik bilgiler sekmesini inceleyerek tekrar deneyebilirsin.";
+            }
+        }
+
+        function resetGame() {
+            score = 0;
+            lives = 3;
+            currentLevelIndex = 0;
+            document.getElementById('scoreVal').innerText = score;
+            document.getElementById('livesVal').innerText = lives;
+            document.getElementById('gameOverModal').classList.add('hidden');
+            loadLevel();
+        }
+    </script>
+</body>
+</html>
