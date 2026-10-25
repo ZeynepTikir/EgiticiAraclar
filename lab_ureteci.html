@@ -9,24 +9,24 @@
         .form-panel { flex: 1; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
         .preview-panel { flex: 2; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); display: flex; flex-direction: column; }
         label { font-weight: bold; margin-top: 10px; display: block; }
-        input, select, textarea, button { width: 100%; padding: 10px; margin-top: 5px; box-sizing: border-box; }
-        button { background: #0284c7; color: white; font-weight: bold; border: none; border-radius: 4px; cursor: pointer; margin-top: 15px; }
+        input, select, textarea, button { width: 100%; padding: 10px; margin-top: 5px; box-sizing: border-box; border: 1px solid #cbd5e1; border-radius: 6px; }
+        button { background: #0284c7; color: white; font-weight: bold; border: none; border-radius: 6px; cursor: pointer; margin-top: 15px; }
         button:hover { background: #0369a1; }
         iframe { width: 100%; height: 100%; border: none; flex: 1; border-radius: 4px; background: #fff; }
         #previewContainer { width: 100%; flex: 1; border: 1px solid #ccc; margin-top: 10px; border-radius: 4px; overflow: hidden; display: flex; }
         #status { margin-top: 15px; padding: 12px; border-radius: 6px; font-weight: bold; display: none; text-align: center; }
+        .back-link { display: inline-block; margin-bottom: 15px; color: #64748b; text-decoration: none; font-weight: bold; }
+        .back-link:hover { color: #0284c7; }
     </style>
 </head>
 <body>
 
+    <a href="index.html" class="back-link">← Portala Dön</a>
     <h2>🛠️ Eğitici Akıllı Görsel Araç Üreteci (Laboratuvar Konsepti)</h2>
 
     <div class="container">
         <!-- SOL PANEL -->
         <div class="form-panel">
-            <label for="apiKey">Gemini API Key:</label>
-            <input type="password" id="apiKey" placeholder="AIzaSy...">
-
             <label for="modelSelect">Model:</label>
             <select id="modelSelect">
                 <option value="gemini-3.5-flash-lite" selected>gemini-3.5-flash-lite (Önerilen & Hızlı)</option>
@@ -49,7 +49,7 @@
             <textarea id="details" rows="3" placeholder="Örn: Taban ve üssü değiştirilebilen interaktif görsel kart, üslü nicelik karşılaştırma sekmesi."></textarea>
 
             <button id="btnGenerate">✨ Konsept ile Uyumlu Araç Üret</button>
-            <button id="btnDownload" style="background:#28a745; margin-top: 10px;">💾 HTML Olarak İndir</button>
+            <button id="btnDownload" style="background:#059669; margin-top: 10px;">💾 HTML Olarak İndir</button>
             <div id="status"></div>
         </div>
 
@@ -73,23 +73,46 @@
             statusDiv.innerText = msg;
         }
 
+        async function generateToolWithRetry(endpoint, payload, retries = 3, delay = 3000) {
+            for (let i = 0; i < retries; i++) {
+                try {
+                    const response = await fetch(endpoint, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    const data = await response.json();
+                    if (!response.ok) {
+                        const errMessage = data.error ? (typeof data.error === 'object' ? data.error.message : data.error) : "";
+                        if ((response.status === 503 || errMessage.includes("high demand") || response.status === 429) && i < retries - 1) {
+                            showStatus(`⚠️ Sunucu yoğun (Deneme ${i+1}/${retries}), bekleniyor...`, false);
+                            await new Promise(res => setTimeout(res, delay));
+                            continue;
+                        }
+                        throw new Error(errMessage || "API Hatası: " + response.status);
+                    }
+                    return data;
+                } catch (err) {
+                    if (i === retries - 1) throw err;
+                    await new Promise(res => setTimeout(res, delay));
+                }
+            }
+        }
+
         async function generateTool() {
-            const apiKey = document.getElementById('apiKey').value.trim();
             const modelName = document.getElementById('modelSelect').value;
             const grade = document.getElementById('grade').value;
             const subject = document.getElementById('subject').value;
             const details = document.getElementById('details').value;
             const previewFrame = document.getElementById('previewFrame');
 
-            if (!apiKey) {
-                alert("Lütfen geçerli bir Gemini API Key girin!");
+            if (!subject) {
+                alert("Lütfen ders veya konu alanını doldurun!");
                 return;
             }
 
-            // 1. Sol panelde uyarıyı göster
             showStatus("⏳ Örnek konsept formatına uygun araç kodlanıyor...", false);
             
-            // 2. Önizleme iframe'ine yükleniyor mesajını bas
             const doc = previewFrame.contentDocument || previewFrame.contentWindow.document;
             doc.open();
             doc.write("<div style='font-family:sans-serif; text-align:center; padding-top:50px; color:#64748b;'><h3>⏳ Yapay zeka materyali standart formata göre kodluyor...</h3><p>Lütfen bekleyin...</p></div>");
@@ -139,24 +162,15 @@ Tasarım ve Kodlama Mimarisi Kuralları (Birebir Uygulanacak):
 `;
 
             try {
-                const endpoint = "https://generativelanguage.googleapis.com/v1beta/models/" + modelName + ":generateContent?key=" + apiKey;
+                // Doğrudan Vercel Serverless endpoint'ine güvenli istek atıyoruz
+                const endpoint = '/api/generate';
                 
-                const response = await fetch(endpoint, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        contents: [{
-                            role: "user",
-                            parts: [{ text: promptText }]
-                        }]
-                    })
-                });
+                const payload = {
+                    promptText: promptText,
+                    modelName: modelName
+                };
 
-                const data = await response.json();
-
-                if (!response.ok) {
-                    throw new Error(data.error ? data.error.message : "API Hatası: " + response.status);
-                }
+                const data = await generateToolWithRetry(endpoint, payload);
 
                 if (!data.candidates || !data.candidates[0] || !data.candidates[0].content) {
                     throw new Error("Model geçerli yanıt üretmedi.");
@@ -185,7 +199,6 @@ Tasarım ve Kodlama Mimarisi Kuralları (Birebir Uygulanacak):
                 return;
             }
             
-            // Konu alanındaki metni güvenli dosya adına dönüştür
             const subjectInput = document.getElementById('subject').value || "etkinlik";
             const safeSubjectName = subjectInput.replace(/[^a-z0-9ğüşıöçĞÜŞİÖÇ]/gi, '_').toLowerCase();
             
@@ -196,7 +209,6 @@ Tasarım ve Kodlama Mimarisi Kuralları (Birebir Uygulanacak):
             a.click();
         }
 
-        // Tıklama olaylarını bağla
         document.getElementById('btnGenerate').addEventListener('click', generateTool);
         document.getElementById('btnDownload').addEventListener('click', downloadHTML);
     </script>
