@@ -30,7 +30,23 @@ const yaziliVerileri = {
     donemler: [
       {
         donemAdi: "1. Dönem 1. Yazılı",
-        dosyalar: []
+        dosyalar: [
+          { 
+            ad: "100 Soruda Yazılıya Hazırlık", 
+            dosya: "yazili/7_sinif/7_matematik_100_soruda_1d1y_hazirlik_fasikulu.pdf", 
+            tur: "fasikul" 
+          },
+          { 
+            ad: "Yazılı Çalışma Soruları", 
+            dosya: "yazili/7_sinif/7_matematik_1d1y_hazirlik.pdf", 
+            tur: "calisma" 
+          },
+          { 
+            ad: "Örnek Senaryolar", 
+            dosya: "yazili/7_sinif/7_matematik_1d1y_senaryolar.pdf", 
+            tur: "yazili" 
+          }
+        ]
       },
       {
         donemAdi: "1. Dönem 2. Yazılı",
