@@ -7,7 +7,7 @@ const fenVerileri = {
         araclar: [
           { 
             ad: "Örnek Araç 1", 
-            dosya: "fen/5_sinif/dogal_sayilar/arac1.html",
+            dosya: "dersler/fen/5_sinif/dogal_sayilar/arac1.html",
             tur: "lab" // 'lab', 'atolye' veya 'afis'
           }
         ]
@@ -22,7 +22,7 @@ const fenVerileri = {
         araclar: [
           { 
             ad: "Örnek Araç 1", 
-            dosya: "fen/6_sinif/dogal_sayilar/arac1.html",
+            dosya: "dersler/fen/6_sinif/dogal_sayilar/arac1.html",
             tur: "atolye"
           }
         ]
@@ -37,7 +37,7 @@ const fenVerileri = {
         araclar: [
           { 
             ad: "Örnek Araç 1", 
-            dosya: "fen/7_sinif/dogal_sayilar/arac1.html",
+            dosya: "dersler/fen/7_sinif/dogal_sayilar/arac1.html",
             tur: "afis"
           }
         ]
@@ -52,7 +52,7 @@ const fenVerileri = {
         araclar: [
           { 
             ad: "Mevsimler ve İklim Simülasyonu", 
-            dosya: "fen/8_sinif/1_mevsimler_iklim/mevsimler_iklim_lab.html",
+            dosya: "dersler/fen/8_sinif/1_mevsimler_iklim/mevsimler_iklim_lab.html",
             tur: "lab"
           }
         ]
@@ -62,17 +62,17 @@ const fenVerileri = {
         araclar: [
           { 
             ad: "DNA'nın Yapısı Afişi", 
-            dosya: "fen/8_sinif/2_dna_genetik/dna_yapisi_lab.html",
+            dosya: "dersler/fen/8_sinif/2_dna_genetik/dna_yapisi_lab.html",
             tur: "lab"
           },
           { 
             ad: "DNA'nın Eşlenmesi Atölyesi", 
-            dosya: "fen/8_sinif/2_dna_genetik/dna_esleme_lab.html",
+            dosya: "dersler/fen/8_sinif/2_dna_genetik/dna_esleme_lab.html",
             tur: "lab"
           },
           { 
             ad: "Kalıtım, Modifikasyon, Mutasyon, Adaptasyon, Biyoteknoloji", 
-            dosya: "fen/8_sinif/2_dna_genetik/kalitim_modi_muta_adap_lab.html",
+            dosya: "dersler/fen/8_sinif/2_dna_genetik/kalitim_modi_muta_adap_lab.html",
             tur: "lab"
           }
         ]
@@ -82,7 +82,7 @@ const fenVerileri = {
         araclar: [
           { 
             ad: "Dolaşım Sistemi", 
-            dosya: "fen/8_sinif/3_vucudumuzdaki_sistemler/dolasim_atolye.html",
+            dosya: "dersler/fen/8_sinif/3_vucudumuzdaki_sistemler/dolasim_atolye.html",
             tur: "atolye"
           }
         ]
