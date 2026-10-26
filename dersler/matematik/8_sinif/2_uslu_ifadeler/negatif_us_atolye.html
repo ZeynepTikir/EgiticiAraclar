@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nano-Teknoloji Minyatür Atölyesi: Negatif Üsler</title>
+    <!-- FontAwesome kütüphanesi doğrudan eklendi -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --secondary: #06b6d4;
+            --accent: #f59e0b;
+            --danger: #ef4444;
+            --success: #10b981;
+            --bg-dark: #070c16;
+            --bg-card: #0f172a;
+            --bg-input: #050914;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: #1e293b;
+            --cyan-glow: #00f2ff;
+            --radius: 14px;
+            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            user-select: none;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1250px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        /* HEADER HUD */
+        header {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 15px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow);
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .logo-area h1 {
+            font-size: 1.35rem;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .hud-stats {
+            display: flex;
+            gap: 15px;
+            font-size: 1.05rem;
+            font-weight: bold;
+        }
+
+        .stat-item {
+            background: rgba(255, 255, 255, 0.04);
+            padding: 8px 16px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* SEVİYE SEÇİMİ BUTONLARI */
+        .level-bar {
+            display: flex;
+            gap: 10px;
+            width: 100%;
+        }
+
+        .level-btn {
+            flex: 1;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 12px 15px;
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.95rem;
+            transition: all 0.25s ease;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .level-btn span.sub {
+            font-size: 0.75rem;
+            font-weight: normal;
+            opacity: 0.8;
+        }
+
+        .level-btn:hover {
+            border-color: var(--secondary);
+            color: var(--text-main);
+        }
+
+        .level-btn.active {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.35);
+        }
+
+        /* 3'LÜ PANEL DÜZENİ */
+        .workshop-grid {
+            display: grid;
+            grid-template-columns: 320px 1fr 340px;
+            gap: 15px;
+            min-height: 480px;
+        }
+
+        @media(max-width: 1024px) {
+            .workshop-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .panel-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+
+        .panel-title {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding-bottom: 8px;
+        }
+
+        /* SOL PANEL: SİPARİŞ */
+        .order-card {
+            background: linear-gradient(135deg, #1e1b4b 0%, #311042 100%);
+            border: 2px solid var(--primary-hover);
+            padding: 25px 15px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .order-fraction {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            vertical-align: middle;
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--accent);
+            padding: 0 5px;
+        }
+
+        .order-fraction .num {
+            border-bottom: 3px solid var(--accent);
+            padding: 0 8px;
+            line-height: 1.1;
+        }
+
+        .order-fraction .den {
+            padding: 0 8px;
+            line-height: 1.1;
+        }
+
+        .hint-box {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px dashed var(--border);
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        /* ORTA PANEL: CANLI MİKROSKOP */
+        .microscope-viewport {
+            flex-grow: 1;
+            background: #030712;
+            border: 2px solid #0e3746;
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 320px;
+            box-shadow: inset 0 0 40px rgba(0, 242, 255, 0.05);
+        }
+
+        .microscope-grid-lines {
+            position: absolute;
+            inset: 0;
+            background-image: 
+                linear-gradient(to right, rgba(6, 182, 212, 0.08) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(6, 182, 212, 0.08) 1px, transparent 1px);
+            background-size: 24px 24px;
+            pointer-events: none;
+        }
+
+        /* HUD Dairesel Hedef Çizgileri */
+        .hud-circle {
+            position: absolute;
+            border: 1px dashed rgba(0, 242, 255, 0.25);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+        .hud-circle.outer { width: 260px; height: 260px; }
+        .hud-circle.mid { width: 190px; height: 190px; }
+        .hud-circle.inner { width: 120px; height: 120px; }
+
+        /* MİKROSKOP İÇİNDEKİ NESNE KUTUSU */
+        .nano-card-box {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .nano-icon-wrapper {
+            width: 85px;
+            height: 85px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--cyan-glow);
+            filter: drop-shadow(0 0 14px rgba(0, 242, 255, 0.75));
+            font-size: 4.2rem;
+        }
+
+        .nano-title-tag {
+            background: rgba(3, 15, 29, 0.85);
+            border: 1px solid var(--secondary);
+            color: var(--cyan-glow);
+            padding: 5px 18px;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            box-shadow: 0 0 12px rgba(6, 182, 212, 0.25);
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        .nano-value-subtag {
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px dashed var(--accent);
+            color: var(--accent);
+            padding: 4px 14px;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: bold;
+            min-width: 45px;
+            text-align: center;
+        }
+
+        /* LAZER IŞINLARI */
+        .laser-horizontal {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 50%;
+            height: 3px;
+            background: var(--cyan-glow);
+            box-shadow: 0 0 12px var(--cyan-glow), 0 0 25px var(--cyan-glow);
+            display: none;
+            z-index: 5;
+            transform: translateY(-50%);
+        }
+
+        .laser-vertical {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 3px;
+            background: var(--danger);
+            box-shadow: 0 0 12px var(--danger), 0 0 25px var(--danger);
+            display: none;
+            z-index: 5;
+            transform: translateX(-50%);
+        }
+
+        /* SAĞ PANEL: AYAR / GİRDİ PANELİ */
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .field-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .custom-input {
+            width: 100%;
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 12px 15px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .custom-input:focus {
+            border-color: var(--secondary);
+        }
+
+        .sign-toggle-btn {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border);
+            color: var(--accent);
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: bold;
+            margin-top: 5px;
+            transition: background 0.2s;
+        }
+
+        .sign-toggle-btn:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .preview-box {
+            background: var(--bg-input);
+            border: 1px dashed var(--secondary);
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+            min-height: 55px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: var(--secondary);
+        }
+
+        /* BUTONLAR */
+        .btn {
+            width: 100%;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
+        }
+
+        .btn:hover {
+            background: var(--primary-hover);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            margin-top: 8px;
+            box-shadow: none;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.05);
+            color: var(--text-main);
+        }
+
+        /* ALT BİLDİRİM BARI */
+        .bottom-status-bar {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 15px 25px;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-weight: 600;
+            font-size: 1.05rem;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+        }
+
+        .status-neutral {
+            color: var(--text-muted);
+            border-color: var(--border);
+        }
+
+        .status-success {
+            background: rgba(16, 185, 129, 0.15);
+            border-color: var(--success);
+            color: var(--success);
+        }
+
+        .status-error {
+            background: rgba(239, 68, 68, 0.15);
+            border-color: var(--danger);
+            color: var(--danger);
+        }
+
+        /* MATEMATİKSEL GÖSTERİM YARDIMCILARI */
+        .math-pow {
+            display: inline-flex;
+            align-items: flex-start;
+        }
+
+        .math-pow .base {
+            font-size: 1.4rem;
+            line-height: 1;
+        }
+
+        .math-pow .exp {
+            font-size: 0.9rem;
+            line-height: 1;
+            vertical-align: top;
+            margin-left: 2px;
+            color: var(--accent);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- ÜST HUD -->
+    <header>
+        <div class="logo-area">
+            <h1>🔬 Nano-Teknoloji Minyatür Atölyesi</h1>
+        </div>
+        <div class="hud-stats">
+            <div class="stat-item">
+                🏆 Puan: <span id="score">0</span>
+            </div>
+            <div class="stat-item">
+                ❤️ Hak: <span id="lives">3</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- SEVİYE SEÇİM BUTONLARI -->
+    <div class="level-bar">
+        <button class="level-btn active" onclick="changeLevel(1)">
+            <span>SEVİYE 1</span>
+            <span class="sub">Pozitif Tabanlı Negatif Üsler</span>
+        </button>
+        <button class="level-btn" onclick="changeLevel(2)">
+            <span>SEVİYE 2</span>
+            <span class="sub">Negatif Tabanlı Parantezli Negatif Üsler</span>
+        </button>
+        <button class="level-btn" onclick="changeLevel(3)">
+            <span>SEVİYE 3</span>
+            <span class="sub">Karışık & Büyük Kuvvetler</span>
+        </button>
+    </div>
+
+    <!-- 3'LÜ PANEL DÜZENİ -->
+    <div class="workshop-grid">
+        
+        <!-- PANEL 1: SOL (SORU / SİPARİŞ) -->
+        <div class="panel-box">
+            <div>
+                <div class="panel-title">📦 Müşteri Siparişi (Hedef Kesir)</div>
+                <div class="order-card" id="orderCard">
+                    <!-- Dinamik kesir yüklenecek -->
+                </div>
+                <div class="hint-box">
+                    <strong>Görev:</strong> Kesir olarak verilen nano-ölçünün hangi üslü ifadeye eşit olduğunu bulun. Sağ paneli kullanarak taban ve üssü girip üretimi başlatın!
+                </div>
+            </div>
+            <button class="btn btn-secondary" onclick="generateNewOrder()">
+                🎲 Pas Geç / Yeni Sipariş
+            </button>
+        </div>
+
+        <!-- PANEL 2: ORTA (CANLI MİKROSKOP) -->
+        <div class="panel-box">
+            <div class="panel-title">🔬 Canlı Lazer & Mikroskop Görüntüsü</div>
+            <div class="microscope-viewport">
+                <div class="microscope-grid-lines"></div>
+                <div class="hud-circle outer"></div>
+                <div class="hud-circle mid"></div>
+                <div class="hud-circle inner"></div>
+                
+                <!-- LAZERLER -->
+                <div class="laser-horizontal" id="laserHorizontal"></div>
+                <div class="laser-vertical" id="laserVertical"></div>
+
+                <!-- MİKROSKOP İÇİNDEKİ NESNE KUTUSU -->
+                <div class="nano-card-box" id="nanoCardBox">
+                    <div class="nano-icon-wrapper" id="nanoIconWrapper">
+                        <!-- FontAwesome Vektörel İkonlar Dinamik Yüklenecek -->
+                    </div>
+                    <div class="nano-title-tag" id="nanoTitleTag">Mikro Çip</div>
+                    <div class="nano-value-subtag" id="nanoValueSubtag">?</div>
+                </div>
+            </div>
+            <div style="margin-top: 10px; font-size: 0.8rem; color: var(--text-muted); text-align: center;">
+                Girilen ifadenin sonucuna göre canlı nesne animasyonlu olarak ölçeklenir.
+            </div>
+        </div>
+
+        <!-- PANEL 3: SAĞ (AYAR / GİRDİ PANELİ) -->
+        <div class="panel-box">
+            <div>
+                <div class="panel-title">⚙️ Üretim Ayar Paneli</div>
+                <div class="input-group">
+                    <div>
+                        <div class="field-label">Taban (a):</div>
+                        <input type="number" id="baseInput" class="custom-input" placeholder="Örn: 2 veya -3" oninput="updatePreview()">
+                        <button class="sign-toggle-btn" onclick="toggleSign('baseInput')">± İşaret Değiştir</button>
+                    </div>
+
+                    <div>
+                        <div class="field-label">Üs / Kuvvet (n):</div>
+                        <input type="number" id="expInput" class="custom-input" placeholder="Örn: -3" oninput="updatePreview()">
+                        <button class="sign-toggle-btn" onclick="toggleSign('expInput')">± İşaret Değiştir</button>
+                    </div>
+                </div>
+
+                <div class="field-label">Oluşturulan İfade Önizleme:</div>
+                <div class="preview-box" id="previewBox">
+                    -
+                </div>
+            </div>
+
+            <button class="btn" onclick="processProduction()">
+                ⚡ Lazerle Üret & Gönder
+            </button>
+        </div>
+
+    </div>
+
+    <!-- ALT BİLDİRİM BARI -->
+    <div class="bottom-status-bar status-neutral" id="bottomStatus">
+        Sipariş alındı! Lütfen sağ taraftaki panelden uygun taban ve negatif üssü girip üretimi başlatın.
+    </div>
+</div>
+
+<script>
+    // DURUM DEĞİŞKENLERİ
+    let currentLevel = 1;
+    let score = 0;
+    let lives = 3;
+    let currentOrder = null;
+
+    // FONTAWESOME VEKTÖREL SİMGELER (Referans verdiğiniz Nano-Lab sayfasındaki ikon sınıfları)
+    const NANO_OBJECTS = [
+        {
+            name: "Mikro Çip",
+            iconClass: "fa-solid fa-microchip"
+        },
+        {
+            name: "Gen Dizisi",
+            iconClass: "fa-solid fa-dna"
+        },
+        {
+            name: "Atom",
+            iconClass: "fa-solid fa-atom"
+        },
+        {
+            name: "Bakteri",
+            iconClass: "fa-solid fa-virus"
+        }
+    ];
+
+    // SİPARİŞ VERİ HAVUZLARI
+    const level1Orders = [
+        { display: createFractionHtml(1, 8), value: 1/8, valid: [[2, -3]] },
+        { display: createFractionHtml(1, 9), value: 1/9, valid: [[3, -2]] },
+        { display: createFractionHtml(1, 16), value: 1/16, valid: [[2, -4], [4, -2]] },
+        { display: createFractionHtml(1, 25), value: 1/25, valid: [[5, -2]] },
+        { display: createFractionHtml(1, 27), value: 1/27, valid: [[3, -3]] },
+        { display: createFractionHtml(1, 32), value: 1/32, valid: [[2, -5]] },
+        { display: createFractionHtml(1, 100), value: 1/100, valid: [[10, -2]] },
+        { display: createFractionHtml(1, 1000), value: 1/1000, valid: [[10, -3]] }
+    ];
+
+    const level2Orders = [
+        { display: createFractionHtml(1, 4), value: 1/4, valid: [[-2, -2], [2, -2]] },
+        { display: createFractionHtml(-1, 8), value: -1/8, valid: [[-2, -3]] },
+        { display: createFractionHtml(1, 9), value: 1/9, valid: [[-3, -2], [3, -2]] },
+        { display: createFractionHtml(-1, 27), value: -1/27, valid: [[-3, -3]] },
+        { display: createFractionHtml(1, 16), value: 1/16, valid: [[-2, -4], [2, -4], [-4, -2], [4, -2]] },
+        { display: createFractionHtml(-1, 32), value: -1/32, valid: [[-2, -5]] },
+        { display: createFractionHtml(1, 81), value: 1/81, valid: [[-3, -4], [3, -4], [-9, -2], [9, -2]] }
+    ];
+
+    const level3Orders = [
+        { display: createFractionHtml(1, 64), value: 1/64, valid: [[2, -6], [-2, -6], [4, -3], [8, -2], [-8, -2]] },
+        { display: createFractionHtml(-1, 128), value: -1/128, valid: [[-2, -7]] },
+        { display: createFractionHtml(1, 243), value: 1/243, valid: [[3, -5]] },
+        { display: createFractionHtml(-1, 243), value: -1/243, valid: [[-3, -5]] },
+        { display: createFractionHtml(1, 256), value: 1/256, valid: [[2, -8], [-2, -8], [4, -4], [-4, -4], [16, -2], [-16, -2]] },
+        { display: createFractionHtml(1, 625), value: 1/625, valid: [[5, -4], [-5, -4], [25, -2], [-25, -2]] },
+        { display: createFractionHtml(-1, 100000), value: -1/100000, valid: [[-10, -5]] }
+    ];
+
+    function createFractionHtml(num, den) {
+        return `<div class="order-fraction"><span class="num">${num}</span><span class="den">${den}</span></div>`;
+    }
+
+    function changeLevel(lvl) {
+        currentLevel = lvl;
+        const btns = document.querySelectorAll('.level-btn');
+        btns.forEach((btn, index) => {
+            btn.classList.toggle('active', index + 1 === lvl);
+        });
+        updateStatus(`Seviye ${lvl} seçildi. Yeni sipariş hazırlanıyor...`, "neutral");
+        generateNewOrder();
+    }
+
+    function generateNewOrder() {
+        let pool = level1Orders;
+        if (currentLevel === 2) pool = level2Orders;
+        if (currentLevel === 3) pool = level3Orders;
+
+        const randomIndex = Math.floor(Math.random() * pool.length);
+        currentOrder = pool[randomIndex];
+
+        document.getElementById('orderCard').innerHTML = currentOrder.display;
+        
+        // Gönderdiğiniz HTML dosyasındaki simgeleri (fa-microchip, fa-dna, fa-atom, fa-virus) kullan
+        const randomObj = NANO_OBJECTS[Math.floor(Math.random() * NANO_OBJECTS.length)];
+        document.getElementById('nanoIconWrapper').innerHTML = `<i class="${randomObj.iconClass}"></i>`;
+        document.getElementById('nanoTitleTag').innerText = randomObj.name;
+        document.getElementById('nanoValueSubtag').innerHTML = '?';
+
+        // Görsel boyutu varsayılana getir
+        const nanoCard = document.getElementById('nanoCardBox');
+        nanoCard.style.transform = 'scale(1)';
+
+        // Inputları sıfırla
+        document.getElementById('baseInput').value = '';
+        document.getElementById('expInput').value = '';
+        updatePreview();
+    }
+
+    function toggleSign(inputId) {
+        const input = document.getElementById(inputId);
+        let val = input.value;
+        if (val === '') {
+            input.value = '-';
+        } else if (val === '-') {
+            input.value = '';
+        } else {
+            input.value = (parseFloat(val) * -1).toString();
+        }
+        updatePreview();
+    }
+
+    function updatePreview() {
+        const base = document.getElementById('baseInput').value;
+        const exp = document.getElementById('expInput').value;
+        const preview = document.getElementById('previewBox');
+
+        if (!base && !exp) {
+            preview.innerHTML = '-';
+            return;
+        }
+
+        let baseDisplay = base || 'a';
+        if (base && parseFloat(base) < 0) {
+            baseDisplay = `(${base})`;
+        }
+
+        let expDisplay = exp || 'n';
+
+        preview.innerHTML = `<span class="math-pow"><span class="base">${baseDisplay}</span><span class="exp">${expDisplay}</span></span>`;
+    }
+
+    function processProduction() {
+        const baseVal = parseInt(document.getElementById('baseInput').value);
+        const expVal = parseInt(document.getElementById('expInput').value);
+
+        if (isNaN(baseVal) || isNaN(expVal)) {
+            updateStatus("Lütfen hem taban hem de üs için geçerli birer tam sayı girin!", "error");
+            return;
+        }
+
+        // İFADE DEĞERİNİ HESAPLA
+        const userCalculatedValue = Math.pow(baseVal, expVal);
+        const isNumericallyCorrect = Math.abs(userCalculatedValue - currentOrder.value) < 0.00001;
+
+        let displayBase = baseVal < 0 ? `(${baseVal})` : baseVal;
+        let formattedExpr = `<span class="math-pow"><span class="base">${displayBase}</span><span class="exp">${expVal}</span></span>`;
+
+        // HER DURUMDA (DOĞRU DA OLSA YANLIŞ DA OLSA) KÜÇÜLME / BÜYÜME ANİMASYONUNU UYGULA
+        let absVal = Math.abs(userCalculatedValue);
+        let scaleFactor = 1;
+
+        if (absVal === 0) {
+            scaleFactor = 0.2;
+        } else if (absVal <= 0.001) {
+            scaleFactor = 0.3;
+        } else if (absVal <= 0.05) {
+            scaleFactor = 0.45;
+        } else if (absVal <= 0.25) {
+            scaleFactor = 0.65;
+        } else if (absVal <= 0.5) {
+            scaleFactor = 0.85;
+        } else if (absVal === 1) {
+            scaleFactor = 1.0;
+        } else {
+            scaleFactor = Math.min(1.4, 1 + Math.log10(absVal) * 0.2);
+        }
+
+        // Küçülme/Büyüme animasyonunu mikroskop nesnesine uygula
+        const nanoCard = document.getElementById('nanoCardBox');
+        nanoCard.style.transform = `scale(${scaleFactor})`;
+
+        if (isNumericallyCorrect) {
+            // DOĞRU: Yeşil/Siyan Yatay Lazer Işını
+            triggerLaser('horizontal');
+            
+            score += 10 * currentLevel;
+            updateHUD();
+
+            // Nesne altındaki etiketi doğru cevap ile güncelle
+            document.getElementById('nanoValueSubtag').innerHTML = formattedExpr;
+
+            updateStatus(`TEBRİKLER! ${displayBase}^${expVal} üretimi başarılı! Sipariş karşılandı. (+${10 * currentLevel} Puan)`, "success");
+
+            setTimeout(() => {
+                generateNewOrder();
+                updateStatus("Yeni sipariş geldi! İşlemi tekrarlayın.", "neutral");
+            }, 2500);
+
+        } else {
+            // YANLIŞ: Kırmızı Dikey Lazer Işını
+            triggerLaser('vertical');
+
+            lives--;
+            updateHUD();
+
+            // Soru işaretini girilen yanlış ifade ile anlık güncelle
+            document.getElementById('nanoValueSubtag').innerHTML = formattedExpr;
+
+            let resultFormatted = formatFractionResult(baseVal, expVal);
+            let errorMsg = `HATALI ÜRETİM! ${displayBase}^${expVal} = ${resultFormatted} eder. Siparişi vermez!`;
+
+            if (lives <= 0) {
+                errorMsg = "HAKLARINIZ TÜKENDİ! Atölye sıfırlanıyor...";
+                updateStatus(errorMsg, "error");
+                setTimeout(() => {
+                    score = 0;
+                    lives = 3;
+                    updateHUD();
+                    generateNewOrder();
+                    updateStatus("Atölye yeniden başlatıldı. Yeni sipariş hazır!", "neutral");
+                }, 3000);
+            } else {
+                updateStatus(errorMsg, "error");
+            }
+        }
+    }
+
+    function formatFractionResult(base, exp) {
+        let val = Math.pow(base, exp);
+        if (Number.isInteger(val)) return val.toString();
+        if (exp < 0) {
+            let posPow = Math.pow(base, Math.abs(exp));
+            return `1 / ${posPow}`;
+        }
+        return val.toFixed(4);
+    }
+
+    function triggerLaser(direction) {
+        const laser = direction === 'horizontal' ? 
+            document.getElementById('laserHorizontal') : 
+            document.getElementById('laserVertical');
+
+        laser.style.display = 'block';
+        setTimeout(() => {
+            laser.style.display = 'none';
+        }, 650);
+    }
+
+    function updateStatus(text, type) {
+        const statusBar = document.getElementById('bottomStatus');
+        statusBar.innerText = text;
+        statusBar.className = "bottom-status-bar";
+        
+        if (type === "success") statusBar.classList.add("status-success");
+        else if (type === "error") statusBar.classList.add("status-error");
+        else statusBar.classList.add("status-neutral");
+    }
+
+    function updateHUD() {
+        document.getElementById('score').innerText = score;
+        document.getElementById('lives').innerText = lives;
+    }
+
+    // İlk Yükleme
+    generateNewOrder();
+</script>
+
+</body>
+</html>
