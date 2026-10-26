@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kareköklü İfadeler Sıralama Atölyesi - Mozaik Ustası</title>
+    <style>
+        :root {
+            --primary: #8E44AD;
+            --primary-dark: #512E5F;
+            --accent: #F39C12;
+            --success: #27AE60;
+            --danger: #C0392B;
+            --bg-color: #F8F9FA;
+            --panel-bg: #FFFFFF;
+            --text-main: #2C3E50;
+            --text-light: #7F8C8D;
+            --border-radius: 12px;
+            --shadow: 0 8px 20px rgba(0,0,0,0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            user-select: none;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            align-items: center;
+            padding: 20px;
+        }
+
+        header {
+            width: 100%;
+            max-width: 1000px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--panel-bg);
+            padding: 15px 25px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+        }
+
+        .header-title h1 {
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        .header-title p {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        .hud {
+            display: flex;
+            gap: 20px;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .hud-item {
+            background: var(--bg-color);
+            padding: 8px 15px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid #E2E8F0;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            width: 100%;
+            max-width: 1000px;
+            margin-bottom: 15px;
+        }
+
+        .tab-btn {
+            background: #E2E8F0;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px 8px 0 0;
+            cursor: pointer;
+            font-weight: bold;
+            color: var(--text-light);
+            transition: 0.3s;
+        }
+
+        .tab-btn.active {
+            background: var(--panel-bg);
+            color: var(--primary);
+            border-top: 3px solid var(--primary);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            background: var(--panel-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 30px;
+            display: none;
+        }
+
+        .container.active {
+            display: block;
+        }
+
+        /* Atölye Tasarımı */
+        .workshop-layout {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .workshop-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .workspace {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .mosaic-canvas {
+            background: #EAECEE;
+            border: 3px dashed #BDC3C7;
+            border-radius: var(--border-radius);
+            min-height: 220px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            padding: 20px;
+            flex-wrap: wrap;
+            position: relative;
+        }
+
+        .canvas-placeholder {
+            color: var(--text-light);
+            font-style: italic;
+            text-align: center;
+        }
+
+        .mosaic-slot {
+            width: 100px;
+            height: 100px;
+            background: white;
+            border: 2px solid #BDC3C7;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            position: relative;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .mosaic-slot:hover {
+            border-color: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .slot-number {
+            position: absolute;
+            top: 5px;
+            left: 8px;
+            font-size: 0.75rem;
+            color: var(--text-light);
+        }
+
+        .shelf {
+            background: #F4F6F7;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            border: 1px solid #D5D8DC;
+        }
+
+        .shelf-title {
+            font-size: 0.95rem;
+            font-weight: bold;
+            margin-bottom: 12px;
+            color: var(--text-main);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .stone-pool {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .mosaic-stone {
+            width: 90px;
+            height: 90px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: grab;
+            box-shadow: 0 4px 10px rgba(142, 68, 173, 0.3);
+            transition: 0.2s;
+            position: relative;
+        }
+
+        .mosaic-stone:hover {
+            transform: scale(1.05);
+        }
+
+        .mosaic-stone:active {
+            cursor: grabbing;
+        }
+
+        .mosaic-stone.used {
+            opacity: 0.4;
+            pointer-events: none;
+            filter: grayscale(80%);
+        }
+
+        .side-panel {
+            background: #F8F9FA;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            border: 1px solid #E2E8F0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .client-card {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid var(--accent);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
+
+        .client-card h3 {
+            font-size: 1rem;
+            margin-bottom: 5px;
+            color: var(--text-main);
+        }
+
+        .client-card p {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+            width: 100%;
+            text-align: center;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .btn-secondary {
+            background: #7F8C8D;
+        }
+
+        .feedback-box {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        .feedback-box.success {
+            background: #D4EFDF;
+            color: #196F3D;
+            border: 1px solid #A9DFBF;
+            display: block;
+        }
+
+        .feedback-box.error {
+            background: #FADBD8;
+            color: #78281F;
+            border: 1px solid #F5B7B1;
+            display: block;
+        }
+
+        /* Pratik Bilgiler Sekmesi */
+        .guide-content h2 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .guide-content p {
+            margin-bottom: 15px;
+            line-height: 1.6;
+            color: var(--text-main);
+        }
+
+        .guide-card {
+            background: #F8F9FA;
+            border-left: 4px solid var(--primary);
+            padding: 15px;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 15px;
+        }
+
+        .guide-card h4 {
+            color: var(--primary-dark);
+            margin-bottom: 5px;
+        }
+
+        /* Başlangıç Modalı */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal {
+            background: white;
+            padding: 30px;
+            border-radius: var(--border-radius);
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+
+        .modal h2 {
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .modal p {
+            color: var(--text-light);
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        .color-preview {
+            display: inline-block;
+            width: 15px;
+            height: 15px;
+            background: var(--primary);
+            border-radius: 3px;
+            vertical-align: middle;
+            margin-right: 3px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Başlangıç Modalı (Açıklama) -->
+    <div class="modal-overlay" id="startModal">
+        <div class="modal">
+            <h2>Mozaik Atölyesine Hoş Geldiniz!</h2>
+            <p>Antik Kent Restorasyon Projesi için mozaik taşlarını sıraya dizmeniz gerekiyor. Müşterinin talebine göre, kareköklü mozaik taşlarını <strong>küçükten büyüğe</strong> doğru tezgâha yerleştirin. Taşların değerlerini zihninizde hesaplayıp doğru sıralamayı bulun. Başarılar!</p>
+            <button class="btn" onclick="closeModal()">Atölyeye Gir</button>
+        </div>
+    </div>
+
+    <header>
+        <div class="header-title">
+            <h1>Mozaik & Restorasyon Atölyesi</h1>
+            <p>Kareköklü İfadeleri Sıralama Simülasyonu</p>
+        </div>
+        <div class="hud">
+            <div class="hud-item">🏆 <span id="score">0</span> Puan</div>
+            <div class="hud-item">❤️ <span id="lives">3</span> Hak</div>
+        </div>
+    </header>
+
+    <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab(event, 'workshopTab')">Atölye Tezgâhı</button>
+        <button class="tab-btn" onclick="switchTab(event, 'guideTab')">Pratik Bilgiler & Taktikler</button>
+    </div>
+
+    <!-- SEKME 1: ATÖLYE -->
+    <div id="workshopTab" class="container active">
+        <div class="workshop-layout">
+            <div class="workspace">
+                <div class="client-card">
+                    <h3 id="clientName">Mimar Sinan Restorasyon Ekibi</h3>
+                    <p id="clientOrder">Sipariş: Taşları en küçükten en büyüğe doğru soldan sağa sıralayın.</p>
+                </div>
+
+                <!-- Tezgâh / Alan -->
+                <div class="mosaic-canvas" id="mosaicCanvas" ondragover="allowDrop(event)" ondrop="dropToCanvas(event)">
+                    <div class="canvas-placeholder" id="canvasPlaceholder">Mozaik taşlarını buraya sırasıyla taşıyın veya tıklayın</div>
+                </div>
+
+                <!-- Hammadde Rafı -->
+                <div class="shelf">
+                    <div class="shelf-title">
+                        <span>Hammadde Rafı (Kullanılabilir Taşlar)</span>
+                        <span style="font-size: 0.8rem; color: var(--text-light);">Sıralama: Küçükten Büyüğe</span>
+                    </div>
+                    <div class="stone-pool" id="stonePool">
+                        <!-- Taşlar JS ile yüklenecek -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="side-panel">
+                <div>
+                    <h3 style="font-size: 1rem; margin-bottom: 10px; color: var(--text-main);">Atölye Kontrolleri</h3>
+                    <p style="font-size: 0.85rem; color: var(--text-light); margin-bottom: 15px;">Taşları raftan tezgâha dizdikten sonra kontrol edin.</p>
+                    
+                    <div class="action-buttons">
+                        <button class="btn" onclick="checkOrder()">Siparişi Kontrol Et</button>
+                        <button class="btn btn-secondary" onclick="resetLevel()">🔄 Yeniden Başlat</button>
+                    </div>
+                </div>
+
+                <div id="feedbackBox" class="feedback-box"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SEKME 2: PRATİK BİLGİLER -->
+    <div id="guideTab" class="container">
+        <div class="guide-content">
+            <h2>Kareköklü İfadeleri Sıralama Rehberi</h2>
+            <p>Mozaik atölyesinde hata yapmamak için aşağıdaki teknikleri kullanabilirsin:</p>
+
+            <div class="guide-card">
+                <h4>1. Katsayıyı Kök İçeri Alma Taktiği</h4>
+                <p>Bir kareköklü ifadenin önünde katsayı varsa (örneğin 3&radic;2), karşılaştırma yaparken bu katsayı kök içine alınmalıdır. 3, kök içine 3² = 9 olarak girer. Böylece ifade &radic;(9 &times; 2) = &radic;18 olur. Bu yöntem sıralamayı kesinleştirir.</p>
+            </div>
+
+            <div class="guide-card">
+                <h4>2. Tam Kare Sayılardan Yararlanma</h4>
+                <p>Eğer kök dışına tam çıkmayan ifadeleri sıralıyorsanız, hangi iki tam kare sayı arasında olduğunu bulun. Örneğin &radic;20 sayısı, &radic;16 (4) ile &radic;25 (5) arasındadır ve 4 ile 5'e daha yakındır (~4.47).</p>
+            </div>
+
+            <div class="guide-card">
+                <h4>3. Negatif Durumlar</h4>
+                <p>Eğer ifadelerin başında eksi (-) işareti varsa, sayısal olarak büyük olan ifade (sıfıra uzak olan) aslında <strong>daha küçüktür</strong>. Sıralama yaparken buna dikkat edin!</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let score = 0;
+        let lives = 3;
+        let currentLevel = 0;
+
+        // Seviye Verileri (Zor seviyeler, katsayılı kökler ve negatifler dahil)
+        const levels = [
+            {
+                stones: ["&radic;45", "6", "&radic;38", "2&radic;11"],
+                // Değerler: ~6.71, 6 (36), ~6.16, 2&radic;11= &radic;44 (~6.63)
+                // Sıralama: 6, &radic;38, 2&radic;11, &radic;45
+                correct: ["6", "&radic;38", "2&radic;11", "&radic;45"]
+            },
+            {
+                stones: ["3&radic;5", "7", "2&radic;13", "&radic;48"],
+                // Değerler: 3&radic;5=&radic;45 (~6.7), 7=&radic;49, 2&radic;13=&radic;52 (~7.2), &radic;48 (~6.92)
+                // Sıralama: 3&radic;5, &radic;48, 7, 2&radic;13
+                correct: ["3&radic;5", "&radic;48", "7", "2&radic;13"]
+            },
+            {
+                stones: ["4&radic;3", "5&radic;2", "8", "&radic;65"],
+                // Değerler: 4&radic;3=&radic;48 (~6.9), 5&radic;2=&radic;50 (~7.07), 8=&radic;64, &radic;65 (~8.06)
+                // Sıralama: 4&radic;3, 5&radic;2, 8, &radic;65
+                correct: ["4&radic;3", "5&radic;2", "8", "&radic;65"]
+            }
+        ];
+
+        let placedStones = [];
+        let availableStones = [];
+
+        function closeModal() {
+            document.getElementById('startModal').style.display = 'none';
+            initGame();
+        }
+
+        function switchTab(evt, tabId) {
+            document.querySelectorAll('.container').forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            evt.currentTarget.classList.add('active');
+        }
+
+        function initGame() {
+            const levelData = levels[currentLevel % levels.length];
+            availableStones = [...levelData.stones];
+            // Karıştır
+            availableStones.sort(() => Math.random() - 0.5);
+            placedStones = [];
+            renderWorkshop();
+            hideFeedback();
+        }
+
+        function renderWorkshop() {
+            const pool = document.getElementById('stonePool');
+            pool.innerHTML = '';
+            
+            availableStones.forEach((stone, index) => {
+                const el = document.createElement('div');
+                el.className = 'mosaic-stone';
+                el.innerHTML = stone;
+                el.draggable = true;
+                el.id = `stone-${index}`;
+                el.ondragstart = (e) => e.dataTransfer.setData('text/plain', stone);
+                el.onclick = () => moveToCanvas(stone);
+                pool.appendChild(el);
+            });
+
+            renderCanvas();
+        }
+
+        function renderCanvas() {
+            const canvas = document.getElementById('mosaicCanvas');
+            canvas.innerHTML = '';
+
+            if (placedStones.length === 0) {
+                canvas.innerHTML = '<div class="canvas-placeholder">Mozaik taşlarını buraya sırasıyla taşıyın veya tıklayın</div>';
+                return;
+            }
+
+            placedStones.forEach((stone, index) => {
+                const slot = document.createElement('div');
+                slot.className = 'mosaic-slot';
+                slot.innerHTML = `
+                    <span class="slot-number">#${index + 1}</span>
+                    <span>${stone}</span>
+                `;
+                slot.onclick = () => removeFromCanvas(index);
+                canvas.appendChild(slot);
+            });
+        }
+
+        function allowDrop(e) {
+            e.preventDefault();
+        }
+
+        function dropToCanvas(e) {
+            e.preventDefault();
+            const stone = e.dataTransfer.getData('text/plain');
+            if (stone && availableStones.includes(stone)) {
+                moveToCanvas(stone);
+            }
+        }
+
+        function moveToCanvas(stone) {
+            // Havuzdan çıkar, tezgaha ekle
+            const idx = availableStones.indexOf(stone);
+            if (idx > -1) {
+                availableStones.splice(idx, 1);
+                placedStones.push(stone);
+                renderWorkshop();
+            }
+        }
+
+        function removeFromCanvas(index) {
+            const stone = placedStones.splice(index, 1)[0];
+            availableStones.push(stone);
+            renderWorkshop();
+        }
+
+        function checkOrder() {
+            const levelData = levels[currentLevel % levels.length];
+            const feedbackBox = document.getElementById('feedbackBox');
+
+            if (placedStones.length !== levelData.stones.length) {
+                showFeedback("Lütfen tüm taşları tezgâha yerleştirin!", "error");
+                return;
+            }
+
+            let isCorrect = true;
+            for (let i = 0; i < placedStones.length; i++) {
+                if (placedStones[i] !== levelData.correct[i]) {
+                    isCorrect = false;
+                    break;
+                }
+            }
+
+            if (isCorrect) {
+                score += 25;
+                document.getElementById('score').innerText = score;
+                showFeedback("Harika! Taşlar kusursuz bir şekilde küçükten büyüğe sıralandı. Yeni siparişe geçiliyor...", "success");
+                setTimeout(() => {
+                    currentLevel++;
+                    initGame();
+                }, 2000);
+            } else {
+                lives--;
+                document.getElementById('lives').innerText = lives;
+                if (lives <= 0) {
+                    showFeedback("Haklarınız bitti! Atölye sıfırlanıyor.", "error");
+                    setTimeout(() => {
+                        lives = 3;
+                        score = 0;
+                        document.getElementById('lives').innerText = lives;
+                        document.getElementById('score').innerText = score;
+                        initGame();
+                    }, 2000);
+                } else {
+                    showFeedback("Sıralamada hata var! Katsayıları kök içine alarak tekrar kontrol et.", "error");
+                }
+            }
+        }
+
+        function resetLevel() {
+            initGame();
+        }
+
+        function showFeedback(text, type) {
+            const fb = document.getElementById('feedbackBox');
+            fb.innerText = text;
+            fb.className = `feedback-box ${type}`;
+        }
+
+        function hideFeedback() {
+            const fb = document.getElementById('feedbackBox');
+            fb.style.display = 'none';
+        }
+    </script>
+</body>
+</html>

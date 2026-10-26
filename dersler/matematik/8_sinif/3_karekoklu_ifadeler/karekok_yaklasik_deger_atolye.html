@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kök Bahçesi Atölyesi - 8. Sınıf Matematik</title>
+    <style>
+        :root {
+            --primary: #2d6a4f;
+            --primary-light: #52b788;
+            --primary-dark: #1b4332;
+            --accent: #d4a373;
+            --accent-hover: #bc6c25;
+            --bg-color: #f4f9f4;
+            --card-bg: #ffffff;
+            --text-main: #2b2b2b;
+            --text-light: #6c757d;
+            --danger: #e63946;
+            --success: #2a9d8f;
+            --warning: #f4a261;
+            --border-radius: 16px;
+            --box-shadow: 0 10px 30px rgba(45, 106, 79, 0.12);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            user-select: none;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* ÜST HUD VE KONTROLLER */
+        header {
+            background: var(--card-bg);
+            padding: 15px 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header-title .logo {
+            background: var(--primary);
+            color: white;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .header-title h1 {
+            font-size: 1.25rem;
+            color: var(--primary-dark);
+        }
+
+        .header-title p {
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+
+        .hud-panel {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .hud-item {
+            background: var(--bg-color);
+            padding: 8px 16px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .control-btns {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: var(--accent);
+        }
+        .btn-secondary:hover {
+            background: var(--accent-hover);
+        }
+
+        /* SEKMELİ YAPI */
+        .tabs-container {
+            display: flex;
+            background: var(--card-bg);
+            padding: 0 30px;
+            border-bottom: 1px solid #e0e0e0;
+            gap: 10px;
+        }
+
+        .tab-btn {
+            padding: 14px 24px;
+            background: transparent;
+            border: none;
+            font-weight: 600;
+            color: var(--text-light);
+            cursor: pointer;
+            position: relative;
+            transition: var(--transition);
+            font-size: 1rem;
+        }
+
+        .tab-btn.active {
+            color: var(--primary);
+        }
+
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--primary);
+            border-radius: 3px 3px 0 0;
+        }
+
+        /* ANA İÇERİK ALANI */
+        .main-content {
+            flex: 1;
+            max-width: 1300px;
+            width: 100%;
+            margin: 20px auto;
+            padding: 0 20px;
+            position: relative;
+        }
+
+        .tab-pane {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .tab-pane.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ATÖLYE / TEZGÂH ALANI (SEKME 1) */
+        .workshop-grid {
+            display: grid;
+            grid-template-columns: 360px 1fr;
+            gap: 25px;
+            align-items: start;
+        }
+
+        @media (max-width: 900px) {
+            .workshop-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .panel-box {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 24px;
+            box-shadow: var(--box-shadow);
+            border: 1px solid rgba(0,0,0,0.02);
+        }
+
+        .panel-box h3 {
+            font-size: 1.1rem;
+            color: var(--primary-dark);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 2px solid var(--bg-color);
+            padding-bottom: 10px;
+        }
+
+        /* HAMMADDE / ARSA ALANI (SOL) */
+        .raw-materials {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-height: 480px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        .raw-card {
+            background: var(--bg-color);
+            border: 2px dashed var(--primary-light);
+            border-radius: 12px;
+            padding: 15px;
+            cursor: grab;
+            transition: var(--transition);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .raw-card:active {
+            cursor: grabbing;
+        }
+
+        .raw-card:hover {
+            border-color: var(--primary);
+            background: #e9f5ed;
+            transform: scale(1.02);
+        }
+
+        .raw-info .root-num {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--primary-dark);
+        }
+
+        .raw-info .root-desc {
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+
+        .drag-icon {
+            font-size: 1.3rem;
+            color: var(--primary);
+        }
+
+        /* HEDEF ALANI / BAHÇE PARSELLERİ (SAĞ) */
+        .garden-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .target-drop-zone {
+            background: #fff;
+            border: 3px dashed #cbd5e1;
+            border-radius: var(--border-radius);
+            padding: 25px;
+            min-height: 220px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .target-drop-zone.drag-over {
+            border-color: var(--primary);
+            background: #f0fdf4;
+            transform: scale(1.01);
+        }
+
+        .target-header {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .target-header h2 {
+            font-size: 1.5rem;
+            color: var(--primary-dark);
+        }
+
+        .target-header p {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        /* SAYI DOĞRUSU / ÇİT GÖRSELİ */
+        .number-line-visual {
+            width: 100%;
+            max-width: 600px;
+            margin: 15px auto;
+            position: relative;
+            height: 80px;
+            display: flex;
+            align-items: center;
+        }
+
+        .line-bar {
+            position: absolute;
+            width: 100%;
+            height: 6px;
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+
+        .line-markers {
+            position: absolute;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 10px;
+        }
+
+        .marker {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        .marker-dot {
+            width: 16px;
+            height: 16px;
+            background: var(--primary);
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .marker-label {
+            margin-top: 8px;
+            font-weight: bold;
+            font-size: 1rem;
+            color: var(--primary-dark);
+        }
+
+        /* YERLEŞTİRİLEN PARSELLER LİSTESİ */
+        .placed-parcels-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 15px;
+            width: 100%;
+        }
+
+        .placed-card {
+            background: var(--bg-color);
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            animation: popIn 0.3s ease;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .placed-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .placed-card-header .title {
+            font-weight: bold;
+            color: var(--primary-dark);
+            font-size: 1.1rem;
+        }
+
+        .proximity-slider-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .proximity-label {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            accent-color: var(--primary);
+            cursor: pointer;
+        }
+
+        .check-parcel-btn {
+            background: var(--primary-light);
+            color: white;
+            border: none;
+            padding: 6px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.85rem;
+        }
+
+        .check-parcel-btn:hover {
+            background: var(--primary);
+        }
+
+        /* PRATİK BİLGİLER & TAKTİKLER (SEKME 2) */
+        .tactics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .tactic-card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 25px;
+            box-shadow: var(--box-shadow);
+            border-top: 5px solid var(--primary);
+        }
+
+        .tactic-card h3 {
+            color: var(--primary-dark);
+            margin-bottom: 12px;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .tactic-card p {
+            color: var(--text-light);
+            line-height: 1.6;
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+        }
+
+        .example-box {
+            background: var(--bg-color);
+            padding: 12px 15px;
+            border-radius: 10px;
+            font-family: monospace;
+            font-size: 0.95rem;
+            color: var(--primary-dark);
+            border-left: 4px solid var(--accent);
+        }
+
+        /* OVERLAY / DURDURMA EKRANI */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(27, 67, 50, 0.85);
+            backdrop-filter: blur(5px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            color: white;
+            text-align: center;
+            transition: var(--transition);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .overlay h2 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .overlay p {
+            font-size: 1.1rem;
+            margin-bottom: 25px;
+            max-width: 500px;
+            color: #d8f3dc;
+        }
+
+        /* BİLDİRİM / GERİ BİLDİRİM TOAST */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--card-bg);
+            padding: 16px 24px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 1001;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: var(--transition);
+            border-left: 5px solid var(--primary);
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast.success { border-left-color: var(--success); }
+        .toast.error { border-left-color: var(--danger); }
+
+        /* KUTUPLAR / YAKINLIK GÖSTERGESİ */
+        .badge {
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+        .badge-success { background: #d8f3dc; color: var(--primary-dark); }
+        .badge-warning { background: #fef3c7; color: #92400e; }
+    </style>
+</head>
+<body>
+
+    <!-- ÜST HUD VE KONTROLLER -->
+    <header>
+        <div class="header-title">
+            <div class="logo">🌿</div>
+            <div>
+                <h1>Kök Bahçesi Atölyesi</h1>
+                <p>8. Sınıf Matematik | Karekök Yakınlık Keşfi</p>
+            </div>
+        </div>
+        <div class="hud-panel">
+            <div class="hud-item">
+                🏆 Puan: <span id="scoreDisplay">0</span>
+            </div>
+            <div class="hud-item">
+                ❤️ Haklar: <span id="livesDisplay">3</span>
+            </div>
+            <div class="control-btns">
+                <button class="btn btn-secondary" id="pauseBtn" onclick="togglePause()">⏸️ Durdur</button>
+                <button class="btn" onclick="resetGame()">🔄 Yeniden Başla</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- İKİ SEKMELİ YAPI -->
+    <div class="tabs-container">
+        <button class="tab-btn active" onclick="switchTab(0)">Atölye Tezgâhı</button>
+        <button class="tab-btn card-tab" onclick="switchTab(1)">Pratik Bilgiler & Taktikler</button>
+    </div>
+
+    <!-- ANA İÇERİK ALANI -->
+    <main class="main-content">
+        
+        <!-- SEKME 1: ATÖLYE / TEZGÂH ALANI -->
+        <div class="tab-pane active" id="tab0">
+            <div class="workshop-grid">
+                
+                <!-- SOL: HAMMADDE / ARSA KÜTÜĞÜ -->
+                <div class="panel-box">
+                    <h3>📦 Arsa Kütükleri (Kökler)</h3>
+                    <p style="font-size: 0.85rem; color: var(--text-light); margin-bottom: 15px;">
+                        Bahçeye yerleştirmek için bir arsa kütüğü seçin veya sürükleyin.
+                    </p>
+                    <div class="raw-materials" id="rawMaterialsContainer">
+                        <!-- Dinamik olarak doldurulacak -->
+                    </div>
+                </div>
+
+                <!-- SAĞ: BAHÇE PARSELLERİ & YERLEŞTİRME -->
+                <div class="garden-container">
+                    <div class="target-drop-zone" id="dropZone" ondragover="allowDrop(event)" ondragleave="dropLeave(event)" ondrop="drop(event)">
+                        <div class="target-header">
+                            <h2>🏡 Bahçe Yerleşim Alanı</h2>
+                            <p>Arsa kütüğünü buraya bırakarak hangi iki tam sayı arasında olduğunu keşfet!</p>
+                        </div>
+                        <div style="font-size: 3rem; color: #cbd5e1; margin-top: 10px;">⬇️</div>
+                    </div>
+
+                    <!-- YERLEŞTİRİLEN PARSELLER -->
+                    <div class="panel-box" style="width: 100%;">
+                        <h3>🌱 Aktif Bahçe Parselleri</h3>
+                        <div class="placed-parcels-grid" id="placedParcelsContainer">
+                            <p style="color: var(--text-light); font-size: 0.9rem; grid-column: 1/-1; text-align: center; padding: 20px;">
+                                Henüz bahçeye arsa eklenmedi. Yukarıdan bir arsa seçip yerleştirin!
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- SEKME 2: PRATİK BİLGİLER & TAKTİKLER -->
+        <div class="tab-pane" id="tab1">
+            <div class="tactics-grid">
+                
+                <div class="tactic-card">
+                    <h3>🧭 Tam Kare Komşularını Bulma</h3>
+                    <p>Tam kare olmayan bir sayının karekökünün hangi iki tam sayı arasında olduğunu bulmak için, o sayının hemen altındaki ve üstündeki <strong>en yakın tam kare sayıları</strong> belirleriz.</p>
+                    <div class="example-box">
+                        Örn: √45 için;<br>
+                        Alt komşu tam kare: 36 (√36 = 6)<br>
+                        Üst komşu tam kare: 49 (√49 = 7)<br>
+                        Sonuç: 6 ile 7 arasındadır (6 &lt; √45 &lt; 7)
+                    </div>
+                </div>
+
+                <div class="tactic-card">
+                    <h3>🔍 Kime Daha Yakın? (Yakınlık Analizi)</h3>
+                    <p>Kökün hangi tam sayıya daha yakın olduğunu anlamak için, sayının kendi değerinin komşu tam karelerin değerlerine olan <strong>uzaklığına</strong> bakarız. Aradaki farkı en az olan komşuya daha yakındır.</p>
+                    <div class="example-box">
+                        √45 sayısı 49'a (49-45=4 adım), 36'ya (45-36=9 adım) uzaktır.<br>
+                        Daha küçük adım farkı olduğu için <strong>7</strong>'ye daha yakındır!
+                    </div>
+                </div>
+
+                <div class="tactic-card">
+                    <h3>🛠️ Atölye İpucu</h3>
+                    <p>Bahçenizde bitkilerin sağlıklı büyümesi için arsa sınırlarını (tam sayı aralığını) doğru belirlemeli ve kaydırıcı çubuğu tam yakınlık noktasına ayarlamalısınız.</p>
+                    <div class="example-box">
+                        Atölye kuralı: Doğru aralık ve doğru yakınlık seçimi skoru artırır, hatalı seçimler hakkınızı (❤️) azaltır.
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <!-- OVERLAY / DURDURMA EKRANI -->
+    <div class="overlay" id="pauseOverlay">
+        <h2>Simülasyon Durduruldu</h2>
+        <p>Atölye tezgâhınız güvenle bekliyor. Kaldığınız yerden puan ve hak kaybı olmadan devam edebilirsiniz.</p>
+        <button class="btn" style="font-size: 1.1rem; padding: 12px 30px;" onclick="togglePause()">▶️ Devam Et</button>
+    </div>
+
+    <!-- TOAST BİLDİRİM -->
+    <div class="toast" id="toastBox">
+        <span id="toastIcon">✨</span>
+        <div id="toastMessage">İşlem başarılı!</div>
+    </div>
+
+    <script>
+        // OYUN DURUMU & VERİLER
+        let score = 0;
+        let lives = 3;
+        let isPaused = false;
+
+        const rawData = [
+            { id: 1, value: 12, lower: 3, upper: 4, closerTo: 'upper' }, // √12 (3-4, 4'e yakın: 16'ya 4, 9'a 3 -> 9'a daha yakın, düzeltelim: 9(3) ve 16(4). 12-9=3, 16-12=4. 3'e daha yakın!)
+            { id: 2, value: 20, lower: 4, upper: 5, closerTo: 'lower' }, // √20 (16 ile 25. 20-16=4, 25-20=5. 4'e yakın)
+            { id: 3, value: 40, lower: 6, upper: 7, closerTo: 'upper' }, // √40 (36 ile 49. 40-36=4, 49-40=9. 6'ya yakın)
+            { id: 4, value: 55, lower: 7, upper: 8, closerTo: 'upper' }, // √55 (49 ile 64. 55-49=6, 64-55=9. 7'ye yakın)
+            { id: 5, value: 75, lower: 8, upper: 9, closerTo: 'upper' }, // √75 (64 ile 81. 75-64=11, 81-75=6. 9'a yakın)
+            { id: 6, value: 90, lower: 9, upper: 10, closerTo: 'lower' } // √90 (81 ile 100. 90-81=9, 100-90=10. 9'a yakın)
+        ];
+
+        // Veri düzeltmeleri (Matematiksel yakınlık kontrolü)
+        // √12: 9(3) ve 16(4). 12, 9'a daha yakın (fark 3 < 4). closerTo = 'lower'
+        rawData[0].closerTo = 'lower';
+
+        let availableItems = [...rawData];
+        let placedItems = [];
+
+        // BAŞLANGIÇ
+        window.onload = function() {
+            renderRawMaterials();
+        };
+
+        // SEKME DEĞİŞTİRME
+        function switchTab(index) {
+            const panes = document.querySelectorAll('.tab-pane');
+            const btns = document.querySelectorAll('.tab-btn');
+            
+            panes.forEach((pane, i) => {
+                pane.classList.toggle('active', i === index);
+                btns[i].classList.toggle('active', i === index);
+            });
+        }
+
+        // DURDURMA / DEVAM ETME
+        function togglePause() {
+            isPaused = !isPaused;
+            const overlay = document.getElementById('pauseOverlay');
+            const pauseBtn = document.getElementById('pauseBtn');
+            
+            if (isPaused) {
+                overlay.classList.add('active');
+                pauseBtn.innerText = '▶️ Devam Et';
+            } else {
+                overlay.classList.remove('active');
+                pauseBtn.innerText = '⏸️ Durdur';
+            }
+        }
+
+        // YENİDEN BAŞLAT
+        function resetGame() {
+            score = 0;
+            lives = 3;
+            availableItems = [...rawData];
+            placedItems = [];
+            updateHUD();
+            renderRawMaterials();
+            renderPlacedParcels();
+            showToast('🔄 Atölye sıfırlandı.', 'success');
+        }
+
+        // HUD GÜNCELLEME
+        function updateHUD() {
+            document.getElementById('scoreDisplay').innerText = score;
+            document.getElementById('livesDisplay').innerText = lives;
+
+            if (lives <= 0) {
+                alert('⚠️ Haklarınız tükenti! Atölye yeniden başlatılıyor.');
+                resetGame();
+            }
+        }
+
+        // HAMMADDE LİSTESİ OLUŞTURMA
+        function renderRawMaterials() {
+            const container = document.getElementById('rawMaterialsContainer');
+            container.innerHTML = '';
+
+            if (availableItems.length === 0) {
+                container.innerHTML = `<p style="color: var(--text-light); text-align: center; padding: 20px;">Tüm arsa kütükleri bahçeye yerleştirildi! Harika iş çıkarıyorsun. 🎉</p>`;
+                return;
+            }
+
+            availableItems.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'raw-card';
+                card.draggable = true;
+                card.ondragstart = (e) => drag(e, item.id);
+                card.onclick = () => placeItemDirectly(item.id); // Tıklayarak da yerleştirilebilsin
+
+                card.innerHTML = `
+                    <div class="raw-info">
+                        <div class="root-num">√${item.value}</div>
+                        <div class="root-desc">Arsa Kütüğü</div>
+                    </div>
+                    <div class="drag-icon">⠿</div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // DRAG AND DROP İŞLEMLERİ
+        let draggedId = null;
+
+        function drag(event, id) {
+            draggedId = id;
+            event.dataTransfer.setData('text/plain', id);
+        }
+
+        function allowDrop(event) {
+            event.preventDefault();
+            document.getElementById('dropZone').classList.add('drag-over');
+        }
+
+        function dropLeave(event) {
+            document.getElementById('dropZone').classList.remove('drag-over');
+        }
+
+        function drop(event) {
+            event.preventDefault();
+            document.getElementById('dropZone').classList.remove('drag-over');
+            if (draggedId !== null) {
+                placeItemDirectly(draggedId);
+                draggedId = null;
+            }
+        }
+
+        function placeItemDirectly(id) {
+            const index = availableItems.findIndex(i => i.id === id);
+            if (index !== -1) {
+                const item = availableItems.splice(index, 1)[0];
+                placedItems.push({
+                    ...item,
+                    selectedLower: item.lower, // Varsayılan
+                    userSliderVal: 50 // Yakınlık kaydırıcısı
+                });
+                renderRawMaterials();
+                renderPlacedParcels();
+                showToast(`√${item.value} arsası bahçeye taşındı!`, 'success');
+            }
+        }
+
+        // YERLEŞTİRİLEN PARSELLERİ RENDER ETME
+        function renderPlacedParcels() {
+            const container = document.getElementById('placedParcelsContainer');
+            
+            if (placedItems.length === 0) {
+                container.innerHTML = `
+                    <p style="color: var(--text-light); font-size: 0.9rem; grid-column: 1/-1; text-align: center; padding: 20px;">
+                        Henüz bahçeye arsa eklenmedi. Yukarıdan bir arsa seçip yerleştirin!
+                    </p>`;
+                return;
+            }
+
+            container.innerHTML = '';
+
+            placedItems.forEach((item, index) => {
+                const card = document.createElement('div');
+                card.className = 'placed-card';
+
+                card.innerHTML = `
+                    <div class="placed-card-header">
+                        <span class="title">Arsa: √${item.value}</span>
+                        <span class="badge badge-warning" id="statusBadge-${index}">Keşif Bekliyor</span>
+                    </div>
+                    <div style="font-size: 0.85rem; color: var(--text-light);">
+                        Hangi iki tam sayı arasında? <b>${item.lower}</b> ile <b>${item.upper}</b> arasında.
+                    </div>
+                    <div class="proximity-slider-group">
+                        <div class="proximity-label">
+                            <span>Kime daha yakın?</span>
+                            <span id="sliderText-${index}">${item.lower} ile ${item.upper} ortası</span>
+                        </div>
+                        <input type="range" min="0" max="100" value="${item.userSliderVal}" oninput="updateSlider(${index}, this.value)">
+                    </div>
+                    <button class="check-parcel-btn" onclick="checkParcel(${index})">Bahçeyi Onayla 🌿</button>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function updateSlider(index, val) {
+            placedItems[index].userSliderVal = val;
+            const textSpan = document.getElementById(`sliderText-${index}`);
+            const item = placedItems[index];
+
+            if (val < 40) {
+                textSpan.innerHTML = `<b>${item.lower}</b> tam sayısına daha yakın`;
+            } else if (val > 60) {
+                textSpan.innerHTML = `<b>${item.upper}</b> tam sayısına daha yakın`;
+            } else {
+                textSpan.innerHTML = `Tam ortada / Kararsız`;
+            }
+        }
+
+        // KONTROL ETME
+        function checkParcel(index) {
+            const item = placedItems[index];
+            const val = item.userSliderVal;
+            
+            let userGuessCloser = 'equal';
+            if (val < 40) userGuessCloser = 'lower';
+            if (val > 60) userGuessCloser = 'upper';
+
+            const badge = document.getElementById(`statusBadge-${index}`);
+
+            if (userGuessCloser === item.closerTo) {
+                score += 20;
+                badge.className = 'badge badge-success';
+                badge.innerText = 'Doğru Keşif! ✨';
+                showToast(`Harika! √${item.value} yakınlık analizi doğru. +20 Puan!`, 'success');
+                updateHUD();
+                
+                // Başarılı olunca listeden çıkarabilir veya kilitliyebiliriz
+                setTimeout(() => {
+                    placedItems.splice(index, 1);
+                    renderPlacedParcels();
+                }, 1500);
+
+            } else {
+                lives -= 1;
+                badge.className = 'badge badge-warning';
+                badge.innerText = 'Yeniden Dene 🔍';
+                showToast(`Yakınlık tahmini hatalı! Sayının tam kare komşularına olan uzaklığını kontrol et.`, 'error');
+                updateHUD();
+            }
+        }
+
+        // TOAST BİLDİRİM GÖSTERME
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toastBox');
+            const msgEl = document.getElementById('toastMessage');
+            const iconEl = document.getElementById('toastIcon');
+
+            msgEl.innerText = message;
+            toast.className = `toast show ${type}`;
+
+            if (type === 'success') iconEl.innerText = '✨';
+            else if (type === 'error') iconEl.innerText = '⚠️';
+
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
