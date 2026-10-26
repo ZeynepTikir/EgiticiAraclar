@@ -13,6 +13,12 @@ const matVerileri = {
         araclar: [
           { ad: "Çok Basamaklı Sayılar", dosya: "dersler/matematik/5_sinif/sayilar_nicelikler_1/cok_basamakli_sayilar_lab.html", tur: "lab" }
         ]
+      },
+      {
+        uniteAdi: "3. Kesirler",
+        araclar: [
+          { ad: "Kesirler Atölyesi", dosya: "dersler/matematik/5_sinif/kesirler/kesirler_atolye.html", tur: "atolye" }
+        ]
       }
     ]
   },
@@ -69,6 +75,7 @@ const matVerileri = {
         uniteAdi: "2. Üslü İfadeler",
         araclar: [
           { ad: "Üslü İfadeler Etkinliği", dosya: "dersler/matematik/8_sinif/2_uslu_ifadeler/uslu_ifadeler_lab.html", tur: "lab" },
+          { ad: "Üssün Üssü Atölyesi", dosya: "dersler/matematik/8_sinif/2_uslu_ifadeler/ussun_ussu_atolye.html", tur: "atolye" },
           { ad: "Üslü İfadelerde Çarpma ve Bölme Etkinliği", dosya: "dersler/matematik/8_sinif/2_uslu_ifadeler/uslu_ifadelerde_carpma_ve_bolme_lab.html", tur: "lab" },
           { ad: "Üslü İfadelerde Toplama ve Çıkarma Etkinliği", dosya: "dersler/matematik/8_sinif/2_uslu_ifadeler/uslu_ifadelerde_toplama_cikarma_lab.html", tur: "lab" },
           { ad: "Ondalık ve Rasyonel Sayıların Kuvvetleri Etkinliği", dosya: "dersler/matematik/8_sinif/2_uslu_ifadeler/ondalik_ve_rasyonel_sayilarin_kuvvetleri_lab.html", tur: "lab" },
@@ -84,12 +91,15 @@ const matVerileri = {
           { ad: "Tam Kare Sayılar ve Karekök Etkinliği", dosya: "dersler/matematik/8_sinif/3_karekoklu_ifadeler/tam_kare_sayilar_ve_karekok_lab.html", tur: "lab" },
           { ad: "Tam Kare Olmayan Sayıların Karekökleri Etkinliği", dosya: "dersler/matematik/8_sinif/3_karekoklu_ifadeler/tam_kare_olmayan_sayilarin_karekokleri_lab.html", tur: "lab" },
           { ad: "Kök Yaklaşık Değer Tahmin Atölyesi", dosya: "dersler/matematik/8_sinif/3_karekoklu_ifadeler/kok_yaklasik_deger_tahmin_atolye.html", tur: "atolye" },
+          { ad: "Yaklaşık Değer Tahmin Atölyesi", dosya: "dersler/matematik/8_sinif/3_karekoklu_ifadeler/karekok_yaklasik_deger_atolye.html", tur: "atolye" },
           { ad: "Kök İçine Alma ve Sıralama Etkinliği", dosya: "dersler/matematik/8_sinif/3_karekoklu_ifadeler/karekokleri_kok_icine_alma_sıralama_lab.html", tur: "lab" },
           { ad: "a√b Atölyesi", dosya: "dersler/matematik/8_sinif/3_karekoklu_ifadeler/a_kok_b_atolye.html", tur: "atolye" },
           { ad: "Kök İçine Alma Atölyesi", dosya: "dersler/matematik/8_sinif/3_karekoklu_ifadeler/kok_icine_alma_atolye.html", tur: "atolye" },
           { ad: "Kök İçine Alma 2 Atölyesi", dosya: "dersler/matematik/8_sinif/3_karekoklu_ifadeler/kok_icine_alma_2_atolye.html", tur: "atolye" },
           { ad: "Ondalık Kesirlerin Karekökleri Etkinliği", dosya: "dersler/matematik/8_sinif/3_karekoklu_ifadeler/ondalikların_karekokleri_lab.html", tur: "lab" },
           { ad: "Kareköklü İfadeleri Sıralama Etkinliği", dosya: "dersler/matematik/8_sinif/3_karekoklu_ifadeler/karekoklerde_siralama_lab.html", tur: "lab" },
+          { ad: "Kareköklü İfadeleri Sıralama Atölyesi", dosya: "dersler/matematik/8_sinif/3_karekoklu_ifadeler/karekok_siralama_atolye.html", tur: "atolye" },
+          { ad: "Kareköklü İfadeleri Sıralama Atölyesi", dosya: "dersler/matematik/8_sinif/3_karekoklu_ifadeler/karekokleri_siralama_atolye.html", tur: "atolye" },
           { ad: "Kareköklü ifadelerle Çarpma ve Bölme Etkinliği", dosya: "dersler/matematik/8_sinif/3_karekoklu_ifadeler/karekoklerde_carpma_bolme_lab.html", tur: "lab" },
           { ad: "Kareköklü İfadelerle Toplama ve Çıkarma Etkinliği", dosya: "dersler/matematik/8_sinif/3_karekoklu_ifadeler/karekoklerde_toplama_cikarma_lab.html", tur: "lab" },
           { ad: "Gerçek Sayılar Etkinliği", dosya: "dersler/matematik/8_sinif/3_karekoklu_ifadeler/gercek_sayilar_lab.html", tur: "lab" }
