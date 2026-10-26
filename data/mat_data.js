@@ -76,6 +76,7 @@ const matVerileri = {
         araclar: [
           { ad: "Üslü İfadeler Etkinliği", dosya: "dersler/matematik/8_sinif/2_uslu_ifadeler/uslu_ifadeler_lab.html", tur: "lab" },
           { ad: "Üssün Üssü Atölyesi", dosya: "dersler/matematik/8_sinif/2_uslu_ifadeler/ussun_ussu_atolye.html", tur: "atolye" },
+          { ad: "Negatif Üs Atölyesi", dosya: "dersler/matematik/8_sinif/2_uslu_ifadeler/negatif_us_atolye.html", tur: "atolye" },
           { ad: "Üslü İfadelerde Çarpma ve Bölme Etkinliği", dosya: "dersler/matematik/8_sinif/2_uslu_ifadeler/uslu_ifadelerde_carpma_ve_bolme_lab.html", tur: "lab" },
           { ad: "Üslü İfadelerde Toplama ve Çıkarma Etkinliği", dosya: "dersler/matematik/8_sinif/2_uslu_ifadeler/uslu_ifadelerde_toplama_cikarma_lab.html", tur: "lab" },
           { ad: "Ondalık ve Rasyonel Sayıların Kuvvetleri Etkinliği", dosya: "dersler/matematik/8_sinif/2_uslu_ifadeler/ondalik_ve_rasyonel_sayilarin_kuvvetleri_lab.html", tur: "lab" },
