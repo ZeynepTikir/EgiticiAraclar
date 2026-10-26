@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sihirli Hediye Kutusu Atölyesi - Üssün Üssü Simülasyonu</title>
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-light: #818cf8;
+            --secondary: #ec4899;
+            --accent: #f59e0b;
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --success: #10b981;
+            --danger: #ef4444;
+            --border: #334155;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            user-select: none;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background: var(--bg-card);
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Üst HUD Alanı */
+        .hud {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 25px;
+            background: rgba(15, 23, 42, 0.8);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .hud-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        .hud-stats {
+            display: flex;
+            gap: 20px;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .stat-item {
+            background: var(--border);
+            padding: 6px 14px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Sekme Barı */
+        .tabs {
+            display: flex;
+            background: #111827;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 14px;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .tab-btn.active {
+            color: var(--text-main);
+            background: var(--bg-card);
+            border-bottom: 3px solid var(--primary);
+        }
+
+        /* Sekme İçerikleri */
+        .tab-content {
+            display: none;
+            padding: 25px;
+            min-height: 480px;
+        }
+
+        .tab-content.active {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* SEKME 1: ATÖLYE ALANI */
+        .workshop-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            align-items: stretch;
+        }
+
+        .panel {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            justify-content: space-between;
+        }
+
+        .panel-header {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--primary-light);
+            margin-bottom: 15px;
+        }
+
+        /* Sipariş Kutusu Tasarımı */
+        .target-box-visual {
+            width: 140px;
+            height: 140px;
+            background: linear-gradient(135deg, var(--secondary), #be185d);
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 15px -3px rgba(236, 72, 153, 0.3);
+            position: relative;
+            animation: pulse-slow 3s infinite ease-in-out;
+            margin: 15px 0;
+        }
+
+        @keyframes pulse-slow {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+        }
+
+        .target-box-visual::before {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .target-box-visual::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .target-formula {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #fff;
+            z-index: 2;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        /* Hammadde Seçenekleri */
+        .raw-materials-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            width: 100%;
+            margin: 15px 0;
+        }
+
+        .material-card {
+            background: var(--bg-card);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .material-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-3px);
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        .material-card.selected {
+            border-color: var(--success);
+            background: rgba(16, 185, 129, 0.15);
+        }
+
+        .material-icon {
+            font-size: 1.8rem;
+        }
+
+        .material-text {
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+
+        /* Aksiyon Butonu */
+        .btn-action {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: 10px;
+        }
+
+        .btn-action:hover {
+            background: var(--primary-light);
+        }
+
+        .btn-reset {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 8px 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+
+        .btn-reset:hover {
+            border-color: var(--text-main);
+            color: var(--text-main);
+        }
+
+        .footer-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 25px;
+            background: rgba(15, 23, 42, 0.8);
+            border-top: 1px solid var(--border);
+        }
+
+        /* Geri Bildirim Alanı */
+        .feedback-box {
+            font-size: 1rem;
+            font-weight: 500;
+            min-height: 24px;
+            text-align: center;
+        }
+
+        .feedback-success { color: var(--success); }
+        .feedback-error { color: var(--danger); }
+
+        /* SEKME 2: PRATİK BİLGİLER */
+        .guide-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .guide-card {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 20px;
+            display: flex;
+            gap: 15px;
+            align-items: flex-start;
+        }
+
+        .guide-icon {
+            font-size: 2rem;
+            background: var(--border);
+            padding: 10px;
+            border-radius: 12px;
+        }
+
+        .guide-content h3 {
+            color: var(--accent);
+            margin-bottom: 5px;
+            font-size: 1.1rem;
+        }
+
+        .guide-content p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .math-inline {
+            background: rgba(99, 102, 241, 0.2);
+            padding: 2px 6px;
+            border-radius: 6px;
+            color: var(--primary-light);
+            font-weight: bold;
+        }
+
+        /* Üst simge formatı için yardımcı stiller */
+        sup {
+            font-size: 0.7em;
+            vertical-align: super;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Üst HUD -->
+        <div class="hud">
+            <div class="hud-title">
+                🎁 <span>Sihirli Hediye Kutusu Atölyesi</span>
+            </div>
+            <div class="hud-stats">
+                <div class="stat-item">🏆 <span id="score">0</span> Puan</div>
+                <div class="stat-item">❤️ <span id="lives">3</span> Hak</div>
+            </div>
+        </div>
+
+        <!-- Sekme Barı -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab(0)">🛠️ Atölye Tezgâhı</button>
+            <button class="tab-btn card-btn" onclick="switchTab(1)">📖 Pratik Bilgiler & Taktikler</button>
+        </div>
+
+        <!-- SEKME 1: ATÖLYE TEZGÂHI -->
+        <div class="tab-content active" id="tab-workshop">
+            <div class="workshop-layout">
+                <!-- Sol Panel: Müşteri Siparişi -->
+                <div class="panel">
+                    <div class="panel-header">Müşterinin İstediği Kutu</div>
+                    <p style="font-size: 0.9rem; color: var(--text-muted);">Müşteri tam olarak bu büyüklükte bir hacim/paket istiyor:</p>
+                    
+                    <div class="target-box-visual">
+                        <div class="target-formula" id="targetDisplay">2<sup>6</sup></div>
+                    </div>
+                    
+                    <div class="feedback-box" id="feedbackMsg">Doğru hammaddeyi seç ve paketleme yap!</div>
+                </div>
+
+                <!-- Sağ Panel: Fabrika Hammaddeleri -->
+                <div class="panel">
+                    <div class="panel-header">Atölye Hammaddeleri</div>
+                    <p style="font-size: 0.9rem; color: var(--text-muted);">İstenen boyutu elde etmek için doğru katman kombinasyonunu seç:</p>
+                    
+                    <div class="raw-materials-grid" id="materialsGrid">
+                        <!-- JavaScript ile doldurulacak -->
+                    </div>
+
+                    <button class="btn-action" id="actionBtn" onclick="checkAnswer()">Paketi Paketle & Gönder</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SEKME 2: PRATİK BİLGİLER -->
+        <div class="tab-content" id="tab-guide">
+            <div class="guide-container">
+                <div class="guide-card">
+                    <div class="guide-icon">📦</div>
+                    <div class="guide-content">
+                        <h3>Üssün Üssü Kuralı Nedir?</h3>
+                        <p>Bir üslü ifadenin tekrar üssü alındığında, taban aynen yazılır ve üsler <span class="math-inline">çarpılır</span>. Örneğin <span class="math-inline">(a<sup>m</sup>)<sup>n</sup> = a<sup>m·n</sup></span></p>
+                    </div>
+                </div>
+
+                <div class="guide-card">
+                    <div class="guide-icon">🏭</div>
+                    <div class="guide-content">
+                        <h3>Atölye Mantığı Nasıl Çalışır?</h3>
+                        <p>Müşterimiz bize <span class="math-inline">2<sup>6</sup></span> büyüklüğünde bir sipariş verdiğinde, aslında <span class="math-inline">(2<sup>2</sup>)<sup>3</sup></span> veya <span class="math-inline">(2<sup>3</sup>)<sup>2</sup></span> gibi katmanlı üretim yapmamızı bekler. Üslerin çarpımı hedef üssü vermelidir!</p>
+                    </div>
+                </div>
+
+                <div class="guide-card">
+                    <div class="guide-icon">💡</div>
+                    <div class="guide-content">
+                        <h3>Püf Noktaları</h3>
+                        <p>Üsleri yer değiştirsen bile sonuç değişmez! <span class="math-inline">(a<sup>m</sup>)<sup>n</sup></span> ile <span class="math-inline">(a<sup>n</sup>)<sup>m</sup></span> birbirine eşittir. Negatif üslere ve parantez dışındaki eksilere dikkat etmeyi unutma.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Alt Kontroller -->
+        <div class="footer-controls">
+            <span style="font-size: 0.85rem; color: var(--text-muted);">8. Sınıf Matematik • Üssün Üssü Simülasyonu</span>
+            <button class="btn-reset" onclick="initGame()">🔄 Yeni Sipariş</button>
+        </div>
+    </div>
+
+    <script>
+        let score = 0;
+        let lives = 3;
+        let selectedMaterial = null;
+        let currentTarget = { base: 2, exp: 6 };
+
+        // Farklı hedef senaryoları havuzu (Üssün üssü formatında gösterilecek değerler)
+        const scenarios = [
+            { base: 2, exp: 6, correctOpts: ["(2<sup>2</sup>)<sup>3</sup>", "(2<sup>3</sup>)<sup>2</sup>"], display: "2<sup>6</sup>" },
+            { base: 3, exp: 4, correctOpts: ["(3<sup>2</sup>)<sup>2</sup>"], display: "3<sup>4</sup>" },
+            { base: 5, exp: 6, correctOpts: ["(5<sup>2</sup>)<sup>3</sup>", "(5<sup>3</sup>)<sup>2</sup>"], display: "5<sup>6</sup>" },
+            { base: 2, exp: 8, correctOpts: ["(2<sup>2</sup>)<sup>4</sup>", "(2<sup>4</sup>)<sup>2</sup>"], display: "2<sup>8</sup>" },
+            { base: 4, exp: 3, correctOpts: ["(4<sup>1</sup>)<sup>3</sup>", "(2<sup>2</sup>)<sup>3</sup>"], display: "4<sup>3</sup>" } // Alternatif düşündürücü
+        ];
+
+        let currentScenario = {};
+
+        function switchTab(index) {
+            const tabs = document.querySelectorAll('.tab-btn');
+            const contents = document.querySelectorAll('.tab-content');
+            
+            tabs.forEach((tab, i) => {
+                tab.classList.toggle('active', i === index);
+            });
+            contents.forEach((content, i) => {
+                content.classList.toggle('active', i === index);
+            });
+        }
+
+        function initGame() {
+            // Rastgele senaryo seç
+            currentScenario = scenarios[Math.floor(Math.random() * scenarios.length)];
+            document.getElementById('targetDisplay').innerHTML = currentScenario.display;
+            
+            document.getElementById('feedbackMsg').innerHTML = "Doğru hammadde katmanını seç ve paketle!";
+            document.getElementById('feedbackMsg').className = "feedback-box";
+            selectedMaterial = null;
+
+            generateMaterials();
+        }
+
+        function generateMaterials() {
+            const grid = document.getElementById('materialsGrid');
+            grid.innerHTML = '';
+
+            // Doğru şıkkı ve birkaç yanlış şıkkı üret
+            let options = [...currentScenario.correctOpts];
+            
+            // Yanıltıcı şıklar ekle
+            const distractors = [
+                `(${currentScenario.base}<sup>2</sup>)<sup>2</sup>`,
+                `(${currentScenario.base}<sup>3</sup>)<sup>3</sup>`,
+                `(${currentScenario.base + 1}<sup>2</sup>)<sup>2</sup>`,
+                `(${currentScenario.base}<sup>1</sup>)<sup>${currentScenario.exp + 1}</sup>`
+            ];
+
+            // Benzersiz 3 yanlış ekle
+            while(options.length < 4) {
+                let randomDistractor = distractors[Math.floor(Math.random() * distractors.length)];
+                if(!options.includes(randomDistractor)) {
+                    options.push(randomDistractor);
+                }
+            }
+
+            // Kartları karıştır
+            options.sort(() => Math.random() - 0.5);
+
+            options.forEach(opt => {
+                const card = document.createElement('div');
+                card.className = 'material-card';
+                card.innerHTML = `
+                    <div class="material-icon">📦</div>
+                    <div class="material-text">${opt}</div>
+                `;
+                card.onclick = () => selectCard(card, opt);
+                grid.appendChild(card);
+            });
+        }
+
+        function selectCard(cardElement, optionText) {
+            document.querySelectorAll('.material-card').forEach(c => c.classList.remove('selected'));
+            cardElement.classList.add('selected');
+            selectedMaterial = optionText;
+        }
+
+        function checkAnswer() {
+            if(!selectedMaterial) {
+                const fb = document.getElementById('feedbackMsg');
+                fb.innerHTML = "⚠️ Lütfen önce bir hammadde paketi seçin!";
+                fb.className = "feedback-box feedback-error";
+                return;
+            }
+
+            const fb = document.getElementById('feedbackMsg');
+            
+            // Doğruluk kontrolü
+            if(currentScenario.correctOpts.includes(selectedMaterial)) {
+                score += 10;
+                document.getElementById('score').innerText = score;
+                fb.innerHTML = "🎉 Harika! Mükemmel paketleme, sipariş başarıyla tamamlandı!";
+                fb.className = "feedback-box feedback-success";
+                
+                setTimeout(() => {
+                    initGame();
+                }, 1500);
+            } else {
+                lives -= 1;
+                document.getElementById('lives').innerText = lives;
+                fb.innerHTML = "❌ Yanlış katman! Üsleri çarptığında hedefi vermiyor.";
+                fb.className = "feedback-box feedback-error";
+
+                if(lives <= 0) {
+                    alert("Oyun Bitti! Hakların tükendi. Yeniden başlatılıyor.");
+                    score = 0;
+                    lives = 3;
+                    document.getElementById('score').innerText = score;
+                    document.getElementById('lives').innerText = lives;
+                    initGame();
+                }
+            }
+        }
+
+        // Oyunu başlat
+        initGame();
+    </script>
+</body>
+</html>
