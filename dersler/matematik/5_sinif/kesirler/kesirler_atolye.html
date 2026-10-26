@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🍰 Kek Dükkanı - Kesir Simülasyonu</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0284c7;
+            --accent-green: #16a34a;
+            --accent-red: #dc2626;
+            --accent-amber: #d97706;
+            --cake-color: #f59e0b;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --border-color: #e2e8f0;
+            --radius-main: 24px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+            background-size: 24px 24px;
+            color: #1e293b;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        h1, h2, h3, .font-fredoka { font-family: 'Fredoka', cursive; }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        /* HUD PANELİ */
+        .hud-panel {
+            background: var(--card-bg);
+            border: 3px solid var(--border-color);
+            border-radius: var(--radius-main);
+            padding: 15px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05);
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            background: #f1f5f9;
+            border-radius: 14px;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .btn {
+            font-family: 'Fredoka', cursive;
+            font-size: 1rem;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
+
+        .btn-start { background-color: var(--accent-green); color: white; }
+        .btn-pause { background-color: var(--accent-amber); color: white; }
+
+        /* SEKMELER */
+        .tabs { display: flex; gap: 10px; }
+        .tab-btn {
+            flex: 1; padding: 12px; font-family: 'Fredoka', cursive; font-size: 1.1rem;
+            background: var(--card-bg); border: 3px solid var(--border-color);
+            border-radius: 18px; cursor: pointer; color: #64748b; transition: all 0.3s;
+        }
+        .tab-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+        /* ANA SİMÜLASYON KARTI */
+        .card {
+            background: var(--card-bg);
+            border: 3px solid var(--border-color);
+            border-radius: var(--radius-main);
+            padding: 25px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
+            min-height: 500px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .tab-content { display: none; flex-direction: column; flex: 1; }
+        .tab-content.active { display: flex; }
+
+        /* TEZGÂH ALANI */
+        .bakery-stage {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            flex: 1;
+            margin-top: 10px;
+        }
+
+        /* SOL: KEK ALANI */
+        .cake-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .cake-svg-wrapper {
+            width: 220px;
+            height: 220px;
+            position: relative;
+        }
+
+        .cake-slice {
+            cursor: pointer;
+            transition: transform 0.2s, fill 0.2s;
+            stroke: #ffffff;
+            stroke-width: 3;
+            fill: #fbbf24;
+        }
+
+        .cake-slice:hover { fill: #f59e0b; transform: scale(1.03); }
+        .cake-slice.selected { fill: #ef4444 !important; opacity: 0.6; }
+
+        /* SAĞ: MÜŞTERİ VE TABAK ALANI */
+        .customer-plate-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            width: 280px;
+        }
+
+        .customer-box {
+            background: #f1f5f9;
+            border: 2px solid #cbd5e1;
+            border-radius: 20px;
+            padding: 15px;
+            text-align: center;
+            width: 100%;
+            position: relative;
+        }
+
+        .customer-avatar { font-size: 3.5rem; margin-bottom: 5px; }
+        .speech-bubble {
+            background: #e0f2fe;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            padding: 8px 12px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .plate {
+            width: 180px;
+            height: 180px;
+            background: #e2e8f0;
+            border: 4px solid #94a3b8;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            box-shadow: inset 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .served-slices-info {
+            font-family: 'Fredoka', cursive;
+            font-size: 1.2rem;
+            color: var(--primary);
+        }
+
+        .action-btn {
+            background: var(--accent-green);
+            color: white;
+            font-size: 1.2rem;
+            width: 100%;
+            padding: 12px;
+            border-radius: 16px;
+        }
+
+        .game-message {
+            text-align: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #64748b;
+            margin-top: 15px;
+            min-height: 30px;
+        }
+
+        /* DURDURMA PERDESİ */
+        .pause-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(4px);
+            display: none; flex-direction: column; align-items: center;
+            justify-content: center; gap: 15px; z-index: 50; text-align: center;
+        }
+
+        /* FORMÜL KARTLARI */
+        .formula-card {
+            background: #f8fafc; border: 2px solid var(--border-color);
+            border-radius: 16px; padding: 15px; margin-bottom: 12px;
+        }
+
+        /* MODAL */
+        .modal-backdrop {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); display: none; align-items: center;
+            justify-content: center; z-index: 100;
+        }
+        .modal {
+            background: white; border-radius: 24px; padding: 30px;
+            text-align: center; width: 90%; max-width: 400px;
+            display: flex; flex-direction: column; gap: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- HUD -->
+        <div class="hud-panel">
+            <h1 style="font-size: 1.4rem; color: var(--primary);">🍰 Kek Dükkanı Simülasyonu</h1>
+            <div style="display:flex; gap:10px;">
+                <button class="btn btn-start" onclick="startGame()">▶️ Başlat / Devam Et</button>
+                <button class="btn btn-pause" onclick="pauseGame()">⏸️ Durdur</button>
+            </div>
+            <div style="display:flex; gap:15px;">
+                <div class="stat-item">🏆 Puan: <span id="scoreVal">0</span></div>
+                <div class="stat-item">❤️ Hak: <span id="livesVal">3</span></div>
+            </div>
+        </div>
+
+        <!-- SEKMELER -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab(0)">🍰 Kek Tezgâhı (Simülasyon)</button>
+            <button class="tab-btn" onclick="switchTab(1)">📖 Kesir İpuçları & Rehber</button>
+        </div>
+
+        <!-- ANA KART -->
+        <div class="card">
+            
+            <!-- DURDURMA PERDESİ -->
+            <div class="pause-overlay" id="pauseOverlay">
+                <h2 style="color:var(--accent-amber); font-size:2rem;">Oyun Durduruldu</h2>
+                <p>Müşteriler sırada bekliyor! Devam etmek için yukarıdaki "Başlat" butonuna basabilirsin.</p>
+            </div>
+
+            <!-- SEKME 1: SİMÜLASYON -->
+            <div class="tab-content active" id="tab0">
+                <div class="bakery-stage">
+                    
+                    <!-- SOL: BÖLÜNMÜŞ KEK -->
+                    <div class="cake-container">
+                        <div class="cake-svg-wrapper">
+                            <svg id="cakeSvg" viewBox="-110 -110 220 220" width="220" height="220"></svg>
+                        </div>
+                        <span style="font-weight:bold; color:#64748b;" id="sliceInfoText">Kek 6 Eş Dilime Bölünmüş</span>
+                    </div>
+
+                    <!-- SAĞ: MÜŞTERİ VE TABAK -->
+                    <div class="customer-plate-area">
+                        <div class="customer-box">
+                            <div class="customer-avatar" id="customerAvatar">👧</div>
+                            <div class="speech-bubble" id="speechBubble">"Kekin yarısını istiyorum!"</div>
+                        </div>
+
+                        <!-- TABAK -->
+                        <div class="plate" id="plate">
+                            <svg id="plateSvg" viewBox="-110 -110 220 220" width="160" height="160"></svg>
+                        </div>
+
+                        <button class="btn action-btn" onclick="serveOrder()">🍽️ Müşteriye Servis Et</button>
+                    </div>
+
+                </div>
+                <div class="game-message" id="gameMessage">Dilimlere tıklayarak tabağa koyacağın parçaları seç!</div>
+            </div>
+
+            <!-- SEKME 2: REHBER -->
+            <div class="tab-content" id="tab1">
+                <h2 style="color: var(--primary); margin-bottom: 15px;">Kesirlerle Kek Dilimleme Rehberi</h2>
+                <div class="formula-card">
+                    <h3>📐 Yarım Nedir? (1/2)</h3>
+                    <p>Kek kaç parçaya kesilmiş olursa olsun, yarısı demek <strong>toplam dilim sayısının 2'ye bölünmesidir</strong>.</p>
+                    <p style="color:var(--primary); font-weight:bold; margin-top:5px;">Örn: Kek 6 parçaysa yarısı = 3 dilimdir.</p>
+                </div>
+                <div class="formula-card">
+                    <h3>🍕 Çeyrek Nedir? (1/4)</h3>
+                    <p>Çeyrek, toplam dilim sayısının <strong>4'e bölünmesiyle</strong> bulunur.</p>
+                    <p style="color:var(--primary); font-weight:bold; margin-top:5px;">Örn: Kek 8 parçaysa çeyreği = 2 dilimdir.</p>
+                </div>
+                <div class="formula-card">
+                    <h3>💡 Denk Kesirler</h3>
+                    <p>2/4, 3/6, 4/8 kesirlerinin hepsi aslında <strong>1/2 (Yarım)</strong> demektir!</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- MODAL -->
+    <div class="modal-backdrop" id="modalBackdrop">
+        <div class="modal">
+            <h2 id="modalTitle" style="color:var(--accent-green)">Harika İşe Alındın! 🎉</h2>
+            <p id="modalDesc">Bütün müşterilere tam istedikleri kadar kek verdin!</p>
+            <div style="font-size: 2rem; font-family:'Fredoka', cursive; color:var(--primary)" id="finalScore">Puan: 0</div>
+            <button class="btn btn-start" onclick="resetGameCompletely()">🔄 Yeniden Başlat</button>
+        </div>
+    </div>
+
+    <script>
+        let isPlaying = false;
+        let score = 0;
+        let lives = 3;
+        let selectedCount = 0;
+        let currentOrder = null;
+
+        const customers = ["👧", "👦", "👨", "👩", "👵", "👴", "🎅"];
+        
+        // Müşteri İstem Tipleri ve Fonksiyonları
+        const orderTypes = [
+            { text: "Kekin yarısını (1/2) istiyorum!", calcTarget: (total) => total / 2 },
+            { text: "Kekin çeyreğini (1/4) istiyorum!", calcTarget: (total) => total / 4 },
+            { text: "Kekin 1/3'ini istiyorum!", calcTarget: (total) => total / 3 },
+            { text: "Kekin 2/3'sini istiyorum!", calcTarget: (total) => (total / 3) * 2 },
+            { text: "Kekin 3/4'ünü istiyorum!", calcTarget: (total) => (total / 4) * 3 }
+        ];
+
+        // Mümkün Kek Bölünme Seçenekleri
+        const possibleSlices = [4, 6, 8, 12];
+
+        function switchTab(index) {
+            document.querySelectorAll('.tab-btn').forEach((btn, i) => btn.classList.toggle('active', i === index));
+            document.querySelectorAll('.tab-content').forEach((content, i) => content.classList.toggle('active', i === index));
+        }
+
+        function startGame() {
+            isPlaying = true;
+            document.getElementById('pauseOverlay').style.display = 'none';
+            if (!currentOrder) newCustomer();
+        }
+
+        function pauseGame() {
+            if (!isPlaying && score === 0 && lives === 3) return;
+            isPlaying = false;
+            document.getElementById('pauseOverlay').style.display = 'flex';
+        }
+
+        function newCustomer() {
+            selectedCount = 0;
+            // Rastgele Kek Dilim Sayısı Seç (4, 6, 8 veya 12)
+            const totalSlices = possibleSlices[Math.floor(Math.random() * possibleSlices.length)];
+            
+            // Dilim sayısına uygun sipariş türet
+            let validOrders = orderTypes.filter(o => Number.isInteger(o.calcTarget(totalSlices)));
+            const randomOrderType = validOrders[Math.floor(Math.random() * validOrders.length)];
+
+            currentOrder = {
+                totalSlices: totalSlices,
+                targetSlices: randomOrderType.calcTarget(totalSlices),
+                orderText: randomOrderType.text,
+                avatar: customers[Math.floor(Math.random() * customers.length)]
+            };
+
+            // Arayüzü Güncelle
+            document.getElementById('customerAvatar').textContent = currentOrder.avatar;
+            document.getElementById('speechBubble').textContent = `"${currentOrder.orderText}"`;
+            document.getElementById('sliceInfoText').textContent = `Kek ${currentOrder.totalSlices} Eş Parçaya Bölünmüş`;
+            document.getElementById('gameMessage').textContent = `Kekten ${currentOrder.targetSlices} dilim seçip tabağa koymalısın.`;
+
+            renderCake();
+            renderPlate();
+        }
+
+        // SVG İLE DİNAMİK KEK ÇİZİMİ
+        function renderCake() {
+            const svg = document.getElementById('cakeSvg');
+            svg.innerHTML = '';
+            const total = currentOrder.totalSlices;
+            const radius = 100;
+
+            for (let i = 0; i < total; i++) {
+                const startAngle = (i * 360 / total) * (Math.PI / 180);
+                const endAngle = ((i + 1) * 360 / total) * (Math.PI / 180);
+
+                const x1 = radius * Math.cos(startAngle);
+                const y1 = radius * Math.sin(startAngle);
+                const x2 = radius * Math.cos(endAngle);
+                const y2 = radius * Math.sin(endAngle);
+
+                const pathData = `M 0 0 L ${x1} ${y1} A ${radius} ${radius} 0 0 1 ${x2} ${y2} Z`;
+
+                const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                path.setAttribute("d", pathData);
+                path.setAttribute("class", "cake-slice");
+                path.onclick = () => toggleSlice(path);
+
+                svg.appendChild(path);
+            }
+        }
+
+        // DİLİM SEÇME / TABAĞA AKTARMA
+        function toggleSlice(sliceElement) {
+            if (!isPlaying) return;
+
+            if (sliceElement.classList.contains('selected')) {
+                sliceElement.classList.remove('selected');
+                selectedCount--;
+            } else {
+                sliceElement.classList.add('selected');
+                selectedCount++;
+            }
+            renderPlate();
+        }
+
+        // TABAKTAKİ DİLİMLERİ ÇİZ
+        function renderPlate() {
+            const svg = document.getElementById('plateSvg');
+            svg.innerHTML = '';
+            if (selectedCount === 0) return;
+
+            const radius = 80;
+            const total = currentOrder.totalSlices;
+
+            for (let i = 0; i < selectedCount; i++) {
+                const startAngle = (i * 360 / total) * (Math.PI / 180);
+                const endAngle = ((i + 1) * 360 / total) * (Math.PI / 180);
+
+                const x1 = radius * Math.cos(startAngle);
+                const y1 = radius * Math.sin(startAngle);
+                const x2 = radius * Math.cos(endAngle);
+                const y2 = radius * Math.sin(endAngle);
+
+                const pathData = `M 0 0 L ${x1} ${y1} A ${radius} ${radius} 0 0 1 ${x2} ${y2} Z`;
+
+                const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                path.setAttribute("d", pathData);
+                path.setAttribute("fill", "#f59e0b");
+                path.setAttribute("stroke", "#ffffff");
+                path.setAttribute("stroke-width", "2");
+
+                svg.appendChild(path);
+            }
+        }
+
+        // SERVİS ET KONTROLÜ
+        function serveOrder() {
+            if (!isPlaying) return;
+
+            if (selectedCount === currentOrder.targetSlices) {
+                // Doğru Servis
+                score += 20;
+                updateHUD();
+                document.getElementById('gameMessage').textContent = "🎉 Harika! Müşteri çok memnun kaldı! (+20 Puan)";
+                setTimeout(newCustomer, 1200);
+            } else {
+                // Yanlış Servis
+                lives--;
+                updateHUD();
+                document.getElementById('gameMessage').textContent = `❌ Yanlış miktar! ${currentOrder.totalSlices} dilimli kekten ${currentOrder.targetSlices} dilim koymalıydın.`;
+
+                if (lives <= 0) {
+                    setTimeout(endGame, 1000);
+                }
+            }
+        }
+
+        function updateHUD() {
+            document.getElementById('scoreVal').textContent = score;
+            document.getElementById('livesVal').textContent = lives;
+        }
+
+        function endGame() {
+            isPlaying = false;
+            document.getElementById('finalScore').textContent = `Toplam Puan: ${score}`;
+            document.getElementById('modalBackdrop').style.display = 'flex';
+        }
+
+        function resetGameCompletely() {
+            score = 0;
+            lives = 3;
+            currentOrder = null;
+            updateHUD();
+            document.getElementById('modalBackdrop').style.display = 'none';
+            startGame();
+        }
+    </script>
+</body>
+</html>
