@@ -121,6 +121,36 @@ const yaziliVerileri = {
             dosya: "yazili/matematik/8_sinif/8_matematik_1d1y_senaryo_4.pdf", 
             tur: "yazili" 
           },
+          { 
+            ad: "Örnek Yazılı Alan", 
+            dosya: "yazili/matematik/8_sinif/8_mat_1d1y_alan_sinav.PDF", 
+            tur: "yazili" 
+          },
+          { 
+            ad: "Örnek Yazılı Beyin Takımı", 
+            dosya: "yazili/matematik/8_sinif/8_mat_1d1y_beyin_takimi_sinav.pdf", 
+            tur: "yazili" 
+          },
+          { 
+            ad: "Örnek Yazılı Hocam Anlatır", 
+            dosya: "yazili/matematik/8_sinif/8_mat_1d1y_hocam_anlatir_sinav.pdf", 
+            tur: "yazili" 
+          },
+          { 
+            ad: "Örnek Yazılı Tetra", 
+            dosya: "yazili/matematik/8_sinif/8_mat_1d1y_tetra_sinav.pdf", 
+            tur: "yazili" 
+          },
+          { 
+            ad: "Örnek Yazılı Ulti", 
+            dosya: "yazili/matematik/8_sinif/8_mat_1d1y_ulti_2_sinav.pdf.pdf", 
+            tur: "yazili" 
+          },
+          { 
+            ad: "Örnek Yazılı Ulti", 
+            dosya: "yazili/matematik/8_sinif/8_mat_1d1y_ulti_sinav.pdf.pdf", 
+            tur: "yazili" 
+          }
         ]
       },
       {
