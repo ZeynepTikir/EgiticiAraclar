@@ -51,6 +51,31 @@ const yaziliVerileri = {
             ad: "Örnek Senaryolar", 
             dosya: "yazili/matematik/7_sinif/7_matematik_1d1y_senaryolar.pdf", 
             tur: "yazili" 
+          },
+          { 
+            ad: "Örnek Yazılı Beyin Takımı", 
+            dosya: "yazili/matematik/7_sinif/7_mat_1d1y_beyin_takimi_sinav.pdf", 
+            tur: "yazili" 
+          },
+          { 
+            ad: "Örnek Yazılı Hocam Anlatır", 
+            dosya: "yazili/matematik/7_sinif/7_mat_1d1y_hocam_anlatir_sinav.pdf", 
+            tur: "yazili" 
+          },
+          { 
+            ad: "Örnek Yazılı Klasman", 
+            dosya: "yazili/matematik/7_sinif/7_mat_1d1y_klasman_sinav.pdf", 
+            tur: "yazili" 
+          },
+          { 
+            ad: "Örnek Yazılı MEB", 
+            dosya: "yazili/matematik/7_sinif/7_mat_1d1y_meb_sinav.pdf", 
+            tur: "yazili" 
+          },
+          { 
+            ad: "Örnek Yazılı Tetra", 
+            dosya: "yazili/matematik/7_sinif/7_mat_1d1y_tetra_sinav.pdf", 
+            tur: "yazili" 
           }
         ]
       },
