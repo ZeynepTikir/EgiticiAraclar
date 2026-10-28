@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>8. Sınıf Matematik - Tam Kare Sayılar ve Karekök</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #2d3748;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .poster {
+            width: 100%;
+            max-width: 1200px;
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            border: 8px solid #ffcc00;
+            display: grid;
+            grid-template-rows: auto 1fr auto auto;
+        }
+
+        /* HEADER */
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+            padding-bottom: 50px;
+        }
+
+        .grade-badge {
+            background: #ffcc00;
+            color: #1a202c;
+            font-weight: 800;
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 1rem;
+            display: inline-block;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        header h1 {
+            font-size: 2.8rem;
+            font-weight: 900;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        header p {
+            font-size: 1.2rem;
+            font-weight: 400;
+            opacity: 0.9;
+        }
+
+        /* MAIN CONTENT GRID */
+        .content {
+            padding: 30px 30px 15px 30px;
+            display: grid;
+            grid-template-columns: 1fr 1.4fr;
+            gap: 25px;
+        }
+
+        @media (max-width: 900px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .column {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        /* CARDS */
+        .card {
+            background: #f8fafc;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+            border-top: 6px solid #667eea;
+            position: relative;
+        }
+
+        .card h2 {
+            font-size: 1.5rem;
+            color: #2d3748;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* KAREKÖK ANLAMI */
+        .concept-box {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            background: #eef2ff;
+            padding: 18px;
+            border-radius: 12px;
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .math-block {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #4338ca;
+        }
+
+        .arrow {
+            font-size: 2.2rem;
+            color: #f59e0b;
+        }
+
+        /* İLK 25 TAM KARE SAYI TABLOSU */
+        .perfect-squares-card {
+            border-top-color: #f59e0b;
+        }
+
+        .grid-25 {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .sq-item {
+            background: #fff;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 8px 4px;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+
+        .sq-item:hover {
+            transform: scale(1.05);
+            border-color: #f59e0b;
+            background: #fffbeb;
+        }
+
+        .sq-num {
+            font-size: 0.75rem;
+            color: #718096;
+            font-weight: 600;
+        }
+
+        .sq-val {
+            font-size: 1rem;
+            font-weight: 800;
+            color: #1e293b;
+        }
+
+        /* ALT BÖLÜM: PRATİK BİLGİLER VE İPUÇLARI */
+        .tips-bottom-section {
+            padding: 0 30px 25px 30px;
+        }
+
+        .tips-card {
+            background: #f8fafc;
+            border-radius: 16px;
+            padding: 20px 24px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+            border-top: 6px solid #10b981;
+        }
+
+        .tips-card h2 {
+            font-size: 1.4rem;
+            color: #2d3748;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .tips-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .tips-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .tip-box {
+            background: #ffffff;
+            padding: 14px 18px;
+            border-radius: 12px;
+            border-left: 5px solid #10b981;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.95rem;
+        }
+
+        .tip-box span {
+            font-size: 1.4rem;
+        }
+
+        /* FOOTER */
+        footer {
+            background: #1e293b;
+            color: #cbd5e1;
+            text-align: center;
+            padding: 20px;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+            border-top: 4px solid #ffcc00;
+        }
+
+        footer span {
+            color: #ffcc00;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="poster">
+        <!-- HEADER -->
+        <header>
+            <div class="grade-badge">8. Sınıf Matematik</div>
+            <h1>Tam Kare Sayılar ve Karekök</h1>
+            <p>Kareleri Keşfet, Karekökleri Çöz!</p>
+        </header>
+
+        <!-- CONTENT -->
+        <div class="content">
+            <!-- SOL SÜTUN: Anlam -->
+            <div class="column">
+                <div class="card">
+                    <h2>🎯 Karekök Nedir?</h2>
+                    <p>Alan verildiğinde kenar uzunluğunu bulmaktır! Karekök, sayının karesini almanın tam <strong>tersi</strong> işlemidir.</p>
+                    
+                    <div class="concept-box">
+                        <div>
+                            <span style="font-size:0.85rem; color:#6b7280;">Karesi</span><br>
+                            <span class="math-block">5² = 25</span>
+                        </div>
+                        <div class="arrow">⇄</div>
+                        <div>
+                            <span style="font-size:0.85rem; color:#6b7280;">Karekökü</span><br>
+                            <span class="math-block">√25 = 5</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SAĞ SÜTUN: İlk 25 Tam Kare Sayı -->
+            <div class="column">
+                <div class="card perfect-squares-card">
+                    <h2>⭐ İlk 25 Tam Kare Sayı</h2>
+                    <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 10px;">Bir doğal sayının karesi olan sayılara <strong>tam kare sayılar</strong> denir.</p>
+                    
+                    <div class="grid-25">
+                        <div class="sq-item"><div class="sq-num">1²</div><div class="sq-val">1</div></div>
+                        <div class="sq-item"><div class="sq-num">2²</div><div class="sq-val">4</div></div>
+                        <div class="sq-item"><div class="sq-num">3²</div><div class="sq-val">9</div></div>
+                        <div class="sq-item"><div class="sq-num">4²</div><div class="sq-val">16</div></div>
+                        <div class="sq-item"><div class="sq-num">5²</div><div class="sq-val">25</div></div>
+                        <div class="sq-item"><div class="sq-num">6²</div><div class="sq-val">36</div></div>
+                        <div class="sq-item"><div class="sq-num">7²</div><div class="sq-val">49</div></div>
+                        <div class="sq-item"><div class="sq-num">8²</div><div class="sq-val">64</div></div>
+                        <div class="sq-item"><div class="sq-num">9²</div><div class="sq-val">81</div></div>
+                        <div class="sq-item"><div class="sq-num">10²</div><div class="sq-val">100</div></div>
+                        <div class="sq-item"><div class="sq-num">11²</div><div class="sq-val">121</div></div>
+                        <div class="sq-item"><div class="sq-num">12²</div><div class="sq-val">144</div></div>
+                        <div class="sq-item"><div class="sq-num">13²</div><div class="sq-val">169</div></div>
+                        <div class="sq-item"><div class="sq-num">14²</div><div class="sq-val">196</div></div>
+                        <div class="sq-item"><div class="sq-num">15²</div><div class="sq-val">225</div></div>
+                        <div class="sq-item"><div class="sq-num">16²</div><div class="sq-val">256</div></div>
+                        <div class="sq-item"><div class="sq-num">17²</div><div class="sq-val">289</div></div>
+                        <div class="sq-item"><div class="sq-num">18²</div><div class="sq-val">324</div></div>
+                        <div class="sq-item"><div class="sq-num">19²</div><div class="sq-val">361</div></div>
+                        <div class="sq-item"><div class="sq-num">20²</div><div class="sq-val">400</div></div>
+                        <div class="sq-item"><div class="sq-num">21²</div><div class="sq-val">441</div></div>
+                        <div class="sq-item"><div class="sq-num">22²</div><div class="sq-val">484</div></div>
+                        <div class="sq-item"><div class="sq-num">23²</div><div class="sq-val">529</div></div>
+                        <div class="sq-item"><div class="sq-num">24²</div><div class="sq-val">576</div></div>
+                        <div class="sq-item"><div class="sq-num">25²</div><div class="sq-val">625</div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ALT BÖLÜM: PRATİK BİLGİLER VE İPUÇLARI (ALTTA YENİ BÖLÜM) -->
+        <div class="tips-bottom-section">
+            <div class="tips-card">
+                <h2>💡 Pratik Bilgiler ve İpuçları</h2>
+                <div class="tips-grid">
+                    <div class="tip-box">
+                        <span>⚡</span>
+                        <div><strong>Alan - Kenar İlişkisi:</strong> Alanı 64 br² olan karenin bir kenarı √64 = 8 br'dir.</div>
+                    </div>
+                    <div class="tip-box">
+                        <span>⚡</span>
+                        <div><strong>Negatif Sayı Tuzağı:</strong> Karekökün içi asla negatif olamaz! (√-9 tanımsızdır). Ancak sonuç negatif olabilir (-√9 = -3).</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <footer>
+            LGS Başarı Yolunda <span>Eğitim Tasarım ve İnfografik Atölyesi</span> • Başarılar Diler!
+        </footer>
+    </div>
+
+</body>
+</html>

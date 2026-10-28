@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>8. Sınıf Matematik - Tam Kare Olmayan Sayıların Yaklaşık Değeri</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 100%);
+            color: #102a43;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .poster {
+            width: 100%;
+            max-width: 1000px;
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(16, 42, 67, 0.15);
+            overflow: hidden;
+            border: 6px solid #486581;
+        }
+
+        /* HEADER */
+        .header {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+            padding-bottom: 50px;
+        }
+
+        .grade-badge {
+            background: #f59e0b;
+            color: #fff;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: inline-block;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            font-weight: 900;
+            margin-bottom: 8px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            font-weight: 400;
+            opacity: 0.9;
+        }
+
+        /* CONTENT CONTAINER */
+        .content {
+            padding: 30px;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+        }
+
+        @media (min-width: 768px) {
+            .content {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .card {
+            background: #f8fafc;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+            border-top: 5px solid #3b82f6;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .card h2 {
+            font-size: 1.3rem;
+            color: #1e3a8a;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+        }
+
+        .card h2 span {
+            background: #3b82f6;
+            color: white;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 1rem;
+        }
+
+        /* STEPS DESIGN */
+        .steps-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .step {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            background: #ffffff;
+            padding: 15px;
+            border-radius: 12px;
+            border-left: 4px solid #10b981;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+        }
+
+        .step-number {
+            background: #10b981;
+            color: white;
+            min-width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .step-content h3 {
+            font-size: 1rem;
+            color: #065f46;
+            margin-bottom: 4px;
+            font-weight: 600;
+        }
+
+        .step-content p {
+            font-size: 0.9rem;
+            color: #4b5563;
+        }
+
+        /* EXAMPLE BOX */
+        .example-box {
+            background: #eff6ff;
+            border: 2px dashed #3b82f6;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .example-title {
+            font-weight: 700;
+            color: #1e40af;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .number-line {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            padding: 15px 20px;
+            border-radius: 50px;
+            margin: 15px 0;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+            position: relative;
+        }
+
+        .node {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #1e3a8a;
+            background: #dbeafe;
+            padding: 8px 15px;
+            border-radius: 20px;
+        }
+
+        .node.target {
+            background: #ef4444;
+            color: white;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        /* PRACTICAL TIP HIGHLIGHT */
+        .tip-box {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-left: 6px solid #f59e0b;
+            padding: 20px;
+            border-radius: 12px;
+            color: #78350f;
+        }
+
+        .tip-box h3 {
+            color: #b45309;
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tip-box p {
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* SUMMARY FOOTER BADGES */
+        .summary-footer {
+            background: #1e293b;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 0.95rem;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .badge-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+        }
+
+        .badge-item span {
+            color: #38bdf8;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="poster">
+        <!-- Başlık Alanı -->
+        <div class="header">
+            <span class="grade-badge">8. Sınıf Matematik Rehberi</span>
+            <h1>Kareköklerde Yaklaşık Değer</h1>
+            <p>Tam Kare Olmayan Sayıların Hangi İki Tam Sayı Arasında Olduğunu Bulma</p>
+        </div>
+
+        <!-- İçerik Alanı -->
+        <div class="content">
+            
+            <!-- Adım Adım İşlem Kartı -->
+            <div class="card">
+                <h2><span>1</span> Adım Adım İşlem Rehberi</h2>
+                <div class="steps-container">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h3>Sınırları Belirle</h3>
+                            <p>Verilen kareköklü ifadenin hemen öncesindeki ve sonrasındaki <b>tam kare sayıları</b> bul.</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h3>Kareköklerini Al</h3>
+                            <p>Bu iki tam kare sayının kareköklerini alarak, aradığın sayının hangi iki ardışık tam sayı arasında olduğunu yaz.</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h3>Yakınlığı Tespit Et (Kritik!)</h3>
+                            <p>Verilen sayının, hangi tam kare sayıya sayısal olarak daha yakın olduğuna bakarak ondalık kısmı tahmin et.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Örnek Uygulama Kartı -->
+            <div class="card">
+                <h2><span>2</span> Görsel Örnek: √50</h2>
+                <div class="example-box">
+                    <div class="example-title">Örnek: √50 Hangi İki Tam Sayı Arasındadır?</div>
+                    <p style="font-size: 0.9rem; color: #4b5563; margin-bottom: 10px;">
+                        49 ve 64 sayıları arasındadır (49 < 50 < 64).
+                    </p>
+                    <div class="number-line">
+                        <span class="node">√49 = 7</span>
+                        <span class="node target">√50</span>
+                        <span class="node">√64 = 8</span>
+                    </div>
+                    <p style="font-size: 0.85rem; color: #1e40af; font-weight: 600;">
+                        50 sayısı 49'a çok yakın olduğu için, yaklaşık değer 7'ye çok yakındır (Örn: ≈ 7.1).
+                    </p>
+                </div>
+            </div>
+
+            <!-- Pratik Bilgi ve Önem Kartı -->
+            <div class="card full-width tip-box">
+                <h3><span>💡</span> Pratik Bilgi: Hangi Tam Sayıya Daha Yakın Olduğunu Tespit Etmek Neden Önemlidir?</h3>
+                <p>
+                    Bir tam kare olmayan sayının yaklaşık değerini bulurken, sayının <b>hangi tam kare sayıya daha yakın olduğunu tespit etmek</b>, doğru ondalık tahmini (örneğin 7.1 mi yoksa 7.8 mi olacağını) yapmamızı sağlar. Sayı küçük sınırdaki tam kareye yakınsa ondalık kısım küçük (0.1, 0.2, 0.3), büyük sınırdaki tam kareye yakınsa ondalık kısım büyük (0.7, 0.8, 0.9) seçilir. Bu, sayı doğrusundaki yerini kusursuza yakın belirlememizi sağlar!
+                </p>
+            </div>
+
+        </div>
+
+        <!-- Özet Altbilgi -->
+        <div class="summary-footer">
+            <div class="badge-item"><span>✔</span> Tam Kareleri Ezberle</div>
+            <div class="badge-item"><span>✔</span> Sınırları Doğru Seç</div>
+            <div class="badge-item"><span>✔</span> Yakınlığı Kontrol Et</div>
+        </div>
+    </div>
+
+</body>
+</html>

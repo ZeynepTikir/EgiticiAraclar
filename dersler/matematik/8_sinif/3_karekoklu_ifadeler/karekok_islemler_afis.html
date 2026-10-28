@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>8. Sınıf Kareköklü İfadeler İnfografiği</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #2d3748;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .poster {
+            width: 100%;
+            max-width: 1000px;
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            overflow: hidden;
+            border: 8px solid #4a90e2;
+        }
+
+        /* HEADER */
+        .header {
+            background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
+            color: white;
+            text-align: center;
+            padding: 30px 20px;
+            position: relative;
+        }
+
+        .badge {
+            background: #ffcc00;
+            color: #2d3748;
+            font-weight: 800;
+            font-size: 0.9rem;
+            padding: 6px 16px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: inline-block;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        /* MAIN GRID */
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 20px;
+            padding: 25px;
+            background: #f8fafc;
+        }
+
+        /* CARDS */
+        .card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+            border-top: 6px solid #ccc;
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-toplama { border-color: #ff6b6b; }
+        .card-cikarma { border-color: #ffa502; }
+        .card-carpma { border-color: #2ed573; }
+        .card-bolme { border-color: #1e90ff; }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #f1f2f6;
+            padding-bottom: 10px;
+        }
+
+        .icon {
+            font-size: 1.8rem;
+            margin-right: 12px;
+            background: #f1f2f6;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        .card-toplama .card-title { color: #ff6b6b; }
+        .card-cikarma .card-title { color: #ffa502; }
+        .card-carpma .card-title { color: #2ed573; }
+        .card-bolme .card-title { color: #1e90ff; }
+
+        .rule-box {
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 12px;
+            color: #475569;
+        }
+
+        .example-box {
+            background: #f8fafc;
+            border-left: 4px solid #cbd5e1;
+            padding: 10px 15px;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.9rem;
+            font-family: monospace;
+            color: #1e293b;
+        }
+
+        .example-box span {
+            font-weight: bold;
+            color: #0f172a;
+        }
+
+        /* TIPS FOOTER */
+        .tips-footer {
+            background: #fff3cd;
+            border-top: 4px dashed #ffecb5;
+            padding: 20px 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .tips-title {
+            font-weight: 700;
+            color: #856404;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tips-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 10px;
+            list-style: none;
+        }
+
+        .tips-list li {
+            background: #ffffff;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #533f04;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+            border-left: 3px solid #ffc107;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+            .header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="poster">
+    <!-- Başlık Alanı -->
+    <div class="header">
+        <span class="badge">8. Sınıf LGS Matematik</span>
+        <h1>KAREKÖKLÜ İFADELER İŞLEMLER REHBERİ</h1>
+    </div>
+
+    <!-- İçerik Kartları -->
+    <div class="content-grid">
+        
+        <!-- Toplama -->
+        <div class="card card-toplama">
+            <div class="card-header">
+                <div class="icon">➕</div>
+                <div class="card-title">Toplama İşlemi</div>
+            </div>
+            <div class="rule-box">
+                Kök içleri MUTLAKA AYNI olmalıdır! Sadece katsayılar toplanır, ortak kök aynen yazılır.
+            </div>
+            <div class="example-box">
+                Örnek: 3√5 + 4√5 = (3 + 4)√5 = <strong>7√5</strong><br>
+                Uyarı: √2 + √3 toplanamaz, öyle kalır!
+            </div>
+        </div>
+
+        <!-- Çıkarma -->
+        <div class="card card-cikarma">
+            <div class="card-header">
+                <div class="icon">➖</div>
+                <div class="card-title">Çıkarma İşlemi</div>
+            </div>
+            <div class="rule-box">
+                Toplama ile aynı kural! Kök içleri eşit olmalı, katsayılar çıkarılır, ortak kök yazılır.
+            </div>
+            <div class="example-box">
+                Örnek: 9√2 - 4√2 = (9 - 4)√2 = <strong>5√2</strong><br>
+                Uyarı: Kök içleri farklıysa işlem yapılamaz!
+            </div>
+        </div>
+
+        <!-- Çarpma -->
+        <div class="card card-carpma">
+            <div class="card-header">
+                <div class="icon">✖️</div>
+                <div class="card-title">Çarpma İşlemi</div>
+            </div>
+            <div class="rule-box">
+                Kök içleri aynı olma şartı YOK! Katsayılar kendi arasında, kök içleri kendi arasında çarpılır.
+            </div>
+            <div class="example-box">
+                Örnek: (2√3) . (5√2) = (2 . 5) . √(3 . 2) = <strong>10√6</strong><br>
+                Özel Durum: √a . √a = a (Kökten kurtulur!)
+            </div>
+        </div>
+
+        <!-- Bölme -->
+        <div class="card card-bolme">
+            <div class="card-header">
+                <div class="icon">➗</div>
+                <div class="card-title">Bölme İşlemi</div>
+            </div>
+            <div class="rule-box">
+                Katsayılar kendi arasında, kök içleri kendi arasında bölünür. Ortak kök içine yazılabilir.
+            </div>
+            <div class="example-box">
+                Örnek: 12√10 / 3√2 = (12 / 3) . √(10 / 2) = <strong>4√5</strong><br>
+                Kural: √a / √b = √(a / b)
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Önemli İpuçları Footer -->
+    <div class="tips-footer">
+        <div class="tips-title">
+            ⭐ Altın Değerinde Püf Noktaları (LGS İpuçları)
+        </div>
+        <ul class="tips-list">
+            <li>İşlem yapmadan önce mutlaka kök içindeki sayıları en dışarı çıkarma (A√B şeklinde yazma) kuralını uygula!</li>
+            <li>Toplama ve çıkarmada kök içi asla toplanmaz veya çıkarılmaz! (√9 + √16 = 3 + 4 = 7 dir, ASLA √25 olamaz!)</li>
+            <li>Tam kare olmayan sayılarla işlem yaparken kök dışına çıkarma yöntemini kullanmayı unutma.</li>
+        </ul>
+    </div>
+</div>
+
+</body>
+</html>

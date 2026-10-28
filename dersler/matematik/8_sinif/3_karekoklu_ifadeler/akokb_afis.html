@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kareköklü Sayılarda Dönüşümler - 8. Sınıf Matematik Afişi</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 100%);
+            color: #102a43;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .poster {
+            width: 100%;
+            max-width: 1000px;
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            overflow: hidden;
+            border: 8px solid #ffb703;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* HEADER */
+        header {
+            background: linear-gradient(135deg, #023047 0%, #219ebc 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        .grade-badge {
+            background: #ffb703;
+            color: #023047;
+            font-weight: 800;
+            font-size: 1rem;
+            padding: 6px 16px;
+            border-radius: 50px;
+            display: inline-block;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        h1 {
+            font-size: 2.4rem;
+            font-weight: 900;
+            margin-bottom: 5px;
+            letter-spacing: -0.5px;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            font-weight: 400;
+        }
+
+        /* CONTENT GRID */
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            padding: 30px;
+            background: #f8f9fa;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border-top: 6px solid #219ebc;
+            position: relative;
+        }
+
+        .card.alt {
+            border-top-color: #fb8500;
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: #023047;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card.alt .card-title {
+            color: #d90429;
+        }
+
+        /* FORMULA BOXES */
+        .formula-box {
+            background: #edf6f9;
+            border: 2px dashed #219ebc;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 850;
+            color: #023047;
+            margin: 15px 0;
+        }
+
+        .card.alt .formula-box {
+            background: #fff5f5;
+            border-color: #fb8500;
+            color: #d90429;
+        }
+
+        /* STEPS */
+        .steps {
+            list-style: none;
+            margin-bottom: 15px;
+        }
+
+        .steps li {
+            position: relative;
+            padding-left: 30px;
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #334155;
+        }
+
+        .steps li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: #219ebc;
+            font-weight: 900;
+            font-size: 1.1rem;
+        }
+
+        .card.alt .steps li::before {
+            color: #fb8500;
+        }
+
+        /* EXAMPLES */
+        .example {
+            background: #f1faee;
+            border-radius: 10px;
+            padding: 12px 15px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #1d3557;
+            border-left: 4px solid #2a9d8f;
+            margin-top: auto;
+        }
+
+        .card.alt .example {
+            background: #fff3ec;
+            border-left-color: #f77f00;
+        }
+
+        /* TIPS FOOTER */
+        .tips-footer {
+            background: #ffb703;
+            color: #023047;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.05rem;
+        }
+
+        .tip-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.4);
+            padding: 12px 20px;
+            border-radius: 12px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .tip-icon {
+            font-size: 1.6rem;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="poster">
+        <!-- Başlık Alanı -->
+        <header>
+            <span class="grade-badge">8. Sınıf Matematik Özet Afişi</span>
+            <h1>Kareköklü Sayılarda Dönüşümler</h1>
+            <p>A Kök B Biçiminde Yazma & Kök İçine Alma İşlemleri</p>
+        </header>
+
+        <!-- İçerik Kartları -->
+        <div class="content">
+            
+            <!-- 1. KART: A Kök B Biçiminde Yazma -->
+            <div class="card">
+                <div>
+                    <div class="card-title">
+                        <span>📦</span> A Kök B Biçiminde Yazma
+                    </div>
+                    <p style="font-size: 0.95rem; color: #50657a; margin-bottom: 10px;">
+                        Kök içindeki sayıyı, biri en büyük <strong>tam kare</strong> olan iki sayının çarpımı şeklinde yaz!
+                    </p>
+                    
+                    <div class="formula-box">
+                        √x = √(a² · b) = a√b
+                    </div>
+
+                    <ul class="steps">
+                        <li>Tam kare çarpanı bul ve dışarı çıkar.</li>
+                        <li>Tam kare olmayan çarpanı içeride bırak.</li>
+                    </ul>
+                </div>
+
+                <div class="example">
+                    <strong>Örnek:</strong> √75 = √(25 · 3) = <strong>5√3</strong><br>
+                    <span style="font-size: 0.85rem; opacity: 0.8;">(25 dışarı 5 olarak çıktı!)</span>
+                </div>
+            </div>
+
+            <!-- 2. KART: Kök İçine Alma -->
+            <div class="card alt">
+                <div>
+                    <div class="card-title">
+                        <span>📥</span> Kök İçine Alma
+                    </div>
+                    <p style="font-size: 0.95rem; color: #50657a; margin-bottom: 10px;">
+                        Kök dışındaki sayıyı kök içine alırken <strong>karesi alınarak</strong> içeri gönderilir!
+                    </p>
+                    
+                    <div class="formula-box">
+                        a√b = √(a² · b)
+                    </div>
+
+                    <ul class="steps">
+                        <li>Katsayının kuvvetini (karesini) al.</li>
+                        <li>İçerideki sayı ile çarpıp kök içine yaz.</li>
+                    </ul>
+                </div>
+
+                <div class="example">
+                    <strong>Örnek:</strong> 4√5 = √(4² · 5) = √(16 · 5) = <strong>√80</strong><br>
+                    <span style="font-size: 0.85rem; opacity: 0.8;">(4, içeri 16 olarak girdi!)</span>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Altın İpucu Alanı -->
+        <div class="tips-footer">
+            <div class="tip-box">
+                <span class="tip-icon">💡</span>
+                <span><strong>Altın İpucu:</strong> En büyük tam kareyi bulamıyorsan asal çarpan algoritmasını kullan!</span>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
