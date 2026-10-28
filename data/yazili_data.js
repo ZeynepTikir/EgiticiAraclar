@@ -143,12 +143,12 @@ const yaziliVerileri = {
           },
           { 
             ad: "Örnek Yazılı Ulti", 
-            dosya: "yazili/matematik/8_sinif/8_mat_1d1y_ulti_2_sinav.pdf.pdf", 
+            dosya: "yazili/matematik/8_sinif/8_mat_1d1y_ulti_2_sinav.pdf", 
             tur: "yazili" 
           },
           { 
             ad: "Örnek Yazılı Ulti", 
-            dosya: "yazili/matematik/8_sinif/8_mat_1d1y_ulti_sinav.pdf.pdf", 
+            dosya: "yazili/matematik/8_sinif/8_mat_1d1y_ulti_sinav.pdf", 
             tur: "yazili" 
           }
         ]
