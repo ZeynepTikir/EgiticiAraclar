@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>8. Sınıf Üslü Sayılar Temel Kuralları İnfografiği</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 100%);
+            color: #102a43;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .poster {
+            width: 100%;
+            max-width: 1000px;
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(16, 42, 67, 0.15);
+            overflow: hidden;
+            border: 8px solid #ffb703;
+        }
+
+        /* HEADER */
+        header {
+            background: linear-gradient(135deg, #3a86ff 0%, #4361ee 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+            padding-bottom: 50px;
+        }
+
+        .grade-badge {
+            background: #ff006e;
+            color: white;
+            padding: 6px 16px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            border-radius: 50px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: inline-block;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 10px rgba(255, 0, 110, 0.3);
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            margin-bottom: 15px;
+        }
+
+        /* ANATOMY SECTION */
+        .anatomy-box {
+            background: #ffffff;
+            color: #102a43;
+            margin: -30px 40px 20px 40px;
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            border: 3px dashed #3a86ff;
+            position: relative;
+            z-index: 10;
+        }
+
+        .anatomy-item {
+            text-align: center;
+        }
+
+        .anatomy-item span {
+            display: block;
+            font-size: 0.85rem;
+            color: #627d98;
+            font-weight: 600;
+        }
+
+        .anatomy-item strong {
+            font-size: 1.5rem;
+            color: #ff006e;
+        }
+
+        .big-math {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #3a86ff;
+        }
+
+        /* GRID CONTENT */
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            padding: 0 40px 30px 40px;
+        }
+
+        .card {
+            background: #f8fafc;
+            border-radius: 16px;
+            padding: 20px;
+            border-top: 6px solid #3a86ff;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card.purple { border-top-color: #7209b7; }
+        .card.pink { border-top-color: #ff006e; }
+        .card.orange { border-top-color: #fb8500; }
+        .card.green { border-top-color: #38b000; }
+        .card.teal { border-top-color: #00b4d8; }
+
+        .card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 12px;
+            color: #102a43;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .rule-box {
+            background: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-weight: 700;
+            color: #240046;
+            margin-bottom: 10px;
+            text-align: center;
+            border: 1px solid #e2e8f0;
+            font-size: 1.1rem;
+        }
+
+        .card p {
+            font-size: 0.85rem;
+            color: #486581;
+            line-height: 1.4;
+        }
+
+        .example {
+            font-size: 0.8rem;
+            color: #023e8a;
+            margin-top: 8px;
+            font-weight: 600;
+            background: #e0fbfc;
+            padding: 4px 8px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+
+        /* PRO TIP SECTION */
+        .pro-tip {
+            margin: 0 40px 40px 40px;
+            background: linear-gradient(135deg, #ffb703 0%, #fb8500 100%);
+            color: #102a43;
+            padding: 20px 30px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            box-shadow: 0 8px 20px rgba(251, 133, 0, 0.3);
+        }
+
+        .pro-tip-icon {
+            font-size: 2.5rem;
+            background: white;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            flex-shrink: 0;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .pro-tip-content h4 {
+            font-size: 1.1rem;
+            font-weight: 800;
+            margin-bottom: 5px;
+            color: #000;
+        }
+
+        .pro-tip-content p {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #111;
+            line-height: 1.5;
+        }
+
+        /* FOOTER BRANDING */
+        footer {
+            text-align: center;
+            padding: 15px;
+            background: #102a43;
+            color: white;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            header h1 { font-size: 2rem; }
+            .anatomy-box { flex-direction: column; gap: 10px; margin: -20px 20px 20px 20px; }
+            .content-grid { padding: 0 20px 20px 20px; }
+            .pro-tip { margin: 0 20px 30px 20px; flex-direction: column; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="poster">
+        <!-- HEADER -->
+        <header>
+            <span class="grade-badge">8. Sınıf Matematik</span>
+            <h1>Üslü Sayılar Temel Kuralları</h1>
+            <p>Matematiğin Güçlü Katlanma Sanatı!</p>
+        </header>
+
+        <!-- ANATOMİ KARTI -->
+        <div class="anatomy-box">
+            <div class="anatomy-item">
+                <span>TABAN</span>
+                <strong>a</strong>
+            </div>
+            <div class="big-math">a<sup>n</sup></div>
+            <div class="anatomy-item">
+                <span>ÜS (KUVVET)</span>
+                <strong>n</strong>
+            </div>
+        </div>
+
+        <!-- KURALLAR GRID -->
+        <div class="content-grid">
+            <!-- 1. Kural -->
+            <div class="card">
+                <h3>Çarpma İşlemi</h3>
+                <div class="rule-box">a<sup>m</sup> . a<sup>n</sup> = a<sup>m+n</sup></div>
+                <p>Tabanlar aynı ise üsler toplanır ortak üsse taban yazılır.</p>
+                <div class="example">Örnek: 2<sup>3</sup> . 2<sup>4</sup> = 2<sup>7</sup></div>
+            </div>
+
+            <!-- 2. Kural -->
+            <div class="card purple">
+                <h3>Bölme İşlemi</h3>
+                <div class="rule-box">a<sup>m</sup> / a<sup>n</sup> = a<sup>m-n</sup></div>
+                <p>Tabanlar aynı ise payın üssünden paydanın üssü çıkarılır.</p>
+                <div class="example">Örnek: 5<sup>8</sup> / 5<sup>2</sup> = 5<sup>6</sup></div>
+            </div>
+
+            <!-- 3. Kural -->
+            <div class="card pink">
+                <h3>Üssün Üssü</h3>
+                <div class="rule-box">(a<sup>m</sup>)<sup>n</sup> = a<sup>m.n</sup></div>
+                <p>Üssün üssü alınırken kuvvetler birbiri ile çarpılır.</p>
+                <div class="example">Örnek: (3<sup>2</sup>)<sup>3</sup> = 3<sup>6</sup></div>
+            </div>
+
+            <!-- 4. Kural -->
+            <div class="card orange">
+                <h3>Negatif Kuvvet</h3>
+                <div class="rule-box">a<sup>-n</sup> = 1 / a<sup>n</sup></div>
+                <p>Negatif üs sayıyı ters çevirir (çarpmaya göre tersi).</p>
+                <div class="example">Örnek: 2<sup>-3</sup> = 1 / 2<sup>3</sup> = 1/8</div>
+            </div>
+
+            <!-- 5. Kural -->
+            <div class="card green">
+                <h3>Kuvvetleri Eşit Çarpma</h3>
+                <div class="rule-box">a<sup>n</sup> . b<sup>n</sup> = (a . b)<sup>n</sup></div>
+                <p>Üsler aynı ise tabanlar çarpılır, ortak üs aynen kalır.</p>
+                <div class="example">Örnek: 2<sup>3</sup> . 5<sup>3</sup> = (2.5)<sup>3</sup> = 10<sup>3</sup></div>
+            </div>
+
+            <!-- 6. Kural -->
+            <div class="card teal">
+                <h3>Sıfırıncı Kuvvet</h3>
+                <div class="rule-box">a<sup>0</sup> = 1</div>
+                <p>Sıfır hariç her sayının sıfırıncı kuvveti 1'e eşittir.</p>
+                <div class="example">Örnek: (-2024)<sup>0</sup> = 1</div>
+            </div>
+        </div>
+
+        <!-- ÖNEMLİ İPUCU / DOLU NOT KUTUSU -->
+        <div class="pro-tip">
+            <div class="pro-tip-icon">⚡</div>
+            <div class="pro-tip-content">
+                <h4>LGS Altın İpuçları & Kritik Notlar</h4>
+                <p>
+                    • <strong>Parantez Hayat Kurtarır:</strong> Çift kuvvetlerde (-3)<sup>2</sup> = +9 iken, parantezsiz -3<sup>2</sup> = -9 olur. İşarete dikkat et!<br>
+                    • <strong>Bilimsel Gösterim:</strong> a . 10<sup>n</sup> gösteriminde a sayısı 1 ile 10 arasında (1 ≤ |a| < 10) olmalıdır.<br>
+                    • <strong>Çözümleme:</strong> Ondalık gösterimler 10'un tam sayı kuvvetleri kullanılarak basamak değerlerine ayrılır.
+                </p>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <footer>
+            LGS MATEMATİK DERS AFİŞİ - BAŞARILAR DİLERİZ!
+        </footer>
+    </div>
+
+</body>
+</html>
