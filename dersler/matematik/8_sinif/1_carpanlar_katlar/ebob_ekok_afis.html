@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>8. Sınıf LGS Matematik: EBOB - EKOK Soru Tipleri</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #2d3748;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .poster {
+            width: 100%;
+            max-width: 1200px;
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            overflow: hidden;
+            border: 8px solid #ffcc00;
+        }
+
+        /* HEADER */
+        header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            text-align: center;
+            padding: 30px 20px;
+            position: relative;
+        }
+
+        .badge {
+            background: #ffcc00;
+            color: #1e3c72;
+            padding: 6px 18px;
+            font-size: 0.9rem;
+            font-weight: 800;
+            border-radius: 50px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: inline-block;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            font-weight: 900;
+            margin-bottom: 5px;
+            letter-spacing: -1px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        header p {
+            font-size: 1.1rem;
+            font-weight: 400;
+            opacity: 0.9;
+        }
+
+        /* GOLDEN RULE BANNER */
+        .golden-rule {
+            background: #fff9db;
+            border-bottom: 4px dashed #ffcc00;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .golden-rule h2 {
+            color: #d97706;
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .golden-rule .highlight-box {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .highlight-item {
+            background: white;
+            padding: 10px 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .highlight-item.ebob { border-left: 6px solid #e74c3c; color: #c0392b; }
+        .highlight-item.ekok { border-left: 6px solid #27ae60; color: #27ae60; }
+
+        /* MAIN GRID CONTENT */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            padding: 30px;
+        }
+
+        @media (max-width: 900px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            border-top: 8px solid #ccc;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card.ebob-card { border-top-color: #e74c3c; }
+        .card.ekok-card { border-top-color: #27ae60; }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #f1f5f9;
+            padding-bottom: 10px;
+        }
+
+        .card-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+        }
+
+        .ebob-card .card-title { color: #e74c3c; }
+        .ekok-card .card-title { color: #27ae60; }
+
+        .card-tagline {
+            font-size: 1rem;
+            font-weight: 700;
+            background: #f8fafc;
+            padding: 6px 12px;
+            border-radius: 8px;
+            color: #475569;
+        }
+
+        /* CONTEXT LIST */
+        .context-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #1e293b;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        ul {
+            list-style: none;
+            margin-bottom: 20px;
+        }
+
+        ul li {
+            position: relative;
+            padding-left: 25px;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #4b5563;
+        }
+
+        ul li::before {
+            content: "✔";
+            position: absolute;
+            left: 0;
+            font-weight: 900;
+        }
+
+        .ebob-card ul li::before { color: #e74c3c; }
+        .ekok-card ul li::before { color: #27ae60; }
+
+        /* EXAMPLE BOX */
+        .example-box {
+            background: #f8fafc;
+            border-radius: 10px;
+            padding: 12px 15px;
+            border-left: 4px solid #cbd5e1;
+            font-size: 0.9rem;
+        }
+
+        .ebob-card .example-box { border-left-color: #e74c3c; background: #fdf2f2; }
+        .ekok-card .example-box { border-left-color: #27ae60; background: #f0fdf4; }
+
+        .example-box strong {
+            display: block;
+            margin-bottom: 3px;
+            color: #1e293b;
+        }
+
+        /* FOOTER TIPS */
+        .footer-tips {
+            background: #2d3748;
+            color: white;
+            padding: 25px 30px;
+            text-align: center;
+        }
+
+        .footer-tips h3 {
+            color: #ffcc00;
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            font-weight: 800;
+        }
+
+        .tips-grid {
+            display: flex;
+            justify-content: space-around;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .tip-item {
+            background: rgba(255,255,255,0.1);
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            flex: 1;
+            min-width: 250px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .tip-item span {
+            color: #ffcc00;
+            font-weight: 800;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="poster">
+        <!-- HEADER -->
+        <header>
+            <div class="badge">8. Sınıf LGS Matematik Ustası</div>
+            <h1>EBOB - EKOK SORU TİPLERİ</h1>
+            <p>Soru Çözerken Hayat Kurtaran Taktikler ve Altın Kurallar</p>
+        </header>
+
+        <!-- GOLDEN RULE -->
+        <div class="golden-rule">
+            <h2>EN ÖNEMLİ ALTIN KURAL</h2>
+            <div class="highlight-box">
+                <div class="highlight-item ebob">EBOB: Bütünden Parçaya Gidilir (Bölüştür, Paylaştır)</div>
+                <div class="highlight-item ekok">EKOK: Parçadan Bütüne Gidilir (Birleştir, Ortak Kat Al)</div>
+            </div>
+        </div>
+
+        <!-- MAIN GRID CONTENT -->
+        <div class="content-grid">
+            
+            <!-- EBOB CARD -->
+            <div class="card ebob-card">
+                <div class="card-header">
+                    <div class="card-title">EBOB</div>
+                    <div class="card-tagline">En Büyük Ortak Bölen</div>
+                </div>
+
+                <div class="context-title">🔍 Hangi Durumlarda Kullanılır? (Bütün Verilir, Parça İstenir)</div>
+                <ul>
+                    <li>Çuvallar, bidonlar veya kasalardaki malzemeler daha küçük ve eş kaplara/poşetlere hiç artmayacak şekilde doldurulacaksa.</li>
+                    <li>Tarlaların etrafına eşit aralıklarla ağaç dikilecekse (Çevre / Köşeler Dahil).</li>
+                    <li>Kumaşlar, tahtalar veya demir çubuklar eşit uzunlukta parçalara bölünecekse.</li>
+                    <li>Farklı yetenekteki işçiler en az sayıda gruplara ayrılacaksa.</li>
+                </ul>
+
+                <div class="example-box">
+                    <strong>💡 Örnek Bağlam:</strong>
+                    "60 kg ve 72 kg'lık iki çuval un, birbirine karıştırılmadan ve hiç artmayacak şekilde eşit büyüklükteki torbalara doldurulacaktır. En az kaç torba gerekir?"
+                </div>
+            </div>
+
+            <!-- EKOK CARD -->
+            <div class="card ekok-card">
+                <div class="card-header">
+                    <div class="card-title">EKOK</div>
+                    <div class="card-tagline">En Küçük Ortak Kat</div>
+                </div>
+
+                <div class="context-title">🔍 Hangi Durumlarda Kullanılır? (Parça Verilir, Bütün İstenir)</div>
+                <ul>
+                    <li>İki farklı otobüs, zil veya nöbetçi aynı anda (birlikte) tekrar ne zaman denk gelir / buluşur?</li>
+                    <li>Küçük tuğlalar, kutular veya koliler üst üste veya yan yana konularak küp / büyük kutu oluşturulacaksa.</li>
+                    <li>İki farklı boyuttaki saat veya ışık aynı anda yanıp sönecekse.</li>
+                    <li>Cevizler, bilyeler belirli sayıdaki kişilere üçerli, beşerli dağıtıldığında hep aynı miktar artıyor veya eksiliyorsa.</li>
+                </ul>
+
+                <div class="example-box">
+                    <strong>💡 Örnek Bağlam:</strong>
+                    "İki otobüsten biri 12 dakikada, diğeri 18 dakikada bir sefer yapmaktadır. Bu iki otobüs aynı anda hareket ettikten kaç dakika sonra tekrar birlikte hareket eder?"
+                </div>
+            </div>
+
+        </div>
+
+        <!-- FOOTER TIPS -->
+        <div class="footer-tips">
+            <h3>🚀 AKILDA KALICI ÖZET İPUÇLARI</h3>
+            <div class="tips-grid">
+                <div class="tip-item">
+                    <span>Parçadan Bütüne:</span> Küçük parçalar birleşip büyüyorsa kesinlikle <span>EKOK</span>'tur.
+                </div>
+                <div class="tip-item">
+                    <span>Bütünden Parçaya:</span> Büyük bir bütün parçalara ayrılıyorsa kesinlikle <span>EBOB</span>'tur.
+                </div>
+                <div class="tip-item">
+                    <span>Zaman / Birlikte Olaylar:</span> Gelecekteki ortak buluşma anları hep <span>EKOK</span> ile bulunur.
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

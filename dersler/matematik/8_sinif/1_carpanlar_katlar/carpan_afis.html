@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>8. Sınıf Matematik - Çarpan Bulma Yöntemleri İnfografiği</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --accent: #f72585;
+            --success: #4cc9f0;
+            --warning: #4895ef;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --card-bg: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(135deg, #f0f3ff 0%, #e6edff 100%);
+            color: var(--dark);
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .poster {
+            width: 100%;
+            max-width: 1000px;
+            background: var(--card-bg);
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(67, 97, 238, 0.15);
+            overflow: hidden;
+            border: 4px solid #fff;
+        }
+
+        /* HEADER */
+        .header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        .grade-badge {
+            background: var(--accent);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: inline-block;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 10px rgba(247, 37, 133, 0.3);
+        }
+
+        .header h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* CONTENT CONTAINER */
+        .content {
+            padding: 30px;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+        }
+
+        /* DEFINITION BOX */
+        .definition-box {
+            background: #eef4ff;
+            border-left: 6px solid var(--primary);
+            padding: 20px;
+            border-radius: 0 12px 12px 0;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .definition-box strong {
+            color: var(--secondary);
+        }
+
+        /* METHODS GRID */
+        .methods-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .method-card {
+            background: #ffffff;
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 20px;
+            position: relative;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .method-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+        }
+
+        .method-number {
+            position: absolute;
+            top: -15px;
+            left: 20px;
+            background: var(--accent);
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 8px rgba(247, 37, 133, 0.3);
+        }
+
+        .method-card h3 {
+            font-family: 'Poppins', sans-serif;
+            color: var(--secondary);
+            margin-top: 10px;
+            margin-bottom: 12px;
+            font-size: 1.3rem;
+        }
+
+        .example-box {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 12px;
+            margin-top: 12px;
+            font-family: monospace;
+            font-size: 1.05rem;
+            color: #d90429;
+            border-left: 4px solid #ff5964;
+        }
+
+        /* TIPS & TRICKS SECTION */
+        .tips-section {
+            background: linear-gradient(135deg, #f72585, #b5179e);
+            color: white;
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 8px 20px rgba(247, 37, 133, 0.2);
+        }
+
+        .tips-section h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+        }
+
+        .tip-item {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 15px;
+            border-radius: 10px;
+            backdrop-filter: blur(5px);
+        }
+
+        .tip-item h4 {
+            font-family: 'Poppins', sans-serif;
+            margin-bottom: 5px;
+            color: #ff9e00;
+        }
+
+        .tip-item p {
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+
+        /* FOOTER BANNER */
+        .footer-banner {
+            text-align: center;
+            padding: 15px;
+            background: var(--dark);
+            color: white;
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 { font-size: 2rem; }
+            .content { padding: 15px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="poster">
+        <!-- Başlık Bölümü -->
+        <div class="header">
+            <span class="grade-badge">8. Sınıf Matematik</span>
+            <h1>Çarpan Bulma Yöntemleri</h1>
+            <p>Bir sayının kalansız bölenlerini (çarpanlarını) kaçırmadan bulma rehberi!</p>
+        </div>
+
+        <div class="content">
+            <!-- Tanım -->
+            <div class="definition-box">
+                <strong>Çarpan (Bölen) Nedir?</strong> Bir doğal sayıyı kalansız (kalansız = 0) bölebilen tüm pozitif tam sayılara o sayının <strong>çarpanı</strong> (aynı zamanda böleni) denir.
+            </div>
+
+            <!-- Yöntemler Grid -->
+            <div class="methods-container">
+                
+                <!-- Yöntem 1 -->
+                <div class="method-card" style="border-top: 4px solid var(--primary);">
+                    <div class="method-number">1</div>
+                    <h3>Gökkuşağı Yöntemi (Çarpım İkilileri)</h3>
+                    <p>Sayıyı iki pozitif tam sayının çarpımı şeklinde sırayla yazmaktır. Küçükten büyüğe sıralı gitmek hayat kurtarır!</p>
+                    <div class="example-box">
+                        Örnek: 24'ün Çarpanları<br>
+                        1 x 24<br>
+                        2 x 12<br>
+                        3 x 8<br>
+                        4 x 6<br>
+                        <strong>Sonuç: 1, 2, 3, 4, 6, 8, 12, 24</strong>
+                    </div>
+                </div>
+
+                <!-- Yöntem 2 -->
+                <div class="method-card" style="border-top: 4px solid var(--accent);">
+                    <div class="method-number">2</div>
+                    <h3>Asal Çarpan Ağacı Yöntemi</h3>
+                    <p>Sayının en küçük asal sayıdan (2'den) başlayarak dallara ayrılarak çarpanlarına ayrılmasıdır.</p>
+                    <div class="example-box">
+                        Örnek: 36 için<br>
+                        36 / 2 = 18<br>
+                        18 / 2 = 9<br>
+                        9 / 3 = 3<br>
+                        <strong>Asal Çarpanlar: 2 ve 3</strong>
+                    </div>
+                </div>
+
+                <!-- Yöntem 3 -->
+                <div class="method-card" style="border-top: 4px solid #38b000;">
+                    <div class="method-number">3</div>
+                    <h3>Bölen Listesi (Asal Çarpan Algoritması)</h3>
+                    <p>Sayı dikey bir çizginin soluna yazılır. Sağ tarafa sadece asal sayılar yazılarak bölme işlemi 1 olana kadar sürdürülür.</p>
+                    <div class="example-box">
+                        Örnek: 60'ın Asal Bölenleri<br>
+                        60 | 2<br>
+                        30 | 2<br>
+                        15 | 3<br>
+                        5  | 5<br>
+                        1<br>
+                        <strong>Asal Çarpanlar: 2, 3, 5</strong>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Pratik İpuçları ve Kurallar -->
+            <div class="tips-section">
+                <h2>💡 Pratik Bilgiler ve Sınav İpuçları</h2>
+                <div class="tips-grid">
+                    <div class="tip-item">
+                        <h4>1 ve Kendisi</h4>
+                        <p>Her doğal sayı 1 ve kendisinin çarpımıdır. Listeye mutlaka bunlarla başla ve bitir!</p>
+                    </div>
+                    <div class="tip-item">
+                        <h4>Tam Kare Sayı Dikkat!</h4>
+                        <p>49, 64, 100 gibi tam kare sayıların çarpan adedi <strong>TEK</strong> sayıdır. (Örn: 36'nın çarpanı olan 6, kendisiyle çarpıldığında iki kez yazılmaz.)</p>
+                    </div>
+                    <div class="tip-item">
+                        <h4>Asal Sayıların Sırrı</h4>
+                        <p>Asal sayıların sadece 2 tane pozitif çarpanı vardır: 1 ve kendisi. (Örn: 2, 3, 5, 7, 11...)</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="footer-banner">
+            Matematik Başarıya Giden Yolda Doğru Adımlarla İlerler! 🚀
+        </div>
+    </div>
+
+</body>
+</html>

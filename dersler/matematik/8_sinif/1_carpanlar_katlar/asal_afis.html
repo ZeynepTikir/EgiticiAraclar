@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>8. Sınıf Matematik İnfografik: Asal Çarpanlar ve Aralarında Asal Sayılar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #333;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .poster {
+            width: 100%;
+            max-width: 1200px;
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            overflow: hidden;
+            border: 8px solid #4a90e2;
+        }
+
+        /* HEADER */
+        header {
+            background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
+            color: white;
+            text-align: center;
+            padding: 30px 20px;
+            position: relative;
+        }
+
+        .grade-badge {
+            background: #ffcc00;
+            color: #333;
+            font-weight: 800;
+            padding: 6px 18px;
+            border-radius: 50px;
+            font-size: 1rem;
+            display: inline-block;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            text-transform: uppercase;
+        }
+
+        header h1 {
+            font-size: 2.8rem;
+            font-weight: 900;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        header p {
+            font-size: 1.2rem;
+            font-weight: 600;
+            opacity: 0.95;
+        }
+
+        /* MAIN CONTENT GRID */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            padding: 30px;
+        }
+
+        @media (max-width: 900px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* CARDS */
+        .card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+            border-top: 6px solid #ccc;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card.prime-factors {
+            border-top-color: #ff5e62;
+        }
+
+        .card.methods {
+            border-top-color: #ff9966;
+        }
+
+        .card.coprime {
+            border-top-color: #00b09b;
+        }
+
+        .card.tips {
+            border-top-color: #8e44ad;
+            grid-column: 1 / -1;
+        }
+
+        .card h2 {
+            font-size: 1.6rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card.prime-factors h2 { color: #ff5e62; }
+        .card.methods h2 { color: #e67e22; }
+        .card.coprime h2 { color: #00b09b; }
+        .card.tips h2 { color: #8e44ad; }
+
+        /* DEFINITION & CONTENT */
+        p.definition {
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            color: #555;
+        }
+
+        .highlight-box {
+            background: #f8f9fa;
+            border-left: 4px solid #4a90e2;
+            padding: 12px 15px;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+        }
+
+        /* EXAMPLE BOX */
+        .example {
+            background: #fff9e6;
+            border: 2px dashed #ffcc00;
+            padding: 15px;
+            border-radius: 12px;
+            margin-top: 15px;
+        }
+
+        .example-title {
+            font-weight: 700;
+            color: #d4ac0d;
+            margin-bottom: 5px;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+        }
+
+        /* TREE & ALGORITHM STYLING */
+        .tree-visual {
+            text-align: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #333;
+            background: #fff0f0;
+            padding: 12px;
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+
+        /* TIPS GRID */
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .tip-item {
+            background: #f4ecf7;
+            padding: 15px;
+            border-radius: 12px;
+            border-left: 4px solid #8e44ad;
+        }
+
+        .tip-item h4 {
+            color: #8e44ad;
+            margin-bottom: 5px;
+            font-size: 1.05rem;
+        }
+
+        .tip-item p {
+            font-size: 0.9rem;
+            color: #555;
+            line-height: 1.4;
+        }
+
+        /* FOOTER */
+        footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="poster">
+        <!-- BAŞLIK -->
+        <header>
+            <span class="grade-badge">8. Sınıf Matematik Özel Serisi</span>
+            <h1>ASAL ÇARPANLAR ve ARALARINDA ASAL SAYILAR</h1>
+            <p>LGS Hazırlık Temel Bilgi ve Pratik İpuçları İnfografiği</p>
+        </header>
+
+        <!-- İÇERİK ALANI -->
+        <div class="content-grid">
+
+            <!-- 1. KART: ASAL SAYI VE ASAL ÇARPAN -->
+            <div class="card prime-factors">
+                <h2>Asal Çarpan Nedir?</h2>
+                <p class="definition"><strong>Asal Sayı:</strong> 1'den ve kendisinden başka pozitif böleni olmayan 1'den büyük doğal sayılardır. (Örn: 2, 3, 5, 7, 11, 13, 17, 19...) En küçük ve çift olan tek asal sayı <strong>2</strong>'dir.</p>
+                <div class="highlight-box">
+                    <strong>Asal Çarpan:</strong> Bir sayıyı bölen asal sayıların her birine o sayının <em>asal çarpanı</em> denir.
+                </div>
+                <div class="example">
+                    <div class="example-title">Pratik Örnek: 60 Sayısı</div>
+                    <p>60 sayısının asal çarpanlarını bulalım:</p>
+                    <p style="margin-top: 5px; font-weight: 650; color: #ff5e62;">60 = 2² x 3¹ x 5¹</p>
+                    <p style="font-size: 0.9rem; margin-top: 5px;">Asal Çarpanları: <strong>2, 3 ve 5</strong>'tir. (3 tanedir)</p>
+                </div>
+            </div>
+
+            <!-- 2. KART: BULMA YÖNTEMLERİ -->
+            <div class="card methods">
+                <h2>Bulma Yöntemleri</h2>
+                <p class="definition">Asal çarpanları ayırmak için iki harika yöntem kullanırız:</p>
+                
+                <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                    <div style="flex: 1; background: #fff5ee; padding: 10px; border-radius: 8px;">
+                        <strong>1. Çarpan Ağacı</strong>
+                        <p style="font-size: 0.85rem; margin-top: 4px;">Sayı dallara ayrılarak en küçük asal sayılardan başlanarak parçalanır.</p>
+                    </div>
+                    <div style="flex: 1; background: #fff5ee; padding: 10px; border-radius: 8px;">
+                        <strong>2. Bölen Listesi (Algoritma)</strong>
+                        <p style="font-size: 0.85rem; margin-top: 4px;">Dikey çizgi çekilir, en küçük asal bölenden başlayarak 1 olana kadar bölünür.</p>
+                    </div>
+                </div>
+
+                <div class="tree-visual">
+                    Çizgi Algoritması En Hızlı ve Hatasız Yöntemdir!
+                </div>
+            </div>
+
+            <!-- 3. KART: ARALARINDA ASAL SAYILAR -->
+            <div class="card coprime" style="grid-column: 1 / -1;">
+                <h2>Aralarında Asal Sayılar</h2>
+                <p class="definition">1'den başka ortak pozitif böleni (EBOB'u) olmayan sayılara <strong>aralarında asal sayılar</strong> denir. Bu sayıların kendilerinin asal olması şart değildir!</p>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; margin-top: 15px;">
+                    <div style="background: #e8f8f5; padding: 12px; border-radius: 8px; border-left: 4px solid #00b09b;">
+                        <strong>Kural 1: Ardışık Sayılar</strong>
+                        <p style="font-size: 0.9rem; margin-top: 4px;">Ardışık tüm sayılar daima aralarında asaldır. (Örn: 8 ve 9, 15 ve 16)</p>
+                    </div>
+                    <div style="background: #e8f8f5; padding: 12px; border-radius: 8px; border-left: 4px solid #00b09b;">
+                        <strong>Kural 2: Ardışık Tek Sayılar</strong>
+                        <p style="font-size: 0.9rem; margin-top: 4px;">Ardışık tek sayılar her zaman aralarında asaldır. (Örn: 9 ve 11, 21 ve 23)</p>
+                    </div>
+                    <div style="background: #e8f8f5; padding: 12px; border-radius: 8px; border-left: 4px solid #00b09b;">
+                        <strong>Kural 3: 1 ve Bütün Sayılar</strong>
+                        <p style="font-size: 0.9rem; margin-top: 4px;">1 sayısı bütün pozitif tam sayılarla aralarında asaldır. (Örn: 1 ve 100)</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. KART: PRATİK BİLGİLER VE PÜF NOKTALARI -->
+            <div class="card tips">
+                <h2>LGS Pratik Bilgiler ve Püf Noktaları</h2>
+                <div class="tips-grid">
+                    <div class="tip-item">
+                        <h4>Asal Çarpanlar Toplamı/Sayısı</h4>
+                        <p>Sorularda "kaç farklı asal çarpanı vardır" denirse, üslü ifadenin tabanındaki farklı sayı adedine bakılır.</p>
+                    </div>
+                    <div class="tip-item">
+                        <h4>Aralarında Asal ve EKOK</h4>
+                        <p>Aralarında asal iki sayının EKOK'u, bu iki sayının çarpımına eşittir. (Örn: EKOK(7,8) = 7 x 8 = 56)</p>
+                    </div>
+                    <div class="tip-item">
+                        <h4>Aralarında Asal ve EBOB</h4>
+                        <p>Aralarında asal sayıların EBOB'u daima 1'e eşittir. Hiçbir ortak bölenleri yoktur (1 hariç).</p>
+                    </div>
+                    <div class="tip-item">
+                        <h4>İki Asal Sayı</h4>
+                        <p>Kendileri asal olan iki farklı sayı (Örn: 5 ve 7) otomatik olarak aralarında asaldır.</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- FOOTER -->
+        <footer>
+            Matematik Sınıfı Eğitim Afişi serisi © 8. Sınıf Başarı Odaklı Tasarım
+        </footer>
+    </div>
+
+</body>
+</html>
