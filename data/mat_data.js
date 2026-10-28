@@ -95,6 +95,11 @@ const matVerileri = {
       {
         uniteAdi: "3. Kareköklü Sayılar",
         araclar: [
+          { ad: "Tam Kare Sayılar ve Karekök", dosya: "dersler/matematik/8_sinif/3_karekoklu_ifadeler/tam_kare_afis.html", tur: "afis" },
+          { ad: "Tam Kare Olmayan Sayılar ve Karekök", dosya: "dersler/matematik/8_sinif/3_karekoklu_ifadeler/akokb_afis.html", tur: "afis" },
+          { ad: "Yaklaşık Değer", dosya: "dersler/matematik/8_sinif/3_karekoklu_ifadeler/karekok_yaklasik_deger_afis.html", tur: "afis" },
+          { ad: "Kareköklü İfadelerde İşlemler", dosya: "dersler/matematik/8_sinif/3_karekoklu_ifadeler/karekok_islemler_afis.html", tur: "afis" },
+          { ad: "Gerçek Sayılar", dosya: "dersler/matematik/8_sinif/3_karekoklu_ifadeler/gercek_sayilar_afis.html", tur: "afis" },
           { ad: "Tam Kare Sayılar ve Karekök Etkinliği", dosya: "dersler/matematik/8_sinif/3_karekoklu_ifadeler/tam_kare_sayilar_ve_karekok_lab.html", tur: "lab" },
           { ad: "Tam Kare Olmayan Sayıların Karekökleri Etkinliği", dosya: "dersler/matematik/8_sinif/3_karekoklu_ifadeler/tam_kare_olmayan_sayilarin_karekokleri_lab.html", tur: "lab" },
           { ad: "Kök Yaklaşık Değer Tahmin Atölyesi", dosya: "dersler/matematik/8_sinif/3_karekoklu_ifadeler/kok_yaklasik_deger_tahmin_atolye.html", tur: "atolye" },
