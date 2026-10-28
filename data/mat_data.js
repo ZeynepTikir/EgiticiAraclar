@@ -52,11 +52,11 @@ const matVerileri = {
         araclar: [
           { ad: "Çarpanlar", dosya: "dersler/matematik/8_sinif/1_carpanlar_katlar/carpan_afis.html", tur: "afis" },
           { ad: "Asallar ve Aralarında Asal Sayılar", dosya: "dersler/matematik/8_sinif/1_carpanlar_katlar/asal_afis.html", tur: "afis" },
+          { ad: "EBOB - EKOK", dosya: "dersler/matematik/8_sinif/1_carpanlar_katlar/ebob_ekok_afis.html", tur: "afis" },
           { ad: "Çarpanlar + Asal Çarpanlar Etkinliği", dosya: "dersler/matematik/8_sinif/1_carpanlar_katlar/carpanlar_asal_carpanlar_lab.html", tur: "lab" },
           { ad: "Çarpanlar Atölyesi", dosya: "dersler/matematik/8_sinif/1_carpanlar_katlar/carpanlar_atolye.html", tur: "atolye" },
           { ad: "Asal Çarpanlar Atölyesi", dosya: "dersler/matematik/8_sinif/1_carpanlar_katlar/asal_carpanlar_atolye.html", tur: "atolye" },
           { ad: "Aralarında Asal Sayılar Etkinliği", dosya: "dersler/matematik/8_sinif/1_carpanlar_katlar/aralarinda_asal_sayilar_lab.html", tur: "lab" },
-          { ad: "EBOB - EKOK", dosya: "dersler/matematik/8_sinif/1_carpanlar_katlar/ebob_ekok_afis.html", tur: "afis" },
           { ad: "EBOB EKOK Etkinliği", dosya: "dersler/matematik/8_sinif/1_carpanlar_katlar/ebob_ekok_lab.html", tur: "lab" },
           { ad: "EBOB Etkinliği", dosya: "dersler/matematik/8_sinif/1_carpanlar_katlar/ebob_lab.html", tur: "lab" },
           { ad: "EBOB Çevre Atölyesi", dosya: "dersler/matematik/8_sinif/1_carpanlar_katlar/ebob_cevre_atolye.html", tur: "atolye" },
@@ -78,6 +78,8 @@ const matVerileri = {
         uniteAdi: "2. Üslü İfadeler",
         araclar: [
           { ad: "Üslü İfadeler Temel Kuralları", dosya: "dersler/matematik/8_sinif/2_uslu_ifadeler/uslu_afis.html", tur: "afis" },
+          { ad: "Üslü İfadelerle Çözümleme", dosya: "dersler/matematik/8_sinif/2_uslu_ifadeler/cozumleme_afis.html", tur: "afis" },
+          { ad: "Üslü İfadelerde Virgül Kaydırma", dosya: "dersler/matematik/8_sinif/2_uslu_ifadeler/virgul_kaydirma_afis.html", tur: "afis" },
           { ad: "Üslü İfadeler Etkinliği", dosya: "dersler/matematik/8_sinif/2_uslu_ifadeler/uslu_ifadeler_lab.html", tur: "lab" },
           { ad: "Üssün Üssü Atölyesi", dosya: "dersler/matematik/8_sinif/2_uslu_ifadeler/ussun_ussu_atolye.html", tur: "atolye" },
           { ad: "Negatif Üs Atölyesi", dosya: "dersler/matematik/8_sinif/2_uslu_ifadeler/negatif_us_atolye.html", tur: "atolye" },
