@@ -50,6 +50,8 @@ const matVerileri = {
       {
         uniteAdi: "1. Çarpanlar ve Katlar",
         araclar: [
+          { ad: "Çarpanlar", dosya: "dersler/matematik/8_sinif/1_carpanlar_katlar/carpan_afis.html", tur: "afis" },
+          { ad: "Asallar ve Aralarında Asal Sayılar", dosya: "dersler/matematik/8_sinif/1_carpanlar_katlar/asal_afis.html", tur: "afis" },
           { ad: "Çarpanlar + Asal Çarpanlar Etkinliği", dosya: "dersler/matematik/8_sinif/1_carpanlar_katlar/carpanlar_asal_carpanlar_lab.html", tur: "lab" },
           { ad: "Çarpanlar Atölyesi", dosya: "dersler/matematik/8_sinif/1_carpanlar_katlar/carpanlar_atolye.html", tur: "atolye" },
           { ad: "Asal Çarpanlar Atölyesi", dosya: "dersler/matematik/8_sinif/1_carpanlar_katlar/asal_carpanlar_atolye.html", tur: "atolye" },
