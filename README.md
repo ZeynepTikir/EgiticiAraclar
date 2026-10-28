@@ -10,24 +10,6 @@ Bu proje, ortaokul matematik müfredatına (5, 6, 7 ve 8. sınıflar) yönelik o
 
 Proje, sunucu gerektirmeyen modern bir statik web mimarisine sahiptir:
 
-```text
-egitici-araclar/
-├── index.html              # Ana Sınıf Seçim Ekranı
-├── sinif.html              # Dinamik Ünite ve Araç Listeleme Şablonu
-├── data.js                 # Tüm sınıf, ünite ve araçların yönetildiği merkezi veri dosyası
-├── 5_sinif/                # 5. Sınıf Etkinlikleri
-├── 6_sinif/                # 6. Sınıf Etkinlikleri
-├── 7_sinif/                # 7. Sınıf Etkinlikleri
-└── 8_sinif/                # 8. Sınıf Etkinlikleri
-    ├── 1_Carpanlar_ve_Katlar/
-    ├── 2_Uslu_Ifadeler/
-    ├── 3_Karekoklu_Sayilar/
-    ├── 4_Veri_Analizi/
-    ├── 5_Olasilik/
-    ├── 6_Cebirsel_Ifadeler_ve_Ozdeslikler/
-    └── 7_Bir_Bilinmeyenli_Denklemler/
-```
-
 ## 🛠️ Kullanılan Teknolojiler
 
 HTML5 / CSS3 / JavaScript (ES6+): Arayüz tasarımı, animasyonlar ve interaktif laboratuvar mantığı.
