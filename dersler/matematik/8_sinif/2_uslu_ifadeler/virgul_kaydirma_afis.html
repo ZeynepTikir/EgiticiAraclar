@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>8. Sınıf Matematik - Üslü İfadelerde Virgül Kaydırma</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #2d3748;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .poster {
+            width: 100%;
+            max-width: 1000px;
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            overflow: hidden;
+            border: 8px solid #ffde59;
+        }
+
+        /* HEADER */
+        .header {
+            background: linear-gradient(135deg, #6c5ce7 0%, #a8e063 100%);
+            background-color: #6c5ce7;
+            padding: 30px;
+            text-align: center;
+            color: white;
+            position: relative;
+            clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+            padding-bottom: 50px;
+        }
+
+        .badge {
+            background: #ffde59;
+            color: #2d3748;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin: 15px 0 5px 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            font-weight: 600;
+            opacity: 0.95;
+        }
+
+        /* CONTENT GRID */
+        .content {
+            padding: 30px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* CARDS */
+        .card {
+            background: #f8f9fa;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+            border-top: 6px solid #ccc;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card.sol {
+            border-color: #ff6b6b;
+            background: #fff5f5;
+        }
+
+        .card.sag {
+            border-color: #48dbfb;
+            background: #f0f8ff;
+        }
+
+        .card h2 {
+            font-size: 1.4rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card.sol h2 { color: #ff6b6b; }
+        .card.sag h2 { color: #0097e6; }
+
+        .example-box {
+            background: white;
+            padding: 12px 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-align: center;
+            border: 2px dashed #cbd5e0;
+            letter-spacing: 0.5px;
+        }
+
+        .arrow {
+            color: #fbc531;
+            font-size: 1.3rem;
+            margin: 0 5px;
+        }
+
+        .rule-text {
+            font-size: 0.95rem;
+            margin-top: 10px;
+            font-weight: 600;
+            color: #4a5568;
+            text-align: center;
+        }
+
+        /* FULL WIDTH TIPS */
+        .tips-section {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, #ffeaa7 0%, #dfe6e9 100%);
+            border-radius: 16px;
+            padding: 25px;
+            border: 3px solid #fdcb6e;
+        }
+
+        .tips-section h3 {
+            font-size: 1.5rem;
+            color: #d63031;
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: 800;
+        }
+
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .tip-card {
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        .tip-card h4 {
+            color: #2d3748;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+            font-weight: 700;
+        }
+
+        .tip-card p {
+            font-size: 0.9rem;
+            color: #718096;
+            font-weight: 600;
+        }
+
+        /* GOLDEN RULE FOOTER */
+        .golden-rule {
+            grid-column: 1 / -1;
+            background: #2d3748;
+            color: #ffde59;
+            padding: 20px;
+            border-radius: 16px;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .highlight {
+            color: #ff6b6b;
+            background: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+        
+        .highlight-blue {
+            color: #0097e6;
+            background: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="poster">
+        <!-- Başlık Alanı -->
+        <div class="header">
+            <span class="badge">8. Sınıf LGS Matematik Masterclass</span>
+            <h1>Üslü İfadelerde Virgül Kaydırma</h1>
+            <p>Katsayı ve 10'un Kuvveti Arasındaki Muhteşem Dans!</p>
+        </div>
+
+        <!-- Ana İçerik Grid -->
+        <div class="content">
+            
+            <!-- SOL KART: Virgül Sağa Kayarsa -->
+            <div class="card sol">
+                <h2>Virgül SAĞA Kayarsa ➔</h2>
+                <p style="font-size: 0.95rem; color: #555; font-weight: 600;">Sayı büyür, o halde dengeyi sağlamak için 10'un kuvveti <span style="color:#ff6b6b; font-weight:800;">KÜÇÜLÜR!</span></p>
+                
+                <div class="example-box">
+                    0,045 x 10<span style="font-size: 0.7em; vertical-align: super;">8</span>
+                    <span class="arrow">➔</span>
+                    4,5 x 10<span style="font-size: 0.7em; vertical-align: super; color: #ff6b6b;">6</span>
+                </div>
+                
+                <div class="rule-text">
+                    Virgül <strong>2 basamak sağa</strong> kaydı (+2)<br>
+                    Üs <strong>2 birim azaldı</strong> (-2)
+                </div>
+            </div>
+
+            <!-- SAĞ KART: Virgül Sola Kayarsa -->
+            <div class="card sag">
+                <h2>◄ Virgül SOLA Kayarsa</h2>
+                <p style="font-size: 0.95rem; color: #555; font-weight: 600;">Sayı küçülür, o halde dengeyi sağlamak için 10'un kuvveti <span style="color:#0097e6; font-weight:800;">BÜYÜR!</span></p>
+                
+                <div class="example-box">
+                    45000 x 10<span style="font-size: 0.7em; vertical-align: super;">-3</span>
+                    <span class="arrow">➔</span>
+                    4,5 x 10<span style="font-size: 0.7em; vertical-align: super; color: #0097e6;">1</span>
+                </div>
+                
+                <div class="rule-text">
+                    Virgül <strong>4 basamak sola</strong> kaydı (-4)<br>
+                    Üs <strong>4 birim arttı</strong> (+4)
+                </div>
+            </div>
+
+            <!-- Pratik Bilgiler ve Püf Noktaları -->
+            <div class="tips-section">
+                <h3>🚀 Pratik Kodlama & Püf Noktaları</h3>
+                <div class="tips-grid">
+                    <div class="tip-card">
+                        <h4>ASANSÖR KURALI</h4>
+                        <p>Katsayı asansörde <strong>Aşağı</strong> iniyorsa (küçülüyorsa), 10'un kuvveti <strong>Yukarı</strong> çıkar (büyür)!</p>
+                    </div>
+                    <div class="tip-card">
+                        <h4>TERHİCEN BİLİMSEL GÖSTERİM</h4>
+                        <p>A x 10<span style="font-size: 0.7em; vertical-align: super;">n</span> formatında "A" sayısı daima <strong>1 ile 10 arasında</strong> (1 dahil) olmalıdır.</p>
+                    </div>
+                    <div class="tip-card">
+                        <h4>ADIM SAYISI = ÜS DEĞİŞİMİ</h4>
+                        <p>Virgülü kaç basamak kaydırdıysan, üssü de o kadar (zıt yönde) değiştirmelisin!</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Altın Kural -->
+            <div class="golden-rule">
+                ⭐ ALTIN KURAL: <span class="highlight">Biri Büyürse</span>, <span class="highlight-blue">Diğeri Küçülür!</span> Zıt Yönlü Denge Kuralı. ⭐
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>

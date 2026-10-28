@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>8. Sınıf Matematik - Üslü İfadelerle Çözümleme İnfografik</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #2d3748;
+            padding: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .poster {
+            width: 100%;
+            max-width: 1000px;
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            overflow: hidden;
+            border: 8px solid #4f46e5;
+        }
+
+        /* HEADER */
+        .header {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        .grade-badge {
+            background: #f59e0b;
+            color: #fff;
+            padding: 6px 18px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            display: inline-block;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 10px;
+            letter-spacing: -0.5px;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            font-weight: 400;
+            opacity: 0.9;
+        }
+
+        /* CONTENT GRID */
+        .content {
+            padding: 30px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+            .poster {
+                border-width: 4px;
+            }
+            .header h1 {
+                font-size: 2rem;
+            }
+        }
+
+        .card {
+            background: #f8fafc;
+            border-radius: 16px;
+            padding: 24px;
+            border: 2px solid #e2e8f0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            transition: transform 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+        }
+
+        .card.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #1e293b;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-title span {
+            background: #4f46e5;
+            color: white;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        /* ANATOMY TABLE */
+        .anatomy-box {
+            background: #e0e7ff;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #3730a3;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+            border: 2px dashed #6366f1;
+        }
+
+        .table-visual {
+            display: flex;
+            justify-content: space-between;
+            gap: 5px;
+            margin-top: 15px;
+            overflow-x: auto;
+            padding-bottom: 5px;
+        }
+
+        .t-col {
+            background: #ffffff;
+            flex: 1;
+            min-width: 75px;
+            text-align: center;
+            padding: 10px 5px;
+            border-radius: 8px;
+            border: 1px solid #cbd5e1;
+        }
+
+        .t-col .power {
+            font-size: 0.8rem;
+            color: #dc2626;
+            font-weight: 700;
+        }
+
+        .t-col .val {
+            font-size: 1rem;
+            font-weight: 800;
+            color: #0f172a;
+            margin: 5px 0;
+        }
+
+        .t-col .name {
+            font-size: 0.7rem;
+            color: #64748b;
+        }
+
+        /* STEPS */
+        .steps {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .step-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            background: #ffffff;
+            padding: 12px 16px;
+            border-radius: 10px;
+            border-left: 5px solid #10b981;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+        }
+
+        .step-num {
+            background: #10b981;
+            color: white;
+            font-weight: 700;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 0.8rem;
+            flex-shrink: 0;
+        }
+
+        .step-text {
+            font-size: 0.95rem;
+            color: #334155;
+            font-weight: 600;
+        }
+
+        /* PRATİK BİLGİLER / PÜF NOKTALARI */
+        .tips-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        @media (max-width: 480px) {
+            .tips-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .tip-box {
+            background: #fef3c7;
+            border: 2px solid #f59e0b;
+            border-radius: 12px;
+            padding: 15px;
+        }
+
+        .tip-box h4 {
+            color: #b45309;
+            font-size: 0.95rem;
+            font-weight: 800;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .tip-box p {
+            font-size: 0.85rem;
+            color: #78350f;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+
+        /* FOOTER BRANDING */
+        .footer-banner {
+            background: #1e293b;
+            color: #94a3b8;
+            text-align: center;
+            padding: 15px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .footer-banner span {
+            color: #f59e0b;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="poster">
+        <!-- HEADER -->
+        <div class="header">
+            <div class="grade-badge">8. Sınıf Matematik</div>
+            <h1>Üslü İfadelerle Çözümleme</h1>
+            <p>Ondalık gösterimleri 10'un kuvvetleriyle çözme rehberi</p>
+        </div>
+
+        <!-- CONTENT -->
+        <div class="content">
+            
+            <!-- KART 1: ONDALIK ÇÖZÜMLEME TABLOSu -->
+            <div class="card full-width">
+                <div class="card-title"><span>1</span> Ondalık Gösterimin Basamak İsimleri ve Kuvvetleri</div>
+                <div class="anatomy-box">
+                    Örnek: 324,507
+                </div>
+                <p style="font-size: 0.9rem; font-weight: 600; color: #475569; margin-bottom: 10px; text-align: center;">Virgülün solu pozitif, sağı negatif 10'un kuvvetleri ile çarpılır!</p>
+                <div class="table-visual">
+                    <div class="t-col">
+                        <div class="power">10²</div>
+                        <div class="val">Yüzler</div>
+                        <div class="name">100'lük</div>
+                    </div>
+                    <div class="t-col">
+                        <div class="power">10¹</div>
+                        <div class="val">Onlar</div>
+                        <div class="name">10'luk</div>
+                    </div>
+                    <div class="t-col">
+                        <div class="power">10⁰</div>
+                        <div class="val">Birler</div>
+                        <div class="name">1'lik</div>
+                    </div>
+                    <div class="t-col" style="background: #fef08a; border-color: #eab308;">
+                        <div class="power" style="color:#b45309">Virgül</div>
+                        <div class="val">,</div>
+                        <div class="name">Ayıraç</div>
+                    </div>
+                    <div class="t-col">
+                        <div class="power">10⁻¹</div>
+                        <div class="val">Onda Bir</div>
+                        <div class="name">0,1'lik</div>
+                    </div>
+                    <div class="t-col">
+                        <div class="power">10⁻²</div>
+                        <div class="val">Yüzde Bir</div>
+                        <div class="name">0,01'lik</div>
+                    </div>
+                    <div class="t-col">
+                        <div class="power">10⁻³</div>
+                        <div class="val">Binde Bir</div>
+                        <div class="name">0,001'lik</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- KART 2: NASIL ÇÖZÜMLENİR? (ADIMLAR) -->
+            <div class="card">
+                <div class="card-title"><span>2</span> Çözümleme Adımları</div>
+                <div class="steps">
+                    <div class="step-item">
+                        <div class="step-num">1</div>
+                        <div class="step-text">Her rakam, bulunduğu basamağın değer kümesiyle çarpılır.</div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-num">2</div>
+                        <div class="step-text">Çarpım durumundaki ifadeler araya "+" işareti konularak yazılır.</div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-num">3</div>
+                        <div class="step-text">Basamak değeri "0" olanlar toplamaya etki etmediği için yazılmayabilir!</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- KART 3: PRATİK BİLGİLER VE PÜF NOKTALARI -->
+            <div class="card">
+                <div class="card-title"><span>3</span> Pratik İpuçları & Püf Noktaları</div>
+                <div class="tips-grid">
+                    <div class="tip-box">
+                        <h4>İpucu 1: Sıfırlar Yok!</h4>
+                        <p>Çözümlenmiş halde verilmeyen (atlanan) 10'un kuvvetleri, o basamakta <strong>"0"</strong> olduğunu gösterir.</p>
+                    </div>
+                    <div class="tip-box">
+                        <h4>İpucu 2: Kuvvet Sıralaması</h4>
+                        <p>Soldan sağa giderken 10'un kuvvetleri hep <strong>birer birer azalır</strong> (2, 1, 0, -1, -2...).</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- KART 4: ÖRNEK ÇÖZÜM UYGULAMASI -->
+            <div class="card full-width" style="background: #ecfdf5; border-color: #6ee7b7;">
+                <div class="card-title"><span style="background: #059669;">4</span> Uygulama Örneği: 405,08 Sayısı</div>
+                <div style="background: #ffffff; padding: 15px; border-radius: 10px; border: 1px solid #a7f3d0; font-size: 1rem; color: #065f46; font-weight: 600; text-align: center;">
+                    <strong>405,08</strong> = (4 x 10²) + <span style="color: #94a3b8; text-decoration: line-through;">(0 x 10¹)</span> + (5 x 10⁰) + <span style="color: #94a3b8; text-decoration: line-through;">(0 x 10⁻¹)</span> + (8 x 10⁻²)
+                    <br><br>
+                    <span style="font-size: 0.9rem; color: #047857; background: #d1fae5; padding: 6px 12px; border-radius: 6px; display: inline-block;">
+                        💡 Sıfır olan basamaklar (Onlar ve Onda birler) yazılmadan da ifade edilebilir!
+                    </span>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- FOOTER -->
+        <div class="footer-banner">
+            Hedef YKS / LGS Başarısı! <span>• Matematik Eğitimi Görsel Tasarımı</span>
+        </div>
+    </div>
+
+</body>
+</html>
