@@ -4,19 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>8. Sınıf Matematik - Çarpan Bulma Yöntemleri İnfografiği</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #4361ee;
-            --secondary: #3a0ca3;
-            --accent: #f72585;
-            --success: #4cc9f0;
-            --warning: #4895ef;
-            --light: #f8f9fa;
-            --dark: #212529;
-            --card-bg: #ffffff;
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            blue: '#4361ee',
+                            darkblue: '#3a0ca3',
+                            pink: '#f72585',
+                            cyan: '#4cc9f0',
+                            purple: '#7209b7',
+                            accent: '#ff9e00'
+                        }
+                    },
+                    fontFamily: {
+                        poppins: ['Poppins', 'sans-serif'],
+                        quicksand: ['Quicksand', 'sans-serif'],
+                    }
+                }
+            }
         }
-
+    </script>
+    <style>
         * {
             box-sizing: border-box;
             margin: 0;
@@ -25,290 +41,327 @@
 
         body {
             font-family: 'Quicksand', sans-serif;
-            background: linear-gradient(135deg, #f0f3ff 0%, #e6edff 100%);
-            color: var(--dark);
-            padding: 20px;
+            background: #eef2ff;
+            color: #1e293b;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-        }
-
-        .poster {
-            width: 100%;
-            max-width: 1000px;
-            background: var(--card-bg);
-            border-radius: 24px;
-            box-shadow: 0 20px 40px rgba(67, 97, 238, 0.15);
-            overflow: hidden;
-            border: 4px solid #fff;
-        }
-
-        /* HEADER */
-        .header {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            padding: 30px;
-            text-align: center;
-            position: relative;
-        }
-
-        .grade-badge {
-            background: var(--accent);
-            color: white;
-            padding: 6px 16px;
-            border-radius: 50px;
-            font-size: 0.9rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            display: inline-block;
-            margin-bottom: 10px;
-            box-shadow: 0 4px 10px rgba(247, 37, 133, 0.3);
-        }
-
-        .header h1 {
-            font-family: 'Poppins', sans-serif;
-            font-size: 2.5rem;
-            font-weight: 800;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
-        }
-
-        .header p {
-            font-size: 1.1rem;
-            opacity: 0.9;
-        }
-
-        /* CONTENT CONTAINER */
-        .content {
-            padding: 30px;
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 25px;
-        }
-
-        /* DEFINITION BOX */
-        .definition-box {
-            background: #eef4ff;
-            border-left: 6px solid var(--primary);
-            padding: 20px;
-            border-radius: 0 12px 12px 0;
-            font-size: 1.1rem;
-            line-height: 1.6;
-        }
-
-        .definition-box strong {
-            color: var(--secondary);
-        }
-
-        /* METHODS GRID */
-        .methods-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-        }
-
-        .method-card {
-            background: #ffffff;
-            border: 2px solid #e2e8f0;
-            border-radius: 16px;
-            padding: 20px;
-            position: relative;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .method-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
-        }
-
-        .method-number {
-            position: absolute;
-            top: -15px;
-            left: 20px;
-            background: var(--accent);
-            color: white;
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 1.1rem;
-            box-shadow: 0 4px 8px rgba(247, 37, 133, 0.3);
-        }
-
-        .method-card h3 {
-            font-family: 'Poppins', sans-serif;
-            color: var(--secondary);
-            margin-top: 10px;
-            margin-bottom: 12px;
-            font-size: 1.3rem;
-        }
-
-        .example-box {
-            background: #f8f9fa;
-            border-radius: 10px;
             padding: 12px;
-            margin-top: 12px;
-            font-family: monospace;
-            font-size: 1.05rem;
-            color: #d90429;
-            border-left: 4px solid #ff5964;
         }
 
-        /* TIPS & TRICKS SECTION */
-        .tips-section {
-            background: linear-gradient(135deg, #f72585, #b5179e);
-            color: white;
-            padding: 25px;
-            border-radius: 16px;
-            box-shadow: 0 8px 20px rgba(247, 37, 133, 0.2);
+        /* Printable Single-Page Poster Frame */
+        .poster-frame {
+            width: 100%;
+            max-width: 880px;
+            background: #ffffff;
+            margin: 0 auto;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(67, 97, 238, 0.15);
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
         }
 
-        .tips-section h2 {
-            font-family: 'Poppins', sans-serif;
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+        /* PRINT STYLES FOR EXACT SINGLE-PAGE PRINTING / SCREENSHOTS */
+        @media print {
+            @page {
+                size: A4 portrait;
+                margin: 5mm;
+            }
 
-        .tips-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 15px;
-        }
+            body {
+                background: white !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
 
-        .tip-item {
-            background: rgba(255, 255, 255, 0.15);
-            padding: 15px;
-            border-radius: 10px;
-            backdrop-filter: blur(5px);
-        }
-
-        .tip-item h4 {
-            font-family: 'Poppins', sans-serif;
-            margin-bottom: 5px;
-            color: #ff9e00;
-        }
-
-        .tip-item p {
-            font-size: 0.95rem;
-            line-height: 1.4;
-        }
-
-        /* FOOTER BANNER */
-        .footer-banner {
-            text-align: center;
-            padding: 15px;
-            background: var(--dark);
-            color: white;
-            font-size: 0.9rem;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-        }
-
-        @media (max-width: 768px) {
-            .header h1 { font-size: 2rem; }
-            .content { padding: 15px; }
+            .poster-frame {
+                box-shadow: none !important;
+                border: none !important;
+                max-width: 100% !important;
+                width: 100% !important;
+                border-radius: 0 !important;
+            }
         }
     </style>
 </head>
 <body>
 
-    <div class="poster">
-        <!-- Başlık Bölümü -->
-        <div class="header">
-            <span class="grade-badge">8. Sınıf Matematik</span>
-            <h1>Çarpan Bulma Yöntemleri</h1>
-            <p>Bir sayının kalansız bölenlerini (çarpanlarını) kaçırmadan bulma rehberi!</p>
-        </div>
+    <!-- MAIN SINGLE-PAGE POSTER CONTAINER -->
+    <div class="poster-frame">
+        
+        <!-- HEADER -->
+        <header class="bg-gradient-to-r from-brand-blue via-brand-purple to-brand-darkblue text-white p-5 text-center relative">
+            <span class="inline-block bg-brand-pink text-white text-[11px] font-bold font-poppins px-3.5 py-0.5 rounded-full uppercase tracking-wider shadow-sm mb-1.5">
+                🎓 8. Sınıf LGS Matematik İnfografiği
+            </span>
+            <h1 class="text-2xl sm:text-3xl font-black font-poppins tracking-tight mb-0.5">
+                Çarpan Bulma Yöntemleri
+            </h1>
+            <p class="text-xs text-blue-100 max-w-xl mx-auto font-medium">
+                Bir tam sayının tüm pozitif bölenlerini (çarpanlarını) eksiksiz bulma rehberi!
+            </p>
+        </header>
 
-        <div class="content">
-            <!-- Tanım -->
-            <div class="definition-box">
-                <strong>Çarpan (Bölen) Nedir?</strong> Bir doğal sayıyı kalansız (kalansız = 0) bölebilen tüm pozitif tam sayılara o sayının <strong>çarpanı</strong> (aynı zamanda böleni) denir.
+        <!-- MAIN POSTER CONTENT -->
+        <div class="p-4 sm:p-5 space-y-4">
+
+            <!-- TANIM BOX -->
+            <section class="bg-blue-50/90 border-l-4 border-brand-blue p-3 rounded-r-xl flex items-start gap-3 shadow-sm">
+                <div class="text-brand-blue text-lg pt-0.5">
+                    <i class="fa-solid fa-bookmark"></i>
+                </div>
+                <div>
+                    <h2 class="font-bold text-brand-darkblue text-sm font-poppins">Çarpan (Bölen) Nedir?</h2>
+                    <p class="text-slate-700 text-xs leading-relaxed mt-0.5">
+                        Bir pozitif tam sayıyı <strong class="text-brand-blue">kalansız (kalan = 0)</strong> bölebilen tüm pozitif tam sayılara o sayının <strong>çarpanı</strong> (aynı zamanda <strong>böleni</strong>) denir.
+                    </p>
+                </div>
+            </section>
+
+            <!-- 3 YÖNTEM ŞEMATİK GRID -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3.5">
+
+                <!-- YÖNTEM 1: GÖKKUŞAĞI YÖNTEMİ -->
+                <div class="bg-white rounded-xl border border-slate-200 p-3 shadow-sm flex flex-col justify-between relative overflow-hidden">
+                    <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-pink-500 to-purple-600"></div>
+                    
+                    <div>
+                        <div class="flex items-center justify-between mb-1.5">
+                            <span class="w-7 h-7 rounded-lg bg-pink-100 text-brand-pink font-extrabold text-sm flex items-center justify-center font-poppins">1</span>
+                            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Çarpım İkilileri</span>
+                        </div>
+                        <h3 class="text-sm font-extrabold text-brand-darkblue font-poppins mb-1">Gökkuşağı Yöntemi</h3>
+                        <p class="text-slate-600 text-[11px] leading-tight mb-2">
+                            Çarpanların sırayla baştan ve sondan eşleşerek sayıyı vermesidir.
+                        </p>
+
+                        <!-- EXACT-FIT SVG RAINBOW VISUAL -->
+                        <div class="bg-slate-50 border border-slate-200 rounded-lg p-2 mb-2 text-center">
+                            <div class="text-[10px] font-bold text-slate-500 mb-0.5">Örnek: 24'ün Çarpan İkilileri</div>
+                            
+                            <div class="w-full flex justify-center items-center py-0.5">
+                                <svg width="220" height="105" viewBox="0 0 240 115" class="max-w-full">
+                                    <!-- Rainbow Arcs -->
+                                    <path d="M 18 80 A 92 60 0 0 1 222 80" fill="none" stroke="#f72585" stroke-width="2.5" stroke-linecap="round"/>
+                                    <path d="M 47 80 A 72 45 0 0 1 193 80" fill="none" stroke="#7209b7" stroke-width="2.5" stroke-linecap="round"/>
+                                    <path d="M 76 80 A 50 30 0 0 1 164 80" fill="none" stroke="#4361ee" stroke-width="2.5" stroke-linecap="round"/>
+                                    <path d="M 105 80 A 25 15 0 0 1 135 80" fill="none" stroke="#4cc9f0" stroke-width="2.5" stroke-linecap="round"/>
+
+                                    <text x="120" y="108" text-anchor="middle" fill="#64748b" font-size="9" font-weight="bold" font-family="Poppins">Her ikilinin çarpımı = 24</text>
+
+                                    <!-- Factor Nodes -->
+                                    <circle cx="18" cy="80" r="10" fill="#f72585"/>
+                                    <text x="18" y="80" fill="white" font-size="9" font-weight="bold" font-family="Poppins" text-anchor="middle" dominant-baseline="central">1</text>
+                                    
+                                    <circle cx="47" cy="80" r="10" fill="#7209b7"/>
+                                    <text x="47" y="80" fill="white" font-size="9" font-weight="bold" font-family="Poppins" text-anchor="middle" dominant-baseline="central">2</text>
+                                    
+                                    <circle cx="76" cy="80" r="10" fill="#4361ee"/>
+                                    <text x="76" y="80" fill="white" font-size="9" font-weight="bold" font-family="Poppins" text-anchor="middle" dominant-baseline="central">3</text>
+                                    
+                                    <circle cx="105" cy="80" r="10" fill="#4cc9f0"/>
+                                    <text x="105" y="80" fill="white" font-size="9" font-weight="bold" font-family="Poppins" text-anchor="middle" dominant-baseline="central">4</text>
+                                    
+                                    <circle cx="135" cy="80" r="10" fill="#4cc9f0"/>
+                                    <text x="135" y="80" fill="white" font-size="9" font-weight="bold" font-family="Poppins" text-anchor="middle" dominant-baseline="central">6</text>
+                                    
+                                    <circle cx="164" cy="80" r="10" fill="#4361ee"/>
+                                    <text x="164" y="80" fill="white" font-size="9" font-weight="bold" font-family="Poppins" text-anchor="middle" dominant-baseline="central">8</text>
+                                    
+                                    <circle cx="193" cy="80" r="10" fill="#7209b7"/>
+                                    <text x="193" y="80" fill="white" font-size="9" font-weight="bold" font-family="Poppins" text-anchor="middle" dominant-baseline="central">12</text>
+                                    
+                                    <circle cx="222" cy="80" r="10" fill="#f72585"/>
+                                    <text x="222" y="80" fill="white" font-size="9" font-weight="bold" font-family="Poppins" text-anchor="middle" dominant-baseline="central">24</text>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-pink-50 border border-pink-100 rounded-lg p-2 text-[10px] text-pink-900 leading-snug">
+                        <strong>Sonuç:</strong> 24'ün tüm pozitif çarpanları:<br>
+                        <span class="font-bold text-brand-pink font-mono text-[11px]">1, 2, 3, 4, 6, 8, 12, 24</span>
+                    </div>
+                </div>
+
+                <!-- YÖNTEM 2: ASAL ÇARPAN AĞACI -->
+                <div class="bg-white rounded-xl border border-slate-200 p-3 shadow-sm flex flex-col justify-between relative overflow-hidden">
+                    <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-brand-blue to-brand-cyan"></div>
+                    
+                    <div>
+                        <div class="flex items-center justify-between mb-1.5">
+                            <span class="w-7 h-7 rounded-lg bg-blue-100 text-brand-blue font-extrabold text-sm flex items-center justify-center font-poppins">2</span>
+                            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Dallanma Şeması</span>
+                        </div>
+                        <h3 class="text-sm font-extrabold text-brand-darkblue font-poppins mb-1">Asal Çarpan Ağacı</h3>
+                        <p class="text-slate-600 text-[11px] leading-tight mb-2">
+                            En küçük asal sayıdan başlanarak dallara ayrılmasıdır.
+                        </p>
+
+                        <!-- SCHEMATIC SVG FACTOR TREE -->
+                        <div class="bg-slate-50 border border-slate-200 rounded-lg p-2 mb-2 text-center">
+                            <div class="text-[10px] font-bold text-slate-500 mb-0.5">Örnek: 36 Sayısının Ağacı</div>
+                            
+                            <div class="w-full flex justify-center items-center">
+                                <svg width="200" height="115" viewBox="0 0 220 125" class="max-w-full">
+                                    <line x1="110" y1="18" x2="60" y2="48" stroke="#94a3b8" stroke-width="2"/>
+                                    <line x1="110" y1="18" x2="160" y2="48" stroke="#94a3b8" stroke-width="2"/>
+                                    
+                                    <line x1="160" y1="48" x2="125" y2="85" stroke="#94a3b8" stroke-width="2"/>
+                                    <line x1="160" y1="48" x2="185" y2="85" stroke="#94a3b8" stroke-width="2"/>
+
+                                    <line x1="185" y1="85" x2="165" y2="112" stroke="#94a3b8" stroke-width="2"/>
+                                    <line x1="185" y1="85" x2="200" y2="112" stroke="#94a3b8" stroke-width="2"/>
+
+                                    <!-- Nodes -->
+                                    <rect x="95" y="5" width="30" height="22" rx="5" fill="#3a0ca3"/>
+                                    <text x="110" y="16" fill="white" font-size="10" font-weight="bold" font-family="Poppins" text-anchor="middle" dominant-baseline="central">36</text>
+
+                                    <circle cx="60" cy="48" r="11" fill="#10b981"/>
+                                    <text x="60" y="48" fill="white" font-size="9" font-weight="bold" font-family="Poppins" text-anchor="middle" dominant-baseline="central">2</text>
+
+                                    <rect x="145" y="37" width="30" height="22" rx="5" fill="#4361ee"/>
+                                    <text x="160" y="48" fill="white" font-size="10" font-weight="bold" font-family="Poppins" text-anchor="middle" dominant-baseline="central">18</text>
+
+                                    <circle cx="125" cy="85" r="11" fill="#10b981"/>
+                                    <text x="125" y="85" fill="white" font-size="9" font-weight="bold" font-family="Poppins" text-anchor="middle" dominant-baseline="central">2</text>
+
+                                    <rect x="171" y="74" width="28" height="20" rx="5" fill="#4361ee"/>
+                                    <text x="185" y="84" fill="white" font-size="9" font-weight="bold" font-family="Poppins" text-anchor="middle" dominant-baseline="central">9</text>
+
+                                    <circle cx="165" cy="112" r="8" fill="#10b981"/>
+                                    <text x="165" y="112" fill="white" font-size="7" font-weight="bold" font-family="Poppins" text-anchor="middle" dominant-baseline="central">3</text>
+
+                                    <circle cx="200" cy="112" r="8" fill="#10b981"/>
+                                    <text x="200" y="112" fill="white" font-size="7" font-weight="bold" font-family="Poppins" text-anchor="middle" dominant-baseline="central">3</text>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-blue-50 border border-blue-100 rounded-lg p-2 text-[10px] text-blue-900 leading-snug">
+                        <strong>Uçtaki Asal Daireler:</strong><br>
+                        <span class="font-bold text-emerald-600 font-mono text-[11px]">36'nın Asal Çarpanları: 2 ve 3</span>
+                    </div>
+                </div>
+
+                <!-- YÖNTEM 3: BÖLEN LİSTESİ -->
+                <div class="bg-white rounded-xl border border-slate-200 p-3 shadow-sm flex flex-col justify-between relative overflow-hidden">
+                    <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-emerald-400 to-teal-600"></div>
+                    
+                    <div>
+                        <div class="flex items-center justify-between mb-1.5">
+                            <span class="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-600 font-extrabold text-sm flex items-center justify-center font-poppins">3</span>
+                            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Algoritma</span>
+                        </div>
+                        <h3 class="text-sm font-extrabold text-brand-darkblue font-poppins mb-1">Bölen Listesi</h3>
+                        <p class="text-slate-600 text-[11px] leading-tight mb-2">
+                            Sağ tarafa yalnızca <strong>asal sayılar</strong> yazılarak bölme yapılır.
+                        </p>
+
+                        <!-- LADDER SCHEMATIC -->
+                        <div class="bg-slate-50 border border-slate-200 rounded-lg p-1.5 mb-2 text-center">
+                            <div class="text-[10px] font-bold text-slate-500 mb-0.5">Örnek: 60 Asal Bölen Algoritması</div>
+                            
+                            <div class="inline-block font-mono text-xs font-bold my-0.5">
+                                <div class="flex items-center gap-2 border-b border-slate-200 py-0.5">
+                                    <span class="w-6 text-right text-slate-800">60</span>
+                                    <span class="border-l-2 border-slate-800 h-3.5"></span>
+                                    <span class="w-5 text-left text-brand-pink font-extrabold">2</span>
+                                </div>
+                                <div class="flex items-center gap-2 border-b border-slate-200 py-0.5">
+                                    <span class="w-6 text-right text-slate-800">30</span>
+                                    <span class="border-l-2 border-slate-800 h-3.5"></span>
+                                    <span class="w-5 text-left text-brand-pink font-extrabold">2</span>
+                                </div>
+                                <div class="flex items-center gap-2 border-b border-slate-200 py-0.5">
+                                    <span class="w-6 text-right text-slate-800">15</span>
+                                    <span class="border-l-2 border-slate-800 h-3.5"></span>
+                                    <span class="w-5 text-left text-brand-pink font-extrabold">3</span>
+                                </div>
+                                <div class="flex items-center gap-2 border-b border-slate-200 py-0.5">
+                                    <span class="w-6 text-right text-slate-800">5</span>
+                                    <span class="border-l-2 border-slate-800 h-3.5"></span>
+                                    <span class="w-5 text-left text-brand-pink font-extrabold">5</span>
+                                </div>
+                                <div class="flex items-center gap-2 py-0.5">
+                                    <span class="w-6 text-right text-slate-400">1</span>
+                                    <span class="border-l-2 border-transparent h-3.5"></span>
+                                    <span class="w-5"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-emerald-50 border border-emerald-100 rounded-lg p-2 text-[10px] text-emerald-900 leading-snug">
+                        <strong>Sağdaki Asal Bölenler:</strong><br>
+                        <span class="font-bold text-emerald-700 font-mono text-[11px]">60'ın Asal Çarpanları: 2, 3 ve 5</span>
+                    </div>
+                </div>
+
             </div>
 
-            <!-- Yöntemler Grid -->
-            <div class="methods-container">
-                
-                <!-- Yöntem 1 -->
-                <div class="method-card" style="border-top: 4px solid var(--primary);">
-                    <div class="method-number">1</div>
-                    <h3>Gökkuşağı Yöntemi (Çarpım İkilileri)</h3>
-                    <p>Sayıyı iki pozitif tam sayının çarpımı şeklinde sırayla yazmaktır. Küçükten büyüğe sıralı gitmek hayat kurtarır!</p>
-                    <div class="example-box">
-                        Örnek: 24'ün Çarpanları<br>
-                        1 x 24<br>
-                        2 x 12<br>
-                        3 x 8<br>
-                        4 x 6<br>
-                        <strong>Sonuç: 1, 2, 3, 4, 6, 8, 12, 24</strong>
+            <!-- ÜSLÜ İFADELERİN ÇARPIMI BÖLÜMÜ -->
+            <section class="bg-gradient-to-r from-slate-900 to-indigo-950 text-white p-3.5 rounded-xl shadow-sm">
+                <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
+                    <div class="space-y-0.5 text-center sm:text-left">
+                        <span class="bg-brand-pink text-white text-[9px] font-bold px-2 py-0.5 rounded-full uppercase">
+                            ⭐ LGS Standart Gösterimi
+                        </span>
+                        <h3 class="text-sm font-bold font-poppins">Asal Çarpanların Üslü İfadelerin Çarpımı Şeklinde Yazılması</h3>
+                        <p class="text-[11px] text-slate-300">Bir sayı asal çarpanlarına ayrıldıktan sonra, tekrar eden asallar üs olarak yazılır.</p>
+                    </div>
+
+                    <div class="bg-white/10 backdrop-blur-md px-3.5 py-2 rounded-lg border border-white/20 font-mono text-sm sm:text-base font-bold text-yellow-300 text-center whitespace-nowrap">
+                        60 = 2² × 3¹ × 5¹
                     </div>
                 </div>
+            </section>
 
-                <!-- Yöntem 2 -->
-                <div class="method-card" style="border-top: 4px solid var(--accent);">
-                    <div class="method-number">2</div>
-                    <h3>Asal Çarpan Ağacı Yöntemi</h3>
-                    <p>Sayının en küçük asal sayıdan (2'den) başlayarak dallara ayrılarak çarpanlarına ayrılmasıdır.</p>
-                    <div class="example-box">
-                        Örnek: 36 için<br>
-                        36 / 2 = 18<br>
-                        18 / 2 = 9<br>
-                        9 / 3 = 3<br>
-                        <strong>Asal Çarpanlar: 2 ve 3</strong>
-                    </div>
+            <!-- PRATİK İPUÇLARI VE REHBER -->
+            <section class="bg-gradient-to-r from-brand-pink to-purple-700 text-white p-4 rounded-xl shadow-sm">
+                <div class="flex items-center gap-2 mb-2.5">
+                    <span class="text-yellow-300 text-base"><i class="fa-solid fa-lightbulb"></i></span>
+                    <h3 class="text-sm font-bold font-poppins">💡 Sınavda Hayat Kurtaran Kurallar</h3>
                 </div>
 
-                <!-- Yöntem 3 -->
-                <div class="method-card" style="border-top: 4px solid #38b000;">
-                    <div class="method-number">3</div>
-                    <h3>Bölen Listesi (Asal Çarpan Algoritması)</h3>
-                    <p>Sayı dikey bir çizginin soluna yazılır. Sağ tarafa sadece asal sayılar yazılarak bölme işlemi 1 olana kadar sürdürülür.</p>
-                    <div class="example-box">
-                        Örnek: 60'ın Asal Bölenleri<br>
-                        60 | 2<br>
-                        30 | 2<br>
-                        15 | 3<br>
-                        5  | 5<br>
-                        1<br>
-                        <strong>Asal Çarpanlar: 2, 3, 5</strong>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-2.5 text-[11px]">
+                    
+                    <div class="bg-white/10 p-2.5 rounded-lg border border-white/15">
+                        <div class="text-yellow-300 font-bold font-poppins mb-0.5">1️⃣ 1 ve Kendisi</div>
+                        <p class="text-white/90 leading-snug">
+                            Her pozitif tam sayının en küçük çarpanı <strong>1</strong>, en büyük çarpanı ise <strong>kendisidir</strong>.
+                        </p>
                     </div>
-                </div>
 
-            </div>
+                    <div class="bg-white/10 p-2.5 rounded-lg border border-white/15">
+                        <div class="text-yellow-300 font-bold font-poppins mb-0.5">🎯 Tam Kare Sayılar</div>
+                        <p class="text-white/90 leading-snug">
+                            16, 25, 36, 64 gibi tam kare sayıların pozitif çarpan adedi <strong>TEK SAYIDIR</strong> (Ortadaki çarpan 1 kez yazılır).
+                        </p>
+                    </div>
 
-            <!-- Pratik İpuçları ve Kurallar -->
-            <div class="tips-section">
-                <h2>💡 Pratik Bilgiler ve Sınav İpuçları</h2>
-                <div class="tips-grid">
-                    <div class="tip-item">
-                        <h4>1 ve Kendisi</h4>
-                        <p>Her doğal sayı 1 ve kendisinin çarpımıdır. Listeye mutlaka bunlarla başla ve bitir!</p>
+                    <div class="bg-white/10 p-2.5 rounded-lg border border-white/15">
+                        <div class="text-yellow-300 font-bold font-poppins mb-0.5">👑 Asal Sayılar</div>
+                        <p class="text-white/90 leading-snug">
+                            Asal sayıların (2, 3, 5, 7, 11...) sadece <strong>2 tane</strong> çarpanı vardır: 1 ve kendisi.
+                        </p>
                     </div>
-                    <div class="tip-item">
-                        <h4>Tam Kare Sayı Dikkat!</h4>
-                        <p>49, 64, 100 gibi tam kare sayıların çarpan adedi <strong>TEK</strong> sayıdır. (Örn: 36'nın çarpanı olan 6, kendisiyle çarpıldığında iki kez yazılmaz.)</p>
-                    </div>
-                    <div class="tip-item">
-                        <h4>Asal Sayıların Sırrı</h4>
-                        <p>Asal sayıların sadece 2 tane pozitif çarpanı vardır: 1 ve kendisi. (Örn: 2, 3, 5, 7, 11...)</p>
-                    </div>
+
                 </div>
-            </div>
+            </section>
 
         </div>
 
-        <!-- Footer -->
-        <div class="footer-banner">
-            Matematik Başarıya Giden Yolda Doğru Adımlarla İlerler! 🚀
-        </div>
+        <!-- FOOTER -->
+        <footer class="bg-slate-900 text-slate-400 py-2 px-5 text-center text-[11px] font-semibold flex flex-col sm:flex-row justify-between items-center gap-1 border-t border-slate-800">
+            <span>8. Sınıf Matematik Ders Materyali</span>
+            <span class="text-brand-cyan">Matematik Başarıya Giden Yolda Doğru Adımlarla İlerler! 🚀</span>
+        </footer>
+
     </div>
 
 </body>
